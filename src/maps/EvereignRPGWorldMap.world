@@ -1,0 +1,20 @@
+{
+    "maps": [
+        {
+            "fileName": "Willowvale.json",
+            "height": 6400,
+            "width": 6400,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "WillowvaleCaverns.json",
+            "height": 6400,
+            "width": 6400,
+            "x": -6400,
+            "y": 0
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

@@ -1,0 +1,145 @@
+{
+	"textures": [
+		{
+			"image": "book.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1296,
+				"h": 935
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 622,
+						"h": 519
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 0,
+						"w": 621,
+						"h": 518
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 621,
+						"h": 518
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "0.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 663,
+						"h": 417
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 663,
+						"h": 417
+					},
+					"frame": {
+						"x": 0,
+						"y": 518,
+						"w": 663,
+						"h": 417
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 337,
+						"h": 507
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 337,
+						"h": 507
+					},
+					"frame": {
+						"x": 621,
+						"y": 0,
+						"w": 337,
+						"h": 507
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 339,
+						"h": 442
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 338,
+						"h": 442
+					},
+					"frame": {
+						"x": 958,
+						"y": 0,
+						"w": 338,
+						"h": 442
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 339,
+						"h": 422
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 338,
+						"h": 422
+					},
+					"frame": {
+						"x": 958,
+						"y": 442,
+						"w": 338,
+						"h": 422
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:85f556df8fb98084f3a4fe197cc2591d:27cfdf797d4e2e76b87d4fd34e7e2c31:14eaf2be968d9b253a3d0912f743dc0d$"
+	}
+}

@@ -1,0 +1,52 @@
+{
+    "name": "evereign",
+    "version": "1.0.0",
+    "description": "A 2D javascript game made with Phaser 3",
+    "main": "main.js",
+    "scripts": {
+        "dev": "webpack --config webpack.config.js --mode=development --watch",
+        "prod": "webpack --config webpack.config.js --mode=production",
+        "build": "npm run prod && electron-builder",
+        "build-standalone": "electron-builder",
+        "start": "electron ."
+    },
+    "author": "Nathan Leadbitter <nathanl38@protonmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@timohausmann/quadtree-ts": "^2.2.2",
+        "css-loader": "^6.8.1",
+        "electron": "^33.0.2",
+        "electron-builder": "^25.1.8",
+        "file-loader": "^6.2.0",
+        "html-webpack-plugin": "^5.5.3",
+        "mini-css-extract-plugin": "^2.7.6",
+        "phaser": "^3.86.0",
+        "phaser-navmesh": "^2.3.1",
+        "phaser3_gui_inspector": "^1.2.1",
+        "ts-loader": "^9.5.0",
+        "typescript": "^5.2.2",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^5.1.4"
+    },
+    "build": {
+        "appId": "com.chungco.evereign",
+        "directories": {
+            "output": "build",
+            "buildResources": "dist"
+        },
+        "win": {
+            "target": "portable"
+        },
+        "files": [
+            "**/*",
+            "dist/**/*",
+            "!.github",
+            "!.vs",
+            "!node_modules/*"
+        ]
+    },
+    "dependencies": {
+        "sass": "^1.77.8",
+        "sass-loader": "^16.0.1"
+    }
+}

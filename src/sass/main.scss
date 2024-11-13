@@ -1,0 +1,32 @@
+
+@font-face {
+    font-family: "Augusta";
+    src: url('../fonts/Augusta.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: "Dungeon";
+    src: url('../fonts/DungeonFont.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: "Mooli";
+    src: url('../fonts/Mooli-Regular.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: "Flesh";
+    src: url('../fonts/Fleshandblood-MVA5x.ttf') format("truetype");
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Augusta";
+}
+
+#game {
+    height: 100vh;
+    overflow: hidden;
+    background-color: black;
+}
