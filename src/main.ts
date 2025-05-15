@@ -6,12 +6,14 @@ import Menu from "./scenes/Menu";
 import { PhaserNavMeshPlugin } from "phaser-navmesh";
 import './sass/main.scss';
 
+// Game configuration
 const Config: Phaser.Types.Core.GameConfig = {
 	parent: "game",
 	type: Phaser.WEBGL,
-	width: window.innerWidth,
-	height: window.innerHeight,
 	disableContextMenu: true,
+	dom: {
+		createContainer: true,
+	},
 	version: "Alpha 1",
 	fps: {
 		limit: 60,
@@ -46,9 +48,29 @@ const Config: Phaser.Types.Core.GameConfig = {
 			},
 		},
 	},
+    scale: {
+		width: window.innerWidth,
+		height: window.innerHeight,
+		mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+	banner: false,
 	antialiasGL: true,
 	pixelArt: true,
 	roundPixels: true
 }
 
-new Phaser.Game(Config);
+// Check for WebGLRenderingContext
+function CheckForWebGL () {
+	try {
+		var canvas = document.createElement('canvas'); 
+		canvas.setAttribute("id", "webgltest");
+        if (!window.WebGLRenderingContext || (canvas.getContext('webgl') === null && canvas.getContext('experimental-webgl') === null))
+            throw new Error("No WebGLRenderingContext");
+		new Phaser.Game(Config);
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+CheckForWebGL();

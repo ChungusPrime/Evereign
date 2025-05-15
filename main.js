@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const { console } = require('inspector');
 const path = require('path');
 
 let mainWindow;
@@ -8,7 +9,9 @@ function createWindow() {
 	const WindowConfig = {
 		width: 1280,
 		height: 720,
-		resizable: false,
+		resizable: true,
+		maximizable: true,
+		minimizable: true,
 		useContentSize: true,
 		webPreferences: {
 			nodeIntegration: false,

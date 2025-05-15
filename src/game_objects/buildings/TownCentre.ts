@@ -19,7 +19,7 @@ export default class TownCentre extends Building {
     `;
 
     constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "TownCentre", 1 );
+        super( scene, x, y, "Town Centre", "towncentre_1");
         this.scene = scene;
 
         /*if ( this.IsPlayerOwned == true ) {
@@ -33,16 +33,16 @@ export default class TownCentre extends Building {
     }
 
     public update (delta: number): void {
-        if ( this.IsPlayerOwned == true ) {
+        /*if ( this.IsPlayerOwned == true ) {
             if ( this.ProductsPerTick.length == 0 ) return;
             this.CurrentTickProgress += delta;
             if ( this.CurrentTickProgress >= this.TickTime ) {
                 this.CurrentTickProgress = 0;
                 this.ProductsPerTick.forEach(product => {
-                    this.scene.InventoryManager.AddResource(product.ID, product.Amount);
+                    this.scene.Inventory.AddItem(product.ID, product.Amount);
                 });
             }
-        }
+        }*/
     }
 
 }

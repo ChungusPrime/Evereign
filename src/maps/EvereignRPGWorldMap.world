@@ -11,8 +11,85 @@
             "fileName": "WillowvaleCaverns.json",
             "height": 6400,
             "width": 6400,
-            "x": -6400,
+            "x": -7456,
+            "y": 960
+        },
+        {
+            "fileName": "WillowvaleNorth.json",
+            "height": 6400,
+            "width": 6400,
+            "x": 0,
+            "y": -6400
+        },
+        {
+            "fileName": "WillowvaleCoast.json",
+            "height": 6400,
+            "width": 6400,
+            "x": 6400,
             "y": 0
+        },
+        {
+            "fileName": "Swamp.json",
+            "height": 6400,
+            "width": 6400,
+            "x": -6400,
+            "y": -6400
+        },
+        {
+            "fileName": "SwampWest.json",
+            "height": 6400,
+            "width": 6400,
+            "x": -12800,
+            "y": -6400
+        },
+        {
+            "fileName": "SwampNorth.json",
+            "height": 6400,
+            "width": 6400,
+            "x": -6400,
+            "y": -12800
+        },
+        {
+            "fileName": "WillowvaleNorthEast.json",
+            "height": 6400,
+            "width": 6400,
+            "x": 6400,
+            "y": -6400
+        },
+        {
+            "fileName": "SwampNorthWest.json",
+            "height": 6400,
+            "width": 6400,
+            "x": -12800,
+            "y": -12800
+        },
+        {
+            "fileName": "Brackenwald.json",
+            "height": 6400,
+            "width": 6400,
+            "x": 0,
+            "y": -12800
+        },
+        {
+            "fileName": "BrackenwaldEast.json",
+            "height": 6400,
+            "width": 6400,
+            "x": 6400,
+            "y": -12800
+        },
+        {
+            "fileName": "TestMap.json",
+            "height": 6400,
+            "width": 6400,
+            "x": -224,
+            "y": 6912
+        },
+        {
+            "fileName": "Mar'Xanthir.json",
+            "height": 6400,
+            "width": 6400,
+            "x": -14464,
+            "y": 960
         }
     ],
     "onlyShowAdjacentMaps": false,

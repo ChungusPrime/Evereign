@@ -1,8 +1,11 @@
 import Game from '../../scenes/Game';
 import Building from '../Building';
+import Obstacle from '../Obstacle';
+import { GD } from "../../scenes/Game";
 
 export default class GoblinOutpost extends Building {
 
+    public scene: Game;
     public width: number = 128;
     public height: number = 128;
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
@@ -14,12 +17,14 @@ export default class GoblinOutpost extends Building {
     public OnAlert: boolean = false;
     public Units!: IUnit[];
     public SpawnInterval: number = 3000;
-    public SpawnDelta: number = 0;
+    public SpawnDelta: number = 3000;
     public MaxSpawnCount: number = 3;
     public CurrentSpawnCount: number = 0;
-
+    
     constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "GoblinOutpost", 1 );
+        super( scene, x, y, "Goblin Outpost", "goblin_outpost_1");
+        this.scene = scene;
+        this.setOrigin(0, 1);
     }
 
     private areAllUnitsDead(): boolean {
@@ -32,6 +37,10 @@ export default class GoblinOutpost extends Building {
         return unit.Alive + unit.Dead < unit.Total;
     }
 
+    Alert () {
+        this.OnAlert = true;
+    }
+
     update ( time: number, delta: number ) {
         
         if ( this.OnAlert == false ) return;
@@ -40,7 +49,23 @@ export default class GoblinOutpost extends Building {
         this.SpawnDelta += delta;
 
         if (this.areAllUnitsDead()) {
-            this.scene.BuildingManager.DestroyBuilding(this, this.Data.OnDestroyAddFlag ?? null);
+
+            if ( this.AggroCollider !== undefined ) {
+                this.AggroCollider.body.destroy();
+                this.AggroCollider.setActive(false);
+                this.AggroCollider.setVisible(false);
+            }
+            
+            this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
+                this.scene.Obstacles.getChildren().forEach( (object: Obstacle) => {
+                    if ( object.ID == objectID )
+                        object.Destroy();
+                });
+            });
+
+            GD.Maps[GD.CurrentMap].Buildings.find((building) => building.ID == this.ID).Destroyed = true;
+
+            this.scene.Buildings.remove(this, true, true);
             return;
         }
 
@@ -50,16 +75,12 @@ export default class GoblinOutpost extends Building {
 
         if ( this.SpawnDelta >= this.SpawnInterval ) {
             let RandomUnit = availableUnits[Phaser.Math.Between(0, availableUnits.length - 1)];
-            let RandomSpawn = this.getBounds().getRandomPoint();
-            this.scene.EnemyManager.SpawnBuildingEnemy(RandomUnit.Name, RandomSpawn.x, RandomSpawn.y, this).Aggro();
+            let RandomSpawnPoint = this.getBounds().getRandomPoint();
+            this.scene.EnemyManager.SpawnBuildingEnemy(RandomUnit.Name, RandomSpawnPoint.x, RandomSpawnPoint.y, this, 1).Aggro();
             RandomUnit.Alive++;
             this.CurrentSpawnCount += 1;
             this.SpawnDelta = 0;
         }
-    }
-
-    Alert () {
-        this.OnAlert = true;
     }
 
 }

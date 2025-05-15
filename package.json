@@ -1,7 +1,7 @@
 {
     "name": "evereign",
     "version": "1.0.0",
-    "description": "A 2D javascript game made with Phaser 3",
+    "description": "Evereign",
     "main": "main.js",
     "scripts": {
         "dev": "webpack --config webpack.config.js --mode=development --watch",
@@ -20,16 +20,19 @@
         "file-loader": "^6.2.0",
         "html-webpack-plugin": "^5.5.3",
         "mini-css-extract-plugin": "^2.7.6",
-        "phaser": "^3.86.0",
         "phaser-navmesh": "^2.3.1",
         "phaser3_gui_inspector": "^1.2.1",
+        "sass": "^1.77.8",
+        "sass-loader": "^16.0.1",
         "ts-loader": "^9.5.0",
         "typescript": "^5.2.2",
-        "webpack": "^5.89.0",
+        "webpack": "^5.96.1",
         "webpack-cli": "^5.1.4"
     },
     "build": {
         "appId": "com.chungco.evereign",
+        "executableName": "Evereign",
+        "icon": "C:\\code\\Evereign\\src\\images\\icon.ico",
         "directories": {
             "output": "build",
             "buildResources": "dist"
@@ -46,7 +49,7 @@
         ]
     },
     "dependencies": {
-        "sass": "^1.77.8",
-        "sass-loader": "^16.0.1"
+        "js-base64": "^3.7.7",
+        "phaser": "^3.87.0"
     }
 }

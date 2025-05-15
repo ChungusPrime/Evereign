@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "C:\\code\\Evereign\\src\\images\\buildings\\atlas",
+  "images": [
+    {
+      "name": "chapel_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/chapel_1.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/dwelling_1.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling_2.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/dwelling_2.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling_3.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/dwelling_3.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling_4.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/dwelling_4.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling_5.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/dwelling_5.png",
+      "folder": ""
+    },
+    {
+      "name": "farm_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/farm_1.png",
+      "folder": ""
+    },
+    {
+      "name": "farm_2.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/farm_2.png",
+      "folder": ""
+    },
+    {
+      "name": "farm_3.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/farm_3.png",
+      "folder": ""
+    },
+    {
+      "name": "farm_4.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/farm_4.png",
+      "folder": ""
+    },
+    {
+      "name": "farm_5.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/farm_5.png",
+      "folder": ""
+    },
+    {
+      "name": "goblin_outpost_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/goblin_outpost_1.png",
+      "folder": ""
+    },
+    {
+      "name": "goblin_tower_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/goblin_tower_1.png",
+      "folder": ""
+    },
+    {
+      "name": "inn_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/inn_1.png",
+      "folder": ""
+    },
+    {
+      "name": "market_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/market_1.png",
+      "folder": ""
+    },
+    {
+      "name": "mine_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/mine_1.png",
+      "folder": ""
+    },
+    {
+      "name": "towncentre_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/towncentre_1.png",
+      "folder": ""
+    },
+    {
+      "name": "towncentre_2.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/towncentre_2.png",
+      "folder": ""
+    },
+    {
+      "name": "warehouse_1.png",
+      "path": "C:/code/Evereign/src/images/buildings/frames/warehouse_1.png",
+      "folder": ""
+    }
+  ],
+  "folders": [],
+  "packOptions": {
+    "textureName": "BuildingsAtlas",
+    "textureFormat": "png",
+    "removeFileExtension": true,
+    "prependFolderName": false,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "JSON (hash)",
+    "fileName": "pack-result",
+    "savePath": "C:\\code\\Evereign\\src\\images\\buildings\\atlas",
+    "width": 2048,
+    "height": 2048,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 0,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}

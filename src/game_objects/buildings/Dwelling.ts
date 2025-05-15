@@ -4,11 +4,15 @@ import Building from '../Building';
 export default class Dwelling extends Building {
 
     public width: number = 128;
-    public height: number = 128;
+    public height: number = 64;
+
+    public PlotWidth: number = 128;
+    public PlotHeight: number = 64;
+
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
 
     constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Dwelling", 1 );
+        super( scene, x, y, "Dwelling", "dwelling_1");
         return this;
     }
 

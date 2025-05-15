@@ -1,68 +1,66 @@
 import Game from "../scenes/Game";
 import Building from "./Building";
-import GoblinOutpost from "./buildings/GoblinOutpost";
-import Character from "./Character";
+import Pickup from "./Pickup";
 import Projectile from "./Projectile";
+import { GD } from "../scenes/Game";
 
 export default abstract class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     public scene: Game;
-
     public InCombat: boolean = false;
     public InCombatDelta: number = 0;
-
     public body!: Phaser.Physics.Arcade.Body;
+    public ID: number;
+    public OnDestroyAddFlag: number;
 
     // These properties are unique per enemy type
     abstract Health: number;
+    abstract MaxHealth: number;
     abstract Type: string;
-    abstract Abilities: Array<string>;
+    
     abstract SpawnLocation: Building | { x: number, y: number };
     abstract AttackRange: number;
     abstract AttackCooldown: number;
     abstract MovementSpeed: number;
-    abstract LootTable: any;
+    abstract LootTable: number[];
     abstract GoldValue: number;
     abstract ExpValue: number;
     abstract WalkAnimation: string;
-    abstract VARNAME: string;
+    abstract Name: string;
+    abstract Level: number;
+
+    abstract Abilities: { 
+        [key: string]: { 
+            Description: string,
+            Cooldown: number
+        }
+    };
 
     constructor (scene: Game, SpawnLocation: Building | { x: number, y: number }, Spritesheet: string, SpriteIndex: number ) {
         super (scene, SpawnLocation.x, SpawnLocation.y, Spritesheet, SpriteIndex);
         this.scene = scene;
-        this.create();
-    }
-
-    create () {
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-        this.scene.EnemyManager.Enemies.add(this);
+        this.scene.Enemies.add(this);
         this.setDepth(99);
         this.setOrigin(0.5);
         this.setScale(2);
         this.setInteractive();
         this.setBodySize(6, 10);
         this.setImmovable(true);
-        this.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            if ( pointer.rightButtonDown() ) {
-                console.log(this.getData(['ID', 'OnDestroyAddFlag']));
-            }
-        });
-
     }
 
     Aggro () {
         this.InCombat = true;
         this.InCombatDelta = 5000;
-        const hsv = Phaser.Display.Color.HSVColorWheel();
-        this.setTint(hsv[128].color);
     }
 
     LoseAggro () {
         this.clearTint();
         this.InCombat = false;
         this.InCombatDelta = 5000;
-
+        this.Health = this.MaxHealth;
+        this.setVelocity(0, 0);
         if ( this.SpawnLocation instanceof Building ) {
             let RandomPoint = this.SpawnLocation.getBounds().getRandomPoint();
             this.body.reset(RandomPoint.x, RandomPoint.y);
@@ -71,50 +69,40 @@ export default abstract class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.body.reset(this.SpawnLocation.x, this.SpawnLocation.y);
             this.setPosition(this.SpawnLocation.x, this.SpawnLocation.y);
         }
-
-
-
-        this.setVelocity(0, 0);
     }
 
     TakeDamage ( amount: number ) {
         this.Health -= amount;
-        if ( this.Health <= 0 ) {
+        if ( this.Health <= 0 )
             this.die();
-        }
-    }
-
-    Attack () {
-        this.InCombatDelta = 5000;
-        let projectile = new Projectile(this.scene, this.x, this.y, 150, 0, "Goblin-Arrow");
-        this.scene.EnemyProjectiles.add(projectile);
-        this.AttackCooldown = 2000;
     }
 
     die () {
+
+        // If the enemy was spawned by a building, update the buildings unit count
         if ( this.SpawnLocation instanceof Building && this.SpawnLocation.CurrentSpawnCount !== undefined ) {
+
             this.SpawnLocation.CurrentSpawnCount--;
+
             if ( this.SpawnLocation.Units !== undefined ) {
-                let Unit = this.SpawnLocation.Units.find( (e) => e.Name == this.VARNAME );
+                let Unit = this.SpawnLocation.Units.find( (e) => e.Name == this.Name );
                 if ( Unit !== undefined ) {
                     Unit.Alive--;
-                    Unit.Remaining--;
                     Unit.Dead++;
                 }
-                console.log(this.SpawnLocation.Units);
             }
+
         }
 
         this.scene.PlayerCharacter.AddXP(this.ExpValue);
-        this.scene.InventoryManager.AddGold(this.GoldValue);
+        const GoldPickup = new Pickup(this.scene, this.x, this.y, "bonus1", 8, "gold", this.GoldValue, true);
+        this.scene.Pickups.add(GoldPickup);
+        this.scene.Enemies.remove(this, true, true);
 
-        let Flag = this.getData('OnDestroyAddFlag');
-
-        if ( Flag !== undefined ) {
-            this.scene.DataManager.AddFlag(Flag);
+        if ( !(this.SpawnLocation instanceof Building) ) {
+            GD.Maps[GD.CurrentMap].Enemies.find((e) => e.ID == this.ID).Alive = false;
         }
 
-        this.scene.EnemyManager.Enemies.remove(this, true, true);
     }
 
 }

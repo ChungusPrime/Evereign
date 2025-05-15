@@ -4,6 +4,9 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
 
     // All buildings
     public scene: Game;
+    public StaticData: StaticBuildingData | null = null;
+    public VariableData: any | null = null;
+    public ID: number = 0;
     public Level: number = 1;
     public Area: string = "";
     public TickTime: number = 12000;
@@ -12,11 +15,11 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     public IsPlayerOwned: boolean = false;
     public DESTROYING: boolean = false;
     public Type: string;
-    public Data: any = null;
-    public ID: number;
 
     // Inherited per building type
-    abstract ProductsPerTick: { ID: number; Amount: number; }[];
+    ProductsPerTick: { ID: number; Amount: number; }[];
+    WorkerSlots: number;
+    WorkerType: string;
     CurrentJob?: string;
     BuildZone?: Phaser.GameObjects.Rectangle;
 
@@ -32,37 +35,67 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     CurrentSpawnCount?: number;
     CostMultiplier?: number;
 
-    constructor ( scene: Game, x: number, y: number, type: string, frame: number ) {
-        super(scene, x, y, type, frame);
+    constructor ( scene: Game, x: number, y: number, type: string, frame: string ) {
+
+        super(scene, x, y, "Buildings", frame);
         this.scene = scene;
-        this.setOrigin(0);
         this.Type = type;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
+
+        this.setOrigin(0, 1);
+        
+        const PlotSize = this.scene.DataManager.BuildingData.find((b) => b.Name == this.Type);
+
+        if ( PlotSize == undefined ) {
+            console.error(`Building ${this.Type} not found in building data`);
+        } else {
+            this.setBodySize(PlotSize.PlotSize.Width, PlotSize.PlotSize.Height);
+            this.body.offset.y = -PlotSize.PlotSize.Height + this.height;
+        }
+        
         this.setInteractive();
         this.setImmovable();
         this.setPipeline("Light2D");
-        this.ID = 0;
 
         if ( this.Type == "TownCentre" && this.IsPlayerOwned == true ) {
-            let BuildZone = this.scene.add.rectangle(this.getCenter().x, this.getCenter().y, 640 + 32 + 1, 640 + 32  + 1, 0xffffff, 0.2).setVisible(false);
+            let BuildZone = this.scene.add.rectangle(this.getCenter().x, this.getCenter().y, 672 + 1, 672  + 1, 0xffffff, 0.2).setVisible(false);
             this.scene.physics.world.enable(BuildZone);
             this.BuildZone = BuildZone;
             this.scene.TownCentre = this;
         }
 
         this.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            if ( pointer.rightButtonDown() ) {
-                console.log(this.Data);
-                if ( this.IsPlayerOwned == true ) {
-                    console.log("Open building management screen");
-                } else {
-                    console.info("Start dialogue with this building");
-                }
-            }
+            if ( !pointer.rightButtonDown() ) return;
+            console.log(this.StaticData);
+            if ( this.IsPlayerOwned == true )
+                return this.OpenManagementScreen();
+            this.StartDialogue();
         });
 
         return this;
+    }
+
+    StartDialogue () {
+
+        console.log("Start dialogue with this building");
+
+        // Market = Open trade window
+        if ( this.Type == "Market")
+            this.scene.UI.TradeWindow.Show(this.ID);
+
+        // Town Centre = Start Dialogue with town leader
+        if ( this.Type == "Town Centre") {
+            // Find town leader
+            let Data = this.scene.DataManager.GetBuildingData(this.ID);
+            this.scene.UI.DialogueWindow.StartConversation(Data.Person);
+        }
+
+    }
+
+    OpenManagementScreen () {
+        console.log("Open building management screen");
+
     }
 
     CreateBuildZone () {

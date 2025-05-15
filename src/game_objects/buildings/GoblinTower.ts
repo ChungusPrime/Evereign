@@ -1,5 +1,7 @@
 import Game from '../../scenes/Game';
 import Building from '../Building';
+import Obstacle from '../Obstacle';
+import { GD } from "../../scenes/Game";
 
 export default class GoblinTower extends Building {
 
@@ -14,22 +16,27 @@ export default class GoblinTower extends Building {
     public OnAlert: boolean = false;
     public Units!: IUnit[];
     public SpawnInterval: number = 3000;
-    public SpawnDelta: number = 0;
+    public SpawnDelta: number = 3000;
     public MaxSpawnCount: number = 3;
     public CurrentSpawnCount: number = 0;
 
     constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "GoblinTower", 1 );
+        super( scene, x, y, "Goblin Tower", "goblin_tower_1");
+        this.setOrigin(0, 1);
     }
 
+    // Check if the amount of dead units is equal to the total amount of units
     private areAllUnitsDead(): boolean {
-        // Check if the amount of dead units is equal to the total amount of units
         return this.Units.every(unit => unit.Dead === unit.Total);
     }
 
+    // Check if the amount of alive and dead units is less than the total amount of units
     private canSpawnMoreUnits(unit: IUnit): boolean {
-        // Check if the amount of alive and dead units is less than the total amount of units
         return unit.Alive + unit.Dead < unit.Total;
+    }
+
+    Alert () {
+        this.OnAlert = true;
     }
 
     update ( time: number, delta: number ) {
@@ -40,7 +47,26 @@ export default class GoblinTower extends Building {
         this.SpawnDelta += delta;
 
         if (this.areAllUnitsDead()) {
-            this.scene.BuildingManager.DestroyBuilding(this, this.Data.OnDestroyAddFlag ?? null);
+
+            if ( this.AggroCollider !== undefined ) {
+                this.AggroCollider.body.destroy();
+                this.AggroCollider.setActive(false);
+                this.AggroCollider.setVisible(false);
+            }
+    
+            
+
+            // Process any relevant triggers when this building is destroyed
+            this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
+                this.scene.Obstacles.getChildren().forEach( (object: Obstacle) => {
+                    if ( object.ID == objectID )
+                        object.Destroy();
+                });
+            });
+
+            GD.Maps[GD.CurrentMap].Buildings.find((building) => building.ID == this.ID).Destroyed = true;
+
+            this.scene.Buildings.remove(this, true, true);
             return;
         }
 
@@ -56,10 +82,6 @@ export default class GoblinTower extends Building {
             this.CurrentSpawnCount += 1;
             this.SpawnDelta = 0;
         }
-    }
-
-    Alert () {
-        this.OnAlert = true;
     }
 
 }

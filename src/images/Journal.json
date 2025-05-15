@@ -5,7 +5,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 267, "y": 171, "w": 336, "h": 421 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "1": {
     "frame": { "x": 2013, "y": 2661, "w": 342, "h": 447 },
@@ -37,7 +37,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 118, "y": 181, "w": 661, "h": 416 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "5": {
     "frame": { "x": 3981, "y": 3, "w": 7, "h": 7 },
@@ -45,7 +45,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 1, "h": 1 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "6": {
     "frame": { "x": 1343, "y": 2234, "w": 667, "h": 422 },
@@ -53,7 +53,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 118, "y": 181, "w": 661, "h": 416 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "7": {
     "frame": { "x": 3, "y": 3, "w": 625, "h": 522 },
@@ -85,7 +85,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 267, "y": 171, "w": 336, "h": 421 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "11": {
     "frame": { "x": 3981, "y": 3, "w": 7, "h": 7 },
@@ -93,7 +93,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 1, "h": 1 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "12": {
     "frame": { "x": 1688, "y": 928, "w": 43, "h": 424 },
@@ -181,7 +181,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 118, "y": 181, "w": 661, "h": 416 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "23": {
     "frame": { "x": 673, "y": 1804, "w": 667, "h": 427 },
@@ -261,7 +261,7 @@
     "trimmed": true,
     "spriteSourceSize": { "x": 118, "y": 181, "w": 661, "h": 416 },
     "sourceSize": { "w": 896, "h": 720 },
-    "duration": 800
+    "duration": 100
    },
    "33": {
     "frame": { "x": 3, "y": 1804, "w": 667, "h": 427 },

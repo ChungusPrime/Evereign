@@ -1,33 +1,100 @@
 import Game from "../../scenes/Game";
 import Building from "../Building";
 import Enemy from "../Enemy";
+import Projectile from "../Projectile";
 
 export default class GoblinSlinger extends Enemy {
 
-    public AttackRange: number = 200;
-    public MovementSpeed: number = 50;
-    public Health: number = 6;
-    public Type: string = "Ranged";
-    public VARNAME: string = "Goblin Slinger";
-    public SpawnLocation: Building | { x: number, y: number };
-    public Abilities: string[] = [ 'Sling Shot' ];
+    public Name: string = "Goblin Slinger";
     public WalkAnimation: string = "GoblinSlingerWalk";
-    public AttackCooldown: number = 2000;
+
+    public AttackRange: number = 200;
+
+    public Type: string = "Ranged";
+    public SpawnLocation: Building | { x: number, y: number };
+    
     public GoldValue: number = 3;
     public ExpValue: number = 5;
     public LootTable: any = [];
+    public Level: number;
     public Data: any;
+    public moving: any;
+    public targetX: number;
+    public targetY: number;
+    public MovementCooldown: number = 3000;
 
-    constructor ( scene: Game, SpawnLocation: Building | { x: number, y: number } ) {
+    public Health: number = 6;
+    public MaxHealth: number;
+    public MovementSpeed: number = 50;
+
+    public AttackCooldown: number = 1000;
+    public Abilities: Abilities = {
+
+        'Pinning Shot': {
+            Description: "The goblin slinger shoots a heavier arrow at the player's legs, applying a movement speed debuff.",
+            Cooldown: 5000,
+            CooldownMax: 5000,
+            Damage: {
+                1: [
+                    { Type: "Physical", Min: 1, Max: 2, ApplyDebuff: "Slow" }
+                ],
+                2: [
+                    { Type: "Physical", Min: 3, Max: 7, ApplyDebuff: "Slow" }
+                ],
+                3: [
+                    { Type: "Physical", Min: 11, Max: 19, ApplyDebuff: "Slow" }
+                ],
+                4: [
+                    { Type: "Physical", Min: 27, Max: 45, ApplyDebuff: "Slow" }
+                ],
+                5: [
+                    { Type: "Physical", Min: 84, Max: 125, ApplyDebuff: "Slow" }
+                ],
+            }
+        },
+
+        'Bow Shot': {
+            Description: "The goblin slinger fires a simple arrow at the player.",
+            Cooldown: 2000,
+            CooldownMax: 2000,
+            Damage: {
+                1: [
+                    { Type: "Physical", Min: 1, Max: 4 }
+                ],
+                2: [
+                    { Type: "Physical", Min: 7, Max: 11 }
+                ],
+                3: [
+                    { Type: "Physical", Min: 14, Max: 35 }
+                ],
+                4: [
+                    { Type: "Physical", Min: 42, Max: 56 }
+                ],
+                5: [
+                    { Type: "Physical", Min: 61, Max: 70 }
+                ],
+            }
+        },
+
+    };
+    
+    constructor ( scene: Game, SpawnLocation: Building | { x: number, y: number }, level: number ) {
         super(scene, SpawnLocation, "characters", 118);
+        this.Level = level;
+        this.Health = this.Health * level;
+        this.MaxHealth = this.Health;
         this.SpawnLocation = SpawnLocation;
     }
 
     update ( time: number, delta: number ) {
 
         this.AttackCooldown -= delta;
+        this.MovementCooldown -= delta;
 
-        if ( this.InCombat ) {
+        this.Abilities['Pinning Shot'].Cooldown -= delta;
+        this.Abilities['Bow Shot'].Cooldown -= delta;
+
+        if ( this.InCombat == true ) {
 
             this.InCombatDelta -= delta;
 
@@ -36,9 +103,15 @@ export default class GoblinSlinger extends Enemy {
                 return;
             }
 
-            const distance = Phaser.Math.Distance.BetweenPoints(this, { x: this.scene.PlayerCharacter.x, y: this.scene.PlayerCharacter.y });
+            let DistanceFromSpawnPoint = Phaser.Math.Distance.BetweenPoints(this, { x: this.SpawnLocation.x, y: this.SpawnLocation.y });
+            if ( DistanceFromSpawnPoint > 500 ) {
+                this.LoseAggro();
+                return;
+            }
 
-            if ( distance > this.AttackRange ) {
+            let DistanceFromPlayer = Phaser.Math.Distance.BetweenPoints(this, { x: this.scene.PlayerCharacter.x, y: this.scene.PlayerCharacter.y });
+
+            if ( DistanceFromPlayer > this.AttackRange ) {
                 this.scene.physics.moveTo(this, this.scene.PlayerCharacter.x, this.scene.PlayerCharacter.y, this.MovementSpeed);
             } else {
                 this.body.reset(this.x, this.y);
@@ -47,6 +120,15 @@ export default class GoblinSlinger extends Enemy {
                 }
             }
 
+        } 
+        
+        if ( this.InCombat == false ) {
+            if ( this.moving ) {
+                const distance = Phaser.Math.Distance.BetweenPoints(this, { x: this.targetX, y: this.targetY });
+                if ( distance <= 10 ) {
+                    this.StopMoving();
+                }
+            }
         }
 
         if ( this.body!.velocity.x == 0 && this.body!.velocity.y == 0 ) {
@@ -56,6 +138,45 @@ export default class GoblinSlinger extends Enemy {
                 this.play(this.WalkAnimation);
         }
 
+    }
+
+    Attack () {
+
+        // Find an ability with a cooldown of 0 or less
+        let Ability = null;
+        for ( let key in this.Abilities ) {
+            if ( this.Abilities[key].Cooldown <= 0 ) {
+                this.Abilities[key].Cooldown = this.Abilities[key].CooldownMax;
+                Ability = key;
+                break;
+            }
+        }
+
+        if ( Ability == null ) return;
+
+        if ( Ability == 'Bow Shot' )
+            this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 150, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
+
+        if ( Ability == 'Pinning Shot' )
+            this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 125, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
+
+        this.InCombatDelta = 5000;
+        this.AttackCooldown = 1000;
+    }
+
+    MoveTo (x: number, y: number) {
+        var x = Phaser.Math.Between( this.SpawnLocation.x - 50, this.SpawnLocation.x + 50 );
+        var y = Phaser.Math.Between( this.SpawnLocation.y - 50, this.SpawnLocation.y + 50 );
+        this.moving = true
+        this.targetX = x;
+        this.targetY = y;
+        this.scene.physics.moveTo(this, x, y, this.MovementSpeed);
+    }
+
+    StopMoving () {
+        this.moving = false;
+        this.targetX = 0;
+        this.targetY = 0;
     }
 
 }

@@ -1,18 +1,19 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
     mode: "development",
     devtool: "source-map",
     entry: {
-        evereign: "./src/main.ts",
+        "evereign": "./src/main.ts",
     },
     module: {
         rules: [
             { test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ },
             {
-                test: /\.(png|svg|jpg|jpeg|gif|html|mp3|json|wav|xml)$/i,
+                test: /\.(png|svg|jpg|jpeg|gif|html|mp3|json|wav|xml|ttf)$/i,
                 type: "asset/resource",
             },
             {
@@ -33,8 +34,14 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: "[name].[contenthash].css",
-        }),
+        })
     ],
+    /*optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            test: /\.js(\?.*)?$/i,
+        })],
+    },*/
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),
