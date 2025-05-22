@@ -13,27 +13,28 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     public CurrentTickProgress: number = 0;
     public TickProgressBar?: Phaser.GameObjects.Rectangle;
     public IsPlayerOwned: boolean = false;
+    public IsHostile: boolean = false;
     public DESTROYING: boolean = false;
     public Type: string;
 
     // Inherited per building type
-    ProductsPerTick: { ID: number; Amount: number; }[];
-    WorkerSlots: number;
-    WorkerType: string;
-    CurrentJob?: string;
-    BuildZone?: Phaser.GameObjects.Rectangle;
+    public ProductsPerTick: { ID: number; Amount: number; }[];
+    public WorkerSlots: number;
+    public WorkerType: string;
+    public CurrentJob?: string;
+    public BuildZone?: Phaser.GameObjects.Rectangle;
 
     // Hostile building settings
-    AggroZone?: boolean;
-    AggroRadius?: number;
-    AggroCollider?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-    OnAlert?: boolean;
-    Units?: IUnit[];
-    SpawnInterval?: number;
-    SpawnDelta?: number;
-    MaxSpawnCount?: number;
-    CurrentSpawnCount?: number;
-    CostMultiplier?: number;
+    public AggroZone?: boolean;
+    public AggroRadius?: number;
+    public AggroCollider?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+    public OnAlert?: boolean;
+    public Units?: IUnit[];
+    public SpawnInterval?: number;
+    public SpawnDelta?: number;
+    public MaxSpawnCount?: number;
+    public CurrentSpawnCount?: number;
+    public CostMultiplier?: number;
 
     constructor ( scene: Game, x: number, y: number, type: string, frame: string ) {
 

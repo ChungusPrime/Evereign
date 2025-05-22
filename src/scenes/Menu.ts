@@ -281,19 +281,19 @@ export default class Menu extends Phaser.Scene {
         // Race
         this.characterRaceSelect = this.add.dom(this.scale.width * 0.32, Y)
         .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
-            <option value="">Select Race</option>
-            <option value="human">Human</option>
-            <option value="elf">Elf</option>
-            <option value="dwarf">Dwarf</option>
-            <option value="protostruct">Proto-Struct</option>
-            <option value="gnome">Gnome</option>
-            <option value="halforc">Half-Orc</option>
-            <option value="gnome">Gnome</option>
-            <option value="kirupean">Kirupean</option>
-            <option value="thogac">Thogac</option>
-            <option value="morvenite">Morvenite</option>
-            <option value="tiseri">Tiseri</option>
-            <option value="drakonid">Drakonid</option>
+            <option>Select Race</option>
+            <option>Human</option>
+            <option>Proto-Struct</option>
+            <option>Elf</option>
+            <option>Morvenite</option>
+            <option>Dwarf</option>
+            <option>Gnome</option>
+            <option>Kirupean</option>
+            <option>Half-Orc</option>
+            <option>Gnome</option>
+            <option>Thogac</option>
+            <option>Tiseri</option>
+            <option>Drakonid</option>
         </select>`)
         .setOrigin(0.5)
         .setVisible(false);
@@ -309,14 +309,14 @@ export default class Menu extends Phaser.Scene {
         // Class
         this.characterClassSelect = this.add.dom(this.scale.width * 0.32, Y)
         .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
-            <option value="">Select Class</option>
-            <option value="evoker">Evoker</option>
-            <option value="godsworn">Godsworn</option>
-            <option value="operative">Operative</option>
-            <option value="gladiator">Gladiator</option>
-            <option value="captain">Captain</option>
-            <option value="harbinger">Harbinger</option>
-            <option value="enginewright">Enginewright</option>
+            <option>Select Class</option>
+            <option>Operative</option>
+            <option>Evoker</option>
+            <option>Godsworn</option>
+            <option>Gladiator</option>
+            <option>Captain</option>
+            <option>Harbinger</option>
+            <option>Enginewright</option>
         </select>`)
         .setOrigin(0.5)
         .setVisible(false);
@@ -332,8 +332,8 @@ export default class Menu extends Phaser.Scene {
         // Campaign
         this.campaignSelect = this.add.dom(this.scale.width * 0.32, Y)
         .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
-            <option value="">Select Campaign</option>
-            <option value="twilight">The Twilight Accord</option>
+            <option>Select Campaign</option>
+            <option>The Twilight Accord</option>
         </select>`)
         .setOrigin(0.5)
         .setVisible(false);
@@ -349,9 +349,9 @@ export default class Menu extends Phaser.Scene {
         // Scaling
         this.scalingSelect = this.add.dom(this.scale.width * 0.32, Y)
         .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
-            <option value="">Select Scaling Type</option>
-            <option value="fixed">Fixed</option>
-            <option value="scaled">Scaled</option>
+            <option>Select Scaling Type</option>
+            <option>Fixed</option>
+            <option>Scaled</option>
         </select>`)
         .setOrigin(0.5)
         .setVisible(false);
@@ -367,10 +367,10 @@ export default class Menu extends Phaser.Scene {
         // Difficulty
         this.difficultySelect = this.add.dom(this.scale.width * 0.32, Y)
         .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
-            <option value="">Select Difficulty</option>
-            <option value="story">Story</option>
-            <option value="standard">Standard</option>
-            <option value="ultra">Ultra</option>
+            <option>Select Difficulty</option>
+            <option>Story</option>
+            <option>Standard</option>
+            <option>Ultra</option>
         </select>`)
         .setOrigin(0.5)
         .setVisible(false);
@@ -383,7 +383,6 @@ export default class Menu extends Phaser.Scene {
 
         Y = Y + 45;
 
-
         // Info panel background
         let infobg = this.add.nineslice(this.scale.width * 0.69, this.scale.height * 0.45, "Kenney-UI", "panel_beigeLight", this.scale.width * 0.3, this.scale.height * 0.55, 25, 25, 25, 25).setOrigin(0.5).setVisible(false);
 
@@ -391,24 +390,42 @@ export default class Menu extends Phaser.Scene {
 
         let CreateNewCharButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.75, "Confirm Character", () => {
 
-            console.log("Create Character", this.CharacterName, this.CharacterRace, this.CharacterClass);
+            console.warn("Attempting to create new character", this.CharacterName, this.CharacterRace, this.CharacterClass, this.CharacterCampaign, this.CharacterScaling, this.CharacterDifficulty);
+            return;
 
-            if ( this.CharacterName == "" ) return console.warn("Enter a name");
-            if ( this.CharacterRace == "" ) return console.warn("Choose a race");
-            if ( this.CharacterClass == "" ) return console.warn("Choose a class");
-            if ( this.CharacterCampaign == "" ) return console.warn("Choose a campaign");
-            if ( this.CharacterScaling == "" ) return console.warn("Choose a scaling type");
-            if ( this.CharacterDifficulty == "" ) return console.warn("Choose a difficulty");
-            /*if ( this.CharacterName.length < 3 ) return console.warn("Name must be at least 3 characters long");
-            if ( this.CharacterName.length > 20 ) return console.warn("Name must be less than 20 characters long");
-            if ( this.CharacterName.match(/[^a-zA-Z]/) ) return console.warn("Name can only contain letters");
-            if ( this.CharacterName.match(/^\d/) ) return console.warn("Name cannot start with a number");
-            if ( this.CharacterName.match(/^\s/) ) return console.warn("Name cannot start with a space");
-            if ( this.CharacterName.match(/\s$/) ) return console.warn("Name cannot end with a space");*/
-            
-            if ( this.CreateCharacter() ) {
+            if ( this.CharacterName == "" ) 
+                return console.warn("Enter a name");
 
-            }
+            if ( this.CharacterRace == "" )
+                return console.warn("Choose a race");
+
+            if ( this.CharacterClass == "" )
+                return console.warn("Choose a class");
+
+            if ( this.CharacterCampaign == "" )
+                return console.warn("Choose a campaign");
+
+            if ( this.CharacterScaling == "" )
+                return console.warn("Choose a scaling type");
+
+            if ( this.CharacterDifficulty == "" )
+                return console.warn("Choose a difficulty");
+
+            if ( this.Data.Characters[this.CharacterName] )
+                return console.warn("Character already exists");
+
+            // Create new character data
+            this.Data.Characters[this.CharacterName] = DefaultCharacterData;
+            this.Data.Characters[this.CharacterName].Name = this.CharacterName;
+            this.Data.Characters[this.CharacterName].Class = this.CharacterClass;
+            this.Data.Characters[this.CharacterName].Race = this.CharacterRace;
+            this.Data.Characters[this.CharacterName].Campaign = this.CharacterCampaign;
+            this.Data.Characters[this.CharacterName].Scaling = this.CharacterScaling;
+            this.Data.Characters[this.CharacterName].Difficulty = this.CharacterDifficulty;
+            this.Data.Characters[this.CharacterName].Level = 1;
+            this.Data.Characters[this.CharacterName].CurrentMap = "Willowvale";
+
+            localStorage.setItem("EvereignData", JSON.stringify(this.Data));
 
         }).setVisible(false);
 
@@ -416,7 +433,6 @@ export default class Menu extends Phaser.Scene {
 
         // Character List
         // Character Slots
-
         Y = this.scale.height * 0.2;
         this.CharacterList = this.add.group().setVisible(false);
         this.CharacterList.add(
@@ -461,35 +477,6 @@ export default class Menu extends Phaser.Scene {
         this.RebindInProgress = false;
         this.RebindTextObject?.setText(`${key}: ${value}`);
         this.RebindTextObject = null;
-    }
-
-    CreateCharacter (): boolean {
-
-        try {
-            if ( this.Data.Characters[this.CharacterName] ) {
-                console.warn("Character already exists");
-                return false;
-            }
-        }
-        catch (e) {
-            console.warn("Character already exists", e);
-            return false;
-        }
-
-        // Create new character data
-        this.Data.Characters[this.CharacterName] = DefaultCharacterData;
-        this.Data.Characters[this.CharacterName].Name = this.CharacterName;
-        this.Data.Characters[this.CharacterName].Class = this.CharacterClass;
-        this.Data.Characters[this.CharacterName].Race = this.CharacterRace;
-        this.Data.Characters[this.CharacterName].Campaign = this.CharacterCampaign;
-        this.Data.Characters[this.CharacterName].Scaling = this.CharacterScaling;
-        this.Data.Characters[this.CharacterName].Difficulty = this.CharacterDifficulty;
-        this.Data.Characters[this.CharacterName].Level = 1;
-        this.Data.Characters[this.CharacterName].CurrentMap = "Willowvale";
-
-        localStorage.setItem("EvereignData", JSON.stringify(this.Data));
-
-        return true;
     }
 
     StartGame ( character: string ) {

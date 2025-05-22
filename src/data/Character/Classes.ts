@@ -4,14 +4,38 @@ interface ClassData {
     starting_traits: string[]; // Starting traits
     starting_abilities: string[]; // Starting traits
     starting_items: string[]; // Starting traits
+    unique_building: string; // Unique building
 }
 
 
-const ClassData: any = [
+const ClassData: ClassData[] = [
+
+    {
+        name: "Operative",
+        description: `Operatives are highly specialised soldiers, equipped to deal with a variety of threats. 
+        Trained in the use of guns, explosives and advanced technology, they are capable of identifying threats from a 
+        safe distance, then taking them down up-close with chaos and speed. 
+        Unique building allows the operative to remotley call in a variety of offensive strikes.`,
+        starting_traits: [
+            "Shotgun Novice",
+            "Explosives Novice",
+            "Arco-Tech Novice",
+        ],
+        starting_abilities: [
+            "Incendiary Shot",
+            "Shrap Bomb",
+            "Observer Struct",
+        ],
+        starting_items: [
+            "shotgun_1_grandpa",
+        ],
+        unique_building: "Deepstrike Beacon",
+    },
 
     {
         name: "Evoker",
-        description: `Harness the power of the elements to unleash devastating spells.`,
+        description: `Harness the power of the elements to unleash devastating spells. 
+        Unique building allows the evoker to empower their spells with elemental energy by deconstructing magical items.`,
         starting_traits: [
             "Pyro Novice",
             "Cryo Novice",
@@ -25,6 +49,7 @@ const ClassData: any = [
             "evoker_robe_1",
             "evoker_hood_1"
         ],
+        unique_building: "Arcane Extractor"
     },
 
     {
@@ -41,22 +66,7 @@ const ClassData: any = [
             'great_hammer_bronze',
             'plate_armor_bronze',
         ],
-    },
-
-    {
-        name: "Operative",
-        description: `Skulk in the shadows and weaken enemies before landing killing blows.`,
-        starting_traits: [
-            "Skulker",
-        ],
-        starting_abilities: [
-            "Backstab",
-            "Smoke Bomb",
-        ],
-        starting_items: [
-            "dagger_bronze",
-            "leather_armor_bronze",
-        ],
+        unique_building: ""
     },
 
     {
@@ -74,6 +84,7 @@ const ClassData: any = [
             "shield_bronze",
             "mail_armor_bronze",
         ],
+        unique_building: ""
     },
 
     {
@@ -91,6 +102,7 @@ const ClassData: any = [
             "shield_bronze",
             "mail_armor_bronze",
         ],
+        unique_building: ""
     },
 
     {
@@ -108,6 +120,7 @@ const ClassData: any = [
             "shield_bronze",
             "mail_armor_bronze",
         ],
+        unique_building: ""
     },
 
     {
@@ -125,6 +138,7 @@ const ClassData: any = [
             "shield_bronze",
             "mail_armor_bronze",
         ],
+        unique_building: ""
     },
 
 ];
