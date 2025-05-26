@@ -25,7 +25,7 @@ export default class Pickup extends Phaser.Physics.Arcade.Sprite {
         }
         
         this.scene.physics.add.overlap(this, this.scene.PlayerCharacter, (pickup, PlayerCharacter) => {
-            this.scene.Inventory.AddItem(this.ItemID, this.ItemQuantity);
+            //this.scene.Inventory.AddItem(this.ItemID, this.ItemQuantity);
             this.scene.Pickups.remove(this, true, true);
         });
 

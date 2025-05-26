@@ -1,104 +1,209 @@
 import Game from "../../scenes/Game";
 import UI from "../../scenes/UI";
 import { GD } from "../../scenes/Game";
-import DisplayItemObject from "../DisplayItemObject";
+
+class ItemSlot extends Phaser.GameObjects.NineSlice {
+
+    public hasItem: boolean = false;
+    public Item: Phaser.GameObjects.Sprite;
+    public Quantity: number = 0;
+
+    public Label: Phaser.GameObjects.Text | null;
+    public QuantityText: Phaser.GameObjects.Text;
+
+    constructor ( scene: UI, x: number, y: number, label?: string ) {
+
+        super(scene, x, y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6);
+
+        // The slot itself
+        this.setVisible(false);
+        this.setDisplaySize(64, 64);
+        this.setOrigin(0, 0);
+        this.setInteractive({ dropZone: true });
+        this.scene.add.existing(this);
+
+        // Item sprite
+        this.Item = this.scene.add.sprite(this.getCenter().x, this.getCenter().y, "Kenney-UI", "buttonSquare_blue_pressed");
+        this.Item.setOrigin(0.5, 0.5);
+        this.Item.setVisible(false);
+        this.Item.setDisplaySize(32, 32);
+        this.Item.setInteractive({ draggable: true });
+
+        // Label for the slot
+        if ( label ) {
+            this.Label = this.scene.add.text(this.getBottomCenter().x, this.getBottomCenter().y + 5, label, {
+                fontFamily: "Augusta",
+                fontSize: 16,
+                align: "center"
+            }).setOrigin(0.5, 0).setVisible(false);
+        }
+
+        // Quantity Label
+        this.QuantityText = this.scene.add.text(this.getBottomRight().x - 5, this.getBottomRight().y - 5, "x0", {
+            fontFamily: "Augusta",
+            fontSize: 12 
+        })
+        .setOrigin(1, 1)
+        .setVisible(false);
+        this.scene.add.existing(this.QuantityText);
+
+        this.scene.input.on('dragstart', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite) => {
+            if ( gameObject !== this.Item || !this.hasItem ) return;
+            //this.quantity.setVisible(false);
+            //this.scene.Tooltip.Hide();
+        });
+
+        this.scene.input.on('drag', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dragX: number, dragY: number) => {
+            if ( gameObject !== this.Item || !this.hasItem ) return;
+            this.Item.x = dragX;
+            this.Item.y = dragY;
+        });
+
+        this.scene.input.on('dragenter', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
+            if ( slot !== this || !slot.hasItem ) return;
+            this.setTint(0x00ff00);
+        });
+    
+        this.scene.input.on('dragleave', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
+            slot.clearTint();
+        });
+
+        this.scene.input.on('drop', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
+            if ( gameObject !== this.Item || !this.hasItem ) return;
+            this.clearTint();
+            this.Item.x = slot.getCenter().x;
+            this.Item.y = slot.getCenter().y;
+        });
+
+        this.scene.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dropped: boolean) => {
+            if ( gameObject !== this.Item ) return;
+            if ( !dropped ) {
+                this.Item.x = this.getCenter().x;
+                this.Item.y = this.getCenter().y;
+            }
+        });
+
+    }
+
+    public UpdateItem (id: string, quantity: number) {
+        console.log(id);
+        console.log(quantity);
+    }
+
+    public Show () {
+        this.setVisible(true);
+        if ( this.hasItem ) this.Item.setVisible(true);
+        if ( this.Quantity > 0 ) this.QuantityText.setVisible(true);
+        if ( this.Label ) this.Label.setVisible(true);
+    }
+
+    public Hide () {
+        this.setVisible(false);
+        if ( this.hasItem ) this.Item.setVisible(false);
+        if ( this.Quantity > 0 ) this.QuantityText.setVisible(false);
+        if ( this.Label ) this.Label.setVisible(false);
+    }
+
+}
 
 export default class Inventory {
 
     public Game: Game;
     public UI: UI;
 
-    public Header: Phaser.GameObjects.Text;
     public CloseButton: Phaser.GameObjects.Image;
     public CloseButtonText: Phaser.GameObjects.Text;
 
-    public CurrentResourceCount: number = 0;
-    public MaxResources: number = 20;
-
-    public Items: DisplayItemObject[] = [];
-    public ItemSlots: Phaser.GameObjects.NineSlice[] = [];
-    public EquipmentSlots: Phaser.GameObjects.Image[] = [];
-    public EquipmentSlotsLabels: Phaser.GameObjects.Text[] = [];
+    public Items: ItemSlot[] = [];
 
     public InventoryBackground: Phaser.GameObjects.Rectangle;
+    public InventoryHeader: Phaser.GameObjects.Text;
+    public CurrentResourceCount: number = 0;
+    public MaxResources: number = 20;
+    
+
     public EquipmentBackground: Phaser.GameObjects.Rectangle;
+    public EquipmentHeader: Phaser.GameObjects.Text;
+
+    public QuickAccessBackground: Phaser.GameObjects.Rectangle;
+    public QuickAccessHeader: Phaser.GameObjects.Text;
 
     constructor ( game: Game, UI: UI ) {
 
         this.UI = UI;
         this.Game = game;
 
-        this.InventoryBackground = this.UI.add.rectangle ( game.cameras.main.width * 0.40, game.cameras.main.height / 2, 256, 400, 0x000000, 1)
+        // Inventory Section //
+        this.InventoryBackground = this.UI.add.rectangle ( game.cameras.main.width * 0.15, game.cameras.main.height / 2, 300, 400, 0x000000, 1)
         .setOrigin(0.5, 0.5)
         .setStrokeStyle(1, 0xffffff, 1)
         .setVisible(false);
 
-        let X = this.InventoryBackground.getTopLeft().x;
-        let Y = this.InventoryBackground.getTopLeft().y + 64;
-
-        for ( let i = 1; i < this.MaxResources + 1; i++ ) {
-            // Add 4 rectangles per row to represent inventory slots
-            let ItemSlot = this.UI.add.nineslice(X, Y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6)
-            .setDisplaySize(64, 64)
-            .setOrigin(0, 0)
-            .setVisible(false)
-            .setData("Index", i)
-            .setData("Item", null)
-            .setInteractive();
-            ItemSlot.input.dropZone = true;
-            this.ItemSlots.push(ItemSlot)
-            X += 64;
-
-            // Every 4 rows, move down 64 pixels and reset X
-            if ( i % 4 == 0 ) {
-                X = this.InventoryBackground.getTopLeft().x;
-                Y += 64;
-            }
-
-        }
-
-        this.EquipmentBackground = this.UI.add.rectangle ( this.InventoryBackground.getTopRight().x + 5, this.InventoryBackground.getTopRight().y, 256, 400, 0x000000, 1)
-        .setOrigin(0, 0)
-        .setStrokeStyle(1, 0xffffff, 1)
-        .setVisible(false);
-
-        X = this.EquipmentBackground.getTopLeft().x + 5;
-        Y = this.EquipmentBackground.getTopLeft().y + 5;
-
-        Object.keys(GD.Equipment).forEach( (slot) => {
-
-            let Slot = this.UI.add.image(X, Y, "panel-small")
-            .setDisplaySize(64, 64)
-            .setOrigin(0, 0)
-            .setData("Index", slot)
-            .setData("Item", null)
-            .setVisible(false)
-            .setInteractive();
-            Slot.input.dropZone = true;
-
-            let SlotText = this.UI.add.text(Slot.getCenter().x + 20, Slot.getCenter().y, slot, {
-                fontFamily: "Augusta",
-                fontSize: 16
-            })
-            .setOrigin(0, 0.5)
-            .setVisible(false);
-
-            this.EquipmentSlotsLabels.push(SlotText);
-            this.EquipmentSlots.push(Slot);
-            X = Slot.getBottomLeft().x;
-            Y = Slot.getBottomLeft().y + 5;
-
-        });
-
-        // Header
-        this.Header = this.UI.add.text( this.InventoryBackground.getTopLeft().x + 5, this.InventoryBackground.getTopLeft().y + 12, `Inventory (${this.Items.length}/${this.MaxResources})`, { 
+        this.InventoryHeader = this.UI.add.text( this.InventoryBackground.getTopLeft().x + 5, this.InventoryBackground.getTopLeft().y + 12, `Inventory (${this.CurrentResourceCount}/${this.MaxResources})`, { 
             fontFamily: "Augusta",
             fontSize: 24 
         })
         .setOrigin(0, 0.5)
         .setVisible(false);
 
-        this.CloseButton = this.UI.add.image(this.EquipmentBackground.getTopRight().x, this.EquipmentBackground.getTopRight().y, "panel-small")
+        let X = this.InventoryBackground.getTopLeft().x;
+        let Y = this.InventoryBackground.getTopLeft().y + 64;
+
+        // Add 4 rectangles per row to represent inventory slots
+        for ( let i = 1; i < this.MaxResources + 1; i++ ) {
+            let Slot = new ItemSlot(this.UI, X, Y);
+            this.Items.push(Slot);
+            X += 64;
+            // Every 4 rows, move down 64 pixels and reset X
+            if ( i % 4 == 0 ) {
+                X = this.InventoryBackground.getTopLeft().x;
+                Y += 64;
+            }
+        }
+
+        // Equipment Section //
+        this.EquipmentBackground = this.UI.add.rectangle ( this.InventoryBackground.getTopRight().x + 5, this.InventoryBackground.getTopRight().y, 300, 400, 0x000000, 1)
+        .setOrigin(0, 0)
+        .setStrokeStyle(1, 0xffffff, 1)
+        .setVisible(false);
+
+        this.EquipmentHeader = this.UI.add.text( this.EquipmentBackground.getTopLeft().x + 5, this.EquipmentBackground.getTopLeft().y + 12, `Equipment`, { 
+            fontFamily: "Augusta",
+            fontSize: 24 
+        })
+        .setOrigin(0, 0.5)
+        .setVisible(false);
+
+        X = this.EquipmentBackground.getTopLeft().x + 10;
+        Y = this.EquipmentBackground.getTopLeft().y + 32;
+
+        let I = 1;
+        Object.keys(GD.Equipment).forEach( (slot) => {
+            let Slot = new ItemSlot(this.UI, X, Y, slot);
+            this.Items.push(Slot);
+            X += 96;
+            if ( I % 2 == 0 ) {
+                X = this.EquipmentBackground.getTopLeft().x + 10;
+                Y += 96;
+            }
+            I++;
+        });
+
+        // Quick Access Section //
+        this.QuickAccessBackground = this.UI.add.rectangle ( this.EquipmentBackground.getTopRight().x + 5, this.EquipmentBackground.getTopRight().y, 300, 400, 0x000000, 1)
+        .setOrigin(0, 0)
+        .setStrokeStyle(1, 0xffffff, 1)
+        .setVisible(false);
+
+        this.QuickAccessHeader = this.UI.add.text( this.QuickAccessBackground.getTopLeft().x + 5, this.QuickAccessBackground.getTopLeft().y + 12, `Quick Access`, { 
+            fontFamily: "Augusta",
+            fontSize: 24 
+        })
+        .setOrigin(0, 0.5)
+        .setVisible(false);
+
+        // Close Button //
+        this.CloseButton = this.UI.add.image(this.QuickAccessBackground.getTopRight().x, this.QuickAccessBackground.getTopRight().y, "panel-small")
         .setOrigin(0.5, 0.5)
         .setVisible(false)
         .setInteractive()
@@ -114,13 +219,13 @@ export default class Inventory {
         .setDepth(11);
 
         // Restore inventory from save data
-        GD.Inventory.forEach( (item: { ID: string, Quantity: number }) => {
-            this.AddItem(item.ID, item.Quantity, false);
-        });
+        //GD.Inventory.forEach( (item: { ID: string, Quantity: number }) => {
+            //this.AddItem(item.ID, item.Quantity, false);
+        //});
 
     }
 
-    AddItem ( ID: string, quantity: number, playSound: boolean = true ) {
+    /*AddItem ( ID: string, quantity: number, playSound: boolean = true ) {
 
         const ItemData = this.Game.DataManager.ItemData.find((item) => item.ID == ID);
 
@@ -134,7 +239,7 @@ export default class Inventory {
             // If the item is not stackable, create a new object to display it
             if ( ItemData.Stackable == false ) {
                 // Item not stackable, creating new object
-                let Slot = this.ItemSlots.find((slot) => slot.getData("Item") == null);
+                let Slot = this.Items.find((slot) => slot.getData("Item") == null);
                 let SlotItem = this.CreateNewInventoryObject(Slot, ItemData, 1);
                 this.Items.push(SlotItem);
             } else if ( ItemData.Stackable == true ) {
@@ -172,9 +277,9 @@ export default class Inventory {
             this.Game.sound.play(ItemData.Sound);
 
         this.Header.setText(`Inventory (${this.Items.length}/${this.MaxResources})`);
-    }
+    }*/
 
-    public RemoveItem (ID: string, quantity: number) {
+    /*public RemoveItem (ID: string, quantity: number) {
         console.log(`Removing ${quantity} of item ID ${ID}`);
         for ( let i = 0; i < quantity; i++ ) {
             this.Items.forEach( (item) => {
@@ -198,107 +303,32 @@ export default class Inventory {
                 }
             });
         }
-    }
+    }*/
 
-    private CreateNewInventoryObject ( Slot: Phaser.GameObjects.NineSlice, ItemData: ItemData, Quantity: number ): DisplayItemObject {
-
-        let SlotItem = new DisplayItemObject(this.UI, Slot.getCenter().x, Slot.getCenter().y, ItemData.Sprite.split("-")[0], ItemData.Sprite.split("-")[1], ItemData.Stackable)
-        .setDisplaySize(64, 64)
-        .setOrigin(0.5, 0.5)
-        .setVisible(this.InventoryBackground.visible);
-
-        if ( ItemData.Stackable == true )
-            SlotItem.quantity.setVisible(this.InventoryBackground.visible);
-        
-        // Assign the slot to the item
-        SlotItem.CurrentSlot = Slot;
-
-        // Assign the item to the slot
-        Slot.setData("Item", SlotItem);
-
-        SlotItem.setData({
-            ItemID: ItemData.ID,
-            ItemQuantity: Quantity
-        })
-        .setInteractive()
-        .on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            if (pointer.rightButtonDown())
-                console.log("Attempt to use item ID " + SlotItem.getData("ItemID"));
-        })
-        .on('pointerover', ( pointer: Phaser.Input.Pointer ) => {
-            this.UI.Tooltip.setPosition(pointer.x + 64, pointer.y + 5);
-            this.UI.Tooltip.Show("Item", SlotItem.getData("ItemID"));
-        })
-        .on('pointermove', ( pointer: Phaser.Input.Pointer ) => {
-            this.UI.Tooltip.Move(pointer.x + 64, pointer.y + 5);
-        }).on('pointerout', () => {
-            this.UI.Tooltip.Hide();
-        });
-
-        SlotItem.quantity.setText(`x${Quantity.toString()}`);
-
-        return SlotItem;
-
-    }
-
-    /** When the inventory is shown, move all items into a list */
     Show () {
-
         this.InventoryBackground.setVisible(true);
-
-        this.ItemSlots.forEach( (slot) => {
-            slot.setVisible(true);
-        });
-
-        this.Items.forEach( (item) => {
-            item.setVisible(true);
-            item.quantity.setVisible(true);
-        });
-
-        this.EquipmentSlots.forEach( (slot) => {
-            slot.setVisible(true);
-        });
-
-        this.EquipmentSlotsLabels.forEach( (label) => {
-            label.setVisible(true);
-        });
-
         this.EquipmentBackground.setVisible(true);
-
-        this.Header.setVisible(true);
+        this.QuickAccessBackground.setVisible(true);
+        this.Items.forEach( (slot) => slot.Show());
+        this.InventoryHeader.setVisible(true);
+        this.EquipmentHeader.setVisible(true);
+        this.QuickAccessHeader.setVisible(true);
         this.CloseButton.setVisible(true);
         this.CloseButtonText.setVisible(true);
 
     }
 
     Hide () {
-
         this.InventoryBackground.setVisible(false);
-
-        this.ItemSlots.forEach( (slot) => {
-            slot.setVisible(false);
-        });
-
-        this.Items.forEach( (item) => {
-            item.setVisible(false);
-            item.quantity.setVisible(false);
-        });
-
-        this.EquipmentSlots.forEach( (slot) => {
-            slot.setVisible(false);
-        });
-
-        this.EquipmentSlotsLabels.forEach( (label) => {
-            label.setVisible(false);
-        });
-
         this.EquipmentBackground.setVisible(false);
-
-        this.Header.setVisible(false);
+        this.QuickAccessBackground.setVisible(false);
+        this.Items.forEach( (slot) => slot.Hide());
+        this.InventoryHeader.setVisible(false);
+        this.EquipmentHeader.setVisible(false);
+        this.QuickAccessHeader.setVisible(false);
         this.CloseButton.setVisible(false);
         this.CloseButtonText.setVisible(false);
         this.UI.ActivePanel = null;
-
     }
 
 }

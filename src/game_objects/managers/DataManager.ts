@@ -59,9 +59,9 @@ export default class DataManager {
         SaveData.Inventory = [];
         SaveData.CurrentHealth = this.scene.PlayerCharacter.Health;
         SaveData.CurrentMana = this.scene.PlayerCharacter.Mana;
-        this.scene.Inventory.Items.forEach( (item: DisplayItemObject) => {
-            SaveData.Inventory.push({ ID: item.getData('ItemID'), Quantity: item.getData('ItemQuantity') });
-        });
+        //this.scene.Inventory.Items.forEach( (item: DisplayItemObject) => {
+            //SaveData.Inventory.push({ ID: item.getData('ItemID'), Quantity: item.getData('ItemQuantity') });
+        //});
         SaveData.Maps[SaveData.CurrentMap].Buildings.forEach( (building) => {
             if ( building.Units !== undefined ) {
                 building.Units.forEach( (unit) => { unit.Alive = 0 });

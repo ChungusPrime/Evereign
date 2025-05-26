@@ -236,14 +236,14 @@ export default class TradeWindow {
 
     BuyItem ( id: string, quantity: number, price: number ) {
         console.log(`Buying ItemID: ${id}, Quantity: ${quantity} from BuildingID: ${this.CurrentShopID} for ${price} gold each`);
-        this.scene.Game.Inventory.AddItem(id, quantity); // Add the item to the player's inventory
-        this.scene.Game.Inventory.RemoveItem("gold", price * quantity); // Remove the gold from the player's inventory
+        //this.scene.Game.Inventory.AddItem(id, quantity); // Add the item to the player's inventory
+        //this.scene.Game.Inventory.RemoveItem("gold", price * quantity); // Remove the gold from the player's inventory
     }
     
     SellItem ( id: string, quantity: number, price: number ) {
         console.log(`Selling ItemID: ${id}, Quantity: ${quantity} to BuildingID: ${this.CurrentShopID} for ${price} gold each`);
-        this.scene.Game.Inventory.RemoveItem(id, quantity); // Remove the item from the player's inventory
-        this.scene.Game.Inventory.AddItem("gold", price * quantity); // Add the gold to the player's inventory
+        //this.scene.Game.Inventory.RemoveItem(id, quantity); // Remove the item from the player's inventory
+        //this.scene.Game.Inventory.AddItem("gold", price * quantity); // Add the gold to the player's inventory
     }
 
 }

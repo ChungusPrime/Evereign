@@ -283,14 +283,19 @@ interface ItemData {
     Name: string,
     Sprite: string,
     Desc: string,
+    Craftable?: boolean;
     Components?: any;
     Slot?: string;
     Properties?: any;
-    Category?: string;
     Stackable: boolean;
     StackSize?: number;
     Sound?: string;
+    Moddable?: boolean;
+    Category?: string;
     Type?: string;
+    ModdableParts?: string[];
+    DamageModifier?: number;
+    Materials?: { ID: string, Amount: number }[];
 }
 
 interface CurrencyData {
@@ -312,9 +317,6 @@ interface Equipment {
     Ring_1: EquipmentSlot;
     Ring_2: EquipmentSlot;
     Neck: EquipmentSlot;
-    Item_1: EquipmentSlot;
-    Item_2: EquipmentSlot;
-    Item_3: EquipmentSlot;
 }
 
 interface Skill {

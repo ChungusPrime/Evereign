@@ -23,7 +23,7 @@ export default class CharacterPanel {
 
         this.Group.clear(true, true);
 
-        this.Background = this.scene.add.rectangle(5, this.scene.cameras.main.height - 5, 340, 140, 0x000000, 0).setOrigin(0, 1);
+        this.Background = this.scene.add.rectangle(3, this.scene.cameras.main.height - 3, 720, 70, 0x000000, 0.2).setOrigin(0, 1);
 
         this.LifeBG = this.scene.add.rectangle(this.Background.getTopLeft().x, this.Background.getTopLeft().y + 3, 340, 30, 0x000000, 1).setOrigin(0, 0);
         this.LifeBar = this.scene.add.image(this.LifeBG.getTopLeft().x, this.LifeBG.getTopLeft().y, "red-bar").setDisplaySize(this.LifeBG.width, 30).setOrigin(0, 0);

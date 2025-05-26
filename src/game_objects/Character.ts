@@ -146,7 +146,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
             GD.UnlockedBuildings.push("Town Centre");
         }
 
-        this.scene.Inventory.RemoveItem(item, 1);
+        //this.scene.Inventory.RemoveItem(item, 1);
 
     }
 

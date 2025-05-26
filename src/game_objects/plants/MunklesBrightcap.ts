@@ -1,10 +1,39 @@
 import Game from "../../scenes/Game";
 
-export default class MunklesBrightcap extends Phaser.GameObjects.Sprite {
+export default class MunklesBrightcap extends Phaser.Physics.Arcade.Sprite {
 
-    constructor ( scene: Game, x: number, y: number) {
-        super( scene, x, y, "Buildings", "dwelling_1");
+    public Name = "Munkles Brightcap";
+    public Description = "A rare mushroom known for its luminescent properties, often found in dark caves.";
+
+    public Category = "Plants";
+    public IsObstacle = true;
+    public IsInteractable = false;
+
+    // Harvesting properties
+    public IsHarvestable = true;
+    public HarvestAmount = 1;
+    public HarvestItem = "munkles_brightcap";
+    public HarvestTime = 3000;
+    public HarvestSound = "harvesting";
+    public HarvestRequiresToolType = "Botany Kit";
+    public HarvestExperienceType = "Botany";
+    public HarvestExperienceValue = 5;
+
+    constructor ( scene: Game, x: number, y: number, width: number = 32, height: number = 32 ) {
+        super( scene, x, y, "RA_Cavern_Full", 902);
+        scene.physics.add.existing(this);
         scene.add.existing(this);
+        this.setData('type', "Munkle's Brightcap")
+        .setDisplaySize(width, height)
+        this.setOrigin(0, 1)
+        .setPipeline("Light2D")
+        .setDepth(100)
+        .setInteractive()
+        .on('pointerdown', () => {
+            console.log(this);
+            scene.ActivityManager.StartActivity(this);
+        })
+        .setImmovable(true);
     }
 
 }

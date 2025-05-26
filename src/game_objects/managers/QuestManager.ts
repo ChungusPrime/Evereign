@@ -112,7 +112,7 @@ export default class QuestManager {
 
         // Add rewards to player inventory
         QuestData.Rewards.forEach( (reward) => {
-            this.Game.Inventory.AddItem(reward, 1, false);
+            //this.Game.Inventory.AddItem(reward, 1, false);
         });
 
         // Set quest to completed

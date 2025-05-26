@@ -16,8 +16,26 @@ const GameData: GameData = {
 
     Traits: [],
     Abilities: [],
-
     Inventory: [],
+
+    Equipment: {
+        Head: null,
+        Chest: null,
+        Hands: null,
+        Legs: null,
+        Feet: null,
+        Ring_1: null,
+        Ring_2: null,
+        Neck: null
+    },
+
+    QuickSlots: {
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null,
+    },
     
     Campaign: "The Twilight Accord",
 
@@ -55,24 +73,8 @@ const GameData: GameData = {
     PlayerTowns: {},
 
     DaytimeHour: 9,
-
     DaytimeMinute: 0,
-
     DaytimeDelta: 0,
-
-    Equipment: {
-        Head: null,
-        Chest: null,
-        Hands: null,
-        Legs: null,
-        Feet: null,
-        Ring_1: null,
-        Ring_2: null,
-        Neck: null,
-        Item_1: null,
-        Item_2: null,
-        Item_3: null
-    },
 
     Skills: {
         Fishing: {

@@ -3,7 +3,7 @@ interface ClassData {
     description: string; // Description of the feat
     starting_traits: string[]; // Starting traits
     starting_abilities: string[]; // Starting traits
-    starting_items: string[]; // Starting traits
+    starting_items: { ID: string; Quantity: number }[]; // Starting items, can be an array of objects or strings
     unique_building: string; // Unique building
 }
 
@@ -17,19 +17,23 @@ const ClassData: ClassData[] = [
         safe distance, then taking them down up-close with chaos and speed. 
         Unique building allows the operative to remotley call in a variety of offensive strikes.`,
         starting_traits: [
-            "Shotgun Novice",
-            "Explosives Novice",
-            "Arco-Tech Novice",
+            "shotgun_novice",
+            "explosive_novice",
+            "archo_tech_novice",
         ],
         starting_abilities: [
-            "Incendiary Shot",
-            "Shrap Bomb",
-            "Observer Struct",
+            "incendiary_shot",
+            "shrap_bomb",
+            "observer_struct",
         ],
         starting_items: [
-            "shotgun_1_grandpa",
+            { ID: "grandpa_shotgun", Quantity: 1 },
+            { ID: "marigold_brew", Quantity: 5 },
+            { ID: "lead_shot", Quantity: 100 },
+            { ID: "operative_armor", Quantity: 1 },
+            { ID: "operative_helmet", Quantity: 1 }
         ],
-        unique_building: "Deepstrike Beacon",
+        unique_building: "Arco-Tech Support Relay",
     },
 
     {
@@ -45,9 +49,9 @@ const ClassData: ClassData[] = [
             'Frost Field',
         ],
         starting_items: [
-            "staff_evoker_1",
-            "evoker_robe_1",
-            "evoker_hood_1"
+            { ID: "staff_evoker_1", Quantity: 1 },
+            { ID: "evoker_robe_1", Quantity: 1 },
+            { ID: "evoker_hood_1", Quantity: 1 }
         ],
         unique_building: "Arcane Extractor"
     },
@@ -63,8 +67,8 @@ const ClassData: ClassData[] = [
             'Shield of the Blessed'
         ],
         starting_items: [
-            'great_hammer_bronze',
-            'plate_armor_bronze',
+            { ID: "great_hammer_bronze", Quantity: 1 },
+            { ID: "plate_armor_bronze", Quantity: 1 }
         ],
         unique_building: ""
     },
@@ -80,9 +84,9 @@ const ClassData: ClassData[] = [
             "Charge",
         ],
         starting_items: [
-            "sword_bronze",
-            "shield_bronze",
-            "mail_armor_bronze",
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "mail_armor_bronze", Quantity: 1 }
         ],
         unique_building: ""
     },
@@ -98,9 +102,9 @@ const ClassData: ClassData[] = [
             "Charge",
         ],
         starting_items: [
-            "sword_bronze",
-            "shield_bronze",
-            "mail_armor_bronze",
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "mail_armor_bronze", Quantity: 1 }
         ],
         unique_building: ""
     },
@@ -116,9 +120,9 @@ const ClassData: ClassData[] = [
             "Charge",
         ],
         starting_items: [
-            "sword_bronze",
-            "shield_bronze",
-            "mail_armor_bronze",
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "mail_armor_bronze", Quantity: 1 }
         ],
         unique_building: ""
     },
@@ -134,9 +138,9 @@ const ClassData: ClassData[] = [
             "Charge",
         ],
         starting_items: [
-            "sword_bronze",
-            "shield_bronze",
-            "mail_armor_bronze",
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "sword_bronze", Quantity: 1 },
+            { ID: "mail_armor_bronze", Quantity: 1 }
         ],
         unique_building: ""
     },

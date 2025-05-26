@@ -1,30 +1,13 @@
-class TextButton extends Phaser.GameObjects.Text {
-    public scene: Menu;
-    constructor ( scene: Menu, x: number, y: number, text: string, callback: Function, fontsize: number = 32 ) {
-        super(scene, x, y, text, { fontSize: fontsize, align: "center", fontFamily: "Augusta" });
-        this.setOrigin(0.5);
-        this.scene = scene;
-        this.setInteractive();
-        this.setTint(0x000000);
-        this.on('pointerover', () => {
-            this.setTint(0xffffff);
-        }).on('pointerout', () => {
-            this.setTint(0x000000);
-        }).on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            if ( pointer.leftButtonDown() ) {
-                callback();
-                this.scene.sound.play('click');
-            }
-        });
-        this.scene.add.existing(this);
-    }
-}
-
 import Cursor from '../images/click_cursor.png';
+import TextButton from '../game_objects/UI_TextButton';
+
+// Default New Game Data
 import GameData from '../data/DefaultGameData';
 import DefaultCharacterData from '../data/DefaultCharacterData';
+
+// Game Data
 import RaceData from '../data/Character/Races';
-import ClassData from '../data/ClassData';
+import ClassData from '../data/Character/Classes';
 
 export default class Menu extends Phaser.Scene {
 
@@ -34,10 +17,6 @@ export default class Menu extends Phaser.Scene {
     public QuitGameButton!: TextButton;
     public OptionsText!: TextButton;
     public CreditsButton!: TextButton;
-    public SaveSlotGroup!: Phaser.GameObjects.Group;
-    public SaveSlotOne!: TextButton;
-    public SaveSlotTwo!: TextButton;
-    public SaveSlotThree!: TextButton;
     public ControlsGroup!: Phaser.GameObjects.Group;
     
     public CurrentMenu: string = "";
@@ -65,14 +44,15 @@ export default class Menu extends Phaser.Scene {
 
     public createNewCharacterButton!: TextButton;
     public loadExistingCharacterButton!: TextButton;
-    CharacterCreationGroup: Phaser.GameObjects.Group;
-    characterRaceSelect: Phaser.GameObjects.DOMElement;
-    characterClassSelect: Phaser.GameObjects.DOMElement;
-    campaignSelect: Phaser.GameObjects.DOMElement;
 
-    scalingSelect: any;
-    CharacterDifficulty: any;
-    difficultySelect: Phaser.GameObjects.DOMElement;
+    public CharacterCreationGroup: Phaser.GameObjects.Group;
+
+    public characterRaceSelect: Phaser.GameObjects.DOMElement;
+    public characterClassSelect: Phaser.GameObjects.DOMElement;
+    public campaignSelect: Phaser.GameObjects.DOMElement;
+    public scalingSelect: any;
+    public CharacterDifficulty: any;
+    public difficultySelect: Phaser.GameObjects.DOMElement;
 
     constructor () {
         super({ key: "Menu" });
@@ -383,36 +363,37 @@ export default class Menu extends Phaser.Scene {
 
         Y = Y + 45;
 
-        // Info panel background
-        let infobg = this.add.nineslice(this.scale.width * 0.69, this.scale.height * 0.45, "Kenney-UI", "panel_beigeLight", this.scale.width * 0.3, this.scale.height * 0.55, 25, 25, 25, 25).setOrigin(0.5).setVisible(false);
+        let CreateNewCharButton = new TextButton(this, this.scale.width * 0.32, this.scale.height * 0.69, "Confirm Character", () => {
 
-        this.CharacterCreationGroup.add(infobg);
-
-        let CreateNewCharButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.75, "Confirm Character", () => {
+            ErrorText.setVisible(false);
 
             console.warn("Attempting to create new character", this.CharacterName, this.CharacterRace, this.CharacterClass, this.CharacterCampaign, this.CharacterScaling, this.CharacterDifficulty);
-            return;
 
-            if ( this.CharacterName == "" ) 
-                return console.warn("Enter a name");
+            if ( this.CharacterName == "" )
+                return ErrorText.setText("Enter a character name").setVisible(true);
 
             if ( this.CharacterRace == "" )
-                return console.warn("Choose a race");
+                return ErrorText.setText("Choose a Race").setVisible(true);
 
             if ( this.CharacterClass == "" )
-                return console.warn("Choose a class");
+                return ErrorText.setText("Choose a Class").setVisible(true);
 
             if ( this.CharacterCampaign == "" )
-                return console.warn("Choose a campaign");
+                return ErrorText.setText("Choose a Campaign").setVisible(true);
 
             if ( this.CharacterScaling == "" )
-                return console.warn("Choose a scaling type");
+                return ErrorText.setText("Choose a scaling type").setVisible(true);
 
             if ( this.CharacterDifficulty == "" )
-                return console.warn("Choose a difficulty");
+                return ErrorText.setText("Choose a difficulty").setVisible(true);
 
             if ( this.Data.Characters[this.CharacterName] )
-                return console.warn("Character already exists");
+                return ErrorText.setText("Character name already exists").setVisible(true);
+
+            // Get data for chosen character class
+            let ChosenClassData = ClassData.find( (c) => c.name == this.CharacterClass );
+            if ( !ChosenClassData )
+                return ErrorText.setText("Invalid class selected").setVisible(true);
 
             // Create new character data
             this.Data.Characters[this.CharacterName] = DefaultCharacterData;
@@ -424,12 +405,36 @@ export default class Menu extends Phaser.Scene {
             this.Data.Characters[this.CharacterName].Difficulty = this.CharacterDifficulty;
             this.Data.Characters[this.CharacterName].Level = 1;
             this.Data.Characters[this.CharacterName].CurrentMap = "Willowvale";
+            this.Data.Characters[this.CharacterName].X = 6333;
+            this.Data.Characters[this.CharacterName].Y = 5692;
+
+
+
+            // Add starting items from chosen class to character inventory
+            ChosenClassData.starting_items.forEach( (item) => this.Data.Characters[this.CharacterName].Inventory.push({ ID: item.ID, Quantity: item.Quantity }));
+
+            // Add starting abilities from chosen class to character abilities
+            ChosenClassData.starting_abilities.forEach( (ability) => this.Data.Characters[this.CharacterName].Abilities.push({ ID: ability, Tier: 1 }));
+
+            // Add starting traits from chosen class to character traits
+            ChosenClassData.starting_traits.forEach( (trait) => this.Data.Characters[this.CharacterName].Traits.push({ ID: trait, Tier: 1 }));
 
             localStorage.setItem("EvereignData", JSON.stringify(this.Data));
 
         }).setVisible(false);
 
         this.CharacterCreationGroup.add(CreateNewCharButton);
+
+        // Character Validation Errors Text
+        let ErrorText = this.add.text(this.scale.width * 0.32, this.scale.height * 0.75, "", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#cf200c" }).setOrigin(0.5).setVisible(false);
+        this.CharacterCreationGroup.add(ErrorText);
+
+
+        // Info panel background
+        let infobg = this.add.nineslice(this.scale.width * 0.69, this.scale.height * 0.45, "Kenney-UI", "panel_beigeLight", this.scale.width * 0.3, this.scale.height * 0.55, 25, 25, 25, 25).setOrigin(0.5).setVisible(false);
+
+        this.CharacterCreationGroup.add(infobg);
+
 
         // Character List
         // Character Slots
@@ -439,12 +444,14 @@ export default class Menu extends Phaser.Scene {
             this.add.text(this.scale.width * 0.32, Y, "Characters", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
         );
 
+        let CharacterListY = this.scale.height * 0.35;
         Object.keys(this.Data.Characters).forEach(element => {
-            let Data = this.Data.Characters[element];
-            let CharacterButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, Data.Name, () => {
-                this.StartGame(Data.Name);
+            let Character = this.Data.Characters[element];
+            let CharacterButton = new TextButton(this, this.scale.width * 0.69, CharacterListY, Character.Name, () => {
+                this.StartGame(Character.Name);
             }).setVisible(false);
             this.CharacterList.add(CharacterButton);
+            CharacterListY += CharacterButton.height + 10;
         });
 
         this.BackButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.8, "Back", () => {

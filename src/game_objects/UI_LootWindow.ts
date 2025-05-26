@@ -150,7 +150,7 @@ export default class LootWindow {
         console.log(`Looted: ${Amount}x ${ItemID} from Chest: ${ChestID}`);
         this.scene.Game.DataManager.GetChestLoot(ChestID).forEach( ( item: LootItem, index: number ) => {
             if ( item.ItemID == ItemID ) {
-                this.scene.Game.Inventory.AddItem(ItemID, Amount);
+                //this.scene.Game.Inventory.AddItem(ItemID, Amount);
                 item.Amount -= Amount;
                 DisplayObject.ItemText.setText(`${item.Amount}x ${DisplayObject.ItemName}`);
                 if ( item.Amount == 0 ) {

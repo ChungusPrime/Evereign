@@ -36,8 +36,6 @@ export default class Flower extends Phaser.Physics.Arcade.Sprite {
         })
         .setImmovable(true);
 
-
-
         return this;
     }
 }

@@ -6427,7 +6427,7 @@
          "color":"#ff557f",
          "draworder":"topdown",
          "id":20,
-         "name":"Flowers",
+         "name":"Plants",
          "objects":[
                 {
                  "gid":1076,
@@ -7601,7 +7601,7 @@
          "y":0
         }],
  "nextlayerid":34,
- "nextobjectid":831,
+ "nextobjectid":836,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

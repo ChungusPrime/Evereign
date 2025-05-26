@@ -6,15 +6,22 @@ interface GameData {
     Name: string;
     Level: number;
     Race: string;
-    Abilities: string[];
+    Abilities: { ID: string; Tier: number }[];
+    Traits: { ID: string; Tier: number }[];
     Scaling: string;
     Difficulty: string;
-    Traits: string[];
     Class: string;
     Campaign: string;
     CurrentHealth: number;
     CurrentMana: number;
     MetNPCs: string[];
+    QuickSlots: {
+        1: string | null;
+        2: string | null;
+        3: string | null;
+        4: string | null;
+        5: string | null;
+    };
     Quests: {
         ID: string;
         ReadyToHandIn: boolean;

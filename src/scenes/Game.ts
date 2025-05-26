@@ -25,6 +25,10 @@ import RespawnZone from '../game_objects/Zones/Respawn';
 import Transition from '../game_objects/Zones/Transition';
 import TriggerZone from '../game_objects/Zones/TriggerZone';
 import FishingZone from '../game_objects/Zones/FishingZone';
+import OakTree from '../game_objects/plants/OakTree';
+import Marigold from '../game_objects/plants/Marigold';
+import Bloomberry from '../game_objects/plants/Bloomberry';
+import MunklesBrightcap from '../game_objects/plants/MunklesBrightcap';
 
 class PlayerRect extends Rectangle {};
 
@@ -83,7 +87,7 @@ export default class Game extends Phaser.Scene {
     public Trees: Phaser.GameObjects.Group;
     public Nodes: Phaser.GameObjects.Group;
     public Chests: Phaser.GameObjects.Group;
-    public Flowers: Phaser.GameObjects.Group;
+    public Plants: Phaser.GameObjects.Group;
     public Pickups: Phaser.GameObjects.Group;
     public Enemies: Phaser.GameObjects.Group;
     public Buildings: Phaser.GameObjects.Group;
@@ -99,7 +103,6 @@ export default class Game extends Phaser.Scene {
         this.DataManager = new DataManager(this);
         GD = this.DataManager.CharacterData;
         console.log(GD);
-        return;
     }
 
     create () {
@@ -116,7 +119,7 @@ export default class Game extends Phaser.Scene {
         this.Trees = this.add.group([]);
         this.Nodes = this.add.group([]);
         this.Chests = this.add.group([]);
-        this.Flowers = this.add.group([]);
+        this.Plants = this.add.group([]);
         this.Zones = this.add.group([]);
         this.Obstacles = this.add.group([]);
         this.Switches = this.add.group([]);
@@ -141,6 +144,7 @@ export default class Game extends Phaser.Scene {
         this.input.on( "pointermove", ( pointer: Phaser.Input.Pointer ) => {
             this.mouseX = pointer.worldX;
             this.mouseY = pointer.worldY;
+            if ( !this.BuildingHelper.BuildingPlacementMode ) return;
             this.BuildingHelper.CheckIfPlacementValid();
         });
 
@@ -250,7 +254,7 @@ export default class Game extends Phaser.Scene {
         this.Trees.clear(true, true);
         this.Nodes.clear(true, true);
         this.Chests.clear(true, true);
-        this.Flowers.clear(true, true);
+        this.Plants.clear(true, true);
         this.Zones.clear(true, true);
         this.Enemies.clear(true, true);
         this.Pickups.clear(true, true);
@@ -268,15 +272,15 @@ export default class Game extends Phaser.Scene {
         
         this.Buildings.clear(true, true);
         
-        if ( this.Map !== undefined ) {
+        if ( this.Map !== undefined )
             this.Map.destroy();
-        }
         
         // Start building new map
         let Map = this.make.tilemap({
             key: GD.CurrentMap
         });
-        
+
+        console.log(Map);
         
         // Load Tilesets
         let Tilesets: Phaser.Tilemaps.Tileset[] = [];
@@ -320,11 +324,33 @@ export default class Game extends Phaser.Scene {
             if ( layer.name == "Mining Nodes" )
                 layer.objects.forEach( (node) => this.Nodes.add(new MiningNode(this, node.x, node.y, node.width, node.height, node.type)) );
             
-            if ( layer.name == "Trees" )
-                layer.objects.forEach( (tree) => this.Trees.add(new Tree(this, tree.x, tree.y, tree.width, tree.height, tree.type)) );
-            
-            if ( layer.name == "Flowers" ) 
-                layer.objects.forEach( (flower) => this.Flowers.add(new Flower(this, flower.x, flower.y, flower.type)) );
+            if ( layer.name == "Trees" ) {
+                layer.objects.forEach( (tree) => {
+                    switch (tree.type) {
+                        case "Oak Tree":
+                            this.Trees.add(new OakTree(this, tree.x, tree.y, tree.width, tree.height));
+                            break;
+                        default: break;
+                    }
+                });
+            }
+                
+            if ( layer.name == "Plants" ) {
+                    layer.objects.forEach( (plant) => {
+                    switch (plant.type) {
+                        case "Marigold":
+                            this.Trees.add(new Marigold(this, plant.x, plant.y, plant.width, plant.height));
+                            break;
+                        case "Bloomberry":
+                            this.Trees.add(new Bloomberry(this, plant.x, plant.y, plant.width, plant.height));
+                            break;
+                        case "Munkle's Brightcap":
+                            this.Trees.add(new MunklesBrightcap(this, plant.x, plant.y, plant.width, plant.height));
+                            break;
+                        default: break;
+                    }
+                });
+            }
             
             if ( layer.name == "Chests" )
                 layer.objects.forEach( (chest) => this.Chests.add(new Chest( this, chest.x, chest.y, chest.id )) );
@@ -351,6 +377,7 @@ export default class Game extends Phaser.Scene {
         
         // Set up collisions
         this.physics.world.setBounds(0, 0, Map.widthInPixels, Map.heightInPixels);
+        
         // Player
         this.PlayerCollisionLayerCollider = this.physics.add.collider(this.PlayerCharacter, this.CollisionLayer);
         this.physics.add.collider(this.PlayerCharacter, this.Buildings);

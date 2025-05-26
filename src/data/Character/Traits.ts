@@ -5,11 +5,33 @@ abilities or grant them new ones.
 */
 
 interface Trait {
+    id?: string; // Optional ID for the trait, useful for specific components
     name: string; // Name of the feat
     description: string; // Description of the feat
 }
 
 const TraitData: Trait[] = [
+
+    // Shotguns
+    {
+        id: "shotgun_novice",
+        name: "Shotgun Novice",
+        description: `Basic training on how to use Shotguns.`,
+    },
+
+    // Explosives
+    {
+        id: "explosive_novice",
+        name: "Explosive Novice",
+        description: `Basic training on the use of improvised explosives.`,
+    },
+
+    // Arco-Tech
+    {
+        id: "archo_tech_novice",
+        name: "Arco-Tech Novice",
+        description: `Understanding of how to use simple Archo-Tech devices.`,
+    },
 
     // Pyro
     {
@@ -102,26 +124,31 @@ const TraitData: Trait[] = [
 
     // Proto-Struct Components
     {
+        id: "component_array_mki",
         name: "Component Array mkI",
         description: `Grants access to component slot 1.`,
     },
 
     {
+        id: "component_array_mkii",
         name: "Component Array mkII",
         description: `Grants access to component slot 2.`,
     },
 
     {
+        id: "component_array_mkiii",
         name: "Component Array mkIII",
         description: `Grants access to component slot 3.`,
     },
 
     {
+        id: "component_array_mkiv",
         name: "Component Array mkIV",
         description: `Grants access to component slot 4.`,
     },
 
     {
+        id: "component_array_mkv",
         name: "Component Array mkV",
         description: `Grants access to component slot 5.`,
     },
