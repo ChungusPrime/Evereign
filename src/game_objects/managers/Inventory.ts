@@ -155,7 +155,7 @@ export default class Inventory {
             this.Items.push(Slot);
             X += 64;
             // Every 4 rows, move down 64 pixels and reset X
-            if ( i % 4 == 0 ) {
+            if ( i % 5 == 0 ) {
                 X = this.InventoryBackground.getTopLeft().x;
                 Y += 64;
             }
@@ -179,10 +179,10 @@ export default class Inventory {
 
         let I = 1;
         Object.keys(GD.Equipment).forEach( (slot) => {
-            let Slot = new ItemSlot(this.UI, X, Y, slot);
+            let Slot = new ItemSlot(this.UI, X, Y, slot.replace("_", " "));
             this.Items.push(Slot);
             X += 96;
-            if ( I % 2 == 0 ) {
+            if ( I % 3 == 0 ) {
                 X = this.EquipmentBackground.getTopLeft().x + 10;
                 Y += 96;
             }
@@ -201,6 +201,20 @@ export default class Inventory {
         })
         .setOrigin(0, 0.5)
         .setVisible(false);
+
+        X = this.QuickAccessBackground.getTopLeft().x + 10;
+        Y = this.QuickAccessBackground.getTopLeft().y + 32;
+        I = 1;
+        Object.keys(GD.QuickSlots).forEach( (slot) => {
+            let Slot = new ItemSlot(this.UI, X, Y, `Slot ${slot}`);
+            this.Items.push(Slot);
+            X += 96;
+            if ( I % 3 == 0 ) {
+                X = this.QuickAccessBackground.getTopLeft().x + 10;
+                Y += 96;
+            }
+            I++;
+        });
 
         // Close Button //
         this.CloseButton = this.UI.add.image(this.QuickAccessBackground.getTopRight().x, this.QuickAccessBackground.getTopRight().y, "panel-small")
