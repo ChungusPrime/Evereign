@@ -296,6 +296,7 @@ interface ItemData {
     ModdableParts?: string[];
     DamageModifier?: number;
     Materials?: { ID: string, Amount: number }[];
+    InitialValue?: any;
 }
 
 interface CurrencyData {
@@ -317,6 +318,8 @@ interface Equipment {
     Ring_1: EquipmentSlot;
     Ring_2: EquipmentSlot;
     Neck: EquipmentSlot;
+    MainHand: EquipmentSlot;
+    OffHand: EquipmentSlot;
 }
 
 interface Skill {

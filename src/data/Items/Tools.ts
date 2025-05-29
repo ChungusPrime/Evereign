@@ -24,6 +24,14 @@ const Tools: ItemData[] = [
         Desc: "A simple fishing rod made of bronze, used for catching fish.",
         Type: "Fishing Rod",
         Stackable: false
+    },
+    {
+        ID: "botany_kit",
+        Name: "Botany Kit",
+        Sprite: "librarium-45",
+        Desc: "A kit containing tools for studying and collecting plants.",
+        Type: "Botany Kit",
+        Stackable: false
     }
 
 ];

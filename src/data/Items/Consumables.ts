@@ -6,7 +6,8 @@ const Consumables: ItemData[] = [
         Sprite: "potions-481",
         Desc: "A simple brew known for its light healing properties.",
         Stackable: true,
-        StackSize: 5
+        StackSize: 5,
+        InitialValue: { ID: "marigold_brew", Quantity: 1 }
     },
     
     {

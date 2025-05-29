@@ -8,16 +8,20 @@ const Shotguns: ItemData[] = [
         Stackable: false,
         Craftable: false,
         Properties: {
-            Damage: 3,
+            Damage: [
+                { Type: "Piercing", Amount: 2 },
+                { Type: "Force", Amount: 3 }
+            ],
             Velocity: 60,
             Lifetime: 3,
             FireRate: 1,
             ReloadTime: 3,
             Pellets: 8,
-            MagazineSize: 6,
+            MagazineSize: 2,
         },
         Sound: "shotgun_fire",
         Moddable: false,
+        InitialValue: { ID: "grandpa_shotgun", Quantity: 1, CurrentMagazine: 2 }
     },
 
     {
@@ -42,7 +46,8 @@ const Shotguns: ItemData[] = [
         Materials: [
             { ID: "bronze_ingot", Amount: 5 },
             { ID: "wood_plank", Amount: 2 }
-        ]
+        ],
+        InitialValue: { ID: "shotgun_bronze", Quantity: 1, CurrentMagazine: 6, Mods: { "Barrel": null } }
     },
 ];
 

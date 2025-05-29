@@ -8,6 +8,9 @@ import DefaultCharacterData from '../data/DefaultCharacterData';
 // Game Data
 import RaceData from '../data/Character/Races';
 import ClassData from '../data/Character/Classes';
+import ItemData from '../data/ItemData';
+
+console.log(ItemData);
 
 export default class Menu extends Phaser.Scene {
 
@@ -233,21 +236,9 @@ export default class Menu extends Phaser.Scene {
 
         Y = Y + 45;
 
-        let style = {
-           'width': "250px",
-           "height": "35px",
-           "font-size": "28px",
-           "text-align": "center",
-           "border": "0",
-           "outline": "0",
-           "border-bottom": "2px solid #000",
-           "background-color": "#b88b5d",
-           "color": "#000"
-        };
-
         // Name
         this.characterNameInput = this.add.dom(this.scale.width * 0.32, Y)
-        .createFromHTML('<input type="text" placeholder="Enter Character Name" style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;" />')
+        .createFromHTML(`<input type="text" placeholder="Enter Character Name" style="cursor: url(${Cursor}), pointer; width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;" />`)
         .setOrigin(0.5)
         .setVisible(false)
         .addListener('input').on('input', (event: any) => {
@@ -259,59 +250,38 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 45;
 
         // Race
+        let RaceSelectorHTML = `<select style="cursor: url(${Cursor}), pointer; width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">`;
+        RaceSelectorHTML += `<option>Select Race</option>`;
+        RaceData.forEach(race => RaceSelectorHTML += `<option>${race.name}</option>`);
+        RaceSelectorHTML += `</select>`;
         this.characterRaceSelect = this.add.dom(this.scale.width * 0.32, Y)
-        .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
-            <option>Select Race</option>
-            <option>Human</option>
-            <option>Proto-Struct</option>
-            <option>Elf</option>
-            <option>Morvenite</option>
-            <option>Dwarf</option>
-            <option>Gnome</option>
-            <option>Kirupean</option>
-            <option>Half-Orc</option>
-            <option>Gnome</option>
-            <option>Thogac</option>
-            <option>Tiseri</option>
-            <option>Drakonid</option>
-        </select>`)
+        .createFromHTML(RaceSelectorHTML)
         .setOrigin(0.5)
-        .setVisible(false);
-
-        this.characterRaceSelect.addListener('change').on('change', (event: any) => {
-            this.CharacterRace = event.target.value;
-        });
-
+        .setVisible(false)
+        .addListener('change').
+        on('change', (event: any) => this.CharacterRace = event.target.value);
         this.CharacterCreationGroup.add(this.characterRaceSelect);
 
         Y = Y + 45;
 
         // Class
+        let ClassSelectorHTML = `<select style="cursor: url(${Cursor}), pointer; width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">`;
+        ClassSelectorHTML += `<option>Select Class</option>`;
+        ClassData.forEach(cl => ClassSelectorHTML += `<option>${cl.name}</option>`);
+        ClassSelectorHTML += `</select>`;
         this.characterClassSelect = this.add.dom(this.scale.width * 0.32, Y)
-        .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
-            <option>Select Class</option>
-            <option>Operative</option>
-            <option>Evoker</option>
-            <option>Godsworn</option>
-            <option>Gladiator</option>
-            <option>Captain</option>
-            <option>Harbinger</option>
-            <option>Enginewright</option>
-        </select>`)
+        .createFromHTML(ClassSelectorHTML)
         .setOrigin(0.5)
-        .setVisible(false);
-
-        this.characterClassSelect.addListener('change').on('change', (event: any) => {
-            this.CharacterClass = event.target.value;
-        });
-
+        .setVisible(false)
+        .addListener('change')
+        .on('change', (event: any) => this.CharacterClass = event.target.value);
         this.CharacterCreationGroup.add(this.characterClassSelect);
 
         Y = Y + 45;
 
         // Campaign
         this.campaignSelect = this.add.dom(this.scale.width * 0.32, Y)
-        .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
+        .createFromHTML(`<select style="cursor: url(${Cursor}), pointer; width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
             <option>Select Campaign</option>
             <option>The Twilight Accord</option>
         </select>`)
@@ -328,10 +298,10 @@ export default class Menu extends Phaser.Scene {
 
         // Scaling
         this.scalingSelect = this.add.dom(this.scale.width * 0.32, Y)
-        .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
+        .createFromHTML(`<select style="cursor: url(${Cursor}), pointer; width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
             <option>Select Scaling Type</option>
             <option>Fixed</option>
-            <option>Scaled</option>
+            <option>Adaptive</option>
         </select>`)
         .setOrigin(0.5)
         .setVisible(false);
@@ -346,7 +316,7 @@ export default class Menu extends Phaser.Scene {
 
         // Difficulty
         this.difficultySelect = this.add.dom(this.scale.width * 0.32, Y)
-        .createFromHTML(`<select style="width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
+        .createFromHTML(`<select style="cursor: url(${Cursor}), pointer; width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;">
             <option>Select Difficulty</option>
             <option>Story</option>
             <option>Standard</option>
@@ -408,10 +378,22 @@ export default class Menu extends Phaser.Scene {
             this.Data.Characters[this.CharacterName].X = 6333;
             this.Data.Characters[this.CharacterName].Y = 5692;
 
-
-
             // Add starting items from chosen class to character inventory
-            ChosenClassData.starting_items.forEach( (item) => this.Data.Characters[this.CharacterName].Inventory.push({ ID: item.ID, Quantity: item.Quantity }));
+            ChosenClassData.starting_items.forEach( (item) => {
+                let data = ItemData.find( (i) => i.ID == item.ID );
+                if ( data.Category == "Helmet" )
+                    this.Data.Characters[this.CharacterName].Equipment.Head = data.InitialValue;
+                else if ( data.Category == "Chest" )
+                    this.Data.Characters[this.CharacterName].Equipment.Chest = data.InitialValue;
+                else if ( data.Category == "Weapon" )
+                    this.Data.Characters[this.CharacterName].Equipment.MainHand = data.InitialValue;
+                else if ( item.Quantity > 1 ) {
+                    let InitialValue = data.InitialValue;
+                    if ( item.Quantity > 1 )
+                        InitialValue.Quantity = item.Quantity;
+                    this.Data.Characters[this.CharacterName].Inventory.push(data);
+                }
+            });
 
             // Add starting abilities from chosen class to character abilities
             ChosenClassData.starting_abilities.forEach( (ability) => this.Data.Characters[this.CharacterName].Abilities.push({ ID: ability, Tier: 1 }));
@@ -420,6 +402,8 @@ export default class Menu extends Phaser.Scene {
             ChosenClassData.starting_traits.forEach( (trait) => this.Data.Characters[this.CharacterName].Traits.push({ ID: trait, Tier: 1 }));
 
             localStorage.setItem("EvereignData", JSON.stringify(this.Data));
+
+            this.RefreshCharacterList();
 
         }).setVisible(false);
 
@@ -438,21 +422,8 @@ export default class Menu extends Phaser.Scene {
 
         // Character List
         // Character Slots
-        Y = this.scale.height * 0.2;
         this.CharacterList = this.add.group().setVisible(false);
-        this.CharacterList.add(
-            this.add.text(this.scale.width * 0.32, Y, "Characters", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
-        );
-
-        let CharacterListY = this.scale.height * 0.35;
-        Object.keys(this.Data.Characters).forEach(element => {
-            let Character = this.Data.Characters[element];
-            let CharacterButton = new TextButton(this, this.scale.width * 0.69, CharacterListY, Character.Name, () => {
-                this.StartGame(Character.Name);
-            }).setVisible(false);
-            this.CharacterList.add(CharacterButton);
-            CharacterListY += CharacterButton.height + 10;
-        });
+        this.RefreshCharacterList();
 
         this.BackButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.8, "Back", () => {
             this.BackButton.setVisible(false);
@@ -474,6 +445,29 @@ export default class Menu extends Phaser.Scene {
     StartRebind(key: string, control: TextButton) {
         this.RebindKey = key;
         this.RebindTextObject = control;
+    }
+
+    RefreshCharacterList() {
+        
+        this.CharacterList.clear(true, true);
+
+        let Y = this.scale.height * 0.2;
+
+        this.CharacterList = this.add.group().setVisible(false);
+        this.CharacterList.add(
+            this.add.text(this.scale.width * 0.32, Y, "Characters", { fontSize: 40, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
+        );
+
+        let CharacterListY = this.scale.height * 0.28;
+        Object.keys(this.Data.Characters).forEach(element => {
+            let Character = this.Data.Characters[element];
+            let CharacterButton = new TextButton(this, this.scale.width * 0.32, CharacterListY, `${Character.Name} - Level ${Character.Level} ${Character.Class}`, () => {
+                this.StartGame(Character.Name);
+            }, 32).setVisible(false);
+            this.CharacterList.add(CharacterButton);
+            CharacterListY += CharacterButton.height + 16;
+        });
+
     }
 
     BindKey (key: string, value: string) {

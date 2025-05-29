@@ -26,7 +26,9 @@ const GameData: GameData = {
         Feet: null,
         Ring_1: null,
         Ring_2: null,
-        Neck: null
+        Neck: null,
+        MainHand: null,
+        OffHand: null
     },
 
     QuickSlots: {

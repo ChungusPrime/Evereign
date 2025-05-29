@@ -7,6 +7,23 @@ ItemData.push(...Shotguns);
 import Staffs from "./Items/Staffs";
 ItemData.push(...Staffs);
 
+// Armour
+import ChestArmour from "./Items/Armour_Chest";
+ItemData.push(...ChestArmour);
+
+//import FeetArmour from "./Items/Armour_Feet";
+//ItemData.push(...FeetArmour);
+
+//import HandsArmour from "./Items/Armour_Hands";
+//ItemData.push(...HandsArmour);
+
+import HeadArmour from "./Items/Armour_Head";
+ItemData.push(...HeadArmour);
+
+//import LegsArmour from "./Items/Armour_Legs";
+//ItemData.push(...LegsArmour);
+
+// Other Items
 import Consumables from "./Items/Consumables";
 import Currency from "./Items/Currency";
 import Food from "./Items/Food";
@@ -14,13 +31,11 @@ import Keys from "./Items/Keys";
 import Resources from "./Items/Resources";
 import Tools from "./Items/Tools";
 
-
 ItemData.push(...Consumables);
 ItemData.push(...Currency);
 ItemData.push(...Food);
 ItemData.push(...Keys);
 ItemData.push(...Resources);
 ItemData.push(...Tools);
-
 
 export default ItemData;
