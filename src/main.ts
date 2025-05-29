@@ -49,9 +49,11 @@ const Config: Phaser.Types.Core.GameConfig = {
 		},
 	},
     scale: {
-		width: window.innerWidth,
-		height: window.innerHeight,
-		mode: Phaser.Scale.RESIZE,
+		//width: window.innerWidth,
+		//height: window.innerHeight,
+		width: 1280,
+		height: 720,
+		mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
 	banner: false,
