@@ -25,13 +25,18 @@ ItemData.push(...HeadArmour);
 
 // Other Items
 import Consumables from "./Items/Consumables";
+ItemData.push(...Consumables);
+
+import Ammunition from "./Items/Ammunition";
+ItemData.push(...Ammunition);
+
 import Currency from "./Items/Currency";
 import Food from "./Items/Food";
 import Keys from "./Items/Keys";
 import Resources from "./Items/Resources";
 import Tools from "./Items/Tools";
 
-ItemData.push(...Consumables);
+
 ItemData.push(...Currency);
 ItemData.push(...Food);
 ItemData.push(...Keys);

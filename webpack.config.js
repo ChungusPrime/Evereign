@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     mode: "development",
@@ -34,14 +35,18 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: "[name].[contenthash].css",
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from: "src/images/favicon.ico", to: path.resolve(__dirname, "dist"), },
+                { from: "src/images/icon.ico", to: path.resolve(__dirname, "dist") },
+            ],
+        }),
     ],
-    /*optimization: {
-        minimize: true,
-        minimizer: [new TerserPlugin({
-            test: /\.js(\?.*)?$/i,
-        })],
-    },*/
+    optimization: {
+        //minimize: true,
+        //innerGraph: true
+    },
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),

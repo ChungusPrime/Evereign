@@ -18,7 +18,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
     public scene: Game;
     public light!: Phaser.GameObjects.Light;
-    public walkAnimation: string = "EvokerWalk";
+    public walkAnimation: string = "OperativeWalk";
     public footstepSoundInterval: number = 0;
     public Ability_1_Cooldown: number = 0;
     public Ability_2_Cooldown: number = 0;
@@ -45,7 +45,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     public RightKeyDown: boolean = false;
 
     constructor ( scene: Game ) {
-        super( scene, GD.X, GD.Y, 'Elyndor', 0 );
+        super( scene, GD.X, GD.Y, 'Operative', 0 );
         this.scene = scene;
         this.create();
 
@@ -115,6 +115,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
         if ( this.body!.velocity.x == 0 && this.body!.velocity.y == 0 ) {
             this.stop();
+            this.footstepSoundInterval = 0;
+            this.setTexture("Operative", 0);
         } else {
             
             if ( this.scene.ActivityManager.CurrentActivity.Type != "" )

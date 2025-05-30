@@ -15,6 +15,7 @@ interface GameData {
     CurrentHealth: number;
     CurrentMana: number;
     MetNPCs: string[];
+
     QuickSlots: {
         1: string | null;
         2: string | null;
@@ -22,6 +23,23 @@ interface GameData {
         4: string | null;
         5: string | null;
     };
+
+    Equipment: {
+        [key: string]: EquipmentSlot | null;
+    };
+
+    Inventory: {
+        [key: string]: {
+            ID: string;
+            Quantity: number;
+            CurrentMagazine?: number;
+            Ammo?: string;
+            Mods?: { [key: string]: string | null };
+        } | null;
+    };
+
+
+
     Quests: {
         ID: string;
         ReadyToHandIn: boolean;
@@ -45,7 +63,6 @@ interface GameData {
         ID: string;
         Progress: number;
     }[];
-    Inventory: any[];
     ProgressFlags: number[];
     Reputation: { 
         Name: string;
@@ -77,7 +94,7 @@ interface GameData {
     FoundLoreEntries: string[];
     DialogueFlags: string[];
     CompletedMilestones: number[];
-    Equipment: Equipment;
+    
     Skills: Skills;
     Maps: MapData;
 }

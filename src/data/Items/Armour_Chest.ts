@@ -3,7 +3,7 @@ const ChestArmour: ItemData[] = [
     {
         ID: "operative_armor",
         Name: "Operative Armor",
-        Sprite: "potions-481",
+        Sprite: "armour-9",
         Desc: "A set of lightweight armor designed for operatives, providing protection without sacrificing mobility.",
         Stackable: false,
         InitialValue: { ID: "operative_armor", Quantity: 1 },

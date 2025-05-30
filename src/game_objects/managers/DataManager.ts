@@ -56,7 +56,7 @@ export default class DataManager {
         SaveData.DaytimeHour = this.scene.DaytimeCycleManager.DaytimeHour;
         SaveData.DaytimeMinute = this.scene.DaytimeCycleManager.DaytimeMinute;
         SaveData.LastSaveTimestamp = Date.now().toString();
-        SaveData.Inventory = [];
+        SaveData.Inventory = {};
         SaveData.CurrentHealth = this.scene.PlayerCharacter.Health;
         SaveData.CurrentMana = this.scene.PlayerCharacter.Mana;
         //this.scene.Inventory.Items.forEach( (item: DisplayItemObject) => {

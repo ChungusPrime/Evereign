@@ -58,6 +58,7 @@ export default class Preload extends Phaser.Scene {
         this.load.audio('Money', [Assets.Money]);
 
         this.load.spritesheet("Elyndor", Assets.Elyndor, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("Operative", Assets.Operative, { frameWidth: 32, frameHeight: 32 });
         
         this.load.spritesheet("BloodOne", Assets.BloodOne, { frameWidth: 100, frameHeight: 100 });
         this.load.spritesheet("BloodTwo", Assets.BloodTwo, { frameWidth: 100, frameHeight: 100 });
@@ -122,6 +123,8 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("SkillsA", Assets.SkillsA, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("SkillsB", Assets.SkillsB, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("bonus1", Assets.AdmurinBonus1, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("weapons", Assets.Weapons, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("armour", Assets.Armour, { frameWidth: 32, frameHeight: 32 });
 
         this.load.tilemapTiledJSON("TestMap", Assets.TestMap);
         this.load.tilemapTiledJSON("Willowvale", Assets.Willowvale);
@@ -215,6 +218,13 @@ export default class Preload extends Phaser.Scene {
         this.anims.create({ 
             key: "EvokerWalk", 
             frames: this.anims.generateFrameNumbers('Elyndor', { frames: [ 1, 2 ] }),
+            frameRate: 5,
+            repeat: -1
+        });
+
+        this.anims.create({ 
+            key: "OperativeWalk", 
+            frames: this.anims.generateFrameNumbers('Operative', { frames: [ 1, 2, 3, 4 ] }),
             frameRate: 5,
             repeat: -1
         });

@@ -454,7 +454,7 @@ export default class Game extends Phaser.Scene {
         
         // Camera
         this.cameras.main
-        .setSize(window.innerWidth * 0.80, window.innerHeight)
+        .setSize(1024, 720)
         .setZoom(1)
         .setBounds(0, 0, Map.widthInPixels, Map.heightInPixels)
         .centerOn(Map.widthInPixels / 2, Map.heightInPixels / 2)

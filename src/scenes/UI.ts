@@ -11,6 +11,7 @@ import WorldMap from "../game_objects/UI_WorldMap";
 import JournalButton from "../game_objects/JournalButton";
 import { GD } from "./Game";
 import TradeWindow from "../game_objects/UI_TradeWindow";
+import ItemSlot from "../game_objects/UI_ItemSlot";
 
 export default class UI extends Phaser.Scene {
 
@@ -385,6 +386,42 @@ export default class UI extends Phaser.Scene {
         if ( !GD.DialogueFlags.includes("JournalEntries-EntryOne") ) {
             this.DialogueWindow.ShowSubject("Journal Entries", "Entry One");
         }
+
+
+        this.input.on('dragstart', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite) => {
+            console.log(gameObject);
+        });
+
+        this.input.on('drag', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dragX: number, dragY: number) => {
+            //if ( gameObject !== this.Item || !this.hasItem ) return;
+            //this.Item.x = dragX;
+            //this.Item.y = dragY;
+        });
+
+        this.input.on('dragenter', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
+            //if ( slot !== this || !slot.hasItem ) return;
+            //this.setTint(0x00ff00);
+        });
+    
+        this.input.on('dragleave', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
+            //slot.clearTint();
+        });
+
+        this.input.on('drop', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
+            //if ( gameObject !== this.Item || !this.hasItem ) return;
+            //this.clearTint();
+            //this.Item.x = slot.getCenter().x;
+            //this.Item.y = slot.getCenter().y;
+        });
+
+        this.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dropped: boolean) => {
+            //if ( gameObject !== this.Item ) return;
+            //if ( !dropped ) {
+                //this.Item.x = this.getCenter().x;
+                //this.Item.y = this.getCenter().y;
+            //}
+        });
+
 
     }
 

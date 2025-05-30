@@ -1,110 +1,7 @@
 import Game from "../../scenes/Game";
 import UI from "../../scenes/UI";
 import { GD } from "../../scenes/Game";
-
-class ItemSlot extends Phaser.GameObjects.NineSlice {
-
-    public hasItem: boolean = false;
-    public Item: Phaser.GameObjects.Sprite;
-    public Quantity: number = 0;
-
-    public Label: Phaser.GameObjects.Text | null;
-    public QuantityText: Phaser.GameObjects.Text;
-
-    constructor ( scene: UI, x: number, y: number, label?: string ) {
-
-        super(scene, x, y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6);
-
-        // The slot itself
-        this.setVisible(false);
-        this.setDisplaySize(64, 64);
-        this.setOrigin(0, 0);
-        this.setInteractive({ dropZone: true });
-        this.scene.add.existing(this);
-
-        // Item sprite
-        this.Item = this.scene.add.sprite(this.getCenter().x, this.getCenter().y, "Kenney-UI", "buttonSquare_blue_pressed");
-        this.Item.setOrigin(0.5, 0.5);
-        this.Item.setVisible(false);
-        this.Item.setDisplaySize(32, 32);
-        this.Item.setInteractive({ draggable: true });
-
-        // Label for the slot
-        if ( label ) {
-            this.Label = this.scene.add.text(this.getBottomCenter().x, this.getBottomCenter().y + 5, label, {
-                fontFamily: "Augusta",
-                fontSize: 16,
-                align: "center"
-            }).setOrigin(0.5, 0).setVisible(false);
-        }
-
-        // Quantity Label
-        this.QuantityText = this.scene.add.text(this.getBottomRight().x - 5, this.getBottomRight().y - 5, "x0", {
-            fontFamily: "Augusta",
-            fontSize: 12 
-        })
-        .setOrigin(1, 1)
-        .setVisible(false);
-        this.scene.add.existing(this.QuantityText);
-
-        this.scene.input.on('dragstart', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite) => {
-            if ( gameObject !== this.Item || !this.hasItem ) return;
-            //this.quantity.setVisible(false);
-            //this.scene.Tooltip.Hide();
-        });
-
-        this.scene.input.on('drag', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dragX: number, dragY: number) => {
-            if ( gameObject !== this.Item || !this.hasItem ) return;
-            this.Item.x = dragX;
-            this.Item.y = dragY;
-        });
-
-        this.scene.input.on('dragenter', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
-            if ( slot !== this || !slot.hasItem ) return;
-            this.setTint(0x00ff00);
-        });
-    
-        this.scene.input.on('dragleave', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
-            slot.clearTint();
-        });
-
-        this.scene.input.on('drop', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
-            if ( gameObject !== this.Item || !this.hasItem ) return;
-            this.clearTint();
-            this.Item.x = slot.getCenter().x;
-            this.Item.y = slot.getCenter().y;
-        });
-
-        this.scene.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dropped: boolean) => {
-            if ( gameObject !== this.Item ) return;
-            if ( !dropped ) {
-                this.Item.x = this.getCenter().x;
-                this.Item.y = this.getCenter().y;
-            }
-        });
-
-    }
-
-    public UpdateItem (id: string, quantity: number) {
-        console.log(id);
-        console.log(quantity);
-    }
-
-    public Show () {
-        this.setVisible(true);
-        if ( this.hasItem ) this.Item.setVisible(true);
-        if ( this.Quantity > 0 ) this.QuantityText.setVisible(true);
-        if ( this.Label ) this.Label.setVisible(true);
-    }
-
-    public Hide () {
-        this.setVisible(false);
-        if ( this.hasItem ) this.Item.setVisible(false);
-        if ( this.Quantity > 0 ) this.QuantityText.setVisible(false);
-        if ( this.Label ) this.Label.setVisible(false);
-    }
-
-}
+import ItemSlot from "../../game_objects/UI_ItemSlot";
 
 export default class Inventory {
 
@@ -118,9 +15,9 @@ export default class Inventory {
 
     public InventoryBackground: Phaser.GameObjects.Rectangle;
     public InventoryHeader: Phaser.GameObjects.Text;
-    public CurrentResourceCount: number = 0;
-    public MaxResources: number = 20;
     
+    public UsedSlots: number = 0;
+    public InventorySlots: number = 20;
 
     public EquipmentBackground: Phaser.GameObjects.Rectangle;
     public EquipmentHeader: Phaser.GameObjects.Text;
@@ -134,12 +31,12 @@ export default class Inventory {
         this.Game = game;
 
         // Inventory Section //
-        this.InventoryBackground = this.UI.add.rectangle ( game.cameras.main.width * 0.15, game.cameras.main.height / 2, 300, 400, 0x000000, 1)
-        .setOrigin(0.5, 0.5)
+        this.InventoryBackground = this.UI.add.rectangle ( 15, 200, 320, 420, 0x000000, 1)
+        .setOrigin(0, 0)
         .setStrokeStyle(1, 0xffffff, 1)
         .setVisible(false);
 
-        this.InventoryHeader = this.UI.add.text( this.InventoryBackground.getTopLeft().x + 5, this.InventoryBackground.getTopLeft().y + 12, `Inventory (${this.CurrentResourceCount}/${this.MaxResources})`, { 
+        this.InventoryHeader = this.UI.add.text( this.InventoryBackground.getTopLeft().x + 5, this.InventoryBackground.getTopLeft().y + 12, `Inventory`, { 
             fontFamily: "Augusta",
             fontSize: 24 
         })
@@ -150,8 +47,8 @@ export default class Inventory {
         let Y = this.InventoryBackground.getTopLeft().y + 64;
 
         // Add 4 rectangles per row to represent inventory slots
-        for ( let i = 1; i < this.MaxResources + 1; i++ ) {
-            let Slot = new ItemSlot(this.UI, X, Y);
+        for ( let i = 1; i < this.InventorySlots + 1; i++ ) {
+            let Slot = new ItemSlot(this.UI, X, Y, i);
             this.Items.push(Slot);
             X += 64;
             // Every 4 rows, move down 64 pixels and reset X
@@ -159,10 +56,15 @@ export default class Inventory {
                 X = this.InventoryBackground.getTopLeft().x;
                 Y += 64;
             }
+            if ( Slot.ItemData != null ) {
+                this.UsedSlots++;
+            }
         }
 
+        this.InventoryHeader.setText(`Inventory (${this.UsedSlots}/${this.InventorySlots})`);
+
         // Equipment Section //
-        this.EquipmentBackground = this.UI.add.rectangle ( this.InventoryBackground.getTopRight().x + 5, this.InventoryBackground.getTopRight().y, 300, 400, 0x000000, 1)
+        this.EquipmentBackground = this.UI.add.rectangle ( this.InventoryBackground.getTopRight().x + 5, this.InventoryBackground.getTopRight().y, 300, 420, 0x000000, 1)
         .setOrigin(0, 0)
         .setStrokeStyle(1, 0xffffff, 1)
         .setVisible(false);
@@ -179,7 +81,7 @@ export default class Inventory {
 
         let I = 1;
         Object.keys(GD.Equipment).forEach( (slot) => {
-            let Slot = new ItemSlot(this.UI, X, Y, slot.replace("_", " "));
+            let Slot = new ItemSlot(this.UI, X, Y, slot, slot.replace("_", " "));
             this.Items.push(Slot);
             X += 96;
             if ( I % 3 == 0 ) {
@@ -190,7 +92,7 @@ export default class Inventory {
         });
 
         // Quick Access Section //
-        this.QuickAccessBackground = this.UI.add.rectangle ( this.EquipmentBackground.getTopRight().x + 5, this.EquipmentBackground.getTopRight().y, 300, 400, 0x000000, 1)
+        this.QuickAccessBackground = this.UI.add.rectangle ( this.EquipmentBackground.getTopRight().x + 5, this.EquipmentBackground.getTopRight().y, 300, 420, 0x000000, 1)
         .setOrigin(0, 0)
         .setStrokeStyle(1, 0xffffff, 1)
         .setVisible(false);
@@ -206,7 +108,7 @@ export default class Inventory {
         Y = this.QuickAccessBackground.getTopLeft().y + 32;
         I = 1;
         Object.keys(GD.QuickSlots).forEach( (slot) => {
-            let Slot = new ItemSlot(this.UI, X, Y, `Slot ${slot}`);
+            let Slot = new ItemSlot(this.UI, X, Y, slot, `Slot ${slot}`);
             this.Items.push(Slot);
             X += 96;
             if ( I % 3 == 0 ) {
@@ -227,22 +129,48 @@ export default class Inventory {
             this.Hide();
         }, this);
 
-        this.CloseButtonText = this.UI.add.text(this.CloseButton.getCenter().x, this.CloseButton.getCenter().y, "X")
+        this.CloseButtonText = this.UI.add.text(this.CloseButton.getCenter().x, this.CloseButton.getCenter().y, "X", { 
+            fontFamily: "Augusta",
+            fontSize: 16
+        })
         .setOrigin(0.5, 0.5)
         .setVisible(false)
         .setDepth(11);
 
-        // Restore inventory from save data
-        //GD.Inventory.forEach( (item: { ID: string, Quantity: number }) => {
-            //this.AddItem(item.ID, item.Quantity, false);
-        //});
-
     }
 
-    /*AddItem ( ID: string, quantity: number, playSound: boolean = true ) {
+    EquipItem ( slot: string, itemID: string ) {
+        const ItemData = this.Game.DataManager.ItemData.find((item) => item.ID == itemID);
+        if ( ItemData == undefined )
+            return console.log(`Item does not exist! ID: ${itemID}`);
+        if ( !Object.keys(GD.Equipment).includes(slot) )
+            return console.log(`Invalid equipment slot: ${slot}`);
+        /*if ( GD.Equipment[slot] != null ) {
+            // Remove the currently equipped item from the slot
+            const CurrentItem = this.Items.find((item) => item.getData('ItemID') == GD.Equipment[slot]);
+            if ( CurrentItem ) {
+                CurrentItem.setData('ItemID', null);
+                CurrentItem.setData('ItemQuantity', 0);
+                CurrentItem.QuantityText.setText(`x0`);
+                CurrentItem.Hide();
+            }
+        }*/
+        // Equip the new item
+        /*const NewItem = this.Items.find((item) => item.getData('ItemID') == itemID);
+        if ( NewItem ) {
+            NewItem.setData('ItemID', itemID);
+            NewItem.setData('ItemQuantity', 1);
+            NewItem.QuantityText.setText(`x1`);
+            NewItem.Show();
+            GD.Equipment[slot] = itemID; // Update the equipment slot in the game data
+        }*/
+        console.log(`Equipped item ${itemID} to slot ${slot}`);
+        this.UI.EventLog.NewEvent(`Equipped ${ItemData.Name} to ${slot}`);
+    }
+
+    AddItem ( ID: string, quantity: number, playSound: boolean = true ) {
 
         const ItemData = this.Game.DataManager.ItemData.find((item) => item.ID == ID);
-
         if ( ItemData == undefined )
             return console.log(`Item does not exist! ID: ${ID}`);
 
@@ -250,48 +178,59 @@ export default class Inventory {
             //return this.UI.EventLog.NewEvent("Not enough space in inventory");
 
         for ( let i = 0; i < quantity; i++ ) {
-            // If the item is not stackable, create a new object to display it
+
             if ( ItemData.Stackable == false ) {
-                // Item not stackable, creating new object
-                let Slot = this.Items.find((slot) => slot.getData("Item") == null);
-                let SlotItem = this.CreateNewInventoryObject(Slot, ItemData, 1);
-                this.Items.push(SlotItem);
-            } else if ( ItemData.Stackable == true ) {
-                let Exists = this.Items.find((res) => res.getData('ItemID') == ID);
+                let Slot = this.Items.find((slot) => slot.ItemData == null);
+                if ( Slot !== undefined ) {
+                    Slot.UpdateItem(ID, 1);
+                }
+                continue;
+            }
+            
+            if ( ItemData.Stackable == true ) {
+
+                let Exists = this.Items.find((res) => res.ItemData.ID == ID);
+
                 if ( Exists == undefined ) {
+
                     // Item does not exist, creating new object
-                    let Slot = this.ItemSlots.find((slot) => slot.getData("Item") == null);
-                    let SlotItem = this.CreateNewInventoryObject(Slot, ItemData, 1);
-                    this.Items.push(SlotItem);
+                    let Slot = this.Items.find((slot) => slot.ItemData == null);
+                    if ( Slot !== undefined ) {
+                        Slot.UpdateItem(ID, 1);
+                    }
+
                 } else {
-                    if ( Exists.getData('ItemQuantity') < ItemData.StackSize || ItemData.StackSize == 0 ) {
+
+                    if ( Exists.ItemData.Quantity < ItemData.StackSize || ItemData.StackSize == 0 ) {
                         // Item exists, adding to stack
-                        const NewQuantity = Exists.getData('ItemQuantity') + 1;
-                        Exists.setData('ItemQuantity', NewQuantity);
-                        Exists.quantity.setText(`x${NewQuantity.toString()}`);
+                        const NewQuantity = Exists.ItemData.Quantity + 1;
+                        Exists.ItemData.Quantity = NewQuantity;
+                        Exists.QuantityText.setText(`x${NewQuantity.toString()}`);
                     } else {
-                        let Exists = this.Items.find((res) => res.getData('ItemID') == ID && res.getData('ItemQuantity') + 1 < ItemData.StackSize);
+                        let Exists = this.Items.find((res) => res.ItemData.ID == ID && res.ItemData.Quantity + 1 < ItemData.StackSize);
                         if ( Exists == undefined ) {
                             // Item exists, but stack is full, creating new object
-                            let Slot = this.ItemSlots.find((slot) => slot.getData("Item") == null);
-                            let SlotItem = this.CreateNewInventoryObject(Slot, ItemData, 1);
-                            this.Items.push(SlotItem);
+                            let Slot = this.Items.find((slot) => slot.ItemData.ID == null);
+                            Slot.UpdateItem(ID, 1);
                         } else {
                             // Item exists, and stack is not full
-                            const NewQuantity = Exists.getData('ItemQuantity') + 1;
-                            Exists.setData('ItemQuantity', NewQuantity);
-                            Exists.quantity.setText(`x${NewQuantity.toString()}`);
+                            const NewQuantity = Exists.ItemData.Quantity + 1;
+                            Exists.ItemData.Quantity = NewQuantity;
+                            Exists.QuantityText.setText(`x${NewQuantity.toString()}`);
                         }
                     }
+
                 }
+
             }
+
         }
 
         if ( Object.keys(ItemData).includes("Sound") && playSound == true )
             this.Game.sound.play(ItemData.Sound);
 
-        this.Header.setText(`Inventory (${this.Items.length}/${this.MaxResources})`);
-    }*/
+        //this.Header.setText(`Inventory (${this.Items.length}/${this.MaxResources})`);
+    }
 
     /*public RemoveItem (ID: string, quantity: number) {
         console.log(`Removing ${quantity} of item ID ${ID}`);

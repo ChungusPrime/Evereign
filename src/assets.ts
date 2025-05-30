@@ -13,6 +13,7 @@
 
 // Elyndor
 export const Elyndor: string = require('./images/elyndor.png');
+export const Operative: string = require('./images/own/Human-Operative.png');
 
 // Art
 export const MenuBackground: string = require('./images/MenuBackground2.jpg');
@@ -50,6 +51,8 @@ export const AdmurinFishingB: string = require('./images/Admurin/ItemsFishingB.p
 export const AdmurinBonus1: string = require('./images/Admurin/Bonus_Items_1.png');
 export const SkillsA: string = require('./images/Admurin/Skills_Final.png');
 export const SkillsB: string = require('./images/Admurin/Skill_B.png');
+export const Weapons: string = require('./images/Admurin/32x32_PixelWeapons_Premium.png');
+export const Armour: string = require('./images/Admurin/32x32_PixelArmor_Premium_2.png');
 
 export const Characters: string = require('./images/characters.png');
 export const Monsters: string = require('./images/monsters.png');

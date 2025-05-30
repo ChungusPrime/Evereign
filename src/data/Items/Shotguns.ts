@@ -3,7 +3,7 @@ const Shotguns: ItemData[] = [
     {
         ID: "grandpa_shotgun",
         Name: "Grandpa's ol' Service Shotgun",
-        Sprite: "weapons-1",
+        Sprite: "weapons-293",
         Desc: "Rusty old shotgun that has seen better days. Still packs a punch, but needs some love.",
         Stackable: false,
         Craftable: false,
@@ -21,7 +21,7 @@ const Shotguns: ItemData[] = [
         },
         Sound: "shotgun_fire",
         Moddable: false,
-        InitialValue: { ID: "grandpa_shotgun", Quantity: 1, CurrentMagazine: 2 }
+        InitialValue: { ID: "grandpa_shotgun", Quantity: 1, CurrentMagazine: 4, Ammo: "lead_shot" }
     },
 
     {
