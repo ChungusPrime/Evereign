@@ -25,6 +25,8 @@ export default class Inventory {
     public QuickAccessBackground: Phaser.GameObjects.Rectangle;
     public QuickAccessHeader: Phaser.GameObjects.Text;
 
+    public HeldItem: Phaser.GameObjects.Sprite | null = null;
+
     constructor ( game: Game, UI: UI ) {
 
         this.UI = UI;
@@ -47,6 +49,10 @@ export default class Inventory {
         let Y = this.InventoryBackground.getTopLeft().y + 64;
 
         // Add 4 rectangles per row to represent inventory slots
+        Object.entries(GD.Inventory).forEach( (item, index) => {
+            console.log(item, index);
+        });
+        
         for ( let i = 1; i < this.InventorySlots + 1; i++ ) {
             let Slot = new ItemSlot(this.UI, X, Y, i);
             this.Items.push(Slot);
@@ -79,7 +85,7 @@ export default class Inventory {
         X = this.EquipmentBackground.getTopLeft().x + 10;
         Y = this.EquipmentBackground.getTopLeft().y + 32;
 
-        let I = 1;
+        /*let I = 1;
         Object.keys(GD.Equipment).forEach( (slot) => {
             let Slot = new ItemSlot(this.UI, X, Y, slot, slot.replace("_", " "));
             this.Items.push(Slot);
@@ -89,7 +95,7 @@ export default class Inventory {
                 Y += 96;
             }
             I++;
-        });
+        });*/
 
         // Quick Access Section //
         this.QuickAccessBackground = this.UI.add.rectangle ( this.EquipmentBackground.getTopRight().x + 5, this.EquipmentBackground.getTopRight().y, 300, 420, 0x000000, 1)
@@ -104,7 +110,7 @@ export default class Inventory {
         .setOrigin(0, 0.5)
         .setVisible(false);
 
-        X = this.QuickAccessBackground.getTopLeft().x + 10;
+        /*X = this.QuickAccessBackground.getTopLeft().x + 10;
         Y = this.QuickAccessBackground.getTopLeft().y + 32;
         I = 1;
         Object.keys(GD.QuickSlots).forEach( (slot) => {
@@ -116,7 +122,7 @@ export default class Inventory {
                 Y += 96;
             }
             I++;
-        });
+        });*/
 
         // Close Button //
         this.CloseButton = this.UI.add.image(this.QuickAccessBackground.getTopRight().x, this.QuickAccessBackground.getTopRight().y, "panel-small")
@@ -143,8 +149,8 @@ export default class Inventory {
         const ItemData = this.Game.DataManager.ItemData.find((item) => item.ID == itemID);
         if ( ItemData == undefined )
             return console.log(`Item does not exist! ID: ${itemID}`);
-        if ( !Object.keys(GD.Equipment).includes(slot) )
-            return console.log(`Invalid equipment slot: ${slot}`);
+        //if ( !Object.keys(GD.Equipment).includes(slot) )
+            //return console.log(`Invalid equipment slot: ${slot}`);
         /*if ( GD.Equipment[slot] != null ) {
             // Remove the currently equipped item from the slot
             const CurrentItem = this.Items.find((item) => item.getData('ItemID') == GD.Equipment[slot]);
@@ -230,6 +236,33 @@ export default class Inventory {
             this.Game.sound.play(ItemData.Sound);
 
         //this.Header.setText(`Inventory (${this.Items.length}/${this.MaxResources})`);
+    }
+
+    SwapItems ( slot1: string | number, slot2: string | number ) {
+
+        console.log(`Swapping items between ${slot1} and ${slot2}`);
+
+        const Item1 = this.Items.find((item) => item.InventoryIndex == slot1);
+        const Item2 = this.Items.find((item) => item.InventoryIndex == slot2);
+
+        const TempItemData = Item1.ItemData;
+
+        if ( Item2.SlotType == "equipment" && Item1.SlotType == "equipment" ) {
+            //GD.Equipment[slot1] = Item2.ItemData;
+            //GD.Equipment[slot2] = TempItemData;
+        } else if ( Item2.SlotType == "inventory" && Item1.SlotType == "inventory" ) {
+           // GD.Inventory[slot1] = Item2.ItemData;
+            //GD.Inventory[slot2] = TempItemData;
+        } else if ( Item2.SlotType == "inventory" && Item1.SlotType == "equipment" ) {
+            //GD.Inventory[slot2] = Item1.ItemData;
+            //GD.Equipment[slot1] = TempItemData;
+        } else if ( Item2.SlotType == "equipment" && Item1.SlotType == "inventory" ) {
+            //GD.Inventory[slot1] = Item2.ItemData;
+            //GD.Equipment[slot2] = TempItemData;
+        }
+
+        Item1.Refresh();
+        Item2.Refresh();
     }
 
     /*public RemoveItem (ID: string, quantity: number) {

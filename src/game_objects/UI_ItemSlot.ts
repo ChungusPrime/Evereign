@@ -7,6 +7,7 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
     public InventoryIndex: number | string = 0;
     public Item: Phaser.GameObjects.Sprite;
     public ItemData: any = null;
+    public SlotType: "inventory" | "equipment" = "inventory";
 
     public Label: Phaser.GameObjects.Text | null;
     public QuantityText: Phaser.GameObjects.Text;
@@ -19,7 +20,26 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         this.setVisible(false);
         this.setDisplaySize(64, 64);
         this.setOrigin(0, 0);
-        this.setInteractive({ dropZone: true });
+        this.setInteractive();
+
+        this.on("pointerover", () => {
+            if ( scene.Game.Inventory.HeldItem != null ) {
+                this.setTint(0x00ff00);
+            }
+        });
+
+        this.on("pointerout", () => {
+            this.clearTint();
+        });
+
+        this.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+            if ( pointer.leftButtonDown() && scene.Game.Inventory.HeldItem != null ) {
+                scene.Game.Inventory.SwapItems(scene.Game.Inventory.HeldItem.getData('slot'), this.InventoryIndex);
+                scene.input.topOnly = true;
+                scene.Game.Inventory.HeldItem = null;
+            }
+        });
+
         this.scene.add.existing(this);
 
         // Set the inventory index
@@ -27,8 +47,10 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
         if ( typeof this.InventoryIndex === "number" ) {
             this.ItemData = GD.Inventory[this.InventoryIndex];
+            this.SlotType = "inventory";
         } else if ( typeof this.InventoryIndex === "string" ) {
-            this.ItemData = GD.Equipment[this.InventoryIndex];
+            //this.ItemData = GD.Equipment[this.InventoryIndex];
+            //this.SlotType = "equipment";
         }
 
         // Item sprite
@@ -36,8 +58,23 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         this.Item.setOrigin(0.5, 0.5);
         this.Item.setVisible(false);
         this.Item.setDisplaySize(64, 64);
-        this.Item.setInteractive({ draggable: true });
+        this.Item.setInteractive();
+        this.Item.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+            if ( pointer.leftButtonDown() && scene.Game.Inventory.HeldItem == null ) {
+                scene.Game.Inventory.HeldItem = this.Item;
+                scene.input.topOnly = false; // Prevents other interactions while holding an item
+            }
+            if ( pointer.rightButtonDown() && scene.Game.Inventory.HeldItem != null) {
+                scene.Game.Inventory.HeldItem = null;
+                this.Item.setPosition(this.getCenter().x, this.getCenter().y);
+                scene.input.topOnly = true;
+                scene.Game.Inventory.Items.forEach((item) => {
+                    item.clearTint();
+                });
+            }
+        });
         this.Item.setDepth(10000);
+        this.Item.setData("slot", this.InventoryIndex);
 
         if ( this.ItemData ) {
             console.log("ItemSlot: ItemData found for index", this.InventoryIndex, this.ItemData);
@@ -70,16 +107,30 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
     }
 
+    public Refresh () {
+        if ( this.ItemData == null ) {
+            this.setTexture("Kenney-UI", "buttonSquare_blue_pressed");
+        } else {
+            const sprite = ItemData.find((item) => item.ID == this.ItemData.ID).Sprite.split("-");
+            this.Item.setTexture(sprite[0], sprite[1]);
+        }
+
+        this.QuantityText.setText(`x${this.ItemData.Quantity}`);
+        this.Item.setData("slot", this.InventoryIndex);
+    }
+
     public UpdateItem (id: string, quantity: number) {
         const sprite = ItemData.find((item) => item.ID == id).Sprite.split("-");
         this.Item.setTexture(sprite[0], sprite[1]);
+        this.QuantityText.setText(`x${quantity}`);
+        this.Item.setData("slot", this.InventoryIndex);
     }
 
     public Show () {
         this.setVisible(true);
         if ( this.ItemData ) {
             this.Item.setVisible(true);
-            if ( this.ItemData.Quantity > 0 ) {
+            if ( this.ItemData.Quantity > 1 ) {
                 this.QuantityText.setVisible(true);
             }
         }

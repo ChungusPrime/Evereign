@@ -100,6 +100,8 @@ export default class UI extends Phaser.Scene {
 
         this.ColourWheel = Phaser.Display.Color.HSVColorWheel();
 
+        this.input.topOnly = true;
+
         // Main UI Camera
         this.cameras.main.setOrigin(0.5, 0.5);
         this.cameras.main.setPosition(0, 0);
@@ -149,6 +151,8 @@ export default class UI extends Phaser.Scene {
 
         SidePanel.add(this.ResourcesButton);
         SidePanel.add(this.ResourcesButton.text);
+
+        
 
         this.JournalButton = new Button(this, this.SidePanelBackground.getTopLeft().x + 7, this.ResourcesButton.getBottomLeft().y + 5, "Journal", () => {
             if ( this.Book.visible == true ) {
@@ -387,42 +391,50 @@ export default class UI extends Phaser.Scene {
             this.DialogueWindow.ShowSubject("Journal Entries", "Entry One");
         }
 
-
-        this.input.on('dragstart', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite) => {
-            console.log(gameObject);
+        /*this.input.on('dragstart', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite) => {
+            console.log(item);
         });
 
-        this.input.on('drag', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dragX: number, dragY: number) => {
-            //if ( gameObject !== this.Item || !this.hasItem ) return;
-            //this.Item.x = dragX;
-            //this.Item.y = dragY;
+        this.input.on('drag', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, dragX: number, dragY: number) => {
+            item.x = dragX;
+            item.y = dragY;
         });
 
-        this.input.on('dragenter', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
-            //if ( slot !== this || !slot.hasItem ) return;
-            //this.setTint(0x00ff00);
+        this.input.on('dragenter', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
+            slot.setTint(0x00ff00);
+            console.log(slot);
         });
     
-        this.input.on('dragleave', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Image, slot: ItemSlot) => {
-            //slot.clearTint();
+        this.input.on('dragleave', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
+            slot.clearTint();
         });
 
-        this.input.on('drop', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
-            //if ( gameObject !== this.Item || !this.hasItem ) return;
-            //this.clearTint();
-            //this.Item.x = slot.getCenter().x;
-            //this.Item.y = slot.getCenter().y;
+        this.input.on('drop', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
+            if ( item.getData("slot") !== null && item.getData("slot") !== undefined ) {
+                slot.clearTint();
+                item.x = slot.getCenter().x;
+                item.y = slot.getCenter().y;
+                let slot1 = item.getData("slot");
+                let slot2 = slot.InventoryIndex;
+                console.log(`move item from slot ${slot1} to slot ${slot2}`);
+                this.Game.Inventory.SwapItems(slot1, slot2);
+            }
         });
 
-        this.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, dropped: boolean) => {
-            //if ( gameObject !== this.Item ) return;
+        this.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, slot: ItemSlot, dropped: boolean) => {
+            console.log("dragend", gameObject, slot, dropped);
             //if ( !dropped ) {
                 //this.Item.x = this.getCenter().x;
                 //this.Item.y = this.getCenter().y;
             //}
-        });
+        });*/
 
+    }
 
+    update(time: number, delta: number): void {
+        if ( this.Game.Inventory.HeldItem ) {
+            this.Game.Inventory.HeldItem.setPosition(this.input.x, this.input.y);
+        }
     }
 
     ChangeJournalMenu ( page: string ) {

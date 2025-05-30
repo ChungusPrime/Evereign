@@ -385,11 +385,11 @@ export default class Menu extends Phaser.Scene {
                 let data = ItemData.find( (i) => i.ID == item.ID );
                 console.log("Found item data", data);
                 if ( data.Category == "Helmet" )
-                    this.Data.Characters[this.CharacterName].Equipment.Head = data.InitialValue;
+                    this.Data.Characters[this.CharacterName].Inventory.Head = data.InitialValue;
                 else if ( data.Category == "Chest" )
-                    this.Data.Characters[this.CharacterName].Equipment.Chest = data.InitialValue;
+                    this.Data.Characters[this.CharacterName].Inventory.Chest = data.InitialValue;
                 else if ( data.Category == "Weapon" )
-                    this.Data.Characters[this.CharacterName].Equipment.MainHand = data.InitialValue;
+                    this.Data.Characters[this.CharacterName].Inventory.MainHand = data.InitialValue;
                 else if ( item.Quantity > 1 ) {
                     let InitialValue = data.InitialValue;
                     console.log("Initial Value", InitialValue);
@@ -400,7 +400,6 @@ export default class Menu extends Phaser.Scene {
                     this.Data.Characters[this.CharacterName].Inventory[s] = InitialValue;
                     s++;
                 }
-                
             });
 
             // Add starting abilities from chosen class to character abilities

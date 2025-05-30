@@ -16,6 +16,7 @@ const GameData: GameData = {
 
     Traits: [],
     Abilities: [],
+    
     Inventory: {
         1: null,
         2: null,
@@ -36,10 +37,7 @@ const GameData: GameData = {
         17: null,
         18: null,
         19: null,
-        20: null
-    },
-
-    Equipment: {
+        20: null,
         "Head": null,
         "Chest": null,
         "Hands": null,
@@ -49,15 +47,13 @@ const GameData: GameData = {
         "Ring_2": null,
         "Neck": null,
         "MainHand": null,
-        "OffHand": null
-    },
-
-    QuickSlots: {
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null,
+        "OffHand": null,
+        "Back": null,
+        "Quickslot_1": null,
+        "Quickslot_2": null,
+        "Quickslot_3": null,
+        "Quickslot_4": null,
+        "Quickslot_5": null
     },
     
     Campaign: "The Twilight Accord",

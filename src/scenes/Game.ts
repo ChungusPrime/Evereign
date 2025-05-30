@@ -138,7 +138,6 @@ export default class Game extends Phaser.Scene {
         
         this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).on('down', () => {
             console.log(GD);
-            console.log(this.QuestManager.ActiveQuestButtons);
         });
 
         this.input.on( "pointermove", ( pointer: Phaser.Input.Pointer ) => {
