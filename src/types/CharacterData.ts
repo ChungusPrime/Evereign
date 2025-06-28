@@ -1,21 +1,29 @@
 /** This interface represents a save data file */
-interface GameData {
+interface Character {
     CreatedAtTimestamp: string;
     LastSaveTimestamp: string;
     CurrentMap: string;
     Name: string;
     Level: number;
     Race: string;
-    Abilities: { ID: string; Tier: number }[];
+    Abilities: { ID: string; Tier: number, Cooldown: number }[];
     Traits: { ID: string; Tier: number }[];
     Scaling: string;
     Difficulty: string;
     Class: string;
     Campaign: string;
     CurrentHealth: number;
+    MaxHealth: number;
     CurrentMana: number;
+    MaxMana: number;
     MetNPCs: string[];
-
+    Fortitude: number;
+    Versatility: number;
+    Vigor: number;
+    Expertise: number;
+    Personality: number;
+    Fortune: number;
+    Grit: number;
     Inventory: {
         [key: string]: {
             ID: string;
@@ -25,9 +33,13 @@ interface GameData {
             Mods?: { [key: string]: string | null };
         } | null;
     };
-
-
-
+    Hotbar: {
+        [key: string]: {
+            ID: string;
+            Item?: string;
+            Ability?: string;
+        } | null;
+    };
     Quests: {
         ID: string;
         ReadyToHandIn: boolean;
@@ -82,7 +94,6 @@ interface GameData {
     FoundLoreEntries: string[];
     DialogueFlags: string[];
     CompletedMilestones: number[];
-    
     Skills: Skills;
-    Maps: MapData;
+    WorldData: {[key: string]: WorldData};
 }

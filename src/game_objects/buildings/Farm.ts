@@ -16,7 +16,7 @@ export default class Farm extends Building {
     public AssignedFields: Field[] = [];
 
     constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Farm", "farm_1");
+        super( scene, x, y, "Buildings", "farm1");
         return this;
     }
 

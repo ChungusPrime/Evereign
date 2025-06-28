@@ -18,12 +18,9 @@ class LootWindowDisplayObject extends Phaser.GameObjects.Rectangle {
 
         this.LootWindow = LootWindow;
 
-        this.scene.Game.DataManager.ItemData.forEach( (element) => {
-            if ( element.ID == item.ItemID ) {
-                this.ItemName = element.Name;
-                this.ItemSpriteArr = element.Sprite.split("-");
-            }
-        });
+        let Item = this.scene.Game.DataManager.GetItemData(item.ItemID);
+        this.ItemName = Item.Name;
+        this.ItemSpriteArr = Item.Sprite.split("-");
 
         this.ItemSprite = this.scene.add.sprite(this.getLeftCenter().x + 3, this.getLeftCenter().y, this.ItemSpriteArr[0], this.ItemSpriteArr[1]).setOrigin(0, 0.5);
 

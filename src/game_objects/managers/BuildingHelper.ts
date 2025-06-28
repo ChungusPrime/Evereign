@@ -59,7 +59,7 @@ export default class BuildingHelper {
 
         const StaticBuildingData = this.scene.DataManager.GetBuildingData(id);
 
-        const SavedBuildingData = GD.Maps[GD.CurrentMap].Buildings.find((b) => b.ID == id );
+        const SavedBuildingData = GD.WorldData[GD.CurrentMap][id];
         if ( SavedBuildingData !== undefined && SavedBuildingData.Destroyed == true ) return;
 
         let Building = this.CreateBuilding(scene, type, x, y);
@@ -74,7 +74,7 @@ export default class BuildingHelper {
             }
         }
 
-        const VariableBuildingData = GD.Maps[GD.CurrentMap].Buildings.find((b) => b.ID == id );
+        const VariableBuildingData = GD.WorldData[GD.CurrentMap][id];
         if ( VariableBuildingData != null ) {
             Building.VariableData = VariableBuildingData;
             Building.Units = VariableBuildingData.Units;

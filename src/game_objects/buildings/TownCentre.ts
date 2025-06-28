@@ -19,7 +19,7 @@ export default class TownCentre extends Building {
     `;
 
     constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "Town Centre", "towncentre_1");
+        super( scene, x, y, "Buildings", "towncentre1");
         this.scene = scene;
 
         /*if ( this.IsPlayerOwned == true ) {

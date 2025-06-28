@@ -12,7 +12,7 @@ export default class Dwelling extends Building {
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
 
     constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Dwelling", "dwelling_1");
+        super( scene, x, y, "Buildings", "dwelling1");
         return this;
     }
 

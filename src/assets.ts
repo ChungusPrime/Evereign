@@ -13,7 +13,8 @@
 
 // Elyndor
 export const Elyndor: string = require('./images/elyndor.png');
-export const Operative: string = require('./images/own/Human-Operative.png');
+export const HumanOperativeSpritesheet: string = require('./images/own/Human-Operative.png');
+export const HumanOperativeJSON: string = require('./images/own/Human-Operative.json');
 
 // Art
 export const MenuBackground: string = require('./images/MenuBackground2.jpg');
@@ -82,7 +83,7 @@ export const BloodTwo: string = require('./images/Blood2.png');
 export const BloodArcaneOne: string = require('./images/BloodArcane1.png');
 
 // Building Spritesheets
-export const TownCentre: string = require('./images/buildings/TownCentre.png');
+/*export const TownCentre: string = require('./images/buildings/TownCentre.png');
 export const TownCentreNormal: string = require('./images/buildings/TownCentre-n.png');
 export const Dwelling: string = require('./images/buildings/Dwelling.png');
 export const DwellingNormal: string = require('./images/buildings/Dwelling-n.png');
@@ -95,11 +96,14 @@ export const LoggingCamp: string = require('./images/buildings/LoggingCamp.png')
 export const GoblinOutpost: string = require('./images/buildings/GoblinOutpost.png');
 export const GoblinTower: string = require('./images/buildings/GoblinTower.png');
 export const BallistaTower: string = require('./images/buildings/BallistaTower.png');
-export const Ballista: string = require('./images/buildings/Ballista.png');
+export const Ballista: string = require('./images/buildings/Ballista.png');*/
 
-export const BuildingAtlas: string = require('./images/buildings/atlas/BuildingsAtlas.png');
-export const BuildingAtlasNormal: string = require('./images/buildings/atlas/BuildingsAtlas-n.png');
-export const BuildingAtlasJSON: string = require('./images/buildings/atlas/BuildingsAtlas.json');
+//export const BuildingAtlas: string = require('./images/buildings/atlas/BuildingsAtlas.png');
+//export const BuildingAtlasNormal: string = require('./images/buildings/atlas/BuildingsAtlas-n.png');
+//export const BuildingAtlasJSON: string = require('./images/buildings/atlas/BuildingsAtlas.json');
+
+export const Buildings: string = require('./images/own/Buildings.png');
+export const BuildingsJSON: string = require('./images/own/Buildings.json');
 
 // Rogue Adventure Spritesheets
 export const RA_Animated_Water: string = require('./images/rogue-adventure/RA_Animated_Water.png');
@@ -163,6 +167,9 @@ export const Cast2: string = require('./audio/01_Cast.wav'); // Leophaz - Lightn
 export const Hit: string = require('./audio/02_Hit.wav'); // Leophaz - Lightning_magic_SFX
 export const Hit2: string = require('./audio/04_Wind_Hit.wav'); // MiniFantasy - Minifantasy_MagicAndSorcery_SFX
 export const ExplosionHit: string = require('./audio/05_Fire_explosion_05_large.wav'); // Leophaz - 50_RPG_Battle_Magic_SFX
+
+export const InventoryPickup: string = require('./audio/Item_Pick.wav'); // Leophaz Inventory_SFX_Pack
+export const InventoryPutdown: string = require('./audio/Item_Place.wav'); // Leophaz Inventory_SFX_Pack
 
 export function getGroundTiles(): string {
     if (new Date().getMonth() == 9) {

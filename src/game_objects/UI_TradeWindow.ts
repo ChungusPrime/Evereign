@@ -182,7 +182,7 @@ export default class TradeWindow {
 
         this.TraderText.setText(this.scene.Game.DataManager.GetBuildingData(id).Name);
 
-        let Trader = GD.Maps[GD.CurrentMap].Buildings.find( ( building: IBuilding ) => building.ID == id );
+        let Trader = GD.WorldData[GD.CurrentMap][id];
 
         Trader.Selling.forEach( ( item, index: number ) => {
             let Object = new TradeWindowDisplayObject(this, item, index, "Selling");

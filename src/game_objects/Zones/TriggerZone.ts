@@ -16,8 +16,12 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
         this.setInteractive();
 
         this.scene.physics.add.overlap(this, this.scene.PlayerCharacter, () => {
+
             // Get trigger data
-            const TriggerData = this.scene.DataManager.MapData[GD.CurrentMap].Zones.find( (zone) => zone.ID == id );
+            //const TriggerData = GD.WorldData[GD.CurrentMap][id];
+
+            let TriggerData = this.scene.DataManager.MapData[GD.CurrentMap][id];
+
 
             if ( TriggerData.QuestProgressID ) {
                 this.scene.QuestManager.UpdateQuest(TriggerData.QuestProgressID, TriggerData.QuestProgressStep);
@@ -28,7 +32,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
                 Quest.ObjectiveProgress[TriggerData.QuestUnlockStep].Visible = true;
             }
 
-            GD.Maps[GD.CurrentMap].Objects.find( (zone) => zone.ID == id ).Active = false;
+            GD.WorldData[GD.CurrentMap][id].Active = false;
 
             this.destroy();
         });
@@ -36,7 +40,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
         this.scene.physics.add.existing(this);
         this.scene.add.existing(this);
 
-        let savedData = GD.Maps[GD.CurrentMap].Objects.find( (zone) => zone.ID == id );
+        let savedData = GD.WorldData[GD.CurrentMap][id];
 
         if ( !savedData ) {
             return;

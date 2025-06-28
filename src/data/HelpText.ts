@@ -1,19 +1,86 @@
-interface HelpText {
-    [section: string]: string;
-}
-
 const Help: HelpText = {
+
+    "Difficulty - Story": `
+    The Story difficulty is designed for players who want to experience the game without the challenge of combat.\n
+    In this mode, enemies will be significantly weaker, and your character will be much more powerful.\n
+    `,
+
+    "Difficulty - Standard": `
+    The Standard difficulty is the default mode for the game, providing a balanced experience for players.\n
+    In this mode, enemies will be of a similar strength to your character, and you will need to use strategy and skill to defeat them.\n
+    This mode is the recommended difficulty, especially for your first playthrough.\n
+    `,
+
+    "Difficulty - Ultra": `
+    The Ultra difficulty is designed for players who want a challenge.\n
+    In this mode, enemies will be significantly stronger than your character, and you will need to use all of your skills and abilities to defeat them.\n
+    This mode is recommended for experienced players who want a more challenging experience.\n
+    `,
+
+    "Adaptive Scaling": `
+    Adaptive Scaling keeps enemy levels in line with your character's level, but does not scale the difficulty of the game.\n
+    This means that enemies will be of a similar strength to your character, but the game will not become more difficult as your characters level increases.\n`,
+
+    "Fixed Scaling": `
+    Fixed Scaling keeps enemy levels at a fixed value, regardless of your character's level.\n
+    This means that you may encounter enemies that are higher or lower than your current characters level, and you can use this to your advantage, or disadvantage.\n
+    This is the intended way to play the game.\n
+    `,
+
+    "The Midnight Accord": `
+    In the ancient and verdant realm of Arlamore, peace and prosperity have long been the pillars of the kingdom. Ruled by the wise and noble King Arlamore, 
+    the land has flourished under his just and benevolent reign. However, in the shadows of this thriving kingdom, dark forces have begun to stir.
+
+    You are a sage and loyal adviser to the king and have served Arlamore with unwavering dedication. One night, a vision, vivid and harrowing, invaded your dreams. 
+    This vision, unlike any he had experienced before, showed a future where Arlamore lay in ruins, its people suffering under the yoke of unending calamity.
+    
+    The king, though wise, dismissed your vision as a mere nightmare, a product of stress and overwork. Desperate and determined, you took matters into your own hands
+    and decided to embark on a perilous journey to gather allies and warn the people of impending doom.`,
+
+    "Defence of Emberfall Island": `
+    The island of Emberfall, once a peaceful and prosperous land, has been plunged into chaos by the rise of the Shadow Cult.
+    The cult, a sinister organization dedicated to the worship of dark forces, has unleashed a wave of destruction upon the island, leaving its people in despair.
+    You are a brave and skilled warrior, determined to protect the island and its people from the cult's malevolent influence.
+    Your journey begins in the heart of Emberfall, where you must fortify the island's defenses, and survive until help arrives.`,
+
+    "Operative": `
+    Operatives are highly specialised soldiers, equipped to deal with a variety of threats. 
+    Trained in the use of guns, explosives and advanced technology, they are capable of identifying threats from a 
+    safe distance, then taking them down up-close with chaos and speed. 
+    Unique building allows the Operative to remotley call in a variety of offensive strikes.
+    `,
+
+    "Evoker": `
+    Harness the power of the elements to unleash devastating spells. 
+    Unique building allows the evoker to empower their spells with elemental energy by deconstructing magical items.
+    `,
+
 
     "Character Race": `
     Your character's Race determines their starting attributes. All Races grant at least one unique trait to your character
     and can affect your gameplay experience.\n
-    Each race starts with different attribute values, and you can freely choose which of these attributes to increase on level up, 
-    allowing you to learn new abilities and traits.\n`,
+    Each race starts with different base attribute values, and each races attributes increase at different rates per level up.\n`,
 
     "Character Class": `
     Your character's Class provides some starting abilities and traits, as well as provide a small boost to specific attributes.\n
     A characters class does not determine their playstyle, as any character learn any ability or trait in the game, they simply provide a template for a specific archetype.\n
     However, each class has a unique building that can be constructed in your township, providing a unique benefit.\n
+    `,
+
+    "Attributes": `
+    Attributes are the core stats of your character, determining their abilities and effectiveness in combat.\n
+    In addition to the attribute increases provided by your character's race on level up, you will recieve a number of attribute points that you can freely spend to increase your character's attributes.\n
+    Each attribute has a specific effect on your character's performance, such as increasing damage dealt, reducing damage taken, or improving healing.\n
+    Attributes can be increased by leveling up, acquiring traits, or using abilities.\n
+    The attributes are:\n
+    - Fortitude: Increases damage dealt with melee weapons and increases carrying capacity.\n
+    - Versatility: Increases accuracy with ranged weapons and reduces damage taken from ranged attacks.\n
+    - Vigor: Increases maximum health and reduces damage taken from all sources.\n
+    - Expertise: Increases the effectiveness of abilities and reduces cooldown times.\n
+    - Arcana: Increases the effectiveness of magical abilities and reduces mana costs.\n
+    - Personality: Increases the effectiveness of healing and support abilities, as well as improving interactions with NPCs.\n
+    - Fortune: Increases the chance of critical hits and reduces the chance of negative effects.\n
+    - Grit: Increases resistance to negative effects and improves the effectiveness of certain abilities.\n
     `,
 
     "Abilities": `
@@ -37,6 +104,38 @@ const Help: HelpText = {
     Movement controls can be freely rebound in the settings menu.\n
     Your movement speed is determined by your character's Agility attribute, and can be modified by
     your worn equipment, as well as status effects, traits, abilities, or even random events.\n
+    `,
+
+    "Magic": `
+    In ancient times, long before the rise of mortals, only the gods wielded the power of magic.
+    The gods used this magic to create a powerful construct, named Valius, to help them keep the
+    Underlords at bay. Valius was a powerful being, capable of harnessing the power of magic
+    and using it to protect the gods and their creations. However, as time passed, the gods grew
+    complacent and began to neglect their creation. The Underlords, sensing the weakness of the gods,
+    began to invade the realm of the gods, seeking to destroy Valius and claim the power of magic for themselves.
+    Though Valius was destroyed, the gods were able to seal the Underlords away. This event, the Shattering of Valius,
+    marked the end of the Age of Magic, and the beginning of the Age of Mortals. When destroyed, an unknown number of small shards 
+    of Valius were scattered across the world, and these shards are the source of all magic in the world today.\n
+    `,
+
+    "Archotech": `
+    Though magic is commonplace in the world, not all mortals are able to harness its power. As such, many have turned to technology as a means of achieving their goals. 
+    Known as Archotech, the fusion of magic and science, allows mortals to harness the power of magic to power machines and constructions.\n
+    `,
+
+    "The Gods": `
+    The Gods are the ancient beings that created the world and its inhabitants. They are powerful and wise, and their influence can be felt throughout the land.\n
+    Each god has their own unique abilities and traits, and they can be worshipped by mortals to gain their favor.\n
+    The gods are not directly involved in the affairs of mortals, but they can be called upon for aid in times of need.\n
+    `,
+
+    "The Underlords": `
+    The Underlords are the ancient beings that were sealed away by the gods after the Shattering of Valius.\n
+    They are powerful and malevolent, and their influence can be felt throughout the land.\n
+    `,
+
+    "Research": `
+    
     `,
 
     "Construction": 

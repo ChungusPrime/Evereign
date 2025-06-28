@@ -1,5 +1,6 @@
 import UI from "../scenes/UI";
 import { GD } from "../scenes/Game";
+import Campaigns from "../data/Campaigns";
 
 export default class WorldMap {
 
@@ -65,7 +66,7 @@ export default class WorldMap {
                 //if ( current_zoom > 1.5 ) return;
                 this.Camera.zoom += 0.01;
             }
-            console.log(this.Camera.zoom);
+            //console.log(this.Camera.zoom);
         });
 
         this.PlayerIndicator = this.scene.add.rectangle(0, 0, 16, 16, 0xf54242).setVisible(true);
@@ -97,9 +98,10 @@ export default class WorldMap {
 
     public Toggle () {
 
-        const CurrentMap = this.scene.Game.DataManager.GetMapData(GD.CurrentMap);
+        const Campaign = Campaigns.find((c) => c.Name == GD.Campaign);
+        let Type = Campaign.WorldMapInformation[GD.CurrentMap].Type;
 
-        if ( CurrentMap.Type == "Interior" )
+        if ( Type == "Interior" )
             return this.scene.EventLog.NewEvent("You cannot access the world map from here.");
 
         if ( this.Camera.visible ) {

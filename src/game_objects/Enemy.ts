@@ -100,7 +100,7 @@ export default abstract class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.scene.Enemies.remove(this, true, true);
 
         if ( !(this.SpawnLocation instanceof Building) ) {
-            GD.Maps[GD.CurrentMap].Enemies.find((e) => e.ID == this.ID).Alive = false;
+            GD.WorldData[GD.CurrentMap][this.ID].Alive = false;
         }
 
     }

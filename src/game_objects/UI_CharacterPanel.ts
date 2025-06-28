@@ -5,7 +5,7 @@ export default class CharacterPanel {
 
     public scene: UI;
     public Group: Phaser.GameObjects.Group;
-    public Background: Phaser.GameObjects.Rectangle;
+    public Background: Phaser.GameObjects.NineSlice;
     public LifeBG: Phaser.GameObjects.Rectangle;
     public LifeBar: Phaser.GameObjects.Image;
     public LifeText: Phaser.GameObjects.Text;
@@ -23,7 +23,7 @@ export default class CharacterPanel {
 
         this.Group.clear(true, true);
 
-        this.Background = this.scene.add.rectangle(3, this.scene.cameras.main.height - 3, 720, 70, 0x000000, 0.2).setOrigin(0, 1);
+        this.Background = this.scene.add.nineslice(0, this.scene.cameras.main.height, "Kenney-UI", "panelInset_blue", 1024, 70, 12, 12, 12, 12).setOrigin(0, 1).setDepth(0);
 
         this.LifeBG = this.scene.add.rectangle(this.Background.getTopLeft().x, this.Background.getTopLeft().y + 3, 340, 30, 0x000000, 1).setOrigin(0, 0);
         this.LifeBar = this.scene.add.image(this.LifeBG.getTopLeft().x, this.LifeBG.getTopLeft().y, "red-bar").setDisplaySize(this.LifeBG.width, 30).setOrigin(0, 0);
@@ -35,35 +35,6 @@ export default class CharacterPanel {
 
         this.UpdateVitalsBars();
 
-        // Bottom Left Character Panel;
-        /*let ClassAbilities = this.scene.Game.DataManager.GetClass(GD.Class).abilities;
-        if ( ClassAbilities !== undefined ) {
-            let X = 5;
-            for (const [key, value] of Object.entries(ClassAbilities)) {
-
-                let rect = this.scene.add.nineslice(X, this.Background.getBottomLeft().y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 1);
-
-                const sprite = value.sprite.split("-");
-                let icon = this.scene.add.sprite(rect.getCenter().x, rect.getCenter().y, sprite[0], sprite[1]).setOrigin(0.5).setDisplaySize(64, 64);
-                let input = null;
-                if ( key == "Passive" ) {
-                    input = this.scene.add.sprite(rect.getTopLeft().x, rect.getTopLeft().y, "inputs", 94).setOrigin(0).setDisplaySize(24, 24);
-                } else if ( key == "Ability_1" ) {
-                    input = this.scene.add.sprite(rect.getTopLeft().x, rect.getTopLeft().y, "inputs", 77).setOrigin(0).setDisplaySize(24, 24);
-                } else if ( key == "Ability_2" ) {
-                    input = this.scene.add.sprite(rect.getTopLeft().x, rect.getTopLeft().y, "inputs", 85).setOrigin(0).setDisplaySize(24, 24);
-                } else if ( key == "Ability_3" ) {
-                    input = this.scene.add.sprite(rect.getTopLeft().x, rect.getTopLeft().y, "inputs", 52).setOrigin(0).setDisplaySize(24, 24);
-                } else if ( key == "Ability_4" ) {
-                    input = this.scene.add.sprite(rect.getTopLeft().x, rect.getTopLeft().y, "inputs", 87).setOrigin(0).setDisplaySize(24, 24);
-                }
-                this.Group.add(rect);
-                this.Group.add(icon);
-                this.Group.add(input);
-                X += 69;
-            }
-        }*/
-
         this.Group = this.Group.addMultiple([
             this.Background,
             this.LifeBG,
@@ -74,16 +45,23 @@ export default class CharacterPanel {
             this.ManaText
         ]);
 
+        Object.entries(GD.Hotbar).forEach( (slot, index) => {
+            let X = this.LifeBG.getTopRight().x + 10 + (index * 64);
+            let Y = this.LifeBG.getTopRight().y;
+            let rect = this.scene.add.nineslice(X, Y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 0);
+        });
+
+        
+
+
+
     }
 
     UpdateVitalsBars () {
-
-        let HealthWidth = (this.scene.Game.PlayerCharacter.Health / this.scene.Game.PlayerCharacter.MaxHealth * this.LifeBG.width);
+        let HealthWidth = (GD.CurrentHealth / GD.MaxHealth * this.LifeBG.width);
         this.LifeBar.setDisplaySize(HealthWidth, 30);
-
-        let ManaWidth = (this.scene.Game.PlayerCharacter.Mana / this.scene.Game.PlayerCharacter.MaxMana * this.LifeBG.width);
+        let ManaWidth = (GD.CurrentMana / GD.MaxHealth * this.ManaBG.width);
         this.ManaBar.setDisplaySize(ManaWidth, 30);
-
     }
 
 }

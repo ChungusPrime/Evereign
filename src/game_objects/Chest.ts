@@ -24,19 +24,19 @@ export default class Chest extends Phaser.GameObjects.Sprite {
                 return this.scene.UI.EventLog.NewEvent("That is too far away");
             }
 
-            if ( GD.Maps[GD.CurrentMap].Objects.find((object) => object.ID == this.ID).Unlocked == true ) {
+            if ( GD.WorldData[GD.CurrentMap][this.ID].Unlocked == true ) {
                 return this.scene.UI.LootWindow.Show(id);
             }
 
             // Check if chest needs a key
-            let StaticData = this.scene.DataManager.MapData[GD.CurrentMap].Objects.find( (object) => object.ID == this.ID );
+            let StaticData = this.scene.DataManager.MapData[GD.CurrentMap][this.ID];
             if ( StaticData.RequiresItem !== undefined ) {
                 const item = this.scene.Inventory.Items.find( (item) => item.getData('ItemID') == StaticData.RequiresItem );
                 if ( item == undefined ) {
                     return this.scene.UI.EventLog.NewEvent("You dont have the required item to unlock this chest");
                 } else {
                     this.scene.UI.EventLog.NewEvent(`You unlock the chest with ${item.name}`);
-                    let Chest = GD.Maps[GD.CurrentMap].Objects.find( (object) => object.ID == this.ID );
+                    let Chest = GD.WorldData[GD.CurrentMap][this.ID];
                     Chest.Unlocked = true;
                 }
             }

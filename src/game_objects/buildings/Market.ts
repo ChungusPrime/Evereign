@@ -8,7 +8,7 @@ export default class Market extends Building {
     public AggroZone: boolean = false;
 
     constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Market", "market_1");
+        super( scene, x, y, "Buildings", "market1");
         return this;
     }
 

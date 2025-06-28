@@ -16,7 +16,7 @@ export default class BallistaTower extends Building {
     public Radius: Phaser.GameObjects.Arc;
 
     constructor ( scene: Town, x: number, y: number) {
-        super( scene, x, y, "Buildings", "dwelling_1");
+        super( scene, x, y, "Buildings", "BallistaTower");
         this.Radius = this.scene.add.circle(this.getCenter().x, this.getCenter().y, 200, 0x6666ff, 0.2).setOrigin(0.5).setStrokeStyle(2, 0x0000ff, 0.75);
         this.scene.add.existing(this.Radius);
         this.Attachment = this.scene.add.sprite(this.getCenter().x, this.getCenter().y, "Ballista");

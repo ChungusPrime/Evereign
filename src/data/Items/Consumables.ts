@@ -7,7 +7,35 @@ const Consumables: ItemData[] = [
         Desc: "A simple brew known for its light healing properties.",
         Stackable: true,
         StackSize: 5,
-        InitialValue: { ID: "marigold_brew", Quantity: 1 }
+        InitialValue: { ID: "marigold_brew", Quantity: 1 },
+        Craftable: true,
+        Materials: [
+            { ID: "marigold", Amount: 1 },
+        ],
+        CraftingTime: 10,
+        CraftingOutput: { ID: "marigold_brew", Quantity: 1 },
+        CraftingSkill: "Alchemy",
+        CraftingSkillLevel: 1,
+        CraftingSkillXP: 10,
+    },
+
+    {
+        ID: "bloomberry_decoction",
+        Name: "Bloomberry Decoction",
+        Sprite: "potions-482",
+        Desc: "A decoction made from Bloomberries, known to restore mana.",
+        Stackable: true,
+        StackSize: 5,
+        InitialValue: { ID: "bloomberry_decoction", Quantity: 1 },
+        Craftable: true,
+        Materials: [
+            { ID: "bloomberry", Amount: 1 },
+        ],
+        CraftingTime: 10,
+        CraftingOutput: { ID: "bloomberry_decoction", Quantity: 1 },
+        CraftingSkill: "Alchemy",
+        CraftingSkillLevel: 1,
+        CraftingSkillXP: 10,
     },
     
     {
@@ -15,7 +43,8 @@ const Consumables: ItemData[] = [
         Name: "Apprentince Mage's Spellbook",
         Sprite: "librarium-108",
         Desc: "The Spellbook of a slain Mage, containing notes on simple spells and incantations. Can be sold, or when used, grants 20 exp points.",
-        Stackable: false
+        Stackable: false,
+        Craftable: false,
     },
 
     {

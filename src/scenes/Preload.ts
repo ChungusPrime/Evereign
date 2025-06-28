@@ -56,10 +56,19 @@ export default class Preload extends Phaser.Scene {
         this.load.audio('KineticBoltHit', [Assets.Hit2]);
         this.load.audio('ExplosionHit', [Assets.ExplosionHit]);
         this.load.audio('Money', [Assets.Money]);
+        this.load.audio('InventoryPickup', [Assets.InventoryPickup]);
+        this.load.audio('InventoryPutdown', [Assets.InventoryPutdown]);
 
         this.load.spritesheet("Elyndor", Assets.Elyndor, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("Operative", Assets.Operative, { frameWidth: 32, frameHeight: 32 });
-        
+
+        //this.load.spritesheet("Operative", Assets.Operative, { frameWidth: 32, frameHeight: 32 });
+
+        this.load.aseprite({
+            key: 'Operative',
+            textureURL: Assets.HumanOperativeSpritesheet,
+            atlasURL: Assets.HumanOperativeJSON,
+        });
+
         this.load.spritesheet("BloodOne", Assets.BloodOne, { frameWidth: 100, frameHeight: 100 });
         this.load.spritesheet("BloodTwo", Assets.BloodTwo, { frameWidth: 100, frameHeight: 100 });
         this.load.spritesheet("BloodArcaneOne", Assets.BloodArcaneOne, { frameWidth: 100, frameHeight: 100 });
@@ -82,16 +91,6 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("Detail", Assets.Detail, { frameWidth: 162, frameHeight: 162 });
 
         // Buildings
-        this.load.spritesheet('Farm', Assets.Farm, {frameWidth: 224, frameHeight: 224});
-        this.load.spritesheet('Inn', Assets.Inn, {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet('GoblinOutpost', Assets.GoblinOutpost, {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet('GoblinTower', Assets.GoblinTower, {frameWidth: 64, frameHeight: 64});
-        this.load.spritesheet('Warehouse', Assets.Warehouse, {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet('Mine', Assets.Mine, {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet('Market', Assets.TradePost, {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet('LoggingCamp', Assets.LoggingCamp, {frameWidth: 128, frameHeight: 128});
-        this.load.spritesheet('BallistaTower', Assets.BallistaTower, {frameWidth: 64, frameHeight: 64});
-        this.load.image('Ballista', Assets.Ballista);
         this.load.spritesheet("combat", Assets.CombatSheet, { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet("wood-tile", Assets.WoodTile, { frameWidth: 82, frameHeight: 82 });
         this.load.spritesheet("characters", Assets.Characters, { frameWidth: 16, frameHeight: 16 });
@@ -100,9 +99,9 @@ export default class Preload extends Phaser.Scene {
 
         this.load.atlas({
             key: 'Buildings', 
-            textureURL: Assets.BuildingAtlas,
-            normalMap: Assets.BuildingAtlasNormal,
-            atlasURL: Assets.BuildingAtlasJSON 
+            textureURL: Assets.Buildings,
+            //normalMap: Assets.BuildingsNormalMap,
+            atlasURL: Assets.BuildingsJSON 
         });
 
         this.load.image('WillowvaleMap', Assets.WillowvaleMap);
@@ -155,26 +154,6 @@ export default class Preload extends Phaser.Scene {
         this.load.aseprite({ key: 'Panel-Borders', textureURL: Assets.PanelBordersImage, atlasURL: Assets.PanelBordersJSON });
         this.load.atlas({ key: 'Kenney-UI', textureURL: Assets.KenneyUIImage, atlasURL: Assets.KenneyUIJSON });
 
-        this.load.spritesheet({
-            key: 'TownCentre',
-            url: Assets.TownCentre,
-            normalMap: Assets.TownCentreNormal,
-            frameConfig: {
-                frameWidth: 224,
-                frameHeight: 224
-            }
-        });
-
-        this.load.spritesheet({
-            key: 'Dwelling',
-            url: Assets.Dwelling,
-            normalMap: Assets.DwellingNormal,
-            frameConfig: {
-                frameWidth: 128,
-                frameHeight: 128
-            }
-        });
-
         this.load.spritesheet("Explosion1Sheet", Assets.Explosion1, { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet("Explosion2Sheet", Assets.Explosion2, { frameWidth: 64, frameHeight: 64 });
 
@@ -184,6 +163,8 @@ export default class Preload extends Phaser.Scene {
     }
 
     create () {
+
+        this.anims.createFromAseprite('Operative');
 
         this.anims.create({
             key: "rain-end", 
@@ -222,12 +203,12 @@ export default class Preload extends Phaser.Scene {
             repeat: -1
         });
 
-        this.anims.create({ 
+        /*this.anims.create({ 
             key: "OperativeWalk", 
             frames: this.anims.generateFrameNumbers('Operative', { frames: [ 1, 2, 3, 4 ] }),
             frameRate: 5,
             repeat: -1
-        });
+        });*/
 
         const animations = [
             { key: 'GoblinSlingerWalk', frames: [ 118, 119 ] },

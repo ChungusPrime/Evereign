@@ -6,14 +6,14 @@ import DisplayItemObject from "../DisplayItemObject";
 
 // Static Data
 import FlagData from '../../data/FlagData';
-import ClassData from '../../data/ClassData';
-import BuildingData from '../../data/BuildingData';
+import ClassData from '../../data/Character/Classes';
+import BuildingData from '../../data/Buildings';
 import DialogueData from '../../data/DialogueData';
-import FirstNames from "../../data/FirstNames";
-import Lastnames from "../../data/LastNames";
+import FirstNames from "../../data/Character/FirstNames";
+import Lastnames from "../../data/Character/LastNames";
 import ItemData from "../../data/ItemData";
 import QuestData from "../../data/QuestData";
-import StaticMapData from "../../data/StaticMapData";
+import CampaignData from "../../data/Campaigns";
 
 // Dynamic Data
 import GameData from "../../data/DefaultGameData";
@@ -23,31 +23,36 @@ export default class DataManager {
     private scene: Game;
 
     // These are all static data objects, they never change
-    public CharacterData: GameData;
+    public CharacterData: Character;
     public BuildingData: BuildingData[] = BuildingData;
-    public ClassData: ClassData = ClassData;
+    //public ClassData: ClassData = ClassData;
     public FlagData: GameFlags = FlagData;
     public DialogueData: DialogueData = DialogueData;
-    public ItemData: ItemData[] = ItemData;
+    public ItemData = ItemData;
     public QuestData: QuestData[] = QuestData;
-    public MapData: {[key: string]: StaticMapData} = StaticMapData;
+    public CampaignData: Campaign[] = CampaignData;
+    public MapData: {[key: string]: WorldData}; // This will be set when the map is loaded
 
     // This is data used by the game as its running
     // A copy of this is saved to localstorage as the savegame
-    public GameData: GameDataInterface = GameData;
+    public GameData: GameData = GameData;
 
     constructor ( scene: Game ) {
         this.scene = scene;
 
         let SavedData = JSON.parse(localStorage.getItem("EvereignData"));
-        console.log(SavedData);
+        //console.log(SavedData);
 
         // Get character data from local storage
         this.CharacterData = SavedData.Characters[this.scene.CharacterName];
-        console.log(this.CharacterData);
+        //console.log(this.CharacterData);
+
+        this.MapData = CampaignData.find( (campaign) => campaign.ID == this.CharacterData.Campaign ).WorldData;
     }
 
     public SaveGame () {
+
+        return; // TODO: Implement saving
 
         let SaveData = this.CharacterData;
         SaveData.X = this.scene.PlayerCharacter.x;
@@ -62,13 +67,13 @@ export default class DataManager {
         //this.scene.Inventory.Items.forEach( (item: DisplayItemObject) => {
             //SaveData.Inventory.push({ ID: item.getData('ItemID'), Quantity: item.getData('ItemQuantity') });
         //});
-        SaveData.Maps[SaveData.CurrentMap].Buildings.forEach( (building) => {
+        /*SaveData.WorldData[SaveData.CurrentMap].Buildings.forEach( (building) => {
             if ( building.Units !== undefined ) {
                 building.Units.forEach( (unit) => { unit.Alive = 0 });
             }
-        });
+        });*/
 
-        console.log(SaveData);
+        //(SaveData);
 
         let SavedData = JSON.parse(localStorage.getItem("EvereignData"));
 
@@ -95,21 +100,21 @@ export default class DataManager {
     }
 
     public GetClass ( ClassName: string ) {
-        return this.ClassData[ClassName];
+        //return this.ClassData[ClassName];
     }
 
     public GetItemData ( ID: string ) {
-        return this.ItemData.find((data: ItemData) => data.ID == ID )
+        return ItemData[ID];
     }
 
     public GetAbility ( ClassName: string, Ability: string ) {
-        let ClassData = this.ClassData[ClassName].abilities;
+        /*let ClassData = this.ClassData[ClassName].abilities;
         if ( ClassData == undefined ) {
             console.error(`Ability ${Ability} not found in class ${ClassName}`);
             return;
         } else {
             return ClassData[Ability];
-        }
+        }*/
     }
 
     public GetMapData ( MapName: string ) {
@@ -125,26 +130,34 @@ export default class DataManager {
     }
 
     public GetChestLoot ( ID: number ) : LootItem[] | null {
-        return this.CharacterData.Maps[this.CharacterData.CurrentMap].Objects.find( (e) => e.ID == ID ).Loot ?? null;
+        return this.CharacterData.WorldData[this.CharacterData.CurrentMap][ID].Loot ?? null;
     }
 
     public GetBuildingData ( ID: number ) : StaticBuildingData | null {
         let MapData = this.GetMapData(this.CharacterData.CurrentMap);
-        return MapData.Buildings.find( (e) => e.ID == ID ) ?? null;
+        const obj = MapData[ID];
+        if (obj && typeof obj.ID !== "undefined") {
+            return obj as StaticBuildingData;
+        }
+        return null;
     }
 
-    public GetEnemyData ( ID: number ) : { ID: number; OnDestroyAddFlag: number; } | null {
+    public GetEnemyData ( ID: number ) : { ID: number; OnDestroyAddFlag?: number; } | null {
         let MapData = this.GetMapData(this.CharacterData.CurrentMap);
-        return MapData.Enemies.find( (e) => e.ID == ID ) ?? null;
+        const obj = MapData[ID];
+        if (obj && typeof obj.ID === "number") {
+            return obj as { ID: number; OnDestroyAddFlag?: number; };
+        }
+        return null;
     }
 
-    public GetObjectData ( ID: number ): IObject {
-        let res = this.CharacterData.Maps[this.CharacterData.CurrentMap].Objects.find( ( object ) => object.ID == ID );
+    public GetObjectData ( ID: number ): any {
+        let res = this.CharacterData.WorldData[this.CharacterData.CurrentMap][ID];
         return res;
     }
 
     public GetBuildingUnits ( id: number ) {
-        let res = this.CharacterData.Maps[this.CharacterData.CurrentMap].Buildings.find( ( building ) => building.ID == id ).Units;
+        let res = this.CharacterData.WorldData[this.CharacterData.CurrentMap][id].Units;
         return res;
     }
 

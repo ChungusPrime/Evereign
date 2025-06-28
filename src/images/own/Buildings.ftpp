@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "C:\\code\\Evereign\\src\\images\\own",
+  "images": [
+    {
+      "name": "BallistaTower.png",
+      "path": "C:/code/Evereign/src/images/own/BallistaTower.png",
+      "folder": ""
+    },
+    {
+      "name": "church1.png",
+      "path": "C:/code/Evereign/src/images/own/church1.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling1.png",
+      "path": "C:/code/Evereign/src/images/own/dwelling1.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling2.png",
+      "path": "C:/code/Evereign/src/images/own/dwelling2.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling3.png",
+      "path": "C:/code/Evereign/src/images/own/dwelling3.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling4.png",
+      "path": "C:/code/Evereign/src/images/own/dwelling4.png",
+      "folder": ""
+    },
+    {
+      "name": "farm1.png",
+      "path": "C:/code/Evereign/src/images/own/farm1.png",
+      "folder": ""
+    },
+    {
+      "name": "field.png",
+      "path": "C:/code/Evereign/src/images/own/field.png",
+      "folder": ""
+    },
+    {
+      "name": "goblinoutpost1.png",
+      "path": "C:/code/Evereign/src/images/own/goblinoutpost1.png",
+      "folder": ""
+    },
+    {
+      "name": "inn1.png",
+      "path": "C:/code/Evereign/src/images/own/inn1.png",
+      "folder": ""
+    },
+    {
+      "name": "loggingcamp.png",
+      "path": "C:/code/Evereign/src/images/own/loggingcamp.png",
+      "folder": ""
+    },
+    {
+      "name": "market1.png",
+      "path": "C:/code/Evereign/src/images/own/market1.png",
+      "folder": ""
+    },
+    {
+      "name": "mine1.png",
+      "path": "C:/code/Evereign/src/images/own/mine1.png",
+      "folder": ""
+    },
+    {
+      "name": "towncentre1.png",
+      "path": "C:/code/Evereign/src/images/own/towncentre1.png",
+      "folder": ""
+    },
+    {
+      "name": "warehouse1.png",
+      "path": "C:/code/Evereign/src/images/own/warehouse1.png",
+      "folder": ""
+    }
+  ],
+  "folders": [],
+  "packOptions": {
+    "textureName": "Buildings",
+    "textureFormat": "png",
+    "removeFileExtension": true,
+    "prependFolderName": false,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "JSON (hash)",
+    "fileName": "pack-result",
+    "savePath": "C:\\code\\Evereign\\src\\images\\own",
+    "width": 2048,
+    "height": 2048,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 0,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}

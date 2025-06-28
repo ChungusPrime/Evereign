@@ -19,7 +19,33 @@ declare module "*.mp3" {
 }
 
 declare module 'phaser-navmesh';
-declare module 'phaser3_gui_inspector';
+
+interface GameData {
+    Controls: {
+        [key: string]: string;
+        Interact: string;
+        Use_Hotbar_1: string;
+        Use_Hotbar_2: string;
+        Use_Hotbar_3: string;
+        Use_Hotbar_4: string;
+        Use_Hotbar_5: string;
+        Use_Hotbar_6: string;
+        Use_Hotbar_7: string;
+        Use_Hotbar_8: string;
+        Use_Hotbar_9: string;
+        Use_Hotbar_10: string;
+        Weapon_Attack: string;
+        Use_Offhand: string;
+        Move_Up: string;
+        Move_Down: string;
+        Move_Left: string;
+        Move_Right: string;
+    };
+    Characters: {
+        [key: string]: Character;
+    }
+}
+
 
 interface Abilities {
     [key: string]: {
@@ -28,29 +54,6 @@ interface Abilities {
         Damage: AbilityDamageArray,
         CooldownMax: number
     }
-}
-
-interface RaceData {
-
-    // Name of the feat
-    name: string;
-
-    // Description of the feat
-    description: string;
-
-    // Unique racial trait
-    starting_trait: string;
-
-    // Base race attributes and their values
-    base_attributes: {
-        [key: string]: number; 
-    }
-
-    // Base race attributes and increased by these per level
-    attributes_per_level: {
-        [key: string]: number; 
-    }
-    
 }
 
 interface AbilityDamageArray {
@@ -62,26 +65,16 @@ interface AbilityDamageArray {
     }[]
 }
 
-interface StaticMapData {
-    MapName: string;
-    Resources: Array<string>;
-    Towns?: any;
-    Buildings?: StaticBuildingData[];
-    Enemies?: Array<{ ID: number, OnDestroyAddFlag: number }>;
-    Objects?: Array<{ ID: number, Type: string, Loot?: { ItemID: string, Amount: number }[], RequiresItem?: string, Unlocked?: boolean, RequiresActivatedSwitches?: number[] }>;
-    Zones: { 
-        ID: number;
-        Name: string;
-        Type: string;
-        DestinationX?: number;
-        DestinationY?: number;
-        TransitionToMap?: string;
-        QuestProgressID?: string;
-        QuestProgressStep?: number;
-        QuestUnlockStep?: number;
-    }[];
-    Type: string;
-    Music: string;
+interface RaceData {
+    name: string;
+    description: string;
+    starting_trait: string;
+    base_attributes: {
+        [key: string]: number; 
+    }
+    attributes_per_level: {
+        [key: string]: number; 
+    }
 }
 
 interface StaticBuildingData { 
@@ -174,50 +167,9 @@ interface Resource {
     quantity: number;
 }
 
-interface ClassData {
-    [key: string]: { 
-        unlocked: boolean,
-		walk_animation: string,
-		classIconSprite: string,
-        stats?: { baseHealth: number, healthPerLevel: number, baseMana: number, manaPerLevel: number },
-        abilities?: AbilityData
-    }
-}
-
-interface AbilityData {
-    [key: string]: {
-        name: string;
-        resource_cost: number;
-        type?: string;
-        charge_time?: number;
-        cooldown?: number;
-        sprite: string;
-        description: string;
-        parameters?: any;
-        unlock_cost?: number;
-    }
-}
-
 interface Lore {
     key: string;
     text: string;
-}
-
-interface SaveData {
-    CurrentMap: string;
-    X: number;
-    Y: number;
-    Gold: number;
-    CreatedAtTimestamp: string;
-    LastTimestamp: string;
-    Resources: ResourceData;
-    Flags: Array<number>;
-    Activity: {
-        delta: number;
-        type: string | null;
-    },
-    Character: any;
-    MapData: any;
 }
 
 interface GameFlags {
@@ -254,49 +206,76 @@ interface BestiaryData {
     }
 }
 
-interface GameDataInterface {
-    Controls: {
-        Controls_Interact: string;
-        Controls_Use_Hotbar_1: string;
-        Controls_Use_Hotbar_2: string;
-        Controls_Use_Hotbar_3: string;
-        Controls_Use_Hotbar_4: string;
-        Controls_Use_Hotbar_5: string;
-        Controls_Weapon_Attack: string;
-        Controls_Use_Ability_1: string;
-        Controls_Use_Ability_2: string;
-        Controls_Use_Ability_3: string;
-        Controls_Use_Ability_4: string;
-        Controls_Use_Ability_5: string;
-        Controls_Move_Up: string;
-        Controls_Move_Down: string;
-        Controls_Move_Left: string;
-        Controls_Move_Right: string;
-    };
-    Characters: {
-        [key: string]: GameData;
-    }
+interface Campaign {
+    ID: string;
+    Name: string;
+    Description: string;
+    WorldData: {[key: string]: WorldData};
+    DefaultWorldData: {[key: string]: WorldData};
+    StartingMap?: string,
+    StartingX?: number,
+    StartingY?: number,
+    WorldMapInformation?: {[key: string]: {
+        Name: string;
+        Description: string;
+        Image: string;
+        Size: { Width: number, Height: number };
+        MapName: string;
+        Type: string;
+        Resources?: Array<string>;
+        Music?: string;
+    }};
 }
 
-interface ItemData {
-    ID: string,
-    Name: string,
-    Sprite: string,
-    Desc: string,
-    Craftable?: boolean;
-    Components?: any;
-    Slot?: string;
-    Properties?: any;
-    Stackable: boolean;
-    StackSize?: number;
-    Sound?: string;
-    Moddable?: boolean;
-    Category?: string;
-    Type?: string;
-    ModdableParts?: string[];
-    DamageModifier?: number;
-    Materials?: { ID: string, Amount: number }[];
-    InitialValue?: any;
+interface WorldData {
+    [key: string]: {
+        Alive?: boolean;
+        Active?: boolean;
+        Destroyed?: boolean;
+        Name?: string;
+        Level?: number;
+        Unlocked?: boolean;
+        Units?: IUnit[];
+        QuestProgressID?: string;
+        QuestProgressStep?: number;
+        Person?: string;
+        QuestUnlockStep?: number;
+        Selling?: {
+            ID: string;
+            QuantityMin?: number;
+            QuantityMax?: number;
+            CurrentQuantity?: number;
+            PriceMin?: number;
+            PriceMax?: number;
+            CurrentPrice?: number;
+            Price?: number;
+            Amount?: number;
+        }[];
+        Buying?: {
+            ID: string;
+            QuantityMin?: number;
+            QuantityMax?: number;
+            CurrentQuantity?: number;
+            PriceMin?: number;
+            PriceMax?: number;
+            CurrentPrice?: number;
+            Price?: number;
+            Amount?: number;
+        }[];
+        RequiresItem?: string;
+        PeopleAvailableForHire?: {
+            QuantityMax: number;
+            Types: string[];
+        }
+        RequiresActivatedSwitches?: number[];
+        OnDestroyDisableObstacle?: number[];
+        ID?: number;
+        Type?: string;
+        Loot?: LootItem[];
+        TransitionToMap?: string;
+        DestinationX?: number;
+        DestinationY?: number;
+    };
 }
 
 interface CurrencyData {
@@ -309,17 +288,8 @@ interface EquipmentSlot {
     [key: string]: number | null;
 }
 
-interface Equipment {
-    Chest: EquipmentSlot;
-    Feet: EquipmentSlot;
-    Hands: EquipmentSlot;
-    Head: EquipmentSlot;
-    Legs: EquipmentSlot;
-    Ring_1: EquipmentSlot;
-    Ring_2: EquipmentSlot;
-    Neck: EquipmentSlot;
-    MainHand: EquipmentSlot;
-    OffHand: EquipmentSlot;
+interface HelpText {
+    [section: string]: string;
 }
 
 interface Skill {
@@ -330,37 +300,6 @@ interface Skill {
 
 interface Skills {
     [key: string]: Skill;
-}
-
-interface Class {
-    Unlocked: boolean;
-    Level: number;
-    XP: number;
-    Passive_Unlocked: boolean;
-    Ability_1_Unlocked: boolean;
-    Ability_1_Param_1_Level: number;
-    Ability_1_Param_2_Level: number;
-    Ability_1_Param_3_Level: number;
-    Ability_1_Param_Legendary: boolean;
-    Ability_2_Unlocked: boolean;
-    Ability_2_Param_1_Level: number;
-    Ability_2_Param_2_Level: number;
-    Ability_2_Param_3_Level: number;
-    Ability_2_Param_Legendary: boolean;
-    Ability_3_Unlocked: boolean;
-    Ability_3_Param_1_Level: number;
-    Ability_3_Param_2_Level: number;
-    Ability_3_Param_3_Level: number;
-    Ability_3_Param_Legendary: boolean;
-    Ability_4_Unlocked: boolean;
-    Ability_4_Param_1_Level: number;
-    Ability_4_Param_2_Level: number;
-    Ability_4_Param_3_Level: number;
-    Ability_4_Param_Legendary: boolean;
-}
-
-interface Classes {
-    [key: string]: Class;
 }
 
 interface MapData {
@@ -376,7 +315,6 @@ interface Region {
 interface IObject {
     ID: number;
     Type: string;
-    Name: string;
     Loot?: LootItem[];
     RequiresItem?: number;
     RequiresActivatedSwitches?: number[];

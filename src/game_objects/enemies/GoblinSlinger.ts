@@ -7,12 +7,9 @@ export default class GoblinSlinger extends Enemy {
 
     public Name: string = "Goblin Slinger";
     public WalkAnimation: string = "GoblinSlingerWalk";
-
     public AttackRange: number = 200;
-
     public Type: string = "Ranged";
     public SpawnLocation: Building | { x: number, y: number };
-    
     public GoldValue: number = 3;
     public ExpValue: number = 5;
     public LootTable: any = [];
@@ -22,11 +19,9 @@ export default class GoblinSlinger extends Enemy {
     public targetX: number;
     public targetY: number;
     public MovementCooldown: number = 3000;
-
     public Health: number = 6;
     public MaxHealth: number;
     public MovementSpeed: number = 50;
-
     public AttackCooldown: number = 1000;
     public Abilities: Abilities = {
 

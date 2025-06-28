@@ -60,7 +60,6 @@ const FirstNames: string[] = [
     'Shaun',
     'Thomas',
     'Terrence',
-    'Tanya',
     'Ulrich',
     'Victoria',
     'Vincent',

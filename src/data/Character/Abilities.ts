@@ -7,12 +7,12 @@ const AbilityData: any = [
         sprite: "SkillsA-3",
         type: "Buff",
         cooldown: 10000,
-        description: "Load your shotgun with incendiary rounds, causing pellets to deal fire damage each second for 5 seconds.",
+        description: "Load your Scattergun with incendiary rounds, causing pellets to deal fire damage each second for 5 seconds.",
         requires_weapon_equipped: true,
-        weapon_type: "shotgun",
+        weapon_type: "Scattergun",
         apply_effect: "incendiary_shot",
         apply_effect_duration: 5000,
-        requires_trait: "shotgun_novice",
+        requires_trait: "Scattergun_novice",
     },
 
     {
@@ -38,7 +38,6 @@ const AbilityData: any = [
         requires_weapon_equipped: false,
         requires_trait: "arco_tech_novice",
     },
-
 
     {
         name: "Pyro Burst",

@@ -13,7 +13,7 @@ export default class Obstacle extends Phaser.Physics.Arcade.Sprite {
         super( scene, x, y, sheet, frame );
 
         this.ID = id;
-        this.StaticData = this.scene.DataManager.MapData[GD.CurrentMap].Objects.find((object) => object.ID == this.ID);
+        this.StaticData = this.scene.DataManager.MapData[GD.CurrentMap][this.ID];
         this.ObjectData = this.scene.DataManager.GetObjectData(id);
 
         this.scene.add.existing(this);
@@ -36,7 +36,7 @@ export default class Obstacle extends Phaser.Physics.Arcade.Sprite {
     }
 
     Destroy () {
-        this.scene.DataManager.GameData.Characters[0].Maps[this.scene.DataManager.GameData.Characters[0].CurrentMap].Objects.find((o) => o.ID == this.ID).Active = false;
+        GD.WorldData[GD.CurrentMap][this.ID].Active = false;
         this.setVisible(false);
         this.setActive(false);
         this.disableBody();

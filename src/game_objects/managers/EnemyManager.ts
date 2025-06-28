@@ -14,7 +14,7 @@ export default class EnemyManager {
     }
 
     public SpawnMapEnemy ( enemy: Phaser.Types.Tilemaps.TiledObject ) {
-        let Data = GD.Maps[GD.CurrentMap].Enemies.find((e) => e.ID == enemy.id);
+        let Data = GD.WorldData[GD.CurrentMap][enemy.id];
         if ( Data == null ) return false;
         if ( Data.Alive == false ) return; //this.scene.Enemies.remove(Enemy, true, true);
         let X = enemy.x ?? 0;

@@ -22,7 +22,7 @@ export default class GoblinOutpost extends Building {
     public CurrentSpawnCount: number = 0;
     
     constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "Goblin Outpost", "goblin_outpost_1");
+        super( scene, x, y, "Buildings", "goblinoutpost1");
         this.scene = scene;
         this.setOrigin(0, 1);
     }
@@ -63,7 +63,7 @@ export default class GoblinOutpost extends Building {
                 });
             });
 
-            GD.Maps[GD.CurrentMap].Buildings.find((building) => building.ID == this.ID).Destroyed = true;
+            GD.WorldData[GD.CurrentMap][this.ID].Destroyed = true;
 
             this.scene.Buildings.remove(this, true, true);
             return;

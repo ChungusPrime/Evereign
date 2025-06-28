@@ -13,7 +13,7 @@ export default class Warehouse extends Building {
     public AggroZone: boolean = false;
 
     constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Warehouse", "warehouse_1");
+        super( scene, x, y, "Buildings", "warehouse1");
         return this;
     }
 

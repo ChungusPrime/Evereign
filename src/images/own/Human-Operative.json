@@ -1,0 +1,58 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 8, "y": 2, "w": 22, "h": 30 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 500
+   },
+   "1": {
+    "frame": { "x": 26, "y": 1, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 8, "y": 2, "w": 22, "h": 30 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 500
+   },
+   "2": {
+    "frame": { "x": 1, "y": 34, "w": 24, "h": 32 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 9, "y": 2, "w": 22, "h": 30 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 500
+   },
+   "3": {
+    "frame": { "x": 26, "y": 34, "w": 23, "h": 32 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 9, "y": 2, "w": 21, "h": 30 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 500
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.9.2-x64",
+  "image": "Human-Operative.png",
+  "format": "RGBA8888",
+  "size": { "w": 51, "h": 67 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Idle", "from": 0, "to": 1, "direction": "forward", "color": "#000000ff" },
+   { "name": "Move", "from": 2, "to": 3, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Left Leg", "opacity": 255, "blendMode": "normal" },
+   { "name": "Right Leg", "opacity": 255, "blendMode": "normal" },
+   { "name": "Body", "opacity": 255, "blendMode": "normal" },
+   { "name": "Head", "opacity": 255, "blendMode": "normal" },
+   { "name": "Left Arm", "opacity": 255, "blendMode": "normal" },
+   { "name": "Weapon", "opacity": 255, "blendMode": "normal" },
+   { "name": "Right Arm", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

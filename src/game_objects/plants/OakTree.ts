@@ -19,16 +19,20 @@ export default class OakTree extends Phaser.Physics.Arcade.Sprite {
     public HarvestExperienceType = "Forestry";
     public HarvestExperienceValue = 5;
 
-    constructor ( scene: Game, x: number, y: number, width: number = 80, height: number = 120 ) {
+    constructor ( scene: Game, x: number, y: number, ID: string, Data: WorldData ) {
 
         super( scene, x, y, "tree03_s_01_animation", 0);
+
+        console.log(x, y, ID, Data);
 
         scene.physics.add.existing(this);
         scene.add.existing(this);
 
-        this.setOrigin(0, 1)
+        this.setOrigin(0, 1);
+        this.setDisplaySize(100, 125);
+
         this.setData("type", "Oak Tree")
-        .setDisplaySize(width, height)
+        .setDisplaySize(100, 120)
         .setPipeline("Light2D")
         .setDepth(100)
         .setBodySize(40, 60)
@@ -39,6 +43,8 @@ export default class OakTree extends Phaser.Physics.Arcade.Sprite {
             console.log(this);
             scene.ActivityManager.StartActivity(this);
         });
+
+
 
         this.body.setOffset(40, 80);
     }

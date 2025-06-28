@@ -23,7 +23,7 @@ export default class Switch extends Phaser.Physics.Arcade.Sprite {
         let ObjectData = this.scene.DataManager.GetObjectData(id);
         console.log(ObjectData);
 
-        let StaticData = this.scene.DataManager.MapData[GD.CurrentMap].Objects.find( (object) => object.ID == this.ID );
+        let StaticData = this.scene.DataManager.MapData[GD.CurrentMap][this.ID];
         console.log(StaticData);
 
         this.setInteractive().on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {

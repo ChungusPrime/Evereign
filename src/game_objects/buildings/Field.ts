@@ -21,7 +21,7 @@ export default class Field extends Building {
     ];
 
     constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Field", "field_1");
+        super( scene, x, y, "Buildings", "field");
         return this;
     }
 

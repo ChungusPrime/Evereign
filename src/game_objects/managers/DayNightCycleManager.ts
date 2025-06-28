@@ -1,6 +1,7 @@
 import Game from "../../scenes/Game";
 import UI from "../../scenes/UI";
 import { GD } from "../../scenes/Game";
+import Campaigns from "../../data/Campaigns";
 
 export default class DayNightCycleManager {
 
@@ -47,6 +48,8 @@ export default class DayNightCycleManager {
         this.scene = scene;
         this.UI = UI;
 
+        let Campaign = Campaigns.find(c => c.Name == GD.Campaign);
+
         this.DaytimeHour = GD.DaytimeHour;
         this.DaytimeMinute = GD.DaytimeMinute;
         this.DaytimeDelta = GD.DaytimeDelta;
@@ -85,9 +88,11 @@ export default class DayNightCycleManager {
         .setVisible(false)
         .setDepth(0);
 
+        scene.physics.add.collider(this.RainEmitter, scene.CollisionLayer);
+
         this.SetPhase();
 
-        if ( this.scene.DataManager.MapData[GD.CurrentMap].Type == "Exterior" ) {
+        if ( Campaign.WorldMapInformation[GD.CurrentMap].Type == "Exterior" ) {
             this.StartRaining();
         } else {
             this.StopRaining();
@@ -146,10 +151,11 @@ export default class DayNightCycleManager {
     }
 
     SetPhase () {
-        let Map = this.scene.DataManager.GetMapData(GD.CurrentMap);
-        if ( Map.Type == "Exterior" ) {
+        let Campaign = Campaigns.find(c => c.Name == GD.Campaign);
+        let Type = Campaign.WorldMapInformation[GD.CurrentMap].Type;
+        if ( Type == "Exterior" ) {
             this.scene.lights.setAmbientColor(this.DaytimeCycles[this.DaytimeHour].hex);
-        } else if ( Map.Type == "Interior" ) {
+        } else if ( Type == "Interior" ) {
             this.scene.lights.setAmbientColor(0x000000);
         }
     }

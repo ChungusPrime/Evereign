@@ -1,35 +1,27 @@
-const GameData: GameDataInterface = {
+const DefaultGameData: GameData = {
 
     Controls: {
-
-        // Interact
-        Controls_Interact: "mouse-2",
-
-        // Hotbar Controls
-        Controls_Use_Hotbar_1: "one",
-        Controls_Use_Hotbar_2: "two",
-        Controls_Use_Hotbar_3: "three",
-        Controls_Use_Hotbar_4: "four",
-        Controls_Use_Hotbar_5: "five",
-
-        // Attack Controls
-        Controls_Weapon_Attack: "mouse-0",
-        Controls_Use_Ability_1: 'q',
-        Controls_Use_Ability_2: 'e',
-        Controls_Use_Ability_3: 'r',
-        Controls_Use_Ability_4: 't',
-        Controls_Use_Ability_5: 'y',
-
-        // Movement Controls
-        Controls_Move_Up: 'w',
-        Controls_Move_Down: 's',
-        Controls_Move_Left: 'a',
-        Controls_Move_Right: 'd',
-
+        Move_Up: 'w',
+        Move_Down: 's',
+        Move_Left: 'a',
+        Move_Right: 'd',
+        Interact: "e",
+        Weapon_Attack: "left mouse",
+        Use_Offhand: "right mouse",
+        Use_Hotbar_1: "1",
+        Use_Hotbar_2: "2",
+        Use_Hotbar_3: "3",
+        Use_Hotbar_4: "4",
+        Use_Hotbar_5: "5",
+        Use_Hotbar_6: "6",
+        Use_Hotbar_7: "7",
+        Use_Hotbar_8: "8",
+        Use_Hotbar_9: "9",
+        Use_Hotbar_10: "0",
     },
 
     Characters: {}
 
 };
 
-export default GameData;
+export default DefaultGameData;

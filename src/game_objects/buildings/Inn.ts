@@ -8,7 +8,7 @@ export default class Inn extends Building {
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
 
     constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Inn", "inn_1");
+        super( scene, x, y, "Buildings", "inn1");
         return this;
     }
 

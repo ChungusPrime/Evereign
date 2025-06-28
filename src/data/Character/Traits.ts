@@ -8,15 +8,85 @@ interface Trait {
     id?: string; // Optional ID for the trait, useful for specific components
     name: string; // Name of the feat
     description: string; // Description of the feat
+    RequiredTraits?: string[]; // Optional array of traits that must be acquired before this one
+    RequiredAttributes?: { // Optional attributes that must meet certain thresholds
+        Fortitude?: number;
+        Versatility?: number;
+        Vigor?: number;
+        Expertise?: number;
+        Personality?: number;
+        Fortune?: number;
+        Grit?: number;
+    };
 }
 
 const TraitData: Trait[] = [
 
-    // Shotguns
+    // Scatterguns
     {
-        id: "shotgun_novice",
-        name: "Shotgun Novice",
-        description: `Basic training on how to use Shotguns.`,
+        id: "Scattergun_novice",
+        name: "Scattergun Novice",
+        description: `Basic training on how to use Scatterguns.`,
+        RequiredTraits: [],
+        RequiredAttributes: {
+            Versatility: 5,
+        }
+    },
+
+    {
+        id: "Scattergun_apprentice",
+        name: "Scattergun Apprentice",
+        description: `Intermediate training on how to use Scatterguns. 
+        - The number of pellets fired per shot is increased by 2.
+        - Each base damage type of Scatterguns is increased by 2.`,
+        RequiredTraits: [
+            "Scattergun_novice",
+        ],
+        RequiredAttributes: {
+            Versatility: 10,
+        }
+    },
+
+    {
+        id: "Scattergun_journeyman",
+        name: "Scattergun Journeyman",
+        description: `Advanced training on how to use Scatterguns. 
+        - The number of pellets fired per shot is increased by 2.
+        - Each base damage type of Scatterguns is increased by 2.`,
+        RequiredTraits: [
+            "Scattergun_apprentice",
+        ],
+        RequiredAttributes: {
+            Versatility: 15,
+        }
+    },
+
+    {
+        id: "Scattergun_expert",
+        name: "Scattergun Expert",
+        description: `Expert training on how to use Scatterguns. 
+        - The number of pellets fired per shot is increased by 2.
+        - Each base damage type of Scatterguns is increased by 2.`,
+        RequiredTraits: [
+            "Scattergun_journeyman",
+        ],
+        RequiredAttributes: {
+            Versatility: 20,
+        }
+    },
+
+    {
+        id: "Scattergun_master",
+        name: "Scattergun Master",
+        description: `Master training on how to use Scatterguns. 
+        - The number of pellets fired per shot is increased by 2.
+        - Each base damage type of Scatterguns is increased by 2.`,
+        RequiredTraits: [
+            "Scattergun_expert",
+        ],
+        RequiredAttributes: {
+            Versatility: 25,
+        }
     },
 
     // Explosives

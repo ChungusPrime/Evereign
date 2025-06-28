@@ -107,6 +107,9 @@ export default class UI extends Phaser.Scene {
         this.cameras.main.setPosition(0, 0);
         this.cameras.main.setSize(this.game.scale.width, this.game.scale.height);
 
+        // Set up character panel
+        this.CharacterPanel = new CharacterPanel(this);
+
         this.SidePanelX = this.scale.width * 0.8;
 
         // Setup Side Panel
@@ -204,9 +207,6 @@ export default class UI extends Phaser.Scene {
         this.EventLog = new EventLog(this);
         SidePanel.add(this.EventLog.EventLogBackground);
 
-        // Set up character panel
-        this.CharacterPanel = new CharacterPanel(this);
-
         // Set up World Map
         this.WorldMap = new WorldMap(this);
 
@@ -240,43 +240,6 @@ export default class UI extends Phaser.Scene {
         .setTint(0x000000)
         .setOrigin(0.5, 0)
         .setVisible(false);
-
-        // Navigation buttons
-        /*this.BackButton = this.add.text(35, 35, "< Back", this.JournalTextConfig)
-        .setVisible(false)
-        .setInteractive()
-        .setTint(0xffffff)
-        .on('pointerover', () => { this.BackButton.setTint(this.ColourWheel[192].color) })
-        .on('pointerout', () => { this.BackButton.setTint(0xffffff) })
-        .on('pointerdown', () => {
-            this.JournalNavButtons.forEach((button) => { button.setVisible(true) });
-            this.BackButton.setVisible(false);
-            this.NextPage.setVisible(false);
-            this.PreviousPage.setVisible(false);
-        });
-
-        this.NextPage = this.add.text(600, 675, "Next Page >", this.JournalTextConfig)
-        .setVisible(false)
-        .setInteractive()
-        .setTint(0xffffff)
-        .on('pointerover', () => { this.NextPage.setTint(this.ColourWheel[192].color) })
-        .on('pointerout', () => { this.NextPage.setTint(0xffffff) })
-        .on('pointerdown', () => {
-            this.CurrentPage++;
-            this.ChangeJournalMenu(this.CurrentJournalPage);
-        });
-
-        this.PreviousPage = this.add.text(35, 675, "< Prev Page", this.JournalTextConfig)
-        .setVisible(false)
-        .setInteractive()
-        .setTint(0xffffff)
-        .on('pointerover', () => { this.PreviousPage.setTint(this.ColourWheel[192].color) })
-        .on('pointerout', () => { this.PreviousPage.setTint(0xffffff) })
-        .on('pointerdown', () => {
-            if ( this.CurrentPage == 1 ) return;
-            this.CurrentPage--;
-            this.ChangeJournalMenu(this.CurrentJournalPage);
-        });*/
 
         // Journal page buttons
         this.Character = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 50, "Character");
@@ -390,44 +353,6 @@ export default class UI extends Phaser.Scene {
         if ( !GD.DialogueFlags.includes("JournalEntries-EntryOne") ) {
             this.DialogueWindow.ShowSubject("Journal Entries", "Entry One");
         }
-
-        /*this.input.on('dragstart', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite) => {
-            console.log(item);
-        });
-
-        this.input.on('drag', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, dragX: number, dragY: number) => {
-            item.x = dragX;
-            item.y = dragY;
-        });
-
-        this.input.on('dragenter', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
-            slot.setTint(0x00ff00);
-            console.log(slot);
-        });
-    
-        this.input.on('dragleave', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
-            slot.clearTint();
-        });
-
-        this.input.on('drop', (pointer: Phaser.Input.Pointer, item: Phaser.GameObjects.Sprite, slot: ItemSlot) => {
-            if ( item.getData("slot") !== null && item.getData("slot") !== undefined ) {
-                slot.clearTint();
-                item.x = slot.getCenter().x;
-                item.y = slot.getCenter().y;
-                let slot1 = item.getData("slot");
-                let slot2 = slot.InventoryIndex;
-                console.log(`move item from slot ${slot1} to slot ${slot2}`);
-                this.Game.Inventory.SwapItems(slot1, slot2);
-            }
-        });
-
-        this.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite, slot: ItemSlot, dropped: boolean) => {
-            console.log("dragend", gameObject, slot, dropped);
-            //if ( !dropped ) {
-                //this.Item.x = this.getCenter().x;
-                //this.Item.y = this.getCenter().y;
-            //}
-        });*/
 
     }
 

@@ -14,31 +14,22 @@ class EnemyRect extends Rectangle {
     }
 };
 
-export default class Character extends Phaser.Physics.Arcade.Sprite {
+export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
     public scene: Game;
-    public light!: Phaser.GameObjects.Light;
+    public light: Phaser.GameObjects.Light;
     public walkAnimation: string = "OperativeWalk";
     public footstepSoundInterval: number = 0;
-    public Ability_1_Cooldown: number = 0;
-    public Ability_2_Cooldown: number = 0;
-    public Ability_3_Cooldown: number = 0;
-    public Ability_4_Cooldown: number = 0;
-    public CurrentClass: string;
     public PlayerHasControl: boolean = false;
     public PlayerIsDead: boolean = false;
     public PlayerInCombat: boolean = false;
     public CombatDelta: number = 0;
-
-    public Health: number = 25;
+    public Health: number;
     public MaxHealth: number;
-
-    public Mana: number = 50;
+    public Mana: number;
     public MaxMana: number;
-
     public totalMovementSpeed: number = 100;
     public currentExp: number = 0;
-
     public UpKeyDown: boolean = false;
     public DownKeyDown: boolean = false;
     public LeftKeyDown: boolean = false;
@@ -51,7 +42,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    create (): Character {
+    create (): PlayerCharacter {
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         this.setActive(true);
@@ -64,12 +55,12 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         this.setPipeline("Light2D");
         this.flipX = true;
         this.light = this.scene.lights.addLight(this.x, this.y, 128, 0xe3a456, 0.75);
-        this.CurrentClass = GD.Class;
-        let ClassData = this.scene.DataManager.ClassData[GD.Class];
+
         this.Health = GD.CurrentHealth;
-        //this.MaxHealth = ClassData.stats.baseHealth + (GD.Classes[GD.CurrentClass].Level * ClassData.stats.healthPerLevel);
+        this.MaxHealth = GD.MaxHealth;
+
         this.Mana = GD.CurrentMana;
-        //this.MaxMana = ClassData.stats.baseMana + (GD.Classes[GD.CurrentClass].Level * ClassData.stats.manaPerLevel);
+        this.MaxMana = GD.MaxMana;
 
         this.MaxHealth = 100;
         this.MaxMana = 100;
@@ -79,10 +70,10 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
     update ( delta: number ): void {
 
-        if ( this.Ability_1_Cooldown > 0 ) this.Ability_1_Cooldown -= delta;
-        if ( this.Ability_2_Cooldown > 0 ) this.Ability_2_Cooldown -= delta;
-        if ( this.Ability_3_Cooldown > 0 ) this.Ability_3_Cooldown -= delta;
-        if ( this.Ability_4_Cooldown > 0 ) this.Ability_4_Cooldown -= delta;
+        //if ( this.Ability_1_Cooldown > 0 ) this.Ability_1_Cooldown -= delta;
+        //if ( this.Ability_2_Cooldown > 0 ) this.Ability_2_Cooldown -= delta;
+        //if ( this.Ability_3_Cooldown > 0 ) this.Ability_3_Cooldown -= delta;
+        //if ( this.Ability_4_Cooldown > 0 ) this.Ability_4_Cooldown -= delta;
 
         if ( this.CombatDelta > 0 ) {
             this.CombatDelta -= delta;
@@ -113,22 +104,28 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
-        if ( this.body!.velocity.x == 0 && this.body!.velocity.y == 0 ) {
-            this.stop();
+        if ( this.body.velocity.x == 0 && this.body.velocity.y == 0 ) {
+
             this.footstepSoundInterval = 0;
-            this.setTexture("Operative", 0);
+
+            if ( !this.anims.isPlaying || this.anims.currentAnim.key != "Idle" ) {
+                this.play({ key: "Idle" });
+            }
+
         } else {
             
-            if ( this.scene.ActivityManager.CurrentActivity.Type != "" )
+            if ( this.scene.ActivityManager.CurrentActivity.Type != "" ) {
                 this.scene.ActivityManager.CancelActivity();
-            
-            if ( !this.anims.isPlaying )
-                this.play(this.walkAnimation);
-
+            }
+                
+            if ( !this.anims.isPlaying || this.anims.currentAnim.key != "Move" ) {
+                this.play("Move");
+            }
+                
             this.footstepSoundInterval += delta;
 
-            if ( this.footstepSoundInterval > 600 ) {
-                this.scene.sound.play('footstep', { volume: 0.8 });
+            if ( this.footstepSoundInterval > 500 ) {
+                this.scene.sound.play('footstep', { volume: 0.4 });
                 this.footstepSoundInterval = 0;
             }
 
@@ -141,7 +138,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     UseItem ( item: string ) {
 
         if ( item == "apprentice_spellbook" ) {
-            this.AddXP(50);
+            //this.AddXP(50);
         }
 
         if ( item == "town_centre_blueprint" ) {
@@ -154,17 +151,17 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
     UseAbility ( ability: string ) {
 
-        if ( !this.PlayerHasControl ) return;
-        if ( this.PlayerIsDead ) return;
-        if ( this.scene.UI.CurrentJournalPage !== null ) return;
-        if ( this.scene.BuildingHelper.BuildingPlacementMode == true ) return;
+        //if ( !this.PlayerHasControl ) return;
+        //if ( this.PlayerIsDead ) return;
+        //if ( this.scene.UI.CurrentJournalPage !== null ) return;
+        //if ( this.scene.BuildingHelper.BuildingPlacementMode == true ) return;
 
-        let ClassAbilities = this.scene.DataManager.GetClass(GD.Class).abilities;
-        if ( ClassAbilities == undefined ) return console.info("Couldnt find ability");
+        //let ClassAbilities = this.scene.DataManager.GetClass(GD.Class).abilities;
+        //if ( ClassAbilities == undefined ) return console.info("Couldnt find ability");
 
-        let UsedAbility = ClassAbilities[ability];
+        //let UsedAbility = ClassAbilities[ability];
 
-        if ( UsedAbility.name == "Kinetic Bolt" ) {
+        /*if ( UsedAbility.name == "Kinetic Bolt" ) {
             /*if ( GD.Classes['Evoker'].Ability_1_Unlocked == false )
                 return this.scene.UI.EventLog.NewEvent("You have not unlocked this ability yet");
             if ( this.Ability_1_Cooldown <= 0 ) {
@@ -178,16 +175,16 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
                 return;
             }
             return this.scene.UI.EventLog.NewEvent(`${UsedAbility.name} on cooldown for ${(this.Ability_1_Cooldown / 1000).toFixed(2)}`);*/
-        }
+        //}
 
-        if ( UsedAbility.name == "Dart Volley" ) {
+        /*if ( UsedAbility.name == "Dart Volley" ) {
             /*if ( GD.Classes['Evoker'].Ability_2_Unlocked == false )
                 return this.scene.UI.EventLog.NewEvent("You have not unlocked this ability yet");*/
-            if ( this.Ability_2_Cooldown <= 0 ) {
+            //if ( this.Ability_2_Cooldown <= 0 ) {
                 //let projectiles = UsedAbility.parameters.projectiles.upgrades[GD.Classes['Evoker'].Ability_2_Param_1_Level].value;
                 //let damage = UsedAbility.parameters.damage.upgrades[GD.Classes['Evoker'].Ability_2_Param_2_Level].value;
                 //let resource_cost = UsedAbility.parameters.resource_cost.upgrades[GD.Classes['Evoker'].Ability_2_Param_3_Level].value;
-                let projectiles = 5;
+                /*let projectiles = 5;
                 let damage = 5;
                 let resource_cost = 10;
                 let delayBetweenShots = 100;
@@ -210,18 +207,18 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
-        if ( UsedAbility.name == "Blazing Barrage" ) {
+        //if ( UsedAbility.name == "Blazing Barrage" ) {
 
             /*if ( GD.Classes['Evoker'].Ability_3_Unlocked == false )
                 return this.scene.UI.EventLog.NewEvent("You have not unlocked this ability yet");*/
 
-            if ( this.Ability_3_Cooldown <= 0 ) {
+            //if ( this.Ability_3_Cooldown <= 0 ) {
 
                 //let bursts = UsedAbility.parameters.bursts.upgrades[GD.Classes['Evoker'].Ability_3_Param_1_Level].value;
                 //let damage = UsedAbility.parameters.damage.upgrades[GD.Classes['Evoker'].Ability_3_Param_2_Level].value;
                 //let radius = UsedAbility.parameters.radius.upgrades[GD.Classes['Evoker'].Ability_3_Param_3_Level].value;
 
-                let bursts = 3;
+                /*let bursts = 3;
                 let damage = 5;
                 let radius = 50;
 
@@ -274,7 +271,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
             this.scene.UI.EventLog.NewEvent(`${UsedAbility.name} on cooldown for ${this.Ability_3_Cooldown.toFixed(2)}`);
 
-        }
+        }*/
 
     }
     
@@ -299,14 +296,11 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     // Function to check for game objects within the cone
     checkObjectsInCone(coneOriginX: number, coneOriginY: number, coneAngle: number, coneSpread: number, coneLength: number, gameObjects: Phaser.GameObjects.GameObject[]): Phaser.GameObjects.GameObject[] {
         const objectsInCone: Phaser.GameObjects.GameObject[] = [];
-
-        gameObjects.forEach( (obj) => {
-            /*const objX = obj.x;
+        gameObjects.forEach( (obj: Phaser.GameObjects.Sprite) => {
+            const objX = obj.x;
             const objY = obj.y;
-
-            if (this.isPointInCone(objX, objY, coneOriginX, coneOriginY, coneAngle, coneSpread, coneLength)) {
+            if (this.isPointInCone(objX, objY, coneOriginX, coneOriginY, coneAngle, coneSpread, coneLength))
                 objectsInCone.push(obj);
-            }*/
         });
 
         return objectsInCone;
@@ -342,6 +336,22 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
             //GD.Classes[this.CurrentClass].XP = 0;
             //this.scene.UI.EventLog.NewEvent(`Evoker leveled up! You are now level ${GD.Classes[this.CurrentClass].Level}`);
         //}
+    }
+
+    UseShotgun () {
+        if ( !this.PlayerHasControl ) return;
+        if ( this.PlayerIsDead ) return;
+        if ( this.scene.UI.CurrentJournalPage !== null ) return;
+        if ( this.scene.BuildingHelper.BuildingPlacementMode == true ) return;
+        let Proj = new Projectile(this.scene, this.x, this.y, 400, 5, "Shotgun Blast");
+        this.scene.Projectiles.add(Proj);
+        this.scene.sound.play("ShotgunBlast");
+        const baseAngle = Phaser.Math.Angle.Between( this.x, this.y, this.scene.mouseX, this.scene.mouseY );
+        const halfSpread = 20 / 2;
+        const randomSpread = Phaser.Math.FloatBetween(-halfSpread, halfSpread);
+        const spreadRadians = Phaser.Math.DegToRad(randomSpread);
+        let angle = baseAngle + spreadRadians;
+        Proj.setVelocity( Math.cos(angle) * 200, Math.sin(angle) * 200 );
     }
 
     TakeDamage ( damage: { Type: string, Min: number, Max: number, ApplyDebuff?: string }[] ): void {

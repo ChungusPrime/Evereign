@@ -1,46 +1,43 @@
-const ItemData: ItemData[] = [];
+const ItemData: { [key: string]: ItemData } = {};
 
-// Weapons
-import Shotguns from "./Items/Shotguns";
-ItemData.push(...Shotguns);
-
-import Staffs from "./Items/Staffs";
-ItemData.push(...Staffs);
-
-// Armour
 import ChestArmour from "./Items/Armour_Chest";
-ItemData.push(...ChestArmour);
-
-//import FeetArmour from "./Items/Armour_Feet";
-//ItemData.push(...FeetArmour);
-
-//import HandsArmour from "./Items/Armour_Hands";
-//ItemData.push(...HandsArmour);
-
+import Staffs from "./Items/Staffs";
 import HeadArmour from "./Items/Armour_Head";
-ItemData.push(...HeadArmour);
-
-//import LegsArmour from "./Items/Armour_Legs";
-//ItemData.push(...LegsArmour);
-
-// Other Items
 import Consumables from "./Items/Consumables";
-ItemData.push(...Consumables);
-
 import Ammunition from "./Items/Ammunition";
-ItemData.push(...Ammunition);
-
 import Currency from "./Items/Currency";
 import Food from "./Items/Food";
 import Keys from "./Items/Keys";
 import Resources from "./Items/Resources";
 import Tools from "./Items/Tools";
+import Scatterguns from "./Items/Scatterguns";
+import ProtoStructComponents from "./Items/ProtoStructComponents";
+import FeetArmour from "./Items/Armour_Feet";
+import HandArmour from "./Items/Armour_Hands";
+import LegArmour from "./Items/Armour_Legs";
 
+// Helper function to add items from an array to ItemData
+function addItems(items: ItemData[]) {
+    items.forEach(item => {
+        ItemData[item.ID] = item;
+    });
+}
 
-ItemData.push(...Currency);
-ItemData.push(...Food);
-ItemData.push(...Keys);
-ItemData.push(...Resources);
-ItemData.push(...Tools);
+// Add all items
+addItems(Scatterguns);
+addItems(Staffs);
+addItems(ChestArmour);
+addItems(FeetArmour);
+addItems(HandArmour);
+addItems(HeadArmour);
+addItems(LegArmour);
+addItems(Consumables);
+addItems(Ammunition);
+addItems(Currency);
+addItems(Food);
+addItems(Keys);
+addItems(Resources);
+addItems(Tools);
+addItems(ProtoStructComponents);
 
 export default ItemData;
