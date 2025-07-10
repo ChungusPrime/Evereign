@@ -116,31 +116,12 @@ const DefaultCharacter: Character = {
     DaytimeDelta: 0,
 
     Skills: {
-        Fishing: {
-            Level: 1,
-            XP: 0,
-            XPNext: 100
-        },
-        Forestry: {
-            Level: 1,
-            XP: 0,
-            XPNext: 100
-        },
-        Mining: {
-            Level: 1,
-            XP: 0,
-            XPNext: 100
-        },
-        Botany: {
-            Level: 1,
-            XP: 0,
-            XPNext: 100
-        },
-        Alchemy: {
-            Level: 1,
-            XP: 0,
-            XPNext: 100
-        }
+        Fishing: 0,
+        Forestry: 0,
+        Mining: 0,
+        Botany: 0,
+        Alchemy: 0,
+        Cooking: 0,
     },
 
     Bestiary: [

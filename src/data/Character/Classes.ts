@@ -1,72 +1,103 @@
 interface ClassData {
-    name: string; // Name of the class
-    description: string; // Description of the class
-    starting_traits: string[]; // Starting passive traits
-    starting_abilities: string[]; // Starting active abilities
-    starting_attribute_bonuses?: { [attribute: string]: number }; // Starting attribute bonuses, optional
-    starting_items: { ID: string; Quantity: number }[]; // Starting items
-    unique_building: string; // Unique building
-    Available?: boolean; // Whether the class is available or not
-}
 
+    // Name of the class
+    Name: string; 
+
+    // Description of the class
+    Description: string; 
+
+    // Starting passive traits
+    Traits: string[]; 
+
+    // Starting active abilities
+    Abilities: string[]; 
+
+    // Starting attribute bonuses
+    AttributeBonuses?: { [attribute: string]: number }; 
+
+    // Starting items
+    Items: {[slot: string]: { 
+        ID: string;
+        Quantity: number
+    }};
+
+    Hotbar: {[slot: string]: { 
+        Type: string;
+        ID: string;
+    }};
+
+    // Unique building associated with the class
+    UniqueBuilding: string;
+
+    // Whether the class is available during character creation or not
+    Available?: boolean; 
+}
 
 const ClassData: ClassData[] = [
 
     {
-        name: "Operative",
-        description: `Operatives are highly specialised soldiers, equipped to deal with a variety of threats. 
-        Trained in the use of guns, explosives and advanced technology, they are capable of identifying threats from a 
-        safe distance, then taking them down up-close with chaos and speed. 
-        Unique building allows the operative to remotley call in a variety of offensive strikes.`,
-        starting_traits: [
+        Name: "Operative",
+        Description: `Operatives fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and eliminate threats before 
+        they become a problem, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
+        Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Archo-tech, making them versatile combatants.`,
+        
+        Traits: [
             "Scattergun_novice",
             "explosive_novice",
             "archo_tech_novice",
         ],
-        starting_abilities: [
+        Abilities: [
             "incendiary_shot",
             "shrap_bomb",
             "observer_struct",
         ],
-        starting_attribute_bonuses: {
-            "Fortitude": 0,
-            "Versatility": 5,
-            "Vigor": 3,
-            "Expertise": 4,
-            "Arcana": 0,
-            "Personality": 2,
-            "Fortune": 2,
-            "Grit": 2,
+        AttributeBonuses: {
+            Fortitude: 0,
+            Versatility: 5,
+            Vigor: 3,
+            Expertise: 4,
+            Arcana: 0,
+            Personality: 2,
+            Fortune: 2,
+            Grit: 2,
         },
-        starting_items: [
-            { ID: "grandpa_Scattergun", Quantity: 1 },
-            { ID: "marigold_brew", Quantity: 5 },
-            { ID: "stone_shot", Quantity: 100 },
-            { ID: "operative_armor", Quantity: 1 },
-            { ID: "operative_helmet", Quantity: 1 },
-            { ID: "operative_gloves", Quantity: 1 },
-            { ID: "operative_boots", Quantity: 1 },
-            { ID: "operative_legguards", Quantity: 1 }
-        ],
-        unique_building: "Arco-Tech Support Relay",
+        Hotbar: {
+            1: { Type: "Ability", ID: "incendiary_shot" },
+            2: { Type: "Ability", ID: "shrap_bomb"},
+            3: { Type: "Ability", ID: "observer_struct"},
+            4: { Type: "Item", ID: "marigold_brew" },
+            5: { Type: "Item", ID: "stone_shot" }
+        },
+        Items: {
+            Equipment_MainHand: { ID: "grandpa_Scattergun", Quantity: 1 },
+            Equipment_Chest: { ID: "operative_armor", Quantity: 1 },
+            Equipment_Head: { ID: "operative_helmet", Quantity: 1 },
+            Equipment_Hands: { ID: "operative_gloves", Quantity: 1 },
+            Equipment_Feet: { ID: "operative_boots", Quantity: 1 },
+            Equipment_Legs: { ID: "operative_legguards", Quantity: 1 },
+            1: { ID: "marigold_brew", Quantity: 5 },
+            2: { ID: "stone_shot", Quantity: 100 }
+        },
+        UniqueBuilding: "Arco-Tech Support Relay",
         Available: true
     },
 
-    {
-        name: "Evoker",
-        description: `Harness the power of the elements to unleash devastating spells. 
-        Unique building allows the evoker to empower their spells with elemental energy by deconstructing magical items.`,
-        starting_traits: [
+    /*{
+        Name: "Evoker",
+        Description: `Evokers are powerful magic users who harness the elements to cast devastating spells. They are skilled in the use of staffs and magical devices, and can channel their arcane energy to unleash powerful attacks.
+        Evokers are often seen as the guardians of the kingdom, using their magic to protect it from threats both internal and external.
+        They are known for their ability to manipulate the elements, using fire, ice, and lightning to devastating effect.`,
+        Traits: [
             "pyro_novice",
             "cryo_novice",
             "electro_novice"
         ],
-        starting_abilities: [
+        Abilities: [
             'Pyro Burst',
             'Frost Field',
             'Electro Jab'
         ],
-        starting_attribute_bonuses: {
+        AttributeBonuses: {
             "Fortitude": 0,
             "Versatility": 0,
             "Vigor": 1,
@@ -76,7 +107,7 @@ const ClassData: ClassData[] = [
             "Fortune": 3,
             "Grit": 1,
         },
-        starting_items: [
+        Items: [
             { ID: "staff_evoker_1", Quantity: 1 },
             { ID: "evoker_robe_1", Quantity: 1 },
             { ID: "evoker_hood_1", Quantity: 1 },
@@ -86,11 +117,11 @@ const ClassData: ClassData[] = [
             { ID: "marigold_brew", Quantity: 5 },
             { ID: "bloomberry_decoction", Quantity: 5 }
         ],
-        unique_building: "Arcane Extractor",
+        UniqueBuilding: "Arcane Extractor",
         Available: false
-    },
+    },*/
 
-    {
+    /*{
         name: "Godsworn",
         description: `Call upon the power of the gods to smite your enemies.`,
         starting_traits: [
@@ -182,7 +213,7 @@ const ClassData: ClassData[] = [
         ],
         unique_building: "Cannon Foundry",
         Available: false
-    },
+    },*/
 
 ];
 

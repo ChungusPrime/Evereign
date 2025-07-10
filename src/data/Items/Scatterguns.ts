@@ -48,7 +48,7 @@ const Scatterguns: ItemData[] = [
         ModdableParts: ["Barrel"],
         Materials: [
             { ID: "bronze_ingot", Amount: 4 },
-            { ID: "wood_plank", Amount: 3 }
+            { ID: "oak_plank", Amount: 3 }
         ],
         InitialValue: { ID: "scattergun_farmhand", Quantity: 1, CurrentMagazine: 3, Mods: { "Barrel": null }, Ammo: null }
     },
@@ -77,9 +77,38 @@ const Scatterguns: ItemData[] = [
         ModdableParts: ["Barrel"],
         Materials: [
             { ID: "bronze_ingot", Amount: 5 },
-            { ID: "wood_plank", Amount: 2 }
+            { ID: "oak_plank", Amount: 2 }
         ],
         InitialValue: { ID: "Scattergun_bronze", Quantity: 1, CurrentMagazine: 6, Mods: { "Barrel": null, "Stock": null }, Ammo: null }
+    },
+
+    {
+        ID: "Scattergun_iron",
+        Name: "Iron Scattergun",
+        Sprite: "weapons-2",
+        Desc: "A robust Scattergun forged from iron, providing enhanced durability and firepower.",
+        Stackable: false,
+        Properties: {
+            Damage: [
+                { Type: "Piercing", Amount: 8 },
+                { Type: "Force", Amount: 14 }
+            ],
+            Velocity: 90,
+            Lifetime: 4.5,
+            Cooldown: 850,
+            ReloadTime: 2.5,
+            Pellets: 8,
+            MagazineSize: 5,
+        },
+        Sound: "Scattergun_fire",
+        Moddable: true,
+        Craftable: true,
+        ModdableParts: ["Barrel", "Stock"],
+        Materials: [
+            { ID: "iron_ingot", Amount: 5 },
+            { ID: "oak_plank", Amount: 2 }
+        ],
+        InitialValue: { ID: "Scattergun_iron", Quantity: 1, CurrentMagazine: 6, Mods: { "Barrel": null, "Stock": null }, Ammo: null }
     },
 
     {
@@ -106,10 +135,12 @@ const Scatterguns: ItemData[] = [
         ModdableParts: ["Barrel", "Stock"],
         Materials: [
             { ID: "steel_ingot", Amount: 6 },
-            { ID: "wood_plank", Amount: 3 }
+            { ID: "oak_plank", Amount: 3 }
         ],
         InitialValue: { ID: "Scattergun_steel", Quantity: 1, CurrentMagazine: 8, Mods: { "Barrel": null, "Stock": null, "Muzzle": null }, Ammo: null }
     },
+
+
 ];
 
 Scatterguns.forEach((item) => {

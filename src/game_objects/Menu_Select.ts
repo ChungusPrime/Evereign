@@ -31,11 +31,13 @@ export default class Menu_Select extends Phaser.GameObjects.Sprite {
             if ( pointer.leftButtonDown() ) {
                 this.scene.sound.play('click');
                 console.log(this.CurrentValue);
+                this.scene.SetHelpText(this.CurrentValue ? this.CurrentValue : "No information available for this option.");
             }
         })
         .setVisible(false);
 
         this.setTint(0xdaa475);
+        this.displayWidth = 300;
 
         this.scene.add.existing(this);
 
@@ -45,7 +47,7 @@ export default class Menu_Select extends Phaser.GameObjects.Sprite {
             align: "center",
             fontFamily: "Augusta",
             wordWrap: {
-                width: this.width - 10,
+                width: this.displayWidth - 10,
                 useAdvancedWrap: true
             }
         })
@@ -53,7 +55,7 @@ export default class Menu_Select extends Phaser.GameObjects.Sprite {
         .setVisible(false);
 
         // Get previous option
-        this.ScrollLeft = this.scene.add.sprite(x - 110, y, "Kenney-UI", "arrowBeige_left");
+        this.ScrollLeft = this.scene.add.sprite(this.getLeftCenter().x - 15, y, "Kenney-UI", "arrowBeige_left");
         this.ScrollLeft.setOrigin(0.5);
         this.ScrollLeft.setTint(0xdaa475);
         this.ScrollLeft.setInteractive();
@@ -81,7 +83,7 @@ export default class Menu_Select extends Phaser.GameObjects.Sprite {
         .setVisible(false);
 
         // Get next option
-        this.ScrollRight = this.scene.add.sprite(x + 110, y, "Kenney-UI", "arrowBeige_right");
+        this.ScrollRight = this.scene.add.sprite(this.getRightCenter().x + 15, y, "Kenney-UI", "arrowBeige_right");
         this.ScrollRight.setOrigin(0.5);
         this.ScrollRight.setTint(0xdaa475);
         this.ScrollRight.setInteractive();
@@ -108,16 +110,16 @@ export default class Menu_Select extends Phaser.GameObjects.Sprite {
         .setVisible(false);
 
         // Get information for current option
-        this.InformationButton = new TextButton(this.scene, x + 160, y, "?", () => {
+        /*this.InformationButton = new TextButton(this.scene, this.ScrollRight.getRightCenter().x + 15, y, "?", () => {
             this.scene.SetHelpText(this.CurrentValue ? this.CurrentValue : "No information available for this option.");
-        }, 32).setVisible(false);
+        }, 32).setVisible(false);*/
 
         this.scene.CharacterCreationGroup.addMultiple([
             this,
             this.ScrollLeft,
             this.ScrollRight,
             this.TextObject,
-            this.InformationButton
+            //this.InformationButton
         ]);
 
     }

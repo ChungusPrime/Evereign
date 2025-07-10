@@ -10,6 +10,15 @@ const Resources: ItemData[] = [
     },
 
     {
+        ID: "oak_plank",
+        Name: "Oak Plank",
+        Sprite: "general-21",
+        Desc: "A plank cut from an oak log, can be used in various production recipes.",
+        Stackable: true,
+        StackSize: 10
+    },
+
+    {
         ID: "stone_rough",
         Name: "Rough Stone",
         Sprite: "general-60",

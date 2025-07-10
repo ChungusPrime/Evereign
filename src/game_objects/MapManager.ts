@@ -129,13 +129,12 @@ export default class MapManager {
         console.log(GD);
 
         const objectTypeToClass: { [key: string]: any } = {
+            "Oak Tree": OakTree,
             //"Stone Deposit": StoneDeposit,
             //"Iron Deposit": IronDeposit,
             //"Torch": Torch,
             //"Goblin Firepit": GoblinFirepit,
             //"Warboss Gorgutz": WarbossGorgutz,
-            "Oak Tree": OakTree,
-
             /*"Goblin Slinger": GoblinSlinger,
             "Market": Market,
             "Warehouse": Warehouse,
@@ -161,36 +160,33 @@ export default class MapManager {
 
         // Objects
         Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
-
             layer.objects.forEach( (object) => {
-
                 const obj = objectTypeToClass[object.type];
-
                 if (obj) {
 
+                    // If no properties are defined, initialize with default values and no ID
                     if ( !object.properties || object.properties.length === 0 ) {
-                        console.warn(`Object of type "${object.type}" at (${object.x}, ${object.y}) has no properties.`);
+                        console.warn(`Object of type "${object.type}" at (${object.x}, ${object.y}) has no properties, initializing with default values.`);
                         return new obj(this.scene, object.x, object.y, null, null);
                     }
 
+                    // Get custom tiled ID from properties
                     let ID = object.properties[0].value ?? null;
 
+                    // If ID is null, initialize with default values, but with the ID
                     if ( ID === null ) {
                         console.warn(`Object ID is null for object type "${object.type}" at (${object.x}, ${object.y}).`);
                         return new obj(this.scene, object.x, object.y, ID, null);
                     }
 
+                    // If properties and ID are defined, use them to create the object
                     let Data = Campaign.WorldData[GD.CurrentMap][ID] ?? null;
                     let SavedData = GD.WorldData[GD.CurrentMap][ID] ?? null;
                     Object.assign(Data, SavedData);
                     return new obj(this.scene, object.x, object.y, ID, Data);
                     
-                } else {
-                    console.warn(`Object type "${object.type}" not found in objectTypeToClass mapping.`);
                 }
-
             });
-
         });
         
         if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {

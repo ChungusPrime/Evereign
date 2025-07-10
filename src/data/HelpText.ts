@@ -44,10 +44,9 @@ const Help: HelpText = {
     Your journey begins in the heart of Emberfall, where you must fortify the island's defenses, and survive until help arrives.`,
 
     "Operative": `
-    Operatives are highly specialised soldiers, equipped to deal with a variety of threats. 
-    Trained in the use of guns, explosives and advanced technology, they are capable of identifying threats from a 
-    safe distance, then taking them down up-close with chaos and speed. 
-    Unique building allows the Operative to remotley call in a variety of offensive strikes.
+    Operatives fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and 
+    eliminate threats before they become a problem, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
+    Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Archo-tech, making them versatile combatants.
     `,
 
     "Evoker": `

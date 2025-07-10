@@ -54,7 +54,8 @@ const Config: Phaser.Types.Core.GameConfig = {
 		width: 1280,
 		height: 720,
 		mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+		resizeInterval: 100,
     },
 	banner: true,
 	antialiasGL: true,

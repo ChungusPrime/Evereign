@@ -77,6 +77,8 @@ interface RaceData {
     }
 }
 
+
+
 interface StaticBuildingData { 
     ID: number;
     Name: string;
@@ -295,11 +297,10 @@ interface HelpText {
 interface Skill {
     Level: number;
     XP: number;
-    XPNext: number;
 }
 
 interface Skills {
-    [key: string]: Skill;
+    [key: string]: number;
 }
 
 interface MapData {
