@@ -4,39 +4,38 @@ They are not active abilities, but rather passive effects that enhance a charact
 abilities or grant them new ones.
 */
 
-interface Trait {
-    id?: string; // Optional ID for the trait, useful for specific components
-    name: string; // Name of the feat
-    description: string; // Description of the feat
-    RequiredTraits?: string[]; // Optional array of traits that must be acquired before this one
-    RequiredAttributes?: { // Optional attributes that must meet certain thresholds
-        Fortitude?: number;
-        Versatility?: number;
-        Vigor?: number;
-        Expertise?: number;
-        Personality?: number;
-        Fortune?: number;
-        Grit?: number;
+interface Traits {
+    [key: string]: {
+        Name: string;
+        Description: string;
+        RequiredTraits?: string[];
+        RequiredAttributes?: {
+            Fortitude?: number;
+            Versatility?: number;
+            Vigor?: number;
+            Expertise?: number;
+            Personality?: number;
+            Fortune?: number;
+            Grit?: number;
+        };
     };
 }
 
-const TraitData: Trait[] = [
+const TraitData: Traits = {
 
     // Scatterguns
-    {
-        id: "Scattergun_novice",
-        name: "Scattergun Novice",
-        description: `Basic training on how to use Scatterguns.`,
+    "scattergun_novice": {
+        Name: "Scattergun Novice",
+        Description: `Basic training on how to use Scatterguns.`,
         RequiredTraits: [],
         RequiredAttributes: {
             Versatility: 5,
         }
     },
 
-    {
-        id: "Scattergun_apprentice",
-        name: "Scattergun Apprentice",
-        description: `Intermediate training on how to use Scatterguns. 
+    "scattergun_apprentice": {
+        Name: "Scattergun Apprentice",
+        Description: `Intermediate training on how to use Scatterguns. 
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
@@ -47,10 +46,9 @@ const TraitData: Trait[] = [
         }
     },
 
-    {
-        id: "Scattergun_journeyman",
-        name: "Scattergun Journeyman",
-        description: `Advanced training on how to use Scatterguns. 
+    "scattergun_journeyman": {
+        Name: "Scattergun Journeyman",
+        Description: `Advanced training on how to use Scatterguns. 
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
@@ -61,10 +59,9 @@ const TraitData: Trait[] = [
         }
     },
 
-    {
-        id: "Scattergun_expert",
-        name: "Scattergun Expert",
-        description: `Expert training on how to use Scatterguns. 
+    "scattergun_expert": {
+        Name: "Scattergun Expert",
+        Description: `Expert training on how to use Scatterguns. 
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
@@ -75,10 +72,9 @@ const TraitData: Trait[] = [
         }
     },
 
-    {
-        id: "Scattergun_master",
-        name: "Scattergun Master",
-        description: `Master training on how to use Scatterguns. 
+    "scattergun_master": {
+        Name: "Scattergun Master",
+        Description: `Master training on how to use Scatterguns. 
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
@@ -90,151 +86,140 @@ const TraitData: Trait[] = [
     },
 
     // Explosives
-    {
-        id: "explosive_novice",
-        name: "Explosive Novice",
-        description: `Basic training on the use of improvised explosives.`,
+    "explosive_novice": {
+        Name: "Explosive Novice",
+        Description: `Basic training on the use of improvised explosives.`,
     },
 
-    // Arco-Tech
-    {
-        id: "archo_tech_novice",
-        name: "Arco-Tech Novice",
-        description: `Understanding of how to use simple Archo-Tech devices.`,
+    // Gadgetry
+    "gadgetry_novice": {
+        Name: "Gadgetry Novice",
+        Description: `Understanding of how to use simple Gadgets.`,
     },
 
     // Pyro
-    {
-        name: "Pyro Novice",
-        description: `Ability to cast Novice-level Fire spells.`,
+    "pyro_novice": {
+        Name: "Pyro Novice",
+        Description: `Ability to cast Novice-level Fire spells.`,
     },
 
-    {
-        name: "Pyro Apprentice",
-        description: `Ability to cast Apprentice-level Fire spells.`,
+    "pyro_apprentice": {
+        Name: "Pyro Apprentice",
+        Description: `Ability to cast Apprentice-level Fire spells.`,
     },
 
-    {
-        name: "Pyro Journeyman",
-        description: `Ability to cast Journeyman-level Fire spells.`,
+    "pyro_journeyman": {
+        Name: "Pyro Journeyman",
+        Description: `Ability to cast Journeyman-level Fire spells.`,
     },
 
-    {
-        name: "Pyro Expert",
-        description: `Ability to cast Expert-level Fire spells.`,
+    "pyro_expert": {
+        Name: "Pyro Expert",
+        Description: `Ability to cast Expert-level Fire spells.`,
     },
 
-    {
-        name: "Pyro Master",
-        description: `Ability to cast Master-level Fire spells.`,
+    "pyro_master": {
+        Name: "Pyro Master",
+        Description: `Ability to cast Master-level Fire spells.`,
     },
 
     // Cryo
-    {
-        name: "Cryo Novice",
-        description: `Ability to cast Novice-level Ice spells.`,
+    "cryo_novice": {
+        Name: "Cryo Novice",
+        Description: `Ability to cast Novice-level Ice spells.`,
     },
 
-    {
-        name: "Cryo Apprentice",
-        description: `Ability to cast Apprentice-level Ice spells.`,
+    "cryo_apprentice": {
+        Name: "Cryo Apprentice",
+        Description: `Ability to cast Apprentice-level Ice spells.`,
     },
 
-    {
-        name: "Cryo Journeyman",
-        description: `Ability to cast Journeyman-level Ice spells.`,
+    "cryo_journeyman": {
+        Name: "Cryo Journeyman",
+        Description: `Ability to cast Journeyman-level Ice spells.`,
     },
 
-    {
-        name: "Cryo Expert",
-        description: `Ability to cast Expert-level Ice spells.`,
+    "cryo_expert": {
+        Name: "Cryo Expert",
+        Description: `Ability to cast Expert-level Ice spells.`,
     },
 
-    {
-        name: "Cryo Master",
-        description: `Ability to cast Master-level Ice spells.`,
+    "cryo_master": {
+        Name: "Cryo Master",
+        Description: `Ability to cast Master-level Ice spells.`,
     },
 
     // General Construction
-    {
-        name: "Bolstered Structures",
-        description: `Buildings constructed by the character have higher health.`,
+    "bolstered_structures": {
+        Name: "Bolstered Structures",
+        Description: `Buildings constructed by the character have higher health.`,
     },
 
-    {
-        name: "Builder Lineage",
-        description: `Buildings are constructed faster.`,
+    "builder_lineage": {
+        Name: "Builder Lineage",
+        Description: `Buildings are constructed faster.`,
     },
 
     // Swords
-    {
-        name: "Sword Novice",
-        description: `Ability to use Novice-level Sword abilities.`,
+    "sword_novice": {
+        Name: "Sword Novice",
+        Description: `Ability to use Novice-level Sword abilities.`,
     },
 
-    {
-        name: "Sword Apprentice",
-        description: `Ability to use Apprentice-level Sword abilities.`,
+    "sword_apprentice": {
+        Name: "Sword Apprentice",
+        Description: `Ability to use Apprentice-level Sword abilities.`,
     },
 
-    {
-        name: "Sword Journeyman",
-        description: `Ability to use Journeyman-level Sword abilities.`,
+    "sword_journeyman": {
+        Name: "Sword Journeyman",
+        Description: `Ability to use Journeyman-level Sword abilities.`,
     },
 
-    {
-        name: "Sword Expert",
-        description: `Ability to use Expert-level Sword abilities.`,
+    "sword_expert": {
+        Name: "Sword Expert",
+        Description: `Ability to use Expert-level Sword abilities.`,
     },
 
-    {
-        name: "Sword Master",
-        description: `Ability to use Master-level Sword abilities.`,
+    "sword_master": {
+        Name: "Sword Master",
+        Description: `Ability to use Master-level Sword abilities.`,
     },
 
     // Proto-Struct Components
-    {
-        id: "component_array_mki",
-        name: "Component Array mkI",
-        description: `Grants access to component slot 1.`,
+    "protostruct_mk1": {
+        Name: "Component Array mkI",
+        Description: `Grants access to component slot 1.`,
     },
 
-    {
-        id: "component_array_mkii",
-        name: "Component Array mkII",
-        description: `Grants access to component slot 2.`,
+    "protostruct_mk2": {
+        Name: "Component Array mkII",
+        Description: `Grants access to component slot 2.`,
     },
 
-    {
-        id: "component_array_mkiii",
-        name: "Component Array mkIII",
-        description: `Grants access to component slot 3.`,
+    "protostruct_mk3": {
+        Name: "Component Array mkIII",
+        Description: `Grants access to component slot 3.`,
     },
 
-    {
-        id: "component_array_mkiv",
-        name: "Component Array mkIV",
-        description: `Grants access to component slot 4.`,
+    "protostruct_mk4": {
+        Name: "Component Array mkIV",
+        Description: `Grants access to component slot 4.`,
     },
 
-    {
-        id: "component_array_mkv",
-        name: "Component Array mkV",
-        description: `Grants access to component slot 5.`,
+    "protostruct_mk5": {
+        Name: "Component Array mkV",
+        Description: `Grants access to component slot 5.`,
     },
 
-
-
-
-    {
-        name: "Arcane Synergy",
-        description: "Intellect bonus from equipment grants bonus damage (1dmg x class level) to abilities and increases max mana (3mp x class level).",
+    "arcane_synergy": {
+        Name: "Arcane Synergy",
+        Description: "Intellect bonus from equipment grants bonus damage (1dmg x class level) to abilities and increases max mana (3mp x class level).",
     },
 
-
-    {
-        name: "Defence Specialist",
-        description: `
+    "defence_specialist": {
+        Name: "Defence Specialist",
+        Description: `
         - +3 to base strength and constitution per level
         - Bonuses to melee combat (Higher damage and reduces time to attack)
         - Bonuses to smithing (Higher yield and reduces time to craft)
@@ -244,9 +229,9 @@ const TraitData: Trait[] = [
         `,
     },
 
-    {
-        name: "Pioneer",
-        description: `
+    "pioneer": {
+        Name: "Pioneer",
+        Description: `
         - Bonuses to Forestry (Higher yield and reduces time to gather)
         - Bonuses to Construction (Cheaper to construct buildings and reduces time to build)
         - Resistance to cold damage (Incoming cold damage is reduced by 4 per level)
@@ -254,9 +239,9 @@ const TraitData: Trait[] = [
         `,
     },
 
-    {
-        name: "Forest Kin",
-        description: `
+    "forest_kin": {
+        Name: "Forest Kin",
+        Description: `
         - Bonuses to hunting
         - Bonuses to horticulture 
         - Resistance to poisons and nature damage
@@ -265,9 +250,9 @@ const TraitData: Trait[] = [
         `
     },
 
-    {
-        name: "ULTRA Protocol",
-        description: `
+    "ultra_protocol": {
+        Name: "ULTRA Protocol",
+        Description: `
             - Instead of base attribute increases, Proto-Structs gain access to component slots, which can be filled with various components that grant bonuses and abilities.
             - 1 component slot is granted at level 1, and an additional component slot is gained every 3 levels.
             - Components can be swapped out and upgraded, allowing for customization and specialization.
@@ -276,8 +261,8 @@ const TraitData: Trait[] = [
             - Components can be used to create unique abilities and effects, such as elemental damage, healing, or defensive capabilities.
             - Bonuses to engineering and smithing.
             `
-    },
+    }
 
-];
+};
 
 export default TraitData;

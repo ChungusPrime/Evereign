@@ -39,12 +39,12 @@ const ClassData: ClassData[] = [
         Name: "Operative",
         Description: `Operatives fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and eliminate threats before 
         they become a problem, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
-        Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Archo-tech, making them versatile combatants.`,
+        Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Gadgetry, making them versatile combatants.`,
         
         Traits: [
             "Scattergun_novice",
             "explosive_novice",
-            "archo_tech_novice",
+            "gadgetry_novice",
         ],
         Abilities: [
             "incendiary_shot",

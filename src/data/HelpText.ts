@@ -46,7 +46,7 @@ const Help: HelpText = {
     "Operative": `
     Operatives fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and 
     eliminate threats before they become a problem, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
-    Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Archo-tech, making them versatile combatants.
+    Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Gadgetry, making them versatile combatants.
     `,
 
     "Evoker": `
@@ -117,9 +117,9 @@ const Help: HelpText = {
     of Valius were scattered across the world, and these shards are the source of all magic in the world today.\n
     `,
 
-    "Archotech": `
+    "Gadgetry": `
     Though magic is commonplace in the world, not all mortals are able to harness its power. As such, many have turned to technology as a means of achieving their goals. 
-    Known as Archotech, the fusion of magic and science, allows mortals to harness the power of magic to power machines and constructions.\n
+    Known as Gadgets, the fusion of magic and science, allows mortals to harness the power of magic to power machines and constructions.\n
     `,
 
     "The Gods": `
