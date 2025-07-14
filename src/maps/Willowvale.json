@@ -2607,6 +2607,42 @@
                  "width":32,
                  "x":5856,
                  "y":1280
+                }, 
+                {
+                 "gid":5622,
+                 "height":32,
+                 "id":843,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Stone Deposit",
+                 "visible":true,
+                 "width":32,
+                 "x":5461,
+                 "y":5385
+                }, 
+                {
+                 "gid":5622,
+                 "height":32,
+                 "id":844,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Stone Deposit",
+                 "visible":true,
+                 "width":32,
+                 "x":5418.5,
+                 "y":5399
+                }, 
+                {
+                 "gid":5622,
+                 "height":32,
+                 "id":845,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Stone Deposit",
+                 "visible":true,
+                 "width":32,
+                 "x":5505.5,
+                 "y":5395.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6486,8 +6522,8 @@
                  "type":"Chest",
                  "visible":true,
                  "width":32,
-                 "x":5182,
-                 "y":5867
+                 "x":5056,
+                 "y":5856
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6534,8 +6570,8 @@
                  "type":"Marigold",
                  "visible":true,
                  "width":32,
-                 "x":4481,
-                 "y":5663
+                 "x":5760,
+                 "y":5600
                 }, 
                 {
                  "gid":1076,
@@ -6606,8 +6642,8 @@
                  "type":"Marigold",
                  "visible":true,
                  "width":32,
-                 "x":4577,
-                 "y":5727
+                 "x":5664,
+                 "y":5600
                 }, 
                 {
                  "gid":1076,
@@ -6630,8 +6666,8 @@
                  "type":"Marigold",
                  "visible":true,
                  "width":32,
-                 "x":4609,
-                 "y":5663
+                 "x":5632,
+                 "y":5536
                 }, 
                 {
                  "gid":1076,
@@ -6642,8 +6678,8 @@
                  "type":"Marigold",
                  "visible":true,
                  "width":32,
-                 "x":4545,
-                 "y":5663
+                 "x":5696,
+                 "y":5568
                 }, 
                 {
                  "gid":1076,
@@ -6654,8 +6690,8 @@
                  "type":"Marigold",
                  "visible":true,
                  "width":32,
-                 "x":4577,
-                 "y":5631
+                 "x":5696,
+                 "y":5504
                 }, 
                 {
                  "gid":1076,
@@ -6714,8 +6750,8 @@
                  "type":"Marigold",
                  "visible":true,
                  "width":32,
-                 "x":4513,
-                 "y":5695
+                 "x":5632,
+                 "y":5632
                 }, 
                 {
                  "gid":1076,
@@ -7630,8 +7666,8 @@
                  "type":"Transition",
                  "visible":true,
                  "width":64,
-                 "x":5218,
-                 "y":5830
+                 "x":5120,
+                 "y":5824
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -7679,7 +7715,7 @@
          "y":0
         }],
  "nextlayerid":34,
- "nextobjectid":843,
+ "nextobjectid":846,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

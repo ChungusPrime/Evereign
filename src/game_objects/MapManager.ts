@@ -41,6 +41,7 @@ import Chapel from "./buildings/Chapel";
 // NPCs
 import WarbossGorgutz from "./enemies/WarbossGorgutz";
 import GoblinSlinger from "./enemies/GoblinSlinger";
+import StoneDeposit from "./deposits/StoneDeposit";
 
 export default class MapManager {
 
@@ -97,8 +98,6 @@ export default class MapManager {
         let Map = this.scene.make.tilemap({
             key: GD.CurrentMap
         });
-
-
         
         // Load Tilesets
         let Tilesets: Phaser.Tilemaps.Tileset[] = [];
@@ -130,7 +129,8 @@ export default class MapManager {
 
         const objectTypeToClass: { [key: string]: any } = {
             "Oak Tree": OakTree,
-            //"Stone Deposit": StoneDeposit,
+            "Stone Deposit": StoneDeposit,
+            "Marigold": Marigold,
             //"Iron Deposit": IronDeposit,
             //"Torch": Torch,
             //"Goblin Firepit": GoblinFirepit,
@@ -147,7 +147,6 @@ export default class MapManager {
             "Farm": Farm,
             "Chapel": Chapel,
             "Chest": Chest,
-            "Marigold": Marigold,
             "Bloomberry": Bloomberry,
             "Munkle's Brightcap": MunklesBrightcap,
             "Obstacle": Obstacle,
@@ -166,7 +165,7 @@ export default class MapManager {
 
                     // If no properties are defined, initialize with default values and no ID
                     if ( !object.properties || object.properties.length === 0 ) {
-                        console.warn(`Object of type "${object.type}" at (${object.x}, ${object.y}) has no properties, initializing with default values.`);
+                        //console.warn(`Object of type "${object.type}" at (${object.x}, ${object.y}) has no properties, initializing with default values.`);
                         return new obj(this.scene, object.x, object.y, null, null);
                     }
 

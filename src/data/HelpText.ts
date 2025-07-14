@@ -82,6 +82,14 @@ const Help: HelpText = {
     - Grit: Increases resistance to negative effects and improves the effectiveness of certain abilities.\n
     `,
 
+    "Guns": `
+    Guns are a type of ranged weapon that use bullets to deal damage to enemies.\n
+    They are powerful and accurate, but require ammunition to use.\n
+    Guns can be found in the world, purchased from vendors, or crafted using resources.\n
+    A guns effectivness is determined by the ammunition currently loaded, as well as the character's Versatility attribute.\n
+    Different ammo types can be used to deal different types of damage, such as piercing, explosive, or shock.\n
+    Ammo types may also modify the guns accuracy, projectile count, rate of fire or other effects.\n`,
+
     "Abilities": `
     Abilities are special skills that your character can use to perform various actions in the game.\n
     All abilities are Active, meaning they must be used manually by the player.\n
@@ -134,7 +142,12 @@ const Help: HelpText = {
     `,
 
     "Research": `
-    
+    Research is a key aspect of the game, allowing you to unlock new abilities, traits, and technologies.\n
+    You can research new technologies by gathering resources and spending time in your township.\n
+    Research can be used to improve your character's abilities, unlock new traits, and gain access to new technologies.\n
+    Research is done in the Academy, which can be built in your township.\n
+    Researching new technologies requires a specific amount of resources and time, and some technologies require a certain level of Academy to be researched.\n
+    To research a technology, interact with the Academy and select the research option.\n
     `,
 
     "Construction": 

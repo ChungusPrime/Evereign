@@ -45,15 +45,13 @@ export default class CharacterPanel {
             this.ManaText
         ]);
 
+        console.log(GD.Hotbar);
+
         Object.entries(GD.Hotbar).forEach( (slot, index) => {
             let X = this.LifeBG.getTopRight().x + 10 + (index * 64);
             let Y = this.LifeBG.getTopRight().y;
             let rect = this.scene.add.nineslice(X, Y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 0);
         });
-
-        
-
-
 
     }
 

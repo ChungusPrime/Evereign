@@ -19,13 +19,13 @@ export default class Marigold extends Phaser.Physics.Arcade.Sprite {
     public HarvestExperienceType = "Botany";
     public HarvestExperienceValue = 5;
 
-    constructor ( scene: Game, x: number, y: number, width: number = 80, height: number = 120 ) {
+    constructor ( scene: Game, x: number, y: number, ID: string, Data: WorldData ) {
         super( scene, x, y, "RA_Jungle", 1075);
         scene.physics.add.existing(this);
         scene.add.existing(this);
         this.setData('type', "Marigold")
-        .setDisplaySize(width, height)
-        this.setOrigin(0, 1)
+        .setDisplaySize(32, 32)
+        .setOrigin(0, 1)
         .setPipeline("Light2D")
         .setDepth(100)
         .setInteractive()
@@ -34,6 +34,7 @@ export default class Marigold extends Phaser.Physics.Arcade.Sprite {
             scene.ActivityManager.StartActivity(this);
         })
         .setImmovable(true);
+        scene.Plants.add(this);
     }
 
 }
