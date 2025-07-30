@@ -38,32 +38,22 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         });
 
         this.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-
             if ( pointer.leftButtonDown() && scene.Game.Inventory.HeldItem != null && this.ItemData == null ) {
-
                 console.log(`Item dropped: ${scene.Game.Inventory.HeldItem.getData('slot')} to slot ${this.InventoryIndex}`);
-
                 let FromSlot = scene.Game.Inventory.HeldItem.getData('slot');
                 let ToSlot = this.InventoryIndex;
-
                 console.log(`Swapping items: ${FromSlot} with ${ToSlot}`);
-
                 GD.Inventory[ToSlot] = GD.Inventory[FromSlot];
                 GD.Inventory[FromSlot] = null;
-
                 scene.Game.Inventory.Items.find((item) => item.InventoryIndex == FromSlot).Refresh();
                 scene.Game.Inventory.Items.find((item) => item.InventoryIndex == ToSlot).Refresh();
-
                 scene.input.topOnly = true;
                 scene.Game.Inventory.HeldItem.destroy();
                 scene.Game.Inventory.HeldItem = null;
                 scene.Game.Inventory.HoveredOnSlot = null;
-
                 if ( ToSlot.includes("Equipment_") )
                     console.warn(`Equipment changed, updating equipment character stats.`);
-
                 scene.sound.play("InventoryPutdown");
-            
                 console.table(GD.Inventory);
             }
         });

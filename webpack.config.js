@@ -12,7 +12,9 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ },
+            { 
+                test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ 
+            },
             {
                 test: /\.(png|svg|jpg|jpeg|gif|html|mp3|json|wav|xml|ttf)$/i,
                 type: "asset/resource",
@@ -21,7 +23,9 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
             },
-            { test: /\\.(png|jp(e*)g|svg|gif)$/, use: ["file-loader"] },
+            { 
+                test: /\\.(png|jp(e*)g|svg|gif)$/, use: ["file-loader"]
+            },
         ],
     },
     resolve: {
@@ -38,8 +42,14 @@ module.exports = {
         }),
         new CopyPlugin({
             patterns: [
-                { from: "src/images/favicon.ico", to: path.resolve(__dirname, "dist"), },
-                { from: "src/images/icon.ico", to: path.resolve(__dirname, "dist") },
+                { 
+                    from: "src/assets/images/favicon.ico",
+                    to: path.resolve(__dirname, "dist"),
+                },
+                { 
+                    from: "src/assets/images/icon.ico",
+                    to: path.resolve(__dirname, "dist") 
+                },
             ],
         }),
     ],

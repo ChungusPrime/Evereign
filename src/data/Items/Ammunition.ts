@@ -7,9 +7,13 @@ const Ammunition: ItemData[] = [
         Desc: "A handful of Stone shot, used in Scatterguns.",
         Stackable: true,
         StackSize: 200,
-        Type: "Ammunition",
+        Type: "Scattergun",
         Properties: {
-            DamageMod: [],
+            DamageMod: [                
+                { Type: "Piercing", Amount: 2 },
+                { Type: "Force", Amount: 3 }
+            ],
+            Pellets: 8,
         },
         InitialValue: { ID: "stone_shot", Quantity: 1 },
         Craftable: true,
@@ -28,7 +32,7 @@ const Ammunition: ItemData[] = [
         Desc: "A handful of lead shot, used in Scatterguns.",
         Stackable: true,
         StackSize: 200,
-        Type: "Ammunition",
+        Type: "Scattergun",
         Properties: {
             DamageMod: [
                 { Type: "Piercing", Value: 1 },
@@ -48,7 +52,7 @@ const Ammunition: ItemData[] = [
 ];
 
 Ammunition.forEach((item) => {
-    item.Category = "Shot";
+    item.Category = "Ammunition";
 });
 
 export default Ammunition;

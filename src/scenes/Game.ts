@@ -1,7 +1,7 @@
 import UI from './UI';
 import Building from '../game_objects/Building';
 import Enemy from '../game_objects/Enemy';
-import Cursor from '../images/click_cursor.png';
+import Cursor from '../assets/images/click_cursor.png';
 import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
 import DataManager from '../game_objects/managers/DataManager';
 import ActivityManager from '../game_objects/managers/ActivityManager';
@@ -9,10 +9,10 @@ import Inventory from '../game_objects/UI_Inventory';
 import BuildingHelper from '../game_objects/managers/BuildingHelper';
 import DayNightCycleManager from '../game_objects/managers/DayNightCycleManager';
 import EnemyManager from '../game_objects/managers/EnemyManager';
-import ControlManager from '../game_objects/managers/ControlManager';
 import QuestManager from '../game_objects/managers/QuestManager';
 import PlayerCharacter from '../game_objects/Character';
 import MapManager from '../game_objects/MapManager';
+import MapBuilder from '../systems/MapBuilder';
 
 class PlayerRect extends Rectangle {
     
@@ -58,16 +58,16 @@ export default class Game extends Phaser.Scene {
     public SelectedBuilding: string = "";
     public SelectedObject: Phaser.Physics.Arcade.Sprite | Building | null = null;
 
-    // Managers/Helpers
+    // Systems
+    public DaytimeCycleManager!: DayNightCycleManager;
+    public MapBuilder: MapBuilder;
     public QuestManager: QuestManager;
     public DataManager!: DataManager;
     public Inventory!: Inventory | null;
     public ActivityManager!: ActivityManager | null;
     public BuildingHelper!: BuildingHelper;
     public EnemyManager!: EnemyManager;
-    public DaytimeCycleManager!: DayNightCycleManager;
-    public ControlManager: ControlManager;
-    public MapManager: MapManager;
+    
 
     // Game Object Groups
     public Projectiles: Phaser.GameObjects.Group;
@@ -120,16 +120,64 @@ export default class Game extends Phaser.Scene {
         this.Obstacles = this.add.group([]);
         this.Switches = this.add.group([]);
 
-        this.EnemyManager = new EnemyManager(this);
-        this.ControlManager = new ControlManager(this);
-        this.BuildingHelper = new BuildingHelper(this, this.UI);
+        // Systems
         this.DaytimeCycleManager = new DayNightCycleManager(this, this.UI);
-        this.ActivityManager = new ActivityManager(this, this.UI);
+        this.MapBuilder = new MapBuilder(this);
         this.Inventory = new Inventory(this, this.UI);
+
+        this.EnemyManager = new EnemyManager(this);
+        this.BuildingHelper = new BuildingHelper(this, this.UI);
+        
+        this.ActivityManager = new ActivityManager(this, this.UI);
+        
         this.PlayerCharacter = new PlayerCharacter(this);
         this.QuestManager = new QuestManager(this);
-        this.MapManager = new MapManager(this);
+        
         this.cameras.main.startFollow(this.PlayerCharacter, true);
+
+        const ControlMapping: {[key: string]: string | number } = JSON.parse(localStorage.getItem("EvereignData")).Controls;
+        
+        for (const [key, value] of Object.entries(ControlMapping)) {
+            if ( typeof value === 'string' ) {
+                if ( value.includes("mouse") ) {
+                    this.input.on('pointerdown', (event: any) => {
+                        if ( value == `mouse-${event.button}`) {
+                            if ( key == "Controls_Use_Ability_1" ) this.PlayerCharacter.UseAbility("Ability_1");
+                            if ( key == "Controls_Use_Ability_2" ) this.PlayerCharacter.UseAbility("Ability_2");
+                            if ( key == "Controls_Use_Ability_3" ) this.PlayerCharacter.UseAbility("Ability_3");
+                            if ( key == "Controls_Use_Ability_4" ) this.PlayerCharacter.UseAbility("Ability_4");
+                            if ( key == "Controls_Use_Item_1" ) this.PlayerCharacter.UseItem("Item_1");
+                            if ( key == "Controls_Use_Item_2" ) this.PlayerCharacter.UseItem("Item_2");
+                            if ( key == "Controls_Use_Item_3" ) this.PlayerCharacter.UseItem("Item_3");
+                            if ( key == "Controls_Interact" ) this.ActivityManager.StartActivity(this.SelectedObject);
+                        }
+                    });
+                } else {
+                    let KeyObject = this.input.keyboard.addKey(value, true, true);
+                    this.Controls.push(KeyObject);
+                    KeyObject.on('down', (event: any) => {
+                        if ( key == "Move_Left" ) this.PlayerCharacter.LeftKeyDown = true;
+                        if ( key == "Move_Right" ) this.PlayerCharacter.RightKeyDown = true;
+                        if ( key == "Move_Up" ) this.PlayerCharacter.UpKeyDown = true;
+                        if ( key == "Move_Down" ) this.PlayerCharacter.DownKeyDown = true;
+                        if ( key == "Interact" ) this.ActivityManager.StartActivity(this.SelectedObject);
+                        if ( key == "Controls_Use_Ability_1" ) this.PlayerCharacter.UseAbility("Ability_1");
+                        if ( key == "Controls_Use_Ability_2" ) this.PlayerCharacter.UseAbility("Ability_2");
+                        if ( key == "Controls_Use_Ability_3" ) this.PlayerCharacter.UseAbility("Ability_3");
+                        if ( key == "Controls_Use_Ability_4" ) this.PlayerCharacter.UseAbility("Ability_4");
+                        if ( key == "Controls_Use_Item_1" ) this.PlayerCharacter.UseItem("Item_1");
+                        if ( key == "Controls_Use_Item_2" ) this.PlayerCharacter.UseItem("Item_2");
+                        if ( key == "Controls_Use_Item_3" ) this.PlayerCharacter.UseItem("Item_3");
+                    });
+                    KeyObject.on('up', (event: any) => {
+                        if ( key == "Move_Left" ) this.PlayerCharacter.LeftKeyDown = false;
+                        if ( key == "Move_Right" ) this.PlayerCharacter.RightKeyDown = false;
+                        if ( key == "Move_Up" ) this.PlayerCharacter.UpKeyDown = false;
+                        if ( key == "Move_Down" ) this.PlayerCharacter.DownKeyDown = false;
+                    });
+                }
+            }
+        }
 
         this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).on('down', () => console.log(GD));
 
@@ -153,7 +201,7 @@ export default class Game extends Phaser.Scene {
             }
         });
 
-        this.MapManager.CreateMap(this);
+        this.MapBuilder.CreateMap(this);
 
         //this.CreateMap();
         //this.CreateNavMesh();
@@ -230,7 +278,7 @@ export default class Game extends Phaser.Scene {
             GD.X = transition.DestinationX;
             GD.Y = transition.DestinationY;
             this.PlayerCharacter.setPosition(transition.DestinationX, transition.DestinationY);
-            this.MapManager.CreateMap(this);
+            this.MapBuilder.CreateMap(this);
         });
     }
 

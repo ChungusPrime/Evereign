@@ -4,7 +4,7 @@ import Game from "./scenes/Game";
 import UI from "./scenes/UI";
 import Menu from "./scenes/Menu";
 import { PhaserNavMeshPlugin } from "phaser-navmesh";
-import './sass/main.scss';
+import './assets/sass/main.scss';
 
 // Game configuration
 const Config: Phaser.Types.Core.GameConfig = {

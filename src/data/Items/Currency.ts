@@ -14,7 +14,7 @@ const Currency: ItemData[] = [
         ID: "shard_valius",
         Name: "Shard of Valius",
         Sprite: "gems2-45",
-        Desc: "A small fragment of Valius, a creation of the gods. It is said that Valius was shattered into a countless pieces, and that each piece contains a fraction of his power.",
+        Desc: "A small fragment of Valius, a creation of the gods. It is said that Valius was shattered into a countless pieces, and that each piece contains a fraction of his power. Primarily used to upgrade traits and abilities.",
         Stackable: true,
         StackSize: 0
     },

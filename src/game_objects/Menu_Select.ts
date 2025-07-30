@@ -1,7 +1,7 @@
 import Menu from "../scenes/Menu";
 import TextButton from "./UI_TextButton";
 
-export default class Menu_Select extends Phaser.GameObjects.Sprite {
+export default class MenuSelect extends Phaser.GameObjects.Sprite {
 
     public scene: Menu;
 
@@ -57,7 +57,7 @@ export default class Menu_Select extends Phaser.GameObjects.Sprite {
         // Get previous option
         this.ScrollLeft = this.scene.add.sprite(this.getLeftCenter().x - 15, y, "Kenney-UI", "arrowBeige_left");
         this.ScrollLeft.setOrigin(0.5);
-        this.ScrollLeft.setTint(0xdaa475);
+        this.ScrollLeft.setTint(0xE0BA99);
         this.ScrollLeft.setInteractive();
         this.ScrollLeft.on('pointerover', () => {
 

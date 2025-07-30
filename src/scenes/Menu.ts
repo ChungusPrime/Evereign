@@ -1,6 +1,6 @@
-import Cursor from '../images/click_cursor.png';
+import Cursor from '../assets/images/click_cursor.png';
 import TextButton from '../game_objects/UI_TextButton';
-import Menu_Select from '../game_objects/Menu_Select';
+import MenuSelect from '../game_objects/Menu_Select';
 
 // Default New Game Data
 import GameData from '../data/DefaultGameData';
@@ -30,13 +30,9 @@ export default class Menu extends Phaser.Scene {
     public ControlObjects: TextButton[] = [];
     
     public CurrentMenu: string = "";
-    public TitleText!: Phaser.GameObjects.Text;
     public BackButton!: TextButton;
     public RebindInProgress: boolean = false;
     public Book: Phaser.GameObjects.Sprite;
-    public logo: Phaser.GameObjects.Image;
-    public toptext!: Phaser.GameObjects.Text;
-    public bottomtext!: Phaser.GameObjects.Text;
     public CharacterList!: Phaser.GameObjects.Group;
     public Data: GameData = null;
 
@@ -54,11 +50,11 @@ export default class Menu extends Phaser.Scene {
 
     public CharacterCreationGroup: Phaser.GameObjects.Group;
 
-    public characterRaceSelect: Menu_Select;
-    public characterClassSelect: Menu_Select;
-    public campaignSelect: Menu_Select;
-    public scalingSelect: Menu_Select;
-    public difficultySelect: Menu_Select;
+    public characterRaceSelect: MenuSelect;
+    public characterClassSelect: MenuSelect;
+    public campaignSelect: MenuSelect;
+    public scalingSelect: MenuSelect;
+    public difficultySelect: MenuSelect;
 
     constructor () {
         super({ key: "Menu" });
@@ -79,14 +75,39 @@ export default class Menu extends Phaser.Scene {
 
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
 
-        this.sound.play("track1", { loop: true } );
+        this.sound.play("track1", { loop: true });
 
-        this.Background = this.add.nineslice(0, 0, "BookBG", 0, this.scale.width, this.scale.height, 30, 30, 30, 30).setOrigin(0);
+        this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 768 * 2, 560 * 2, 30, 30, 30, 30)
+        .setOrigin(0.5);
 
-        this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height * 0.45, 'Journal', '0').setDisplaySize(this.scale.width, this.scale.height * 1.5).setOrigin(0.5).setVisible(true);
+        this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0')
+        .setScale(1.5)
+        .setOrigin(0.5, 0.55)
+        .setVisible(true);
 
-        this.logo = this.add.image(this.Book.getCenter().x, this.Book.getCenter().y, "logo").setOrigin(0.5, 0.5).setDisplaySize(this.scale.width * 0.2, this.scale.height * 0.45);
-        this.toptext = this.add.text(this.logo.getTopCenter().x, this.logo.getTopCenter().y - 35, "EVEREIGN", { fontSize: 72, align: "center", fontFamily: "Augusta" }).setOrigin(0.5);
+        let TitleScreen = this.add.group([]);
+        let Logo = this.add.image(this.Book.getCenter().x, this.Book.getCenter().y, "logo").setOrigin(0.5, 0.5).setDisplaySize(this.scale.width * 0.2, this.scale.height * 0.45);
+        let TitleText = this.add.text(Logo.getTopCenter().x, Logo.getTopCenter().y - 35, "EVEREIGN", { fontSize: 72, align: "center", fontFamily: "Augusta" }).setOrigin(0.5);
+        let StartButton = this.add.text(Logo.getBottomCenter().x, Logo.getBottomCenter().y + 35, "Click To Start", { 
+            fontSize: 32, align: "center", fontFamily: "Augusta" 
+        })
+        .setInteractive()
+        .on('pointerdown', () => {
+            TitleScreen.setVisible(false);
+            this.Book.play({ key: 'Book Open', frameRate: 12 }).on('animationcomplete', () => {
+                this.BookOpen = true;
+                if ( this.CurrentMenu == "" ) {
+                    this.MainMenuGroup.setVisible(true);
+                }
+            });
+        })
+        .on('pointerover', () => { StartButton.setTint(0x03dbfc) })
+        .on('pointerout', () => { StartButton.clearTint() })
+        .setOrigin(0.5)
+
+        TitleScreen.add(Logo);
+        TitleScreen.add(TitleText);
+        TitleScreen.add(StartButton);
 
         this.createNewCharacterButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Create Character", () => {
             this.createNewCharacterButton.setVisible(false);
@@ -116,32 +137,6 @@ export default class Menu extends Phaser.Scene {
                 }
             });
         }).setVisible(false);
-
-        this.bottomtext = this.add.text(this.logo.getBottomCenter().x, this.logo.getBottomCenter().y + 35, "Click To Start", { 
-            fontSize: 32, align: "center", fontFamily: "Augusta" 
-        })
-        .setInteractive()
-        .on('pointerdown', () => {
-            if ( this.BookOpen == false ) {
-                this.BookOpen = true;
-                this.logo.setVisible(false);
-                this.toptext.setVisible(false);
-                this.bottomtext.setVisible(false);
-                this.Book.play({ key: 'Book Open', frameRate: 12 }).on('animationcomplete', () => {
-                    if ( this.CurrentMenu == "" ) 
-                        this.MainMenuGroup.setVisible(true);
-                });
-            }
-        })
-        .on('pointerover', () => {
-            this.bottomtext.setTint(0x03dbfc);
-        })
-        .on('pointerout', () => {
-            this.bottomtext.clearTint();
-        })
-        .setOrigin(0.5);
-
-        this.TitleText = this.add.text(this.scale.width * 0.65, this.scale.height * 0.1, "New Game", { align: "center", fontSize: 32, fontFamily: "Augusta" }).setVisible(false).setOrigin(0.5);
         
         // Main Menu Buttons
         this.NewGameText = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, "Play", () => {
@@ -275,23 +270,23 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 50;
 
         // Race
-        this.characterRaceSelect = new Menu_Select(this, this.scale.width * 0.32, Y, "Select Race", RaceData.map( r => r.name ));
+        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", RaceData.map( r => r.name ));
         Y = Y + 50;
 
         // Class
-        this.characterClassSelect = new Menu_Select(this, this.scale.width * 0.32, Y, "Select Class", ClassData.map( c => c.Name ));
+        this.characterClassSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Class", ClassData.map( c => c.Name ));
         Y = Y + 50;
 
         // Campaign
-        this.campaignSelect = new Menu_Select(this, this.scale.width * 0.32, Y, "Select Campaign", Campaigns.map( c => c.Name ));
+        this.campaignSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Campaign", Campaigns.map( c => c.Name ));
         Y = Y + 50;
 
         // Scaling
-        this.scalingSelect = new Menu_Select(this, this.scale.width * 0.32, Y, "Select Scaling", ["Fixed", "Adaptive"]);
+        this.scalingSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Scaling", ["Fixed", "Adaptive"]);
         Y = Y + 50;
 
         // Difficulty
-        this.difficultySelect = new Menu_Select(this, this.scale.width * 0.32, Y, "Select Difficulty", ["Standard", "Story", "Ultra"]);
+        this.difficultySelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Difficulty", ["Standard", "Story", "Ultra"]);
         Y = Y + 50;
 
         let CreateNewCharButton = new TextButton(this, this.scale.width * 0.32, this.scale.height * 0.73, "Confirm Character", () => {

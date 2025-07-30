@@ -1,5 +1,5 @@
 import * as Assets from '../assets';
-import Cursor from '../images/click_cursor.png';
+import Cursor from '../assets/images/click_cursor.png';
 
 export default class Preload extends Phaser.Scene {
 
@@ -19,14 +19,13 @@ export default class Preload extends Phaser.Scene {
 
         const loadingBarBackground = this.add.graphics();
         loadingBarBackground.fillStyle(0x707070, 1);
-        loadingBarBackground.fillRect(LoadingText.getBottomLeft().x, LoadingText.getBottomLeft().y + 30, LoadingText.width, 25);
+        loadingBarBackground.fillRect(LoadingText.getBottomLeft().x - 75, LoadingText.getBottomLeft().y + 30, 250, 25);
 
         const loadingBar = this.add.graphics();
-
         this.load.on("progress", (value: any) => {
             loadingBar.clear();
             loadingBar.fillStyle(0xffffff, 1);
-            loadingBar.fillRect(LoadingText.getBottomLeft().x, LoadingText.getBottomLeft().y + 30, LoadingText.width * value, 25);
+            loadingBar.fillRect(LoadingText.getBottomLeft().x - 75, LoadingText.getBottomLeft().y + 30, 250 * value, 25);
         });
 
         this.load.on("complete", (value: any) => {
@@ -37,11 +36,8 @@ export default class Preload extends Phaser.Scene {
         this.load.font("Augusta", Assets.Augusta, 'truetype');
         this.load.font("Flesh", Assets.Flesh, 'truetype');
         this.load.font("Mooli", Assets.Mooli, 'truetype');
-
         this.load.image('BookBG', Assets.BookBG);
         this.load.image('logo', Assets.Logo);
-        this.load.image('background', Assets.MenuBackground);
-
         this.load.audio('woodcutting', [Assets.Woodcutting]);
         this.load.audio('mining', [Assets.Mining]);
         this.load.audio('harvesting', [Assets.Harvesting]);
@@ -58,8 +54,6 @@ export default class Preload extends Phaser.Scene {
         this.load.audio('Money', [Assets.Money]);
         this.load.audio('InventoryPickup', [Assets.InventoryPickup]);
         this.load.audio('InventoryPutdown', [Assets.InventoryPutdown]);
-
-        this.load.spritesheet("Elyndor", Assets.Elyndor, { frameWidth: 32, frameHeight: 32 });
 
         //this.load.spritesheet("Operative", Assets.Operative, { frameWidth: 32, frameHeight: 32 });
 

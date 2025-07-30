@@ -1,0 +1,19 @@
+// Texture Packer: https://www.codeandweb.com/texturepacker
+// Spritesheet Indexer: https://nefd.github.io/spritesheet-indexer/
+// Tiled: https://www.mapeditor.org
+// Piskel: https://www.piskelapp.com
+// Phaser: https://phaser.io
+// Phaser Nav Mesh Plugin: https://github.com/mikewesthad/navmesh
+// Quad Tree TS: https://github.com/timohausmann/quadtree-ts/
+// Normal Map Online: https://cpetry.github.io/NormalMap-Online/
+// Font: Mooli https://fonts.google.com/specimen/Mooli
+// Pixel FX Designer: https://codemanu.itch.io/particle-fx-designer
+// SnowB Bitmap Font: https://snowb.org
+
+Menu Theme:
+Peaceful Forest - Into Oblivion by Darren Curtis (https://www.darrencurtismusic.com)
+
+Willowvale Music:
+One Bard Band by Alexander Nakarada (www.creatorchords.com)
+Licensed under Creative Commons BY Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
