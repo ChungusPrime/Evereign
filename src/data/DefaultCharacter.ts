@@ -15,6 +15,7 @@ const DefaultCharacter: Character = {
     Difficulty: "Normal",
 
     // Attributes
+    AttributePoints: 0,
     Fortitude: 10,
     Versatility: 10,
     Vigor: 10,

@@ -66,13 +66,10 @@ interface AbilityDamageArray {
 }
 
 interface RaceData {
-    name: string;
-    description: string;
-    starting_trait: string;
-    base_attributes: {
-        [key: string]: number; 
-    }
-    attributes_per_level: {
+    Name: string;
+    Description: string;
+    RacialTrait: string;
+    Attributes: {
         [key: string]: number; 
     }
 }

@@ -14,6 +14,7 @@ import FirstNames from '../data/Character/FirstNames';
 import Campaigns from '../data/Campaigns';
 
 import Help from '../data/HelpText';
+import MenuInput from '../game_objects/Menu_Input';
 
 export default class Menu extends Phaser.Scene {
 
@@ -43,7 +44,7 @@ export default class Menu extends Phaser.Scene {
 
     // Character Creation Values
     public CharacterName: string = "";
-    public characterNameInput!: Phaser.GameObjects.DOMElement;
+    public characterNameInput!: MenuInput;
 
     public createNewCharacterButton!: TextButton;
     public loadExistingCharacterButton!: TextButton;
@@ -248,29 +249,11 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 50;
 
         // Name
-        this.characterNameInput = this.add.dom(this.scale.width * 0.32, Y)
-        .createFromHTML(`<input type="text" placeholder="Enter Character Name" style="cursor: url(${Cursor}), pointer; width: 300px; height: 35px; font-size: 28px; text-align: center; border: 0; outline: 0; border-bottom: 2px solid #000; background-color: #daa475; color: #000;" />`)
-        .setOrigin(0.5)
-        .setVisible(false)
-        .addListener('input')
-        .on('input', (event: any) => {
-            this.CharacterName = event.target.value;
-        });
-
-        this.CharacterCreationGroup.add(this.characterNameInput);
-
-        let RandomNameButton = new TextButton(this, this.scale.width * 0.32 + 165, Y, "?", () => {
-            let Name = FirstNames[Math.floor(Math.random() * FirstNames.length)];
-            ((this.characterNameInput.node as HTMLElement).firstChild as HTMLSelectElement).value = Name;
-            this.CharacterName = Name;
-        }, 32).setVisible(false);
-
-        this.CharacterCreationGroup.add(RandomNameButton);
-
+        this.characterNameInput = new MenuInput(this, this.scale.width * 0.32, Y, "Character Name", []);
         Y = Y + 50;
 
         // Race
-        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", RaceData.map( r => r.name ));
+        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", RaceData.map( r => r.Name ));
         Y = Y + 50;
 
         // Class
@@ -293,10 +276,10 @@ export default class Menu extends Phaser.Scene {
 
             ErrorText.setVisible(false);
 
-            if ( this.CharacterName == "" )
+            if ( this.characterNameInput.CurrentValue == "" )
                 return ErrorText.setText("Enter a character name").setVisible(true);
 
-            if ( this.Data.Characters[this.CharacterName] )
+            if ( this.Data.Characters[this.characterNameInput.CurrentValue] )
                 return ErrorText.setText("Character name already exists").setVisible(true);
 
             if ( this.characterRaceSelect.CurrentValue == "" || this.characterRaceSelect.CurrentValue == null )
@@ -315,29 +298,29 @@ export default class Menu extends Phaser.Scene {
                 return ErrorText.setText("Choose a difficulty").setVisible(true);
 
             let Class = ClassData.find( (c) => c.Name == this.characterClassSelect.CurrentValue );
-            let Race = RaceData.find( (r) => r.name == this.characterRaceSelect.CurrentValue );
+            let Race = RaceData.find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
             let Campaign = Campaigns.find( (c) => c.ID == this.campaignSelect.CurrentValue );
 
             // Create new character data
-            this.Data.Characters[this.CharacterName] = DefaultCharacterData;
-            let Character = this.Data.Characters[this.CharacterName];
+            this.Data.Characters[this.characterNameInput.CurrentValue] = DefaultCharacterData;
+            let Character = this.Data.Characters[this.characterNameInput.CurrentValue];
 
             // Set character properties
-            Character.Name = this.CharacterName;
+            Character.Name = this.characterNameInput.CurrentValue;
             Character.Class = this.characterClassSelect.CurrentValue;
             Character.Race = this.characterRaceSelect.CurrentValue;
             Character.Campaign = this.campaignSelect.CurrentValue;
             Character.Scaling = this.scalingSelect.CurrentValue;
             Character.Difficulty = this.difficultySelect.CurrentValue;
-            Character.Fortitude = Race.base_attributes.Fortitude;
-            Character.Versatility = Race.base_attributes.Versatility;
-            Character.Vigor = Race.base_attributes.Vigor;
-            Character.Expertise = Race.base_attributes.Expertise;
-            Character.Personality = Race.base_attributes.Personality;
-            Character.Fortune = Race.base_attributes.Fortune;
-            Character.Grit = Race.base_attributes.Grit;
-            Character.CurrentHealth = 50 + (Race.base_attributes.Fortitude * 10);
-            Character.CurrentMana = 50 + (Race.base_attributes.Expertise * 10);
+            Character.Fortitude = Race.Attributes.Fortitude;
+            Character.Versatility = Race.Attributes.Versatility;
+            Character.Vigor = Race.Attributes.Vigor;
+            Character.Expertise = Race.Attributes.Expertise;
+            Character.Personality = Race.Attributes.Personality;
+            Character.Fortune = Race.Attributes.Fortune;
+            Character.Grit = Race.Attributes.Grit;
+            Character.CurrentHealth = 50 + (Race.Attributes.Fortitude * 10);
+            Character.CurrentMana = 50 + (Race.Attributes.Expertise * 10);
             Character.MaxHealth = Character.CurrentHealth;
             Character.MaxMana = Character.CurrentMana;
             Character.Level = 1;
