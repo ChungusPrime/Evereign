@@ -1,48 +1,13 @@
-interface ClassData {
-
-    // Name of the class
-    Name: string; 
-
-    // Description of the class
-    Description: string; 
-
-    // Starting passive traits
-    Traits: string[]; 
-
-    // Starting active abilities
-    Abilities: string[]; 
-
-    // Starting attribute bonuses
-    AttributeBonuses?: { [attribute: string]: number }; 
-
-    // Starting items
-    Items: {[slot: string]: { 
-        ID: string;
-        Quantity: number
-    }};
-
-    Hotbar: {[slot: string]: { 
-        Type: string;
-        ID: string;
-    }};
-
-    // Unique building associated with the class
-    UniqueBuilding: string;
-
-    // Whether the class is available during character creation or not
-    Available?: boolean; 
-}
-
 const ClassData: ClassData[] = [
 
     {
         Name: "Operative",
-        Description: `Operatives fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and eliminate threats before 
-        they become a problem, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
+        Description: `Operatives fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and 
+        eliminate threats before they have a chance to act, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
         Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Gadgetry, making them versatile combatants.`,
         
         Traits: [
-            "Scattergun_novice",
+            "scattergun_novice",
             "explosive_novice",
             "gadgetry_novice",
         ],

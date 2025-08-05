@@ -12,7 +12,7 @@ const AbilityData: any = [
         weapon_type: "Scattergun",
         apply_effect: "incendiary_shot",
         apply_effect_duration: 5000,
-        requires_trait: "Scattergun_novice",
+        requires_trait: "scattergun_novice",
     },
 
     {

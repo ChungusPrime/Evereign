@@ -439,30 +439,30 @@ export default class Menu extends Phaser.Scene {
     }
 
     StartRebind(key: string, button: TextButton) {
-
         this.RebindInProgress = true;
-
         this.time.delayedCall(100, () => {
-
             button.setText(`${key}: waiting for input...`);
-
             if ( this.RebindInProgress ) {
+
+                let code = null;
 
                 // Keyboard
                 let keyboardlisten = this.input.keyboard.once('keydown', (event: any) => {
+                    code = event.key;
                     keyboardlisten.removeAllListeners();
                     mouselisten.removeAllListeners();
-                    button.setText(`${key}: ${event.key}`);
-                    this.RebindKey(key, event.key);
+                    button.setText(`${key}: ${code}`);
+                    this.RebindKey(key, code);
                     this.RebindInProgress = false;
                 });
 
                 // Mouse
-                let mouselisten = this.input.once('pointerdown', (event: any) => {
+                let mouselisten = this.input.on('pointerdown', (event: any) => {
+                    code = `mouse-${event.button}`;
                     keyboardlisten.removeAllListeners();
                     mouselisten.removeAllListeners();
-                    button.setText(`${key}: ${event.button}`);
-                    this.RebindKey(key, event.key);
+                    button.setText(`${key}: ${code}`);
+                    this.RebindKey(key, code);
                     this.RebindInProgress = false;
                 });
 
@@ -473,6 +473,7 @@ export default class Menu extends Phaser.Scene {
     }
 
     RebindKey(key: string, value: string) {
+        console.log(`Rebinding ${key} to ${value}`);
         this.Data.Controls[key] = value;
         localStorage.setItem("EvereignData", JSON.stringify(this.Data));
     }

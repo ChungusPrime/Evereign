@@ -2617,8 +2617,8 @@
                  "type":"Stone Deposit",
                  "visible":true,
                  "width":32,
-                 "x":5461,
-                 "y":5385
+                 "x":4828.69696969697,
+                 "y":5351.90909090909
                 }, 
                 {
                  "gid":5622,
@@ -2629,8 +2629,8 @@
                  "type":"Stone Deposit",
                  "visible":true,
                  "width":32,
-                 "x":5418.5,
-                 "y":5399
+                 "x":4780.9696969697,
+                 "y":5366.90909090909
                 }, 
                 {
                  "gid":5622,
@@ -2641,8 +2641,32 @@
                  "type":"Stone Deposit",
                  "visible":true,
                  "width":32,
-                 "x":5505.5,
-                 "y":5395.5
+                 "x":4889.56060606061,
+                 "y":5350.77272727273
+                }, 
+                {
+                 "gid":5623,
+                 "height":32,
+                 "id":846,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Iron Deposit",
+                 "visible":true,
+                 "width":32,
+                 "x":4761.5,
+                 "y":5353
+                }, 
+                {
+                 "gid":5623,
+                 "height":32,
+                 "id":847,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Iron Deposit",
+                 "visible":true,
+                 "width":32,
+                 "x":4850,
+                 "y":5364.09090909091
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2799,6 +2823,12 @@
                  "height":128,
                  "id":21,
                  "name":"The Pale Moon Inn",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"LP_Pale_Moon_Inn"
+                        }],
                  "rotation":0,
                  "type":"Inn",
                  "visible":true,
@@ -3073,8 +3103,8 @@
                  "type":"Dwelling",
                  "visible":true,
                  "width":128,
-                 "x":1903.45454545455,
-                 "y":5250.61363636364
+                 "x":1920,
+                 "y":5248
                 }, 
                 {
                  "gid":13864,
@@ -3117,23 +3147,35 @@
                  "height":128,
                  "id":716,
                  "name":"Trom Boulder's Home",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"LP_Trom_Home"
+                        }],
                  "rotation":0,
                  "type":"Dwelling",
                  "visible":true,
                  "width":128,
                  "x":1616.75,
-                 "y":5090.25
+                 "y":5086.91666666667
                 }, 
                 {
                  "gid":13863,
                  "height":128,
                  "id":717,
                  "name":"Edna Hockleman's Home",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"LP_Edna_Home"
+                        }],
                  "rotation":0,
                  "type":"Dwelling",
                  "visible":true,
                  "width":128,
-                 "x":1637.75,
+                 "x":1615.75,
                  "y":4960
                 }, 
                 {
@@ -3165,6 +3207,12 @@
                  "height":128,
                  "id":720,
                  "name":"Vilhelm Dasfoe's Home",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"LP_Vilhelm_Home"
+                        }],
                  "rotation":0,
                  "type":"Dwelling",
                  "visible":true,
@@ -3189,6 +3237,12 @@
                  "height":224,
                  "id":757,
                  "name":"Willowvale Chapel",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"LP_Chapel"
+                        }],
                  "rotation":0,
                  "type":"Chapel",
                  "visible":true,
@@ -3213,6 +3267,12 @@
                  "height":128,
                  "id":778,
                  "name":"Dorris the Botanist",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"LP_Dorris_Shop"
+                        }],
                  "rotation":0,
                  "type":"Market",
                  "visible":true,
@@ -3310,7 +3370,7 @@
                          "value":"LP_Ballista_Tower_1"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"Ballista Tower",
                  "visible":true,
                  "width":64,
                  "x":2080,
@@ -3328,7 +3388,7 @@
                          "value":"LP_Ballista_Tower_2"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"Ballista Tower",
                  "visible":true,
                  "width":64,
                  "x":2080,
@@ -4818,8 +4878,8 @@
                  "type":"Oak Tree",
                  "visible":true,
                  "width":78,
-                 "x":6221.66666666667,
-                 "y":5909.83333333333
+                 "x":6176,
+                 "y":5952
                 }, 
                 {
                  "gid":3562,
@@ -4878,8 +4938,8 @@
                  "type":"Oak Tree",
                  "visible":true,
                  "width":78,
-                 "x":6276.16666666667,
-                 "y":5812.33333333333
+                 "x":5952,
+                 "y":5472
                 }, 
                 {
                  "gid":3562,
@@ -4890,8 +4950,8 @@
                  "type":"Oak Tree",
                  "visible":true,
                  "width":78,
-                 "x":6226.16666666667,
-                 "y":5844.33333333333
+                 "x":6208,
+                 "y":5856
                 }, 
                 {
                  "gid":3562,
@@ -4902,8 +4962,8 @@
                  "type":"Oak Tree",
                  "visible":true,
                  "width":78,
-                 "x":6291,
-                 "y":5895.33333333333
+                 "x":6304,
+                 "y":5920
                 }, 
                 {
                  "gid":3562,
@@ -6391,7 +6451,7 @@
                  "type":"Oak Tree",
                  "visible":true,
                  "width":78,
-                 "x":6336,
+                 "x":6304,
                  "y":5536
                 }, 
                 {
@@ -6482,6 +6542,12 @@
                  "height":32,
                  "id":382,
                  "name":"Goblin Chest",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"WV_Goblin_Chest_1"
+                        }],
                  "rotation":0,
                  "type":"Chest",
                  "visible":true,
@@ -7694,7 +7760,7 @@
                  "type":"Trigger",
                  "visible":true,
                  "width":96,
-                 "x":2016,
+                 "x":2048,
                  "y":5088
                 }, 
                 {
@@ -7715,7 +7781,7 @@
          "y":0
         }],
  "nextlayerid":34,
- "nextobjectid":846,
+ "nextobjectid":848,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

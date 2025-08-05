@@ -1,6 +1,6 @@
 {
     "name": "evereign",
-    "version": "1.0.0",
+    "version": "3.9.0",
     "description": "Evereign",
     "main": "main.js",
     "scripts": {
@@ -34,7 +34,7 @@
     "build": {
         "appId": "com.chungco.evereign",
         "executableName": "Evereign",
-        "icon": "C:\\code\\Evereign\\src\\images\\icon.ico",
+        "icon": "C:\\code\\Evereign\\src\\assets\\images\\icon.ico",
         "directories": {
             "output": "build",
             "buildResources": "dist"

@@ -74,7 +74,51 @@ interface RaceData {
     }
 }
 
+interface LoreEntry {
+    ID: string;
+    Title: string;
+    Description: string;
+    Author?: string; // Optional author of the lore entry
+    Tags?: string[]; // Optional tags for categorization
+    LoreType: "History" | "Magic" | "Mythology" | "Geography" | "Culture"; // Type of lore entry
+    DateAdded: Date; // Date when the lore entry was added
+    Text: string; // Main content of the lore entry
+}
 
+interface ClassData {
+
+    // Name of the class
+    Name: string; 
+
+    // Description of the class
+    Description: string; 
+
+    // Starting passive traits
+    Traits: string[]; 
+
+    // Starting active abilities
+    Abilities: string[]; 
+
+    // Starting attribute bonuses
+    AttributeBonuses?: { [attribute: string]: number }; 
+
+    // Starting items
+    Items: {[slot: string]: { 
+        ID: string;
+        Quantity: number
+    }};
+
+    Hotbar: {[slot: string]: { 
+        Type: string;
+        ID: string;
+    }};
+
+    // Unique building associated with the class
+    UniqueBuilding: string;
+
+    // Whether the class is available during character creation or not
+    Available?: boolean; 
+}
 
 interface StaticBuildingData { 
     ID: number;

@@ -113,18 +113,6 @@ const Help: HelpText = {
     your worn equipment, as well as status effects, traits, abilities, or even random events.\n
     `,
 
-    "Magic": `
-    In ancient times, long before the rise of mortals, only the gods wielded the power of magic.
-    The gods used this magic to create a powerful construct, named Valius, to help them keep the
-    Underlords at bay. Valius was a powerful being, capable of harnessing the power of magic
-    and using it to protect the gods and their creations. However, as time passed, the gods grew
-    complacent and began to neglect their creation. The Underlords, sensing the weakness of the gods,
-    began to invade the realm of the gods, seeking to destroy Valius and claim the power of magic for themselves.
-    Though Valius was destroyed, the gods were able to seal the Underlords away. This event, the Shattering of Valius,
-    marked the end of the Age of Magic, and the beginning of the Age of Mortals. When destroyed, an unknown number of small shards 
-    of Valius were scattered across the world, and these shards are the source of all magic in the world today.\n
-    `,
-
     "Gadgetry": `
     Though magic is commonplace in the world, not all mortals are able to harness its power. As such, many have turned to technology as a means of achieving their goals. 
     Known as Gadgets, the fusion of magic and science, allows mortals to harness the power of magic to power machines and constructions.\n

@@ -39,7 +39,7 @@ const TraitData: Traits = {
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
-            "Scattergun_novice",
+            "scattergun_novice",
         ],
         RequiredAttributes: {
             Versatility: 10,
@@ -52,7 +52,7 @@ const TraitData: Traits = {
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
-            "Scattergun_apprentice",
+            "scattergun_apprentice",
         ],
         RequiredAttributes: {
             Versatility: 15,
@@ -65,7 +65,7 @@ const TraitData: Traits = {
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
-            "Scattergun_journeyman",
+            "scattergun_journeyman",
         ],
         RequiredAttributes: {
             Versatility: 20,
@@ -78,7 +78,7 @@ const TraitData: Traits = {
         - The number of pellets fired per shot is increased by 2.
         - Each base damage type of Scatterguns is increased by 2.`,
         RequiredTraits: [
-            "Scattergun_expert",
+            "scattergun_expert",
         ],
         RequiredAttributes: {
             Versatility: 25,

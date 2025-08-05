@@ -3,45 +3,48 @@ import { GD } from "../scenes/Game";
 import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
 
 import FloatingText from "../game_objects/FloatingText";
-import Projectile from "../game_objects//Projectile";
-import Building from "../game_objects//Building";
-import PlayerCharacter from "../game_objects//Character";
-import Enemy from "../game_objects//Enemy";
-import Chest from "../game_objects//Chest";
-import MiningNode from "../game_objects//MiningNode";
-import Obstacle from "../game_objects//Obstacle";
-import Switch from "../game_objects//Switch";
+import Projectile from "../game_objects/Projectile";
+import Building from "../game_objects/Building";
+import PlayerCharacter from "../game_objects/Character";
+import Enemy from "../game_objects/Enemy";
+import Chest from "../game_objects/Chest";
+import MiningNode from "../game_objects/MiningNode";
+import Obstacle from "../game_objects/Obstacle";
+import Switch from "../game_objects/Switch";
 
 // Plants
-import Bloomberry from "../game_objects//plants/Bloomberry";
-import Marigold from "../game_objects//plants/Marigold";
-import MunklesBrightcap from "../game_objects//plants/MunklesBrightcap";
+import Bloomberry from "../game_objects/plants/Bloomberry";
+import Marigold from "../game_objects/plants/Marigold";
+import MunklesBrightcap from "../game_objects/plants/MunklesBrightcap";
 
 // Trees
-import OakTree from "../game_objects//plants/OakTree";
+import OakTree from "../game_objects/plants/OakTree";
 
 // Zones
-import FishingZone from "../game_objects//Zones/FishingZone";
-import RespawnZone from "../game_objects//Zones/Respawn";
-import Transition from "../game_objects//Zones/Transition";
-import TriggerZone from "../game_objects//Zones/TriggerZone";
+import FishingZone from "../game_objects/Zones/FishingZone";
+import RespawnZone from "../game_objects/Zones/Respawn";
+import Transition from "../game_objects/Zones/Transition";
+import TriggerZone from "../game_objects/Zones/TriggerZone";
 
 // Buildings
-import Market from "../game_objects//buildings/Market";
-import Warehouse from "../game_objects//buildings/Warehouse";
-import Inn from "../game_objects//buildings/Inn";
-import Field from "../game_objects//buildings/Field";
-import GoblinOutpost from "../game_objects//buildings/GoblinOutpost";
-import Mine from "../game_objects//buildings/Mine";
-import Dwelling from "../game_objects//buildings/Dwelling";
-import TownCentre from "../game_objects//buildings/TownCentre";
-import Farm from "../game_objects//buildings/Farm";
-import Chapel from "../game_objects//buildings/Chapel";
+import Market from "../game_objects/buildings/Market";
+import Warehouse from "../game_objects/buildings/Warehouse";
+import Inn from "../game_objects/buildings/Inn";
+import Field from "../game_objects/buildings/Field";
+import GoblinOutpost from "../game_objects/buildings/GoblinOutpost";
+import Mine from "../game_objects/buildings/Mine";
+import Dwelling from "../game_objects/buildings/Dwelling";
+import TownCentre from "../game_objects/buildings/TownCentre";
+import Farm from "../game_objects/buildings/Farm";
+import Chapel from "../game_objects/buildings/Chapel";
 
 // NPCs
-import WarbossGorgutz from "../game_objects//enemies/WarbossGorgutz";
-import GoblinSlinger from "../game_objects//enemies/GoblinSlinger";
-import StoneDeposit from "../game_objects//deposits/StoneDeposit";
+import WarbossGorgutz from "../game_objects/enemies/WarbossGorgutz";
+import GoblinSlinger from "../game_objects/enemies/GoblinSlinger";
+import StoneDeposit from "../game_objects/deposits/StoneDeposit";
+import IronDeposit from "../game_objects/deposits/IronDeposit";
+import GoblinFirepit from "../game_objects/lights/GoblinFirepit";
+import Torch from "../game_objects/lights/Torch";
 
 export default class MapBuilder {
 
@@ -132,23 +135,24 @@ export default class MapBuilder {
             "Stone Deposit": StoneDeposit,
             "Marigold": Marigold,
             //"Iron Deposit": IronDeposit,
+            //"Bloomberry": Bloomberry,
+            //"Munkle's Brightcap": MunklesBrightcap,
             //"Torch": Torch,
             //"Goblin Firepit": GoblinFirepit,
-            //"Warboss Gorgutz": WarbossGorgutz,
-            /*"Goblin Slinger": GoblinSlinger,
+            /*"Town Centre": TownCentre,
+            "Goblin Outpost": GoblinOutpost,
+            "Dwelling": Dwelling,
             "Market": Market,
             "Warehouse": Warehouse,
             "Inn": Inn,
             "Field": Field,
-            "Goblin Outpost": GoblinOutpost,
             "Mine": Mine,
-            "Dwelling": Dwelling,
-            "Town Centre": TownCentre,
             "Farm": Farm,
-            "Chapel": Chapel,
+            "Chapel": Chapel,*/
+            
+            /*"Warboss Gorgutz": WarbossGorgutz,
+            "Goblin Slinger": GoblinSlinger,
             "Chest": Chest,
-            "Bloomberry": Bloomberry,
-            "Munkle's Brightcap": MunklesBrightcap,
             "Obstacle": Obstacle,
             "Fishing Spot": FishingZone,
             "Graveyard": RespawnZone,

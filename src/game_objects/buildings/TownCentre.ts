@@ -12,12 +12,6 @@ export default class TownCentre extends Building {
     public CostMultiplier: number = 5;
     public BuildZone!: Phaser.GameObjects.Rectangle;
 
-    public description: string = `
-        The Town Centre provides housing for people and projects an area in which other buildings can be placed.
-        Other buildings must be placed within the radius of the Town Centre but the Town Centre itself can be placed anywhere.
-        Only one Town Centre can be built per map region.
-    `;
-
     constructor ( scene: Game, x: number, y: number ) {
         super( scene, x, y, "Buildings", "towncentre1");
         this.scene = scene;

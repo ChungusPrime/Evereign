@@ -14,7 +14,7 @@ const Config: Phaser.Types.Core.GameConfig = {
 	dom: {
 		createContainer: true,
 	},
-	version: "Alpha 3-3",
+	version: "Alpha 3-9",
 	fps: {
 		limit: 60,
 		target: 60
@@ -64,17 +64,15 @@ const Config: Phaser.Types.Core.GameConfig = {
 }
 
 // Check for WebGLRenderingContext
-function CheckForWebGL () {
-	try {
-		var canvas = document.createElement('canvas'); 
-		canvas.setAttribute("id", "webgltest");
-        if (!window.WebGLRenderingContext || (canvas.getContext('webgl') === null && canvas.getContext('experimental-webgl') === null)){
-			throw new Error("No WebGLRenderingContext");
-		}
-		new Phaser.Game(Config);
-	} catch (e) {
-		console.error(e);
+try {
+	var canvas = document.createElement('canvas'); 
+	canvas.setAttribute("id", "webgltest");
+	if (!window.WebGLRenderingContext || (canvas.getContext('webgl') === null && canvas.getContext('experimental-webgl') === null)){
+		console.log("WebGL not supported, falling back to 2D context.");
+		throw new Error("No WebGLRenderingContext");
 	}
+	console.log("WebGL is supported, initializing game.");
+	new Phaser.Game(Config);
+} catch (e) {
+	console.error(e);
 }
-
-CheckForWebGL();
