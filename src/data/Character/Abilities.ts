@@ -16,13 +16,13 @@ const AbilityData: any = [
     },
 
     {
-        id: "shrap_bomb",
-        name: "Shrap Bomb",
+        id: "shrap_charge",
+        name: "Shrapnel Charge",
         mana_cost: 10,
         sprite: "SkillsA-3",
-        type: "AreaOfEffect",
+        type: "Buff",
         cooldown: 12000,
-        description: "Throw a grenade at the target area, on impact, exploding and dealing damage to all enemies in the area.",
+        description: "The next grenade you throw will send shrapnel flying in all directions, dealing Bleed damage to all enemies in the area.",
         requires_weapon_equipped: false,
         requires_trait: "explosives_novice",
     },

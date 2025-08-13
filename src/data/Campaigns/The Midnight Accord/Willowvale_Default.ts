@@ -2,6 +2,7 @@ export const Willowvale_Default: WorldData = {
     
     "442": {
         Alive: true,
+        Health: 10
     },
     
     "545": {

@@ -14,7 +14,7 @@ const Config: Phaser.Types.Core.GameConfig = {
 	dom: {
 		createContainer: true,
 	},
-	version: "Alpha 3-9",
+	version: "Alpha 3.9.0",
 	fps: {
 		limit: 60,
 		target: 60

@@ -22,6 +22,7 @@ declare module 'phaser-navmesh';
 
 interface GameData {
     Controls: {
+
         [key: string]: string;
         Interact: string;
         Use_Hotbar_1: string;
@@ -41,6 +42,11 @@ interface GameData {
         Move_Left: string;
         Move_Right: string;
     };
+
+    Options: {
+        [key: string]: boolean | string | number;
+    };
+
     Characters: {
         [key: string]: Character;
     }
@@ -54,6 +60,15 @@ interface Abilities {
         Damage: AbilityDamageArray,
         CooldownMax: number
     }
+}
+
+interface EffectData {
+    ID: string;
+    Name: string;
+    Description: string;
+    Duration: number;
+    TickRate: number;
+    Intensity: number;
 }
 
 interface AbilityDamageArray {
@@ -273,6 +288,7 @@ interface Campaign {
 interface WorldData {
     [key: string]: {
         Alive?: boolean;
+        Health?: number;
         Active?: boolean;
         Destroyed?: boolean;
         Name?: string;

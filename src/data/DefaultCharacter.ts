@@ -6,13 +6,22 @@ const DefaultCharacter: Character = {
     X: 6281,
     Y: 5500,
 
-    Name: "Adventurer",
+    CurrentMap: "Willowvale",
+    Campaign: "The Midnight Accord",
+    WorldData: {},
+
+    CurrentHealth: 50,
+    MaxHealth: 50,
+
+    CurrentMana: 50,
+    MaxMana: 50,
+
+    Name: "Chungus",
     Level: 1,
     Race: "Human",
-    CurrentMap: "Willowvale",
-    Class: "Evoker",
-    Scaling: "fixed",
-    Difficulty: "Normal",
+    Class: "Operative",
+    Scaling: "Fixed",
+    Difficulty: "Standard",
 
     // Attributes
     AttributePoints: 0,
@@ -27,6 +36,7 @@ const DefaultCharacter: Character = {
     Traits: [],
     Abilities: [],
     
+    BackpackTier: 1,
     Inventory: {
         "1": null,
         "2": null,
@@ -74,14 +84,6 @@ const DefaultCharacter: Character = {
         "10": null
     },
     
-    Campaign: "The Midnight Accord",
-    WorldData: {},
-
-    CurrentHealth: 50,
-    MaxHealth: 50,
-    CurrentMana: 50,
-    MaxMana: 50,
-
     Quests: [],
 
     CompletedMilestones: [],

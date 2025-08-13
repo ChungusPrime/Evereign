@@ -1,8 +1,11 @@
 const ItemData: { [key: string]: ItemData } = {};
 
 import ChestArmour from "./Items/Armour_Chest";
-import Staffs from "./Items/Staffs";
+import FeetArmour from "./Items/Armour_Feet";
+import HandArmour from "./Items/Armour_Hands";
+import LegArmour from "./Items/Armour_Legs";
 import HeadArmour from "./Items/Armour_Head";
+import Staffs from "./Items/Staffs";
 import Consumables from "./Items/Consumables";
 import Ammunition from "./Items/Ammunition";
 import Currency from "./Items/Currency";
@@ -12,9 +15,8 @@ import Resources from "./Items/Resources";
 import Tools from "./Items/Tools";
 import Scatterguns from "./Items/Scatterguns";
 import ProtoStructComponents from "./Items/ProtoStructComponents";
-import FeetArmour from "./Items/Armour_Feet";
-import HandArmour from "./Items/Armour_Hands";
-import LegArmour from "./Items/Armour_Legs";
+import Throwables from "./Items/Throwables";
+import ScattergunMods from "./Items/Scattergun_Mods";
 
 // Helper function to add items from an array to ItemData
 function addItems(items: ItemData[]) {
@@ -25,6 +27,7 @@ function addItems(items: ItemData[]) {
 
 // Add all items
 addItems(Scatterguns);
+addItems(ScattergunMods);
 addItems(Staffs);
 addItems(ChestArmour);
 addItems(FeetArmour);
@@ -39,5 +42,6 @@ addItems(Keys);
 addItems(Resources);
 addItems(Tools);
 addItems(ProtoStructComponents);
+addItems(Throwables);
 
 export default ItemData;

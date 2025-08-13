@@ -2,18 +2,20 @@ export const Willowvale: WorldData = {
     
     "442": {
         Type: "Goblin Slinger",
-        Alive: true,
+        Level: 1,
     },
     "545": {
-        Type: "Goblin Slinger"
+        Type: "Goblin Slinger",
+        Level: 1
     },
     "546": {
-        Type: "Goblin Slinger"
+        Type: "Goblin Slinger",
+        Level: 1
     },
     "547": {
-        Type: "Goblin Slinger"
+        Type: "Goblin Slinger",
+        Level: 1
     },
-    
     "382": {
         Type: "Chest"
     },

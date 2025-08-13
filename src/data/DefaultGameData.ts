@@ -8,6 +8,7 @@ const DefaultGameData: GameData = {
         Interact: "e",
         Weapon_Attack: "mouse-0",
         Use_Offhand: "mouse-2",
+        Toggle_Light: "f",
         Use_Hotbar_1: "1",
         Use_Hotbar_2: "2",
         Use_Hotbar_3: "3",
@@ -18,6 +19,10 @@ const DefaultGameData: GameData = {
         Use_Hotbar_8: "8",
         Use_Hotbar_9: "9",
         Use_Hotbar_10: "0",
+    },
+
+    Options: {
+        Show_Aim_Indicator: true
     },
 
     Characters: {}

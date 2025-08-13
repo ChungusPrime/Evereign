@@ -10,7 +10,8 @@ const DamageTypes: string[] = [
     "True",
     "Bleed",
     "Radiant",
-    "Corruption"
+    "Corruption",
+    "Sonic"
 ];
 
 export default DamageTypes;

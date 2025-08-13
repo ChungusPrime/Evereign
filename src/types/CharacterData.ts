@@ -7,6 +7,7 @@ interface Character {
     Level: number;
     Race: string;
     AttributePoints: number;
+    BackpackTier: number;
     Abilities: { ID: string; Tier: number, Cooldown: number }[];
     Traits: { ID: string; Tier: number }[];
     Scaling: string;

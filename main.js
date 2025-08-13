@@ -1,6 +1,17 @@
 const { app, BrowserWindow } = require('electron');
 const { console } = require('inspector');
 const path = require('path');
+const fs = require('fs');
+
+// Override the default userData path
+const portableUserDataPath = path.join(process.cwd(), 'userdata');
+
+// Ensure the folder exists
+if (!fs.existsSync(portableUserDataPath)) {
+  fs.mkdirSync(portableUserDataPath);
+}
+
+app.setPath('userData', portableUserDataPath);
 
 let mainWindow;
 
