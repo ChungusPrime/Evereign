@@ -32,6 +32,22 @@ const Tools: ItemData[] = [
         Desc: "A kit containing tools for studying and collecting plants.",
         Type: "Botany Kit",
         Stackable: false
+    },
+    {
+        ID: "lockpick_set",
+        Name: "Lockpick Set",
+        Sprite: "librarium-45",
+        Desc: "A set of tools for picking locks.",
+        Type: "Lockpick Set",
+        Stackable: false
+    },
+    {
+        ID: "blast_charge",
+        Name: "Blast Charge",
+        Sprite: "librarium-45",
+        Desc: "A charge used for blasting rocks and other obstacles.",
+        Type: "Blast Charge",
+        Stackable: false
     }
 
 ];
