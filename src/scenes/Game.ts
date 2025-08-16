@@ -11,12 +11,9 @@ import DayNightCycleManager from '../game_objects/managers/DayNightCycleManager'
 import EnemyManager from '../game_objects/managers/EnemyManager';
 import QuestManager from '../game_objects/managers/QuestManager';
 import PlayerCharacter from '../game_objects/Character';
-import MapManager from '../game_objects/MapManager';
 import MapBuilder from '../systems/MapBuilder';
 
-class PlayerRect extends Rectangle {
-    
-}
+class PlayerRect extends Rectangle {}
 
 class EnemyRect extends Rectangle {
     public enemy: any;
@@ -229,22 +226,16 @@ export default class Game extends Phaser.Scene {
         });
 
         if ( !this.PlayerCharacter.PlayerIsDead ) {
-
             let PlayerPos = this.PlayerCharacter.getCenter();
-
             const PlayerRectInstance = new PlayerRect({ x: PlayerPos.x, y: PlayerPos.y, width: 32, height: 32 });
-
             this.Quadtree.retrieve(PlayerRectInstance).forEach( (element) => {
-
                 if ( element instanceof EnemyRect && !element.enemy.InCombat ) {
                     const distance = Phaser.Math.Distance.BetweenPoints(element, { x: PlayerPos.x, y: PlayerPos.y });
-                    if ( distance <= 256 ) {
+                    if ( distance <= 256 )
                         element.enemy.Aggro();
-                    }
                 }
 
             });
-
         }
 
     }

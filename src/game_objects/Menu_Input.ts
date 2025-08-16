@@ -7,7 +7,7 @@ export default class MenuInput extends Phaser.GameObjects.Sprite {
     public CurrentValue: string = "";
     public Selected: boolean = false;
 
-    constructor ( scene: Menu, x: number, y: number, text: string, options: string[] ) {
+    constructor ( scene: Menu, x: number, y: number, text: string) {
         super(scene, x, y, "Kenney-UI", "buttonLong_beige_pressed");
         this.scene = scene;
 

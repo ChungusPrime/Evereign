@@ -1,75 +1,61 @@
 import Cursor from '../assets/images/click_cursor.png';
 import TextButton from '../game_objects/UI_TextButton';
 import MenuSelect from '../game_objects/Menu_Select';
-
-// Default New Game Data
 import GameData from '../data/DefaultGameData';
 import DefaultCharacterData from '../data/DefaultCharacter';
-
-// Game Data
 import RaceData from '../data/Character/Races';
 import ClassData from '../data/Character/Classes';
 import ItemData from '../data/ItemData';
-import FirstNames from '../data/Character/FirstNames';
 import Campaigns from '../data/Campaigns';
-
 import Help from '../data/HelpText';
 import MenuInput from '../game_objects/Menu_Input';
 
 export default class Menu extends Phaser.Scene {
 
     public BookOpen: boolean = false;
+
+    // Menus
+    public TitleScreen!: Phaser.GameObjects.Group;
     public MainMenuGroup!: Phaser.GameObjects.Group;
-    public NewGameText!: TextButton;
-    public QuitGameButton!: TextButton;
-    public OptionsText!: TextButton;
-    public CreditsButton!: TextButton;
     public ControlsGroup!: Phaser.GameObjects.Group;
+    public OptionsGroup!: Phaser.GameObjects.Group;
+    public CharacterCreationGroup: Phaser.GameObjects.Group;
+
+    // Inputs
+    public characterNameInput!: MenuInput;
+    public characterRaceSelect!: MenuSelect;
+    public characterClassSelect!: MenuSelect;
+    public campaignSelect!: MenuSelect;
+    public scalingSelect!: MenuSelect;
+    public difficultySelect!: MenuSelect;
 
     public Background: Phaser.GameObjects.NineSlice;
-
     public ControlObjects: TextButton[] = [];
-    
     public CurrentMenu: string = "";
     public BackButton!: TextButton;
     public RebindInProgress: boolean = false;
-    public Book: Phaser.GameObjects.Sprite;
     public CharacterList!: Phaser.GameObjects.Group;
     public Data: GameData = null;
-
-    // Info Camera and Text
     public InfoCamera: Phaser.Cameras.Scene2D.Camera;
     public InfoText: Phaser.GameObjects.Text;
     public InfoBackground: Phaser.GameObjects.NineSlice;
-
-    // Character Creation Values
-    public CharacterName: string = "";
-    public characterNameInput!: MenuInput;
-
-    public createNewCharacterButton!: TextButton;
-    public loadExistingCharacterButton!: TextButton;
-
-    public CharacterCreationGroup: Phaser.GameObjects.Group;
-
-    public characterRaceSelect: MenuSelect;
-    public characterClassSelect: MenuSelect;
-    public campaignSelect: MenuSelect;
-    public scalingSelect: MenuSelect;
-    public difficultySelect: MenuSelect;
+    public Book!: Phaser.GameObjects.Sprite;
 
     constructor () {
         super({ key: "Menu" });
     }
 
     preload (): void {
+
         const ExistingData: string | null = localStorage.getItem("EvereignData");
+
         if ( !(ExistingData) ) {
             const Encoded = JSON.stringify(GameData);
             localStorage.setItem("EvereignData", Encoded);
-            this.Data = JSON.parse(Encoded);
-        } else {
-            this.Data = JSON.parse(ExistingData);
+            return this.Data = JSON.parse(Encoded);
         }
+
+        this.Data = JSON.parse(ExistingData);
     }
 
     create (): void {
@@ -78,155 +64,83 @@ export default class Menu extends Phaser.Scene {
 
         this.sound.play("track1", { loop: true });
 
-        this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 768 * 2, 560 * 2, 30, 30, 30, 30)
-        .setOrigin(0.5);
+        this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 768 * 2, 560 * 2, 30, 30, 30, 30).setOrigin(0.5);
 
-        this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0')
-        .setScale(1.5)
-        .setOrigin(0.5, 0.55)
-        .setVisible(true);
+        this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0').setScale(1.5).setOrigin(0.5, 0.55).setVisible(true);
 
-        let TitleScreen = this.add.group([]);
+        this.TitleScreen = this.add.group([]);
         let Logo = this.add.image(this.Book.getCenter().x, this.Book.getCenter().y, "logo").setOrigin(0.5, 0.5).setDisplaySize(this.scale.width * 0.2, this.scale.height * 0.45);
         let TitleText = this.add.text(Logo.getTopCenter().x, Logo.getTopCenter().y - 35, "EVEREIGN", { fontSize: 72, align: "center", fontFamily: "Augusta" }).setOrigin(0.5);
-        let StartButton = this.add.text(Logo.getBottomCenter().x, Logo.getBottomCenter().y + 35, "Click To Start", { 
-            fontSize: 32, align: "center", fontFamily: "Augusta" 
-        })
-        .setInteractive()
-        .on('pointerdown', () => {
-            TitleScreen.setVisible(false);
-            this.Book.play({ key: 'Book Open', frameRate: 12 }).on('animationcomplete', () => {
-                this.BookOpen = true;
-                if ( this.CurrentMenu == "" ) {
-                    this.MainMenuGroup.setVisible(true);
-                }
-            });
-        })
-        .on('pointerover', () => { StartButton.setTint(0x03dbfc) })
-        .on('pointerout', () => { StartButton.clearTint() })
-        .setOrigin(0.5)
+        let StartButton = new TextButton(this, Logo.getBottomCenter().x, Logo.getBottomCenter().y + 35, "Click To Start", () => {
+            this.ChangeMenu("main");
+        }, 48, "#FFFFFF");
+        this.TitleScreen.addMultiple([Logo, TitleText, StartButton]);
 
-        TitleScreen.add(Logo);
-        TitleScreen.add(TitleText);
-        TitleScreen.add(StartButton);
-
-        this.createNewCharacterButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Create Character", () => {
-            this.createNewCharacterButton.setVisible(false);
-            this.loadExistingCharacterButton.setVisible(false);
-            this.BackButton.setVisible(false);
-            this.MainMenuGroup.setVisible(false);
-            this.CurrentMenu = "CreateCharacter";
-            this.Book.play({ key: 'Style 1 Page Flip Left', frameRate: 12}).on('animationcomplete', () => {
-                if ( this.CurrentMenu == "CreateCharacter" ) {
-                    this.CharacterCreationGroup.setVisible(true);
-                    this.InfoCamera.setVisible(true);
-                    this.BackButton.setVisible(true);
-                }
-            });
-        }).setVisible(false);
-
-        this.loadExistingCharacterButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.55, "Load Character", () => {
-            this.createNewCharacterButton.setVisible(false);
-            this.loadExistingCharacterButton.setVisible(false);
-            this.BackButton.setVisible(false);
-            this.MainMenuGroup.setVisible(false);
-            this.CurrentMenu = "LoadCharacter";
-            this.Book.play({ key: 'Style 1 Page Flip Left', frameRate: 12}).on('animationcomplete', () => {
-                if ( this.CurrentMenu == "LoadCharacter" ) {
-                    this.CharacterList.setVisible(true);
-                    this.BackButton.setVisible(true);
-                }
-            });
-        }).setVisible(false);
-        
         // Main Menu Buttons
-        this.NewGameText = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, "Play", () => {
-            this.MainMenuGroup.setVisible(false);
-            this.CurrentMenu = "Play";
-            this.Book.play({ key: 'Style 1 Page Flip Left', frameRate: 12}).on('animationcomplete', () => {
-                if ( this.CurrentMenu == "Play" ) {
-                    this.createNewCharacterButton.setVisible(true);
-                    this.loadExistingCharacterButton.setVisible(true);
-                    this.BackButton.setVisible(true);
-                }
-            });
+        let CreateButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "Create Character", () => {
+            this.ChangeMenu("create");
+        }).setVisible(false);
+
+        let LoadButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, "Load Character", () => {
+            this.ChangeMenu("load");
+        }).setVisible(false);
+
+        let ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Controls", () => {
+            this.ChangeMenu("controls");
         });
 
-        this.OptionsText = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Controls", () => {
-            this.MainMenuGroup.setVisible(false);
-            this.CurrentMenu = "Options";
-            this.Book.play('Style 1 Page Flip Left').on('animationcomplete', () => {
-                if ( this.CurrentMenu == "Options" ) {
-                    this.ControlsGroup.setVisible(true);
-                    this.BackButton.setVisible(true);
-                }
-                    
-            });
+        let OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.55, "Options", () => {
+            this.ChangeMenu("options");
         });
 
-        this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.55, "Credits", () => {
-            console.log("show credits");
+        let CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Credits", () => { 
+            console.log("credits");
         });
 
-        this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Quit", () => {
+        let QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.75, "Quit", () => { 
             window.close();
         });
 
         this.MainMenuGroup = this.add.group([
-            this.NewGameText,
-            this.OptionsText,
-            this.CreditsButton,
-            this.QuitGameButton
+            CreateButton,
+            LoadButton,
+            ControlsButton,
+            OptionsButton,
+            CreditsButton,
+            QuitGameButton
         ]).setVisible(false);
 
         // Options Menu
-        // Controls
         this.ControlsGroup = this.add.group().setVisible(false);
-
-        let Y = this.scale.height * 0.2;
-
-        this.ControlsGroup.add(
-            this.add.text(this.scale.width * 0.32, Y, "Controls", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
-        );
-
-        this.ControlsGroup.add(
-            this.add.text(this.scale.width * 0.69, Y, "Hotbar Bindings", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
-        );
-
-        Y = Y + 38;
-
-        this.ControlsGroup.add(
-            this.add.text(this.scale.width * 0.32, Y, "Click on a control to start rebinding it", { fontSize: 24, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
-        );
-
-        Y = Y + 42;
-        let HotbarY = Y - 38;
-
-        // Controls Bindings
+        let Y = this.scale.height * 0.20;
+        let HotbarY = Y;
         Object.entries(this.Data.Controls).forEach(control => {
-
             let X = this.scale.width * 0.32;
-
             // check if current control contains the word "Hotbar"
             if ( control[0].includes("Hotbar") ) {
                 X = this.scale.width * 0.69;
                 Y = HotbarY;
             }
-
-            let ControlBind = new TextButton(this, X, Y, `${control[0]}: ${control[1]}`, () => {
+            let label = "";
+            if ( control[1] == "mouse-0" ) {
+                label = "Mouse Left";
+            } else if ( control[1] == "mouse-1" ) {
+                label = "Mouse Middle";
+            } else if ( control[1] == "mouse-2" ) {
+                label = "Mouse Right";
+            } else {
+                label = control[1];
+            }
+            let ControlBind = new TextButton(this, X, Y, `${control[0]}: ${label}`, () => {
                 this.StartRebind(control[0], ControlBind);
-            }, 28).setVisible(false);
-
+            }, 32).setVisible(false);
             this.ControlsGroup.add(ControlBind);
-
             if ( control[0].includes("Hotbar") ) {
                 HotbarY += ControlBind.height + 10;
             } else {
                 Y += ControlBind.height + 10;
             }
-
             this.ControlObjects.push(ControlBind);
-
         });
 
         let ResetControlsButton = new TextButton(this, this.scale.width * 0.32, this.scale.height * 0.8, "Reset to default", () => {
@@ -237,6 +151,16 @@ export default class Menu extends Phaser.Scene {
             });
         }).setVisible(false);
         this.ControlsGroup.add(ResetControlsButton);
+
+        this.OptionsGroup = this.add.group().setVisible(false);
+        Object.entries(this.Data.Options).forEach(option => {
+            let X = this.scale.width * 0.32;
+            let Y = this.scale.height * 0.17;
+            let key = option[0].replace(/_/g, " ");
+            let label = option[1].toLocaleString();
+            let OptionButton = new TextButton(this, X, Y, `${key}: ${label}`, () => {}, 32).setVisible(false);
+            this.OptionsGroup.add(OptionButton);
+        });
 
         // Character Creation
         Y = this.scale.height * 0.22;
@@ -249,7 +173,7 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 50;
 
         // Name
-        this.characterNameInput = new MenuInput(this, this.scale.width * 0.32, Y, "Character Name", []);
+        this.characterNameInput = new MenuInput(this, this.scale.width * 0.32, Y, "Character Name");
         Y = Y + 50;
 
         // Race
@@ -375,7 +299,7 @@ export default class Menu extends Phaser.Scene {
 
         this.CharacterCreationGroup.add(this.InfoBackground);
         this.InfoText = this.add.text(this.InfoBackground.getTopCenter().x, this.InfoBackground.getTopCenter().y, "Click on currently selected option for more information", { 
-            fontSize: 24,
+            fontSize: 32,
             align: "center",
             fontFamily: "Augusta",
             color: "#000",
@@ -406,19 +330,7 @@ export default class Menu extends Phaser.Scene {
         this.RefreshCharacterList();
 
         this.BackButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.8, "Back", () => {
-            this.BackButton.setVisible(false);
-            this.CurrentMenu = "";
-            this.ControlsGroup.setVisible(false);
-            this.CharacterCreationGroup.setVisible(false);
-            this.InfoCamera.setVisible(false);
-            this.CharacterList.setVisible(false);
-            this.createNewCharacterButton.setVisible(false);
-            this.loadExistingCharacterButton.setVisible(false);
-            this.Book.play('Style 1 Page Flip Right').on('animationcomplete', () => {
-                if ( this.CurrentMenu == "" ) {
-                    this.MainMenuGroup.setVisible(true);
-                }
-            });
+            this.ChangeMenu("main");
         }).setVisible(false);
 
         
@@ -427,15 +339,44 @@ export default class Menu extends Phaser.Scene {
         .setOrigin(0, 0)
         .setScroll(0, 0)
         .setVisible(false)
-        //.setBackgroundColor('rgba(233, 80, 80, 0.5)')
-        .ignore([
-            this.BackButton,
-            this.Book,
-            this.Background,
-        ]);
+        .ignore([this.BackButton, this.Book, this.Background]);
 
         this.cameras.main.fadeIn(2000);
 
+    }
+
+    ChangeMenu (menu: string) {
+        console.log("menu");
+        this.CurrentMenu = menu;
+        this.TitleScreen.setVisible(false);
+        this.MainMenuGroup.setVisible(false);
+        this.ControlsGroup.setVisible(false);
+        this.OptionsGroup.setVisible(false);
+        this.CharacterCreationGroup.setVisible(false);
+        this.InfoCamera.setVisible(false);
+        this.CharacterList.setVisible(false);
+
+        // Show relevant group based on string
+        let menuToGroupMap: { [key: string]: Phaser.GameObjects.Group } = {
+            "main": this.MainMenuGroup,
+            "controls": this.ControlsGroup,
+            "options": this.OptionsGroup,
+            "characterCreation": this.CharacterCreationGroup
+        };
+
+        let Animation = 'Style 1 Page Flip Right';
+
+        if ( !this.BookOpen ) {
+            Animation = "Book Open";
+            this.BookOpen = true;
+        }
+
+        this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
+            if (menuToGroupMap[this.CurrentMenu])
+                menuToGroupMap[this.CurrentMenu].setVisible(true);
+            else
+                this.MainMenuGroup.setVisible(true);
+        });
     }
 
     StartRebind(key: string, button: TextButton) {
@@ -448,7 +389,12 @@ export default class Menu extends Phaser.Scene {
 
                 // Keyboard
                 let keyboardlisten = this.input.keyboard.once('keydown', (event: any) => {
+                    
                     code = event.key;
+
+                    if ( event.code )
+                        code = event.code;
+
                     keyboardlisten.removeAllListeners();
                     mouselisten.removeAllListeners();
                     button.setText(`${key}: ${code}`);
@@ -461,7 +407,19 @@ export default class Menu extends Phaser.Scene {
                     code = `mouse-${event.button}`;
                     keyboardlisten.removeAllListeners();
                     mouselisten.removeAllListeners();
-                    button.setText(`${key}: ${code}`);
+
+                    let label = "";
+                    if ( code == "mouse-0" ) {
+                        label = "Mouse Left";
+                    } else if ( code == "mouse-1" ) {
+                        label = "Mouse Middle";
+                    } else if ( code == "mouse-2" ) {
+                        label = "Mouse Right";
+                    } else {
+                        label = code;
+                    }
+
+                    button.setText(`${key}: ${label}`);
                     this.RebindKey(key, code);
                     this.RebindInProgress = false;
                 });
@@ -479,16 +437,11 @@ export default class Menu extends Phaser.Scene {
     }
 
     RefreshCharacterList() {
-        
         this.CharacterList.clear(true, true);
-
         let Y = this.scale.height * 0.2;
-
         this.CharacterList = this.add.group().setVisible(false);
-        this.CharacterList.add(
-            this.add.text(this.scale.width * 0.32, Y, "Characters", { fontSize: 40, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
-        );
-
+        let header = this.add.text(this.scale.width * 0.32, Y, "Characters", { fontSize: 40, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false);
+        this.CharacterList.add(header);
         let CharacterListY = this.scale.height * 0.28;
         Object.keys(this.Data.Characters).forEach(element => {
             let Character = this.Data.Characters[element];
@@ -498,7 +451,6 @@ export default class Menu extends Phaser.Scene {
             this.CharacterList.add(CharacterButton);
             CharacterListY += CharacterButton.height + 16;
         });
-
     }
 
     StartGame ( character: string ) {
@@ -511,6 +463,10 @@ export default class Menu extends Phaser.Scene {
         this.InfoText.setText(text);
         this.InfoCamera.setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoText.height);
         this.InfoCamera.setScroll(0, 0);
+    }
+
+    SetError ( message: string ) {
+
     }
     
 }

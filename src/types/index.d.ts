@@ -22,25 +22,7 @@ declare module 'phaser-navmesh';
 
 interface GameData {
     Controls: {
-
         [key: string]: string;
-        Interact: string;
-        Use_Hotbar_1: string;
-        Use_Hotbar_2: string;
-        Use_Hotbar_3: string;
-        Use_Hotbar_4: string;
-        Use_Hotbar_5: string;
-        Use_Hotbar_6: string;
-        Use_Hotbar_7: string;
-        Use_Hotbar_8: string;
-        Use_Hotbar_9: string;
-        Use_Hotbar_10: string;
-        Weapon_Attack: string;
-        Use_Offhand: string;
-        Move_Up: string;
-        Move_Down: string;
-        Move_Left: string;
-        Move_Right: string;
     };
 
     Options: {

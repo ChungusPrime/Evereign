@@ -34,7 +34,7 @@
     "build": {
         "appId": "com.chungco.evereign",
         "productName": "Evereign",
-        "icon": "C:\\code\\Evereign\\src\\assets\\images\\icon.ico",
+        "icon": "D:\\code\\Evereign\\src\\assets\\images\\icon.ico",
         "directories": {
             "output": "build",
             "buildResources": "dist"
