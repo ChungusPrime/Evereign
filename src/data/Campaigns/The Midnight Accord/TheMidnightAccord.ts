@@ -1,13 +1,8 @@
 import { Willowvale } from "./Willowvale";
-import { Willowvale_Default } from "./Willowvale_Default";
-
 import { Willowvale_Caverns } from "./Willowvale_Caverns";
-import { Willowvale_Caverns_Default } from "./Willowvale_Caverns_Default";
-
 import { WillowvaleNorth } from "./Willowvale_North";
-import { WillowvaleNorthDefault } from "./Willowvale_North_Default";
 
-const Adventure: Campaign = {
+const TheMidnightAccord: Campaign = {
     
     ID: "The Midnight Accord",
     Name: "The Midnight Accord",
@@ -50,8 +45,7 @@ const Adventure: Campaign = {
             Resources: ["Iron", "Stone", "Oak", "Marigold", "Humming Bass", "River Tomato"],
         }
     },
-    
-    // Static map data, not changed by player actions, used as a reference
+
     WorldData: {
         Willowvale: Willowvale,
         WillowvaleCaverns: Willowvale_Caverns,
@@ -59,12 +53,20 @@ const Adventure: Campaign = {
     },
     
     // Default persistant world data, used to keep track of player actions and progression
-    DefaultWorldData: {
-        Willowvale: Willowvale_Default,
-        WillowvaleCaverns: Willowvale_Caverns_Default,
-        WillowvaleNorth: WillowvaleNorthDefault
-    }
-    
+    //DefaultWorldData: {}
+
 }
 
-export default Adventure;
+// Take the InitialData values of each object and assign them to the same key in the DefaultWorldData object
+/*function SetupDynamicWorldData () {
+    Object.keys(TheMidnightAccord.WorldData).forEach((campaign) => {
+        TheMidnightAccord.DefaultWorldData[campaign] = {};
+        Object.keys(TheMidnightAccord.WorldData[campaign]).forEach((data) => {
+            TheMidnightAccord.DefaultWorldData[campaign][data] = { ...TheMidnightAccord.WorldData[campaign][data].InitialData };
+        });
+    });
+}
+    
+SetupDynamicWorldData();*/
+
+export default TheMidnightAccord;

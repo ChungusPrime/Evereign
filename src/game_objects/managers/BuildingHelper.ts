@@ -52,7 +52,7 @@ export default class BuildingHelper {
         return null;
     }
 
-    public CreateBuildingFromMapData ( scene: Game, type: string, x: number, y: number, id: number ) {
+    public CreateBuildingFromMapData ( scene: Game, type: string, x: number, y: number, id: string ) {
 
         if ( type == "Abandoned Mine" ) return;
         if ( type == "Goblin Stronghold" ) return;
@@ -179,8 +179,8 @@ export default class BuildingHelper {
         if ( this.BuildingPlacementMode == false ) return;
  
         // Get the size of the currently selected building
-        let Size = this.scene.DataManager.BuildingData.find((b) => b.Name == this.scene.SelectedBuilding)?.Size ?? null;
-        if ( Size == null ) return this.DeactivateBuildingMode();
+        //let Size = this.scene.DataManager.BuildingData.find((b) => b.Name == this.scene.SelectedBuilding)?.Size ?? null;
+        //if ( Size == null ) return this.DeactivateBuildingMode();
 
         // Get the tile the mouse is currently hovered on
         const tile = this.scene.Map.worldToTileXY(this.scene.mouseX, this.scene.mouseY);
@@ -190,7 +190,7 @@ export default class BuildingHelper {
 
         // Set the placeholder to this x and y
         this.Placeholder.setPosition(world.x, world.y);
-        this.Placeholder.setPlaceholder(Size);
+        //this.Placeholder.setPlaceholder(Size);
 
         let isContained = true;
         // Convert the game objects to Phaser.Geom.Rectangles
@@ -206,9 +206,10 @@ export default class BuildingHelper {
             }
         }
 
-        const tiles = this.scene.Map.getTilesWithinWorldXY( world.x, world.y, Size, Size, null, this.scene.cameras.main, "Collision" );
-        const overlapping = tiles.find( (tile) => tile.index !== -1 );
+        //const tiles = this.scene.Map.getTilesWithinWorldXY( world.x, world.y, Size, Size, null, this.scene.cameras.main, "Collision" );
+        //const overlapping = tiles.find( (tile) => tile.index !== -1 );
 
+        /*
         let overlapping_building = false;
         this.scene.physics.overlap(this.Placeholder, this.scene.Buildings, (overlap) => {
             overlapping_building = true;
@@ -234,7 +235,7 @@ export default class BuildingHelper {
                 this.Placeholder.setFillStyle(0xdb382c, 0.8);
                 this.ValidPlacement = false;
             }
-        }
+        }*/
 
     }
 

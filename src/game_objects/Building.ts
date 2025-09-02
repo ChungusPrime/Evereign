@@ -6,7 +6,7 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     public scene: Game;
     public StaticData: StaticBuildingData | null = null;
     public VariableData: any | null = null;
-    public ID: number = 0;
+    public ID: string = "";
     public Level: number = 1;
     public Area: string = "";
     public TickTime: number = 12000;
@@ -45,15 +45,15 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.add.existing(this);
 
         this.setOrigin(0, 1);
-        
-        const PlotSize = this.scene.DataManager.BuildingData.find((b) => b.Name == this.Type);
 
-        if ( PlotSize == undefined ) {
+        //const PlotSize = this.scene.DataManager.BuildingData[this.Type];
+
+        /*if ( PlotSize == undefined ) {
             console.error(`Building ${this.Type} not found in building data`);
         } else {
             this.setBodySize(PlotSize.PlotSize.Width, PlotSize.PlotSize.Height);
             this.body.offset.y = -PlotSize.PlotSize.Height + this.height;
-        }
+        }*/
         
         this.setInteractive();
         this.setImmovable();

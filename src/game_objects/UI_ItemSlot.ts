@@ -1,21 +1,23 @@
 import UI from "../scenes/UI";
-import ItemData from "../data/ItemData";
 import { GD } from "../scenes/Game";
+import ItemData from "../data/ItemData";
+import Game from "../scenes/Game";
 
 export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
     public scene: UI;
+    public Game: Game;
     public InventoryIndex: string;
     public Item: Phaser.GameObjects.Sprite;
-    public ItemData: any = null;
-
+    public DataInventorySlot: any = null;
     public Label: Phaser.GameObjects.Text | null;
     public QuantityText: Phaser.GameObjects.Text;
 
-    constructor ( scene: UI, x: number, y: number, index: string, label: string | null = null ) {
+    constructor ( Game: Game, scene: UI, x: number, y: number, index: string, label: string | null = null ) {
 
         super(scene, x, y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6);
         this.scene = scene;
+        this.Game = Game;
 
         // The slot itself
         this.setVisible(false);
@@ -24,10 +26,10 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         this.setInteractive();
 
         this.on("pointerover", () => {
-            if ( scene.Game.Inventory.HeldItem != null && this.ItemData == null ) {
+            if ( scene.Game.Inventory.HeldItem != null && this.DataInventorySlot == null ) {
                 this.setTint(0x00ff00);
                 scene.Game.Inventory.HoveredOnSlot = this.InventoryIndex;
-            } else if ( scene.Game.Inventory.HeldItem != null && this.ItemData != null ) {
+            } else if ( scene.Game.Inventory.HeldItem != null && this.DataInventorySlot != null ) {
                 this.setTint(0xd6293d);
             }
         });
@@ -38,7 +40,7 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         });
 
         this.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            if ( pointer.leftButtonDown() && scene.Game.Inventory.HeldItem != null && this.ItemData == null ) {
+            if ( pointer.leftButtonDown() && scene.Game.Inventory.HeldItem != null && this.DataInventorySlot == null ) {
                 console.log(`Item dropped: ${scene.Game.Inventory.HeldItem.getData('slot')} to slot ${this.InventoryIndex}`);
                 let FromSlot = scene.Game.Inventory.HeldItem.getData('slot');
                 let ToSlot = this.InventoryIndex;
@@ -62,30 +64,22 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
         // Set the inventory index
         this.InventoryIndex = index;
-        this.ItemData = GD.Inventory[this.InventoryIndex];
+        this.DataInventorySlot = GD.Inventory[this.InventoryIndex];
 
         this.SetupSprite(scene);
 
         // Label for the slot
-        if ( label != null ) {
-            this.Label = this.scene.add.text(this.getBottomCenter().x, this.getBottomCenter().y + 5, label, {
-                fontFamily: "Augusta",
-                fontSize: 16,
-                align: "center"
-            }).setOrigin(0.5, 0).setVisible(false);
-        }
+        if ( label != null )
+            this.Label = this.scene.add.text(this.getBottomCenter().x, this.getBottomCenter().y + 5, label, { fontFamily: "Augusta", fontSize: 16, align: "center"}).setOrigin(0.5, 0).setVisible(false);
 
         // Quantity Label
-        this.QuantityText = this.scene.add.text(this.getBottomRight().x - 5, this.getBottomRight().y - 5, "x0", {
-            fontFamily: "Augusta",
-            fontSize: 20 
-        })
+        this.QuantityText = this.scene.add.text(this.getBottomRight().x - 5, this.getBottomRight().y - 5, "x0", { fontFamily: "Augusta", fontSize: 20 })
         .setOrigin(1, 1)
         .setDepth(10001)
         .setVisible(false);
 
-        if ( this.ItemData && this.ItemData.Quantity > 0 ) {
-            this.QuantityText.setText(`x${this.ItemData.Quantity}`);
+        if ( this.DataInventorySlot && this.DataInventorySlot.Quantity > 0 ) {
+            this.QuantityText.setText(`x${this.DataInventorySlot.Quantity}`);
         }
 
         this.scene.add.existing(this.QuantityText);
@@ -97,12 +91,12 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         // Item sprite
         this.Item = this.scene.add.sprite(this.getCenter().x, this.getCenter().y, null, null) as Phaser.GameObjects.Sprite;
 
-        if ( this.ItemData ) {
-            const item = ItemData[this.ItemData.ID];
-            this.Item.setTexture(item.Sprite.split("-")[0], item.Sprite.split("-")[1]);
+        if ( this.DataInventorySlot ) {
+            const BaseItemData = this.Game.DataManager.ItemData[this.DataInventorySlot.ID];
+            this.Item.setTexture(BaseItemData.Sprite.split("-")[0], BaseItemData.Sprite.split("-")[1]);
         }
 
-        if ( scene.ActivePanel == "Inventory" && this.ItemData != null ) {
+        if ( scene.ActivePanel == "Inventory" && this.DataInventorySlot != null ) {
             this.Item.setVisible(true);
         } else {
             this.Item.setVisible(false);
@@ -133,31 +127,30 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         this.Item.setDepth(10000);
         this.Item.setData("slot", this.InventoryIndex);
 
-        if ( this.ItemData ) {
-            const sprite = ItemData[this.ItemData.ID].Sprite.split("-");
+        if ( this.DataInventorySlot ) {
+            const BaseItemData = this.Game.DataManager.ItemData[this.DataInventorySlot.ID];
+            const sprite = BaseItemData.Sprite.split("-");
             this.Item.setTexture(sprite[0], sprite[1]);
         }
 
     }
 
     public Refresh () {
-        this.ItemData = GD.Inventory[this.InventoryIndex];
+        this.DataInventorySlot = GD.Inventory[this.InventoryIndex];
         this.SetupSprite(this.scene);
-
-        if ( this.ItemData && this.ItemData.Quantity > 1 ) {
-            this.QuantityText.setText(`x${this.ItemData.Quantity}`);
+        if ( this.DataInventorySlot && this.DataInventorySlot.Quantity > 1 ) {
+            this.QuantityText.setText(`x${this.DataInventorySlot.Quantity}`);
             this.QuantityText.setVisible(true);
         } else {
             this.QuantityText.setVisible(false);
         }
-
     }
 
     public Show () {
         this.setVisible(true);
-        if ( this.ItemData ) {
+        if ( this.DataInventorySlot ) {
             this.Item.setVisible(true);
-            if ( this.ItemData.Quantity > 1 ) {
+            if ( this.DataInventorySlot.Quantity > 1 ) {
                 this.QuantityText.setVisible(true);
             }
         }
@@ -169,13 +162,8 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
     public Hide () {
         this.setVisible(false);
-        if ( this.ItemData ) {
-            this.Item.setVisible(false);
-            if ( this.ItemData.Quantity > 0 ) {
-                this.QuantityText.setVisible(false);
-            }
-        }
-
+        this.Item.setVisible(false);
+        this.QuantityText.setVisible(false);
         if ( this.Label ) {
             this.Label.setVisible(false);
         }

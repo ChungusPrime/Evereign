@@ -74,7 +74,8 @@ export default class Preload extends Phaser.Scene {
         this.load.image('panel-small', Assets.PanelSmall);
         this.load.image('button', Assets.Button);
         this.load.image('button-down', Assets.ButtonDown);
-        this.load.spritesheet("inputs", Assets.Inputs, { frameWidth: 16, frameHeight: 16 });
+        this.load.atlas({ key: 'inputs', textureURL: Assets.InputAtlas, atlasURL: Assets.InputAtlasJSON });
+
         this.load.spritesheet("Kinetic Bolt", Assets.ArcaneDart, { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet("Dart Volley", Assets.DartVolley, { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet("Goblin-Arrow", Assets.GoblinArrow, { frameWidth: 16, frameHeight: 8 });
@@ -140,8 +141,8 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("RA_Cavern_Full", Assets.RA_Cavern_Full, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("tree03_s_01_animation", Assets.tree03_s_01_animation, { frameWidth: 128, frameHeight: 160 });
         this.load.spritesheet("XanthirGate", Assets.XanthirGate, { frameWidth: 92, frameHeight: 114 });
-        
-        this.load.spritesheet("Tileset_Indoors_v1", Assets.Tileset_Indoors_v1, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("RA_Animated_Water", Assets.RA_Animated_Water, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("The Ground V1-1", Assets.TheGroundV1, { frameWidth: 32, frameHeight: 32 });
 
         this.load.spritesheet("Limmy", Assets.Limmy, { frameWidth: 56, frameHeight: 56 });
         this.load.aseprite({ key: 'Journal', textureURL: Assets.JournalImage, atlasURL: Assets.JournalJSON });
@@ -190,12 +191,12 @@ export default class Preload extends Phaser.Scene {
 
         this.anims.createFromAseprite('Journal');
 
-        this.anims.create({ 
+        /*this.anims.create({ 
             key: "EvokerWalk", 
             frames: this.anims.generateFrameNumbers('Elyndor', { frames: [ 1, 2 ] }),
             frameRate: 5,
             repeat: -1
-        });
+        });*/
 
         /*this.anims.create({ 
             key: "OperativeWalk", 

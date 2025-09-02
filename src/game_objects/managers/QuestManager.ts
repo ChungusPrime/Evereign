@@ -1,5 +1,6 @@
 import Game, { GD } from "../../scenes/Game";
 import UI from "../../scenes/UI";
+import QuestData from "../../data/QuestData";
 
 export default class QuestManager {
 
@@ -18,55 +19,23 @@ export default class QuestManager {
         GD.Quests.forEach( (quest) => this.CreateQuestLogEntry(quest.ID));
     }
 
+    // Add the quest to the player's quest log
     GrantQuest ( id: string ) {
-
-        const QuestData = this.Game.DataManager.QuestData.find( (quest) => quest.ID == id );
-
-        this.Game.UI.EventLog.NewEvent(`Quest Accepted: ${QuestData.Name}`);
-
-        // Add quest specific data to Game Data object
-        if ( id == "willowvale_little_piddleton" ) {
-            GD.Quests.push({
-                ID: "willowvale_little_piddleton",
-                ReadyToHandIn: false,
-                Completed: false,
-                ObjectiveProgress: [
-                    { Step: 0, Progress: 0, Completed: false, Visible: true },
-                    { Step: 1, Progress: 0, Completed: false, Visible: false }
-                ]
-            });
-        }
-
-        if ( id == "willowvale_little_piddleton_goblins" ) {
-            GD.Quests.push({
-                ID: "willowvale_little_piddleton_goblins",
-                ReadyToHandIn: false,
-                Completed: false,
-                ObjectiveProgress: [
-                    { Step: 0, Progress: 0, Completed: false, Visible: true },
-                    { Step: 1, Progress: 0, Completed: false, Visible: false }
-                ]
-            });
-        }
-
-        // Create a button for the quest in the quest log
+        const QD = QuestData[id];
+        this.Game.UI.EventLog.NewEvent(`Quest Accepted: ${QD.Name}`);
         this.CreateQuestLogEntry(id);
-
     }
 
     public CreateQuestLogEntry (id: string) {
-        const QuestData = this.Game.DataManager.QuestData.find( (quest) => quest.ID == id );
-
-        let elem = this.UI.add.text(0, 0, QuestData.Name, { fontFamily: "Augusta", fontSize: 24 })
+        const QD = QuestData[id];
+        let elem = this.UI.add.text(0, 0, QD.Name, { fontFamily: "Augusta", fontSize: 24 })
         .setOrigin(0.5, 0)
         .setDepth(100)
         .setTint(0x000000)
         .setVisible(false)
         .setInteractive()
         .on('pointerdown', () => this.ShowQuest(id));
-
         elem.setData('QuestID', id)
-
         this.ActiveQuestButtons.push(elem);
     }
 
@@ -79,7 +48,7 @@ export default class QuestManager {
         console.log(QuestID, Step);
 
         // Get the static data for the quest
-        const QuestData = this.Game.DataManager.QuestData.find( (quest) => quest.ID == QuestID );
+        const QD = QuestData[QuestID];
 
         // Get the players current quest progress
         let CurrentQuestProgress = GD.Quests.find( (quest) => quest.ID == QuestID );
@@ -89,7 +58,7 @@ export default class QuestManager {
         CurrentStepProgress.Progress++;
 
         // Check if objective has been completed after incrementing
-        if ( CurrentStepProgress.Progress >= QuestData.Objectives[Step].ProgressNeeded ) {
+        if ( CurrentStepProgress.Progress >= QD.Objectives[Step].ProgressNeeded ) {
             CurrentStepProgress.Completed = true;
         }
 
@@ -108,10 +77,10 @@ export default class QuestManager {
         if ( Quest.ReadyToHandIn == false ) return false;
 
         // Find the static data for the quest
-        let QuestData = this.Game.DataManager.QuestData.find( (quest) => quest.ID == Quest.ID );
+        const QD = QuestData[QuestID];
 
         // Add rewards to player inventory
-        QuestData.Rewards.forEach( (reward) => {
+        QD.Rewards.forEach( (reward) => {
             //this.Game.Inventory.AddItem(reward, 1, false);
         });
 
@@ -156,7 +125,7 @@ export default class QuestManager {
         console.log(id);
         this.HideQuestLog();
 
-        let QuestData = this.Game.DataManager.QuestData.find( (quest) => quest.ID == id );
+        const QD = QuestData[id];
         let Quest = GD.Quests.find( (quest) => quest.ID == id );
 
         let ObjectiveListX = this.UI.QuestObjectivesHeader.getBottomCenter().x;
@@ -166,7 +135,7 @@ export default class QuestManager {
         this.UI.QuestInformationHeader.setVisible(true);
 
         Quest.ObjectiveProgress.forEach( (objective, index) => {
-            let Text = QuestData.Objectives[objective.Step].Text + " (" + objective.Progress + "/" + QuestData.Objectives[objective.Step].ProgressNeeded + ")";
+            let Text = QD.Objectives[objective.Step].Text + " (" + objective.Progress + "/" + QD.Objectives[objective.Step].ProgressNeeded + ")";
             if ( objective.Visible == false ) return;
             let ObjectiveText = this.UI.add.text(ObjectiveListX, ObjectiveListY, Text, { 
                 fontFamily: "Augusta",

@@ -2,9 +2,14 @@
 interface Character {
     CreatedAtTimestamp: string;
     LastSaveTimestamp: string;
+    Reincarnation: number;
     CurrentMap: string;
     Name: string;
     Level: number;
+    Head: number;
+    Hair: number;
+    Eyes: number;
+    Mouth: number;
     Race: string;
     AttributePoints: number;
     BackpackTier: number;

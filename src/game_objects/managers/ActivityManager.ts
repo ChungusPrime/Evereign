@@ -20,8 +20,8 @@ export default class ActivityManager {
     constructor ( scene: Game, UI: UI ) {
         this.scene = scene;
         this.UI = UI;
-        this.ActivityProgressBarBG = this.UI.add.rectangle(this.UI.cameras.main.width / 2 - 200, this.UI.cameras.main.height * 0.9, 200, 20, 0x000000, 0.9).setDisplaySize(200, 20).setOrigin(0, 0.5).setVisible(false);
-        this.ActivityProgressBar = this.UI.add.image(this.UI.cameras.main.width / 2 - 200, this.UI.cameras.main.height * 0.9, "blue-bar").setDisplaySize(200, 20).setOrigin(0, 0.5).setVisible(false);
+        this.ActivityProgressBarBG = this.UI.add.rectangle(this.UI.cameras.main.width / 2 - 200, this.UI.cameras.main.height * 0.85, 200, 20, 0x000000, 0.9).setDisplaySize(200, 20).setOrigin(0, 0.5).setVisible(false);
+        this.ActivityProgressBar = this.UI.add.image(this.UI.cameras.main.width / 2 - 200, this.UI.cameras.main.height * 0.85, "blue-bar").setDisplaySize(200, 20).setOrigin(0, 0.5).setVisible(false);
         this.ActivityProgressText = this.UI.add.text(this.ActivityProgressBar.getTopCenter().x, this.ActivityProgressBar.getTopCenter().y - this.ActivityProgressBar.height, "Current Activity", { 
             fontFamily: "Augusta",
             fontSize: 24 
@@ -83,9 +83,9 @@ export default class ActivityManager {
 
         this.CurrentActivity.Delta += delta;
 
-        this.ActivityProgressBar.setDisplaySize( this.CurrentActivity.Delta / 5000 * 200 , 20 );
+        this.ActivityProgressBar.setDisplaySize( this.CurrentActivity.Delta / 1000 * 200 , 20 );
 
-        if ( this.CurrentActivity.Delta < 5000 ) return;
+        if ( this.CurrentActivity.Delta < 1000 ) return;
 
         this.CurrentActivity.Delta = 0;
 
@@ -97,7 +97,7 @@ export default class ActivityManager {
             ev.message = "+1 Oak Log";
             ev.sprite1 = "general";
             ev.sprite2 = 21;
-            //this.scene.Inventory.AddItem("log_oak", 1);
+            this.scene.Inventory.AddItem("log_oak", 1);
             GD.Skills.Forestry += 5;
         } else if ( this.CurrentActivity.Type == "Harvesting Marigold" ) {
             ev.message = "+1 Marigold";

@@ -5,7 +5,7 @@ import { Base64 } from 'js-base64';
 // Static Data
 import FlagData from '../../data/FlagData';
 import ClassData from '../../data/Character/Classes';
-import BuildingData from '../../data/Buildings';
+import BuildingData from '../../data/BuildingData';
 import DialogueData from '../../data/DialogueData';
 import FirstNames from "../../data/Character/FirstNames";
 import Lastnames from "../../data/Character/LastNames";
@@ -22,12 +22,12 @@ export default class DataManager {
 
     // These are all static data objects, they never change
     public CharacterData: Character;
-    public BuildingData: BuildingData[] = BuildingData;
+    public BuildingData: BuildingData;
     //public ClassData: ClassData = ClassData;
     public FlagData: GameFlags = FlagData;
     public DialogueData: DialogueData = DialogueData;
     public ItemData = ItemData;
-    public QuestData: QuestData[] = QuestData;
+    public QuestData: QuestData;
     public CampaignData: Campaign[] = CampaignData;
     public MapData: {[key: string]: WorldData}; // This will be set when the map is loaded
 
@@ -37,14 +37,8 @@ export default class DataManager {
 
     constructor ( scene: Game ) {
         this.scene = scene;
-
         let SavedData = JSON.parse(localStorage.getItem("EvereignData"));
-        //console.log(SavedData);
-
-        // Get character data from local storage
         this.CharacterData = SavedData.Characters[this.scene.CharacterName];
-        //console.log(this.CharacterData);
-
         this.MapData = CampaignData.find( (campaign) => campaign.ID == this.CharacterData.Campaign ).WorldData;
     }
 
@@ -123,7 +117,7 @@ export default class DataManager {
         return this.CharacterData.WorldData[this.CharacterData.CurrentMap][ID].Loot ?? null;
     }
 
-    public GetBuildingData ( ID: number ) : StaticBuildingData | null {
+    public GetBuildingData ( ID: string ) : StaticBuildingData | null {
         let MapData = this.GetMapData(this.CharacterData.CurrentMap);
         const obj = MapData[ID];
         if (obj && typeof obj.ID !== "undefined") {

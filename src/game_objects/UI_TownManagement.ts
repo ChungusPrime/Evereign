@@ -24,6 +24,8 @@ export default class TownManagement {
     public Background: Phaser.GameObjects.Rectangle;
     public Header: Phaser.GameObjects.Text;
     private BuildingListObjects: any[] = [];
+    NewBuildingButton: Phaser.GameObjects.NineSlice;
+    NewBuildingButtonText: Phaser.GameObjects.Text;
 
     constructor ( scene: UI ) {
 
@@ -59,6 +61,22 @@ export default class TownManagement {
         .setOrigin(0.5, 0.5)
         .setVisible(false);
 
+        this.NewBuildingButton = scene.add.nineslice(this.NewTownButton.getLeftCenter().x - 60, this.NewTownButton.getLeftCenter().y, "Kenney-UI", "buttonLong_blue_pressed", 100, 24, 6, 6, 6, 6)
+        .setOrigin(0.5, 0.5)
+        .setVisible(false)
+        .setInteractive()
+        .on('pointerdown', () => { 
+            this.scene.Game.BuildingHelper.ActivateBuildingMode("Town Centre");
+        }, this);
+        this.NewBuildingButtonText = scene.add.text(this.NewBuildingButton.getCenter().x, this.NewBuildingButton.getCenter().y, "New Building", { align: "center", fontFamily: "Augusta" })
+        .setOrigin(0.5, 0.5)
+        .setVisible(false);
+
+        this.NewTownButtonText = scene.add.text(this.NewTownButton.getCenter().x, this.NewTownButton.getCenter().y, "New Town", { align: "center", fontFamily: "Augusta" })
+        .setOrigin(0.5, 0.5)
+        .setVisible(false);
+
+
         this.Header = scene.add.text(this.HeaderBackground.getTopLeft().x + 5, this.HeaderBackground.getTopLeft().y + 5, "Your Towns", { fontSize: 32, align: "center", fontFamily: "Augusta" })
         .setOrigin(0)
         .setVisible(false);
@@ -77,6 +95,8 @@ export default class TownManagement {
         this.BackgroundObjects.add(this.NewTownButtonText);
         this.BackgroundObjects.add(this.Header);
         this.BackgroundObjects.add(this.Background);
+        this.BackgroundObjects.add(this.NewBuildingButton);
+        this.BackgroundObjects.add(this.NewBuildingButtonText);
 
         // Set up list of towns
         this.TownListObjects = scene.add.group();
@@ -103,6 +123,8 @@ export default class TownManagement {
         this.CloseButtonText.setVisible(true);
         this.NewTownButton.setVisible(true);
         this.NewTownButtonText.setVisible(true);
+        this.NewBuildingButton.setVisible(true);
+        this.NewBuildingButtonText.setVisible(true);
 
         this.TownListObjects.getChildren().forEach( (elem: any, index: number) => {
             elem.setVisible(true);
@@ -166,6 +188,8 @@ export default class TownManagement {
         this.CloseButton.setVisible(false);
         this.CloseButtonText.setVisible(false);
         this.TownListObjects.setVisible(false);
+        this.NewBuildingButton.setVisible(false);
+        this.NewBuildingButtonText.setVisible(false);
         this.scene.ActivePanel = null;
     }
 

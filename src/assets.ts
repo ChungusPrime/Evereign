@@ -22,21 +22,24 @@ export const Panel: string = require('./assets/images/panel.png');
 export const PanelSmall: string = require('./assets/images/panel-small.png');
 export const Button: string = require('./assets/images/button.png');
 export const ButtonDown: string = require('./assets/images/button_pressed.png');
-export const Inputs: string = require('./assets/images/kenney-ui/inputs_packed.png');
+//export const Inputs: string = require('./assets/images/kenney-ui/inputs_packed.png');
+export const InputAtlas: string = require('./assets/images/inputatlas.png');
+export const InputAtlasJSON: string = require('./assets/images/inputatlas.json');
+
 
 // Admurin
-export const AdmurinGeneral: string = require('./assets/images/Admurin/ItemsGeneral.png');
-export const AdmurinBotany: string = require('./assets/images/Admurin/Botany.png');
-export const AdmurinGemsTwo: string = require('./assets/images/Admurin/Gems_II.png');
-export const AdmurinPotions: string = require('./assets/images/Admurin/Item_Sheet_Potions.png');
-export const AdmuringLibrarium: string = require('./assets/images/Admurin/Item_Sheet_Librarium.png');
-export const AdmurinFlowers: string = require('./assets/images/Admurin/Item_Spritesheet_Flowers.png');
-export const AdmurinFishingB: string = require('./assets/images/Admurin/ItemsFishingB.png');
-export const AdmurinBonus1: string = require('./assets/images/Admurin/Bonus_Items_1.png');
-export const SkillsA: string = require('./assets/images/Admurin/Skills_Final.png');
-export const SkillsB: string = require('./assets/images/Admurin/Skill_B.png');
-export const Weapons: string = require('./assets/images/Admurin/32x32_PixelWeapons_Premium.png');
-export const Armour: string = require('./assets/images/Admurin/32x32_PixelArmor_Premium_2.png');
+export const AdmurinGeneral: string = require('./assets/images/admurin/ItemsGeneral.png');
+export const AdmurinBotany: string = require('./assets/images/admurin/Botany.png');
+export const AdmurinGemsTwo: string = require('./assets/images/admurin/Gems_II.png');
+export const AdmurinPotions: string = require('./assets/images/admurin/Item_Sheet_Potions.png');
+export const AdmuringLibrarium: string = require('./assets/images/admurin/Item_Sheet_Librarium.png');
+export const AdmurinFlowers: string = require('./assets/images/admurin/Item_Spritesheet_Flowers.png');
+export const AdmurinFishingB: string = require('./assets/images/admurin/ItemsFishingB.png');
+export const AdmurinBonus1: string = require('./assets/images/admurin/Bonus_Items_1.png');
+export const SkillsA: string = require('./assets/images/admurin/Skills_Final.png');
+export const SkillsB: string = require('./assets/images/admurin/Skill_B.png');
+export const Weapons: string = require('./assets/images/admurin/32x32_PixelWeapons_Premium.png');
+export const Armour: string = require('./assets/images/admurin/32x32_PixelArmor_Premium_2.png');
 
 export const Characters: string = require('./assets/images/characters.png');
 export const Monsters: string = require('./assets/images/monsters.png');
@@ -88,6 +91,8 @@ export const RA_Interior: string = require('./assets/images/rogue-adventure/RA_I
 export const tree03_s_01_animation: string = require('./assets/images/rogue-adventure/tree03_s_01_animation.png');
 export const RA_Cavern_Full: string = require('./assets/images/rogue-adventure/RA_Cavern_Full.png');
 export const Tileset_Indoors_v1: string = require('./assets/images/admurin/Tileset_Indoors_v1.png');
+
+export const TheGroundV1: string = require('./assets/images/The Ground V1-1.png');
 
 export const XanthirGate: string = require('./assets/images/rogue-adventure/XanthirGate.png');
 

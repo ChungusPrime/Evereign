@@ -5,9 +5,9 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
 
     public scene: Game;
 
-    constructor ( scene: Game, x: number, y: number, width: number, height: number, id: number ) {
+    constructor ( scene: Game, x: number, y: number, id: string, data: WorldData ) {
 
-        super( scene, x, y, width + 6, height + 6, 0xff0000, 0.75 );
+        super( scene, x, y, 64, 64, 0xff0000, 0.75 );
         this.scene = scene;
 
         this.setOrigin(0, 0);
@@ -22,6 +22,8 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
 
             let TriggerData = this.scene.DataManager.MapData[GD.CurrentMap][id];
 
+            console.log(TriggerData);
+
 
             if ( TriggerData.QuestProgressID ) {
                 this.scene.QuestManager.UpdateQuest(TriggerData.QuestProgressID, TriggerData.QuestProgressStep);
@@ -32,7 +34,11 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
                 Quest.ObjectiveProgress[TriggerData.QuestUnlockStep].Visible = true;
             }
 
-            GD.WorldData[GD.CurrentMap][id].Active = false;
+            if ( TriggerData.StartDialogue ) {
+                this.scene.UI.DialogueWindow.ShowSubject(TriggerData.StartDialogue, TriggerData.DialogueSubject);
+            }
+
+            GD.WorldData[GD.Campaign][GD.CurrentMap][id].Active = false;
 
             this.destroy();
         });
@@ -40,7 +46,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
         this.scene.physics.add.existing(this);
         this.scene.add.existing(this);
 
-        let savedData = GD.WorldData[GD.CurrentMap][id];
+        let savedData = GD.WorldData[GD.Campaign][GD.CurrentMap][id];
 
         if ( !savedData ) {
             return;

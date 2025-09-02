@@ -5,7 +5,7 @@ import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
 import FloatingText from "../game_objects/FloatingText";
 import Projectile from "../game_objects/Projectile";
 import Building from "../game_objects/Building";
-import PlayerCharacter from "../game_objects/Character";
+import PlayerCharacter from "../game_objects/PlayerCharacter";
 import Enemy from "../game_objects/Enemy";
 import Chest from "../game_objects/Chest";
 import MiningNode from "../game_objects/MiningNode";
@@ -54,40 +54,6 @@ export default class MapBuilder {
         this.scene = scene;
     }
 
-    ClearMap () {
-        // Disable collision between player and collision layer
-        if ( this.scene.PlayerCollisionLayerCollider !== undefined ) {
-            this.scene.PlayerCollisionLayerCollider.active = false;
-        }
-        
-        // Clean up current map
-        this.scene.Projectiles.getChildren().forEach((proj: Projectile) => proj.delete());
-        this.scene.Projectiles.clear(true, true);
-        this.scene.EnemyProjectiles.clear(true, true);
-        this.scene.Trees.clear(true, true);
-        this.scene.Nodes.clear(true, true);
-        this.scene.Chests.clear(true, true);
-        this.scene.Plants.clear(true, true);
-        this.scene.Zones.clear(true, true);
-        this.scene.Enemies.clear(true, true);
-        this.scene.Pickups.clear(true, true);
-        this.scene.Switches.clear(true, true);
-        this.scene.Obstacles.clear(true, true);
-        this.scene.MapLights.forEach((light: Phaser.GameObjects.Light) => this.scene.lights.removeLight(light));
-        
-        this.scene.Buildings.getChildren().forEach((building: Building) => {
-            if ( building.AggroCollider !== undefined ) {
-                building.AggroCollider.destroy();
-            }
-        });
-        
-        this.scene.Buildings.clear(true, true);
-        
-        if ( this.scene.Map !== undefined ) {
-            this.scene.Map.destroy();
-        }
-    }
-
     CreateMap ( scene: Game ) {
     
         this.scene.physics.pause();
@@ -126,19 +92,18 @@ export default class MapBuilder {
         // Get default campaign data
         const Campaign = this.scene.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
 
-        console.log(Map);
-        console.log(Campaign);
-        console.log(GD);
-
         const objectTypeToClass: { [key: string]: any } = {
             "Oak Tree": OakTree,
             "Stone Deposit": StoneDeposit,
             "Marigold": Marigold,
-            //"Iron Deposit": IronDeposit,
-            //"Bloomberry": Bloomberry,
-            //"Munkle's Brightcap": MunklesBrightcap,
-            //"Torch": Torch,
-            //"Goblin Firepit": GoblinFirepit,
+            "Iron Deposit": IronDeposit,
+            "Bloomberry": Bloomberry,
+            "Munkle's Brightcap": MunklesBrightcap,
+            "Torch": Torch,
+            "Goblin Firepit": GoblinFirepit,
+            "Dwelling": Dwelling,
+            "Trigger": TriggerZone,
+            "Goblin Slinger": GoblinSlinger,
             /*"Town Centre": TownCentre,
             "Goblin Outpost": GoblinOutpost,
             "Dwelling": Dwelling,
@@ -149,22 +114,24 @@ export default class MapBuilder {
             "Mine": Mine,
             "Farm": Farm,
             "Chapel": Chapel,*/
-            
             /*"Warboss Gorgutz": WarbossGorgutz,
-            "Goblin Slinger": GoblinSlinger,
             "Chest": Chest,
             "Obstacle": Obstacle,
             "Fishing Spot": FishingZone,
             "Graveyard": RespawnZone,
             "Transition": Transition,
-            "Trigger": TriggerZone,
             "Switch": Switch*/
         };
 
         // Objects
         Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
+
+            layer.objects = layer.objects.sort((a, b) => a.id - b.id);
+
             layer.objects.forEach( (object) => {
+
                 const obj = objectTypeToClass[object.type];
+        
                 if (obj) {
 
                     // If no properties are defined, initialize with default values and no ID
@@ -183,10 +150,15 @@ export default class MapBuilder {
                     }
 
                     // If properties and ID are defined, use them to create the object
-                    let Data = Campaign.WorldData[GD.CurrentMap][ID] ?? null;
-                    let SavedData = GD.WorldData[GD.CurrentMap][ID] ?? null;
-                    Object.assign(Data, SavedData);
-                    return new obj(this.scene, object.x, object.y, ID, Data);
+                    try {
+                        let Data = Campaign.WorldData[GD.CurrentMap][ID] ?? null;
+                        let SavedData = GD.WorldData[GD.Campaign][GD.CurrentMap][ID] ?? null;
+                        Object.assign(Data, SavedData);
+                        let instance = new obj(this.scene, object.x, object.y, ID, Data) as any;
+                        return instance;
+                    } catch (error) {
+                        console.error(error);
+                    }
                     
                 }
             });
@@ -292,6 +264,40 @@ export default class MapBuilder {
         this.scene.physics.resume();
         this.scene.physics.enableUpdate();
         this.scene.scene.resume("Game");
+    }
+
+    ClearMap () {
+        // Disable collision between player and collision layer
+        if ( this.scene.PlayerCollisionLayerCollider !== undefined ) {
+            this.scene.PlayerCollisionLayerCollider.active = false;
+        }
+        
+        // Clean up current map
+        this.scene.Projectiles.getChildren().forEach((proj: Projectile) => proj.delete());
+        this.scene.Projectiles.clear(true, true);
+        this.scene.EnemyProjectiles.clear(true, true);
+        this.scene.Trees.clear(true, true);
+        this.scene.Nodes.clear(true, true);
+        this.scene.Chests.clear(true, true);
+        this.scene.Plants.clear(true, true);
+        this.scene.Zones.clear(true, true);
+        this.scene.Enemies.clear(true, true);
+        this.scene.Pickups.clear(true, true);
+        this.scene.Switches.clear(true, true);
+        this.scene.Obstacles.clear(true, true);
+        this.scene.MapLights.forEach((light: Phaser.GameObjects.Light) => this.scene.lights.removeLight(light));
+        
+        this.scene.Buildings.getChildren().forEach((building: Building) => {
+            if ( building.AggroCollider !== undefined ) {
+                building.AggroCollider.destroy();
+            }
+        });
+        
+        this.scene.Buildings.clear(true, true);
+        
+        if ( this.scene.Map !== undefined ) {
+            this.scene.Map.destroy();
+        }
     }
 
 }

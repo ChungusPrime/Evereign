@@ -10,7 +10,7 @@ export default class FishingZone extends Phaser.GameObjects.Rectangle {
         this.setOrigin(0, 0);
         this.setInteractive();
         this.on("pointerdown", () => {
-            this.scene.ActivityManager.StartActivity(this);
+            this.scene.ActionManager.StartActivity(this);
         });
         this.scene.Zones.add(this);
         this.scene.add.existing(this);

@@ -22,7 +22,10 @@ const DefaultGameData: GameData = {
     },
 
     Options: {
-        Show_Aim_Indicator: true
+        Show_Aim_Indicator: false,
+        Show_Damage_Numbers: true,
+        Show_Enemy_Health_Bars: true,
+        Show_Building_Health_Bars: true,
     },
 
     Characters: {}

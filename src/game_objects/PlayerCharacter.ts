@@ -54,7 +54,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
         this.setPipeline("Light2D");
         this.flipX = true;
-        this.light = this.scene.lights.addLight(this.x, this.y, 128, 0xe3a456, 0.75);
+        this.light = this.scene.lights.addLight(this.x, this.y, 228, 0xe3a456, 1);
 
         this.Health = GD.CurrentHealth;
         this.MaxHealth = GD.MaxHealth;
@@ -114,8 +114,8 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
         } else {
             
-            if ( this.scene.ActivityManager.CurrentActivity.Type != "" ) {
-                this.scene.ActivityManager.CancelActivity();
+            if ( this.scene.ActionManager.CurrentActivity.Type != "" ) {
+                this.scene.ActionManager.CancelActivity();
             }
                 
             if ( !this.anims.isPlaying || this.anims.currentAnim.key != "Move" ) {

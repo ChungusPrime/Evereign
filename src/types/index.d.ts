@@ -1,3 +1,5 @@
+declare const PACKAGE_VERSION: string;
+
 declare module "*.jpg" {
     const path: string;
     export default path;
@@ -33,7 +35,6 @@ interface GameData {
         [key: string]: Character;
     }
 }
-
 
 interface Abilities {
     [key: string]: {
@@ -118,7 +119,7 @@ interface ClassData {
 }
 
 interface StaticBuildingData { 
-    ID: number;
+    ID: string;
     Name: string;
     Type: string;
     Level: number;
@@ -163,11 +164,15 @@ interface Job {
 }
 
 interface BuildingData {
-    ID: number;
+    Spritesheet: string;
+    Sprite: string;
+    ID: string;
     Name: string;
-    Size: number;
+    Size: { Width: number, Height: number };
     PlotSize?: { Width: number, Height: number };
     Desc: string;
+    BaseHousingSlots?: number;
+    BaseStorageSlots?: number;
     Tiers: {
         [key: number]: {
             Width: number;
@@ -184,14 +189,37 @@ interface BuildingData {
         Amount: number;
     }[];
     RequiresMilestone: number | boolean;
+    AggroZone: boolean;
 }
 
 interface QuestData {
+    // The ID of the quest
     ID: string;
+
+    // The name of the quest
     Name: string;
-    Description: string,
-    Rewards?: string[],
-    Objectives: { Text: string, ProgressNeeded: number }[]
+
+    // The description of the quest
+    Description: string;
+
+    // An array of rewards granted for completing the quest
+    Rewards?: {ID: string, Quantity: number }[];
+
+    // An array of objectives for the quest
+    Objectives: { Text: string, ProgressNeeded: number }[];
+
+    // The data added to the player's quest log when the quest is accepted
+    IntitialData?: {
+        ReadyToHandIn: boolean;
+        Completed: boolean;
+        ObjectiveProgress: {
+            Step: number;
+            Progress: number;
+            Completed: boolean;
+            Visible: boolean;
+        }[];
+    };
+    
 }
 
 interface ResourceData {
@@ -251,7 +279,7 @@ interface Campaign {
     Name: string;
     Description: string;
     WorldData: {[key: string]: WorldData};
-    DefaultWorldData: {[key: string]: WorldData};
+    //DefaultWorldData: any;
     StartingMap?: string,
     StartingX?: number,
     StartingY?: number,
@@ -265,58 +293,6 @@ interface Campaign {
         Resources?: Array<string>;
         Music?: string;
     }};
-}
-
-interface WorldData {
-    [key: string]: {
-        Alive?: boolean;
-        Health?: number;
-        Active?: boolean;
-        Destroyed?: boolean;
-        Name?: string;
-        Level?: number;
-        Unlocked?: boolean;
-        Units?: IUnit[];
-        QuestProgressID?: string;
-        QuestProgressStep?: number;
-        Person?: string;
-        QuestUnlockStep?: number;
-        Selling?: {
-            ID: string;
-            QuantityMin?: number;
-            QuantityMax?: number;
-            CurrentQuantity?: number;
-            PriceMin?: number;
-            PriceMax?: number;
-            CurrentPrice?: number;
-            Price?: number;
-            Amount?: number;
-        }[];
-        Buying?: {
-            ID: string;
-            QuantityMin?: number;
-            QuantityMax?: number;
-            CurrentQuantity?: number;
-            PriceMin?: number;
-            PriceMax?: number;
-            CurrentPrice?: number;
-            Price?: number;
-            Amount?: number;
-        }[];
-        RequiresItem?: string;
-        PeopleAvailableForHire?: {
-            QuantityMax: number;
-            Types: string[];
-        }
-        RequiresActivatedSwitches?: number[];
-        OnDestroyDisableObstacle?: number[];
-        ID?: number;
-        Type?: string;
-        Loot?: LootItem[];
-        TransitionToMap?: string;
-        DestinationX?: number;
-        DestinationY?: number;
-    };
 }
 
 interface CurrencyData {

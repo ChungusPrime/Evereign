@@ -1,13 +1,7 @@
 const ScipiusDialogue = {
     FirstTimeGreeting: `Good day sir, I haven't seen your face before and you're certainly better dressed than anyone in Willowvale. 
-                        Do you travel from the Capital? I would be happy to discuss local tidings with you.
-                        
-                        Good day sir, I haven't seen your face before and you're certainly better dressed than anyone in Willowvale. 
-                        Do you travel from the Capital? I would be happy to discuss local tidings with you.
-                        
-                        Good day sir, I haven't seen your face before and you're certainly better dressed than anyone in Willowvale. 
                         Do you travel from the Capital? I would be happy to discuss local tidings with you.`,
-    NormalGreeting: `Greetings, Elyndor. How can I help you?`,
+    NormalGreeting: `Greetings, {playerName}. How can I help you?`,
     Subjects: {
 
         "Ask about Little Piddleton": {

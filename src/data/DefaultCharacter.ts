@@ -2,26 +2,28 @@ const DefaultCharacter: Character = {
 
     CreatedAtTimestamp: Date.now().toString(),
     LastSaveTimestamp: Date.now().toString(),
-
+    Reincarnation: 1,
     X: 6281,
     Y: 5500,
-
     CurrentMap: "Willowvale",
     Campaign: "The Midnight Accord",
     WorldData: {},
-
     CurrentHealth: 50,
     MaxHealth: 50,
-
     CurrentMana: 50,
     MaxMana: 50,
-
     Name: "Chungus",
     Level: 1,
     Race: "Human",
     Class: "Operative",
     Scaling: "Fixed",
     Difficulty: "Standard",
+
+    // Portrait customisation
+    Head: 1,
+    Hair: 1,
+    Eyes: 1,
+    Mouth: 1,
 
     // Attributes
     AttributePoints: 0,
@@ -114,7 +116,7 @@ const DefaultCharacter: Character = {
 
     PlayerTowns: {},
 
-    DaytimeHour: 9,
+    DaytimeHour: 0,
     DaytimeMinute: 0,
     DaytimeDelta: 0,
 

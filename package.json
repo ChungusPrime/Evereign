@@ -1,12 +1,12 @@
 {
     "name": "evereign",
-    "version": "3.9.0",
+    "version": "3.9.4",
     "description": "Evereign",
     "main": "main.js",
     "scripts": {
         "dev": "webpack --config webpack.config.js --mode=development --watch",
         "prod": "webpack --config webpack.config.js --mode=production",
-        "build": "npm run prod && electron-builder",
+        "build": "npm install && npm run prod && electron-builder",
         "build-standalone": "electron-builder",
         "start": "electron ."
     },

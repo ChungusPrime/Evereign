@@ -32,7 +32,7 @@ export default class StoneDeposit extends Phaser.Physics.Arcade.Sprite {
         .setInteractive()
         .on('pointerdown', () => {
             console.log(this);
-            scene.ActivityManager.StartActivity(this);
+            scene.ActionManager.StartActivity(this);
         });
         scene.Nodes.add(this);
     }

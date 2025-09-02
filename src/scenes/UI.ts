@@ -44,7 +44,7 @@ export default class UI extends Phaser.Scene {
     public SaveButton: any;
     public BuildButton: Button;
     public CharacterButton: Button;
-    public ResourcesButton: Button;
+    public InventoryButton: Button;
     public JournalButton: Button;
     public WorldMapButton: Button;
     public SidePanelBackground: Phaser.GameObjects.Rectangle;
@@ -127,7 +127,7 @@ export default class UI extends Phaser.Scene {
         .setOrigin(0);
         SidePanel.add(TopBackground);
 
-        this.VersionText = this.add.text(2, 2, this.game.config.gameVersion).setShadow(2, 2, "#000", 1).setOrigin(0);
+        this.VersionText = this.add.text(1, 1, this.game.config.gameVersion).setShadow(2, 2, "#000", 1).setOrigin(0).setFontSize(12);
         SidePanel.add(this.VersionText);
 
         this.DayTimeText = this.add.text(this.SidePanelBackground.getTopRight().x - 2, 2, `${GD.DaytimeHour.toString().padStart(2, '0')}:${GD.DaytimeMinute.toString().padStart(2, '0')}`, { fontFamily: "Augusta", fontSize: 18 })
@@ -147,17 +147,17 @@ export default class UI extends Phaser.Scene {
         SidePanel.add(this.BuildButton);
         SidePanel.add(this.BuildButton.text);
 
-        this.ResourcesButton = new Button(this, this.SidePanelBackground.getTopLeft().x + 7, this.BuildButton.getBottomLeft().y + 5, "Inventory", () => {
+        this.InventoryButton = new Button(this, this.SidePanelBackground.getTopLeft().x + 7, this.BuildButton.getBottomLeft().y + 5, "Inventory", () => {
             this.ActivePanel = "Inventory";
             this.Game.Inventory.Show();
         });
 
-        SidePanel.add(this.ResourcesButton);
-        SidePanel.add(this.ResourcesButton.text);
+        SidePanel.add(this.InventoryButton);
+        SidePanel.add(this.InventoryButton.text);
 
         
 
-        this.JournalButton = new Button(this, this.SidePanelBackground.getTopLeft().x + 7, this.ResourcesButton.getBottomLeft().y + 5, "Journal", () => {
+        this.JournalButton = new Button(this, this.SidePanelBackground.getTopLeft().x + 7, this.InventoryButton.getBottomLeft().y + 5, "Journal", () => {
             if ( this.Book.visible == true ) {
                 this.LeftBackground.setVisible(false);
                 this.RightBackground.setVisible(false);
@@ -350,9 +350,9 @@ export default class UI extends Phaser.Scene {
             this.ActivePanel = null;
         });
 
-        if ( !GD.DialogueFlags.includes("JournalEntries-EntryOne") ) {
-            this.DialogueWindow.ShowSubject("Journal Entries", "Entry One");
-        }
+        //if ( !GD.DialogueFlags.includes("JournalEntries-EntryOne") ) {
+            //this.DialogueWindow.ShowSubject("Journal Entries", "Entry One");
+        //}
 
     }
 

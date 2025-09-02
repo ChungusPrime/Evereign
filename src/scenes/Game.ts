@@ -3,68 +3,72 @@ import Building from '../game_objects/Building';
 import Enemy from '../game_objects/Enemy';
 import Cursor from '../assets/images/click_cursor.png';
 import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
-import DataManager from '../game_objects/managers/DataManager';
-import ActivityManager from '../game_objects/managers/ActivityManager';
-import Inventory from '../game_objects/UI_Inventory';
-import BuildingHelper from '../game_objects/managers/BuildingHelper';
-import DayNightCycleManager from '../game_objects/managers/DayNightCycleManager';
-import EnemyManager from '../game_objects/managers/EnemyManager';
-import QuestManager from '../game_objects/managers/QuestManager';
-import PlayerCharacter from '../game_objects/Character';
+import PlayerCharacter from '../game_objects/PlayerCharacter';
 import MapBuilder from '../systems/MapBuilder';
+import { PlayerRect, EnemyRect } from '../game_objects/QuadTree_Rects';
+import Campaigns from '../data/Campaigns';
 
-class PlayerRect extends Rectangle {}
-
-class EnemyRect extends Rectangle {
-    public enemy: any;
-    constructor( props: { x: number, y: number, width: number, height: number, data: any } ) {
-        super(props);
-        this.enemy = props.data;
-    }
-}
-
-// Global copy of the current game session data
+// Global copy of the current character data
 export let GD: Character;
+export let CD: Campaign;
+export let Options: GameData['Options'];
+
+// Export systems for use globally;
+import DataManager from '../game_objects/managers/DataManager';
+export let DM: DataManager;
+
+import Inventory from '../systems/Inventory';
+export let IM: Inventory;
+
+import BuildingHelper from '../game_objects/managers/BuildingHelper';
+export let BH: BuildingHelper;
+
+import DayNightCycle from '../systems/DayNightCycle';
+export let DNC: DayNightCycle;
+
+import EnemyManager from '../game_objects/managers/EnemyManager';
+export let EM: EnemyManager;
+
+import QuestManager from '../game_objects/managers/QuestManager';
+
+import ActionManager from '../systems/ActionManager';
+export let QM: QuestManager;
 
 export default class Game extends Phaser.Scene {
 
     public CharacterName: string;
-
     public UI: UI;
     public CurrentSaveSlot!: string;
-
     public mouseX!: number;
     public mouseY!: number;
-    
+    //public AimIndicator: Phaser.GameObjects.Rope;
+    public graphics: Phaser.GameObjects.Graphics;
     public TownCentre: Building = null;
     public Quadtree!: Quadtree<Rectangle | Circle | Line>;
     public Controls: Phaser.Input.Keyboard.Key[] = [];
-
     public ActiveTransition: number;
-
     public PlayerCollisionLayerCollider: Phaser.Physics.Arcade.Collider;
     public NavMesh: any;
     public navMeshPlugin: any;
     public Map: Phaser.Tilemaps.Tilemap;
-
     public PlayerCharacter: PlayerCharacter;
     public MapRespawnPoint: Phaser.GameObjects.Rectangle;
     public CollisionLayer: Phaser.Tilemaps.TilemapLayer;
     public MapLights: Phaser.GameObjects.Light[] = [];
-
     public SelectedBuilding: string = "";
     public SelectedObject: Phaser.Physics.Arcade.Sprite | Building | null = null;
 
+    public CameraColourMatrix: Phaser.FX.ColorMatrix = null;
+
     // Systems
-    public DaytimeCycleManager!: DayNightCycleManager;
+    public DaytimeCycleManager!: DayNightCycle;
     public MapBuilder: MapBuilder;
     public QuestManager: QuestManager;
     public DataManager!: DataManager;
     public Inventory!: Inventory | null;
-    public ActivityManager!: ActivityManager | null;
+    public ActionManager!: ActionManager | null;
     public BuildingHelper!: BuildingHelper;
     public EnemyManager!: EnemyManager;
-    
 
     // Game Object Groups
     public Projectiles: Phaser.GameObjects.Group;
@@ -79,6 +83,7 @@ export default class Game extends Phaser.Scene {
     public Buildings: Phaser.GameObjects.Group;
     public Obstacles: Phaser.GameObjects.Group;
     public Switches: Phaser.GameObjects.Group;
+    public Characters: Phaser.GameObjects.Group;
 
     constructor () {
         super({ key: "Game" });
@@ -87,28 +92,32 @@ export default class Game extends Phaser.Scene {
     init ( data: { character: string } ): void {
         this.CharacterName = data.character;
         this.DataManager = new DataManager(this);
-        GD = this.DataManager.CharacterData;
-        let Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
-        console.log(Campaign);
+        const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
+        Options = SavedData.Options;
+        GD = SavedData.Characters[data.character];
+        CD = Campaigns.find(c => c.Name == GD.Campaign);
     }
 
-    create () {
+    async create () {
 
+        // Launch the UI
         this.scene.launch("UI", this);
         this.UI = this.scene.get("UI") as UI;
-        this.lights.enable();
+        this.CameraColourMatrix = this.cameras.main.postFX.addColorMatrix();
+
+        // Set cursor image
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
 
-        let Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
-        let MapMusic = Campaign.WorldMapInformation[GD.CurrentMap].Music;
-        this.sound.play(MapMusic, { loop: true });
+        // Play the specified music for this map
+        this.sound.play(CD.WorldMapInformation[GD.CurrentMap].Music, { loop: true });
 
+        this.lights.enable();
         this.Buildings = this.add.group([], { runChildUpdate: true });
         this.Projectiles = this.add.group([], { runChildUpdate: true });
         this.EnemyProjectiles = this.add.group([], { runChildUpdate: true });
         this.Pickups = this.add.group([], { runChildUpdate: true });
         this.Enemies = this.add.group([], { runChildUpdate: true });
-
+        this.Characters = this.add.group([], { runChildUpdate: true });
         this.Trees = this.add.group([]);
         this.Nodes = this.add.group([]);
         this.Chests = this.add.group([]);
@@ -118,18 +127,25 @@ export default class Game extends Phaser.Scene {
         this.Switches = this.add.group([]);
 
         // Systems
-        this.DaytimeCycleManager = new DayNightCycleManager(this, this.UI);
+        this.DaytimeCycleManager = new DayNightCycle(this, this.UI);
         this.MapBuilder = new MapBuilder(this);
         this.Inventory = new Inventory(this, this.UI);
-
+        this.ActionManager = new ActionManager(this, this.UI);
+        
         this.EnemyManager = new EnemyManager(this);
         this.BuildingHelper = new BuildingHelper(this, this.UI);
-        
-        this.ActivityManager = new ActivityManager(this, this.UI);
-        
         this.PlayerCharacter = new PlayerCharacter(this);
+
+        this.graphics = this.add.graphics();
+        this.graphics.setScrollFactor(1);
+        this.graphics.setDepth(10000);
+
         this.QuestManager = new QuestManager(this);
-        
+
+        //this.AimIndicator = this.add.rope( this.PlayerCharacter.getCenter().x, this.PlayerCharacter.getCenter().y, "Rain", 2 ).setDepth(10000000);
+        //this.AimIndicator.setPosition(0, 0);
+        //this.AimIndicator.setVisible(Options.Show_Aim_Indicator);
+
         this.cameras.main.startFollow(this.PlayerCharacter, true);
 
         const ControlMapping: {[key: string]: string | number } = JSON.parse(localStorage.getItem("EvereignData")).Controls;
@@ -146,7 +162,7 @@ export default class Game extends Phaser.Scene {
                             if ( key == "Controls_Use_Item_1" ) this.PlayerCharacter.UseItem("Item_1");
                             if ( key == "Controls_Use_Item_2" ) this.PlayerCharacter.UseItem("Item_2");
                             if ( key == "Controls_Use_Item_3" ) this.PlayerCharacter.UseItem("Item_3");
-                            if ( key == "Controls_Interact" ) this.ActivityManager.StartActivity(this.SelectedObject);
+                            if ( key == "Controls_Interact" ) this.ActionManager.StartActivity(this.SelectedObject);
                         }
                     });
                 } else {
@@ -157,7 +173,7 @@ export default class Game extends Phaser.Scene {
                         if ( key == "Move_Right" ) this.PlayerCharacter.RightKeyDown = true;
                         if ( key == "Move_Up" ) this.PlayerCharacter.UpKeyDown = true;
                         if ( key == "Move_Down" ) this.PlayerCharacter.DownKeyDown = true;
-                        if ( key == "Interact" ) this.ActivityManager.StartActivity(this.SelectedObject);
+                        if ( key == "Interact" ) this.ActionManager.StartActivity(this.SelectedObject);
                         if ( key == "Controls_Use_Ability_1" ) this.PlayerCharacter.UseAbility("Ability_1");
                         if ( key == "Controls_Use_Ability_2" ) this.PlayerCharacter.UseAbility("Ability_2");
                         if ( key == "Controls_Use_Ability_3" ) this.PlayerCharacter.UseAbility("Ability_3");
@@ -177,10 +193,21 @@ export default class Game extends Phaser.Scene {
         }
 
         this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).on('down', () => console.log(GD));
+        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => console.log(this.Inventory.Items));
 
         this.input.on( "pointermove", ( pointer: Phaser.Input.Pointer ) => {
             this.mouseX = pointer.worldX;
             this.mouseY = pointer.worldY;
+
+            if ( Options.Show_Aim_Indicator ) {
+                this.graphics.clear();
+                this.graphics.lineStyle(6, 0xff0000, 1);
+                this.graphics.beginPath();
+                this.graphics.moveTo(this.PlayerCharacter.getCenter().x, this.PlayerCharacter.getCenter().y);
+                this.graphics.lineTo(pointer.worldX, pointer.worldY);
+                this.graphics.strokePath();
+            }
+
             if ( !this.BuildingHelper.BuildingPlacementMode ) return;
             this.BuildingHelper.CheckIfPlacementValid();
         });
@@ -209,7 +236,13 @@ export default class Game extends Phaser.Scene {
 
         this.PlayerCharacter.update(delta);
         this.DaytimeCycleManager.update(delta);
-        this.ActivityManager.update(delta);
+        this.ActionManager.update(delta);
+
+        /*let PC = this.PlayerCharacter.getCenter();
+        this.AimIndicator.setPoints([
+            { x: PC.x, y: PC.y },
+            { x: this.mouseX, y: this.mouseY }
+        ]).setDirty();*/
 
         // Update quadtree
         this.Quadtree.clear();
@@ -259,12 +292,10 @@ export default class Game extends Phaser.Scene {
 
     TransitionToMap () {
         this.PlayerCharacter.PlayerHasControl = false;
-        //console.log(this.ActiveTransition);
         this.UI.HideTransitionScreen();
         this.cameras.main.fadeOut(2000, 0, 0, 0).on('camerafadeoutcomplete', () => {
             const transition = this.DataManager.MapData[GD.CurrentMap][this.ActiveTransition];
             if ( !transition ) return;
-            //console.log(transition);
             GD.CurrentMap = transition.TransitionToMap;
             GD.X = transition.DestinationX;
             GD.Y = transition.DestinationY;

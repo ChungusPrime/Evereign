@@ -12,6 +12,10 @@ import MenuInput from '../game_objects/Menu_Input';
 
 export default class Menu extends Phaser.Scene {
 
+    public Data: GameData = null;
+
+    public Background: Phaser.GameObjects.NineSlice;
+    public Book!: Phaser.GameObjects.Sprite;
     public BookOpen: boolean = false;
 
     // Menus
@@ -20,6 +24,7 @@ export default class Menu extends Phaser.Scene {
     public ControlsGroup!: Phaser.GameObjects.Group;
     public OptionsGroup!: Phaser.GameObjects.Group;
     public CharacterCreationGroup: Phaser.GameObjects.Group;
+    public CharacterList!: Phaser.GameObjects.Group;
 
     // Inputs
     public characterNameInput!: MenuInput;
@@ -29,17 +34,20 @@ export default class Menu extends Phaser.Scene {
     public scalingSelect!: MenuSelect;
     public difficultySelect!: MenuSelect;
 
-    public Background: Phaser.GameObjects.NineSlice;
     public ControlObjects: TextButton[] = [];
     public CurrentMenu: string = "";
     public BackButton!: TextButton;
     public RebindInProgress: boolean = false;
-    public CharacterList!: Phaser.GameObjects.Group;
-    public Data: GameData = null;
+
     public InfoCamera: Phaser.Cameras.Scene2D.Camera;
     public InfoText: Phaser.GameObjects.Text;
     public InfoBackground: Phaser.GameObjects.NineSlice;
-    public Book!: Phaser.GameObjects.Sprite;
+
+    public MouseButtonMap: { [key: string]: string } = {
+        "mouse-0": "Left Mouse",
+        "mouse-1": "Middle Mouse",
+        "mouse-2": "Right Mouse"
+    };
 
     constructor () {
         super({ key: "Menu" });
@@ -68,6 +76,9 @@ export default class Menu extends Phaser.Scene {
 
         this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0').setScale(1.5).setOrigin(0.5, 0.55).setVisible(true);
 
+        this.add.text(1, 1, this.game.config.gameVersion).setShadow(2, 2, "#000", 1).setOrigin(0).setFontSize(12);
+
+        // Title Screen
         this.TitleScreen = this.add.group([]);
         let Logo = this.add.image(this.Book.getCenter().x, this.Book.getCenter().y, "logo").setOrigin(0.5, 0.5).setDisplaySize(this.scale.width * 0.2, this.scale.height * 0.45);
         let TitleText = this.add.text(Logo.getTopCenter().x, Logo.getTopCenter().y - 35, "EVEREIGN", { fontSize: 72, align: "center", fontFamily: "Augusta" }).setOrigin(0.5);
@@ -79,11 +90,11 @@ export default class Menu extends Phaser.Scene {
         // Main Menu Buttons
         let CreateButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "Create Character", () => {
             this.ChangeMenu("create");
-        }).setVisible(false);
+        });
 
         let LoadButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, "Load Character", () => {
             this.ChangeMenu("load");
-        }).setVisible(false);
+        });
 
         let ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Controls", () => {
             this.ChangeMenu("controls");
@@ -101,45 +112,31 @@ export default class Menu extends Phaser.Scene {
             window.close();
         });
 
-        this.MainMenuGroup = this.add.group([
-            CreateButton,
-            LoadButton,
-            ControlsButton,
-            OptionsButton,
-            CreditsButton,
-            QuitGameButton
-        ]).setVisible(false);
+        this.MainMenuGroup = this.add.group([ CreateButton, LoadButton, ControlsButton, OptionsButton, CreditsButton, QuitGameButton ]).setVisible(false);
 
-        // Options Menu
+        // Controls Menu
         this.ControlsGroup = this.add.group().setVisible(false);
-        let Y = this.scale.height * 0.20;
-        let HotbarY = Y;
+        let Y = this.scale.height * 0.18;
+        let X = this.scale.width * 0.32;
         Object.entries(this.Data.Controls).forEach(control => {
-            let X = this.scale.width * 0.32;
-            // check if current control contains the word "Hotbar"
-            if ( control[0].includes("Hotbar") ) {
-                X = this.scale.width * 0.69;
-                Y = HotbarY;
-            }
-            let label = "";
-            if ( control[1] == "mouse-0" ) {
-                label = "Mouse Left";
-            } else if ( control[1] == "mouse-1" ) {
-                label = "Mouse Middle";
-            } else if ( control[1] == "mouse-2" ) {
-                label = "Mouse Right";
-            } else {
-                label = control[1];
-            }
+
+            let label = control[1];
+            if (this.MouseButtonMap[control[1]])
+                label = this.MouseButtonMap[control[1]];
+
             let ControlBind = new TextButton(this, X, Y, `${control[0]}: ${label}`, () => {
                 this.StartRebind(control[0], ControlBind);
             }, 32).setVisible(false);
+
             this.ControlsGroup.add(ControlBind);
-            if ( control[0].includes("Hotbar") ) {
-                HotbarY += ControlBind.height + 10;
-            } else {
-                Y += ControlBind.height + 10;
+
+            Y += ControlBind.height + 10;
+
+            if ( Y > this.scale.height * 0.7 ) {
+                X = this.scale.width * 0.69;
+                Y = this.scale.height * 0.18;
             }
+
             this.ControlObjects.push(ControlBind);
         });
 
@@ -152,14 +149,15 @@ export default class Menu extends Phaser.Scene {
         }).setVisible(false);
         this.ControlsGroup.add(ResetControlsButton);
 
+        // Options Menu
         this.OptionsGroup = this.add.group().setVisible(false);
+        X = this.scale.width * 0.32;
+        Y = this.scale.height * 0.17;
         Object.entries(this.Data.Options).forEach(option => {
-            let X = this.scale.width * 0.32;
-            let Y = this.scale.height * 0.17;
-            let key = option[0].replace(/_/g, " ");
             let label = option[1].toLocaleString();
-            let OptionButton = new TextButton(this, X, Y, `${key}: ${label}`, () => {}, 32).setVisible(false);
+            let OptionButton = new TextButton(this, X, Y, `${option[0]}: ${label}`, () => {}, 32).setVisible(false);
             this.OptionsGroup.add(OptionButton);
+            Y += OptionButton.height + 10;
         });
 
         // Character Creation
@@ -236,6 +234,7 @@ export default class Menu extends Phaser.Scene {
             Character.Campaign = this.campaignSelect.CurrentValue;
             Character.Scaling = this.scalingSelect.CurrentValue;
             Character.Difficulty = this.difficultySelect.CurrentValue;
+            Character.Reincarnation = 1;
             Character.Fortitude = Race.Attributes.Fortitude;
             Character.Versatility = Race.Attributes.Versatility;
             Character.Vigor = Race.Attributes.Vigor;
@@ -248,12 +247,27 @@ export default class Menu extends Phaser.Scene {
             Character.MaxHealth = Character.CurrentHealth;
             Character.MaxMana = Character.CurrentMana;
             Character.Level = 1;
-            Character.WorldData = Campaign.DefaultWorldData;
+
+            Character.CreatedAtTimestamp = Date.now().toString();
+            Character.LastSaveTimestamp = Date.now().toString();
+
+            //Character.WorldData[Character.Campaign] = Campaign.DefaultWorldData;
             Character.CurrentMap = Campaign.StartingMap;
             Character.X = Campaign.StartingX;
             Character.Y = Campaign.StartingY;
-            Character.CreatedAtTimestamp = Date.now().toString();
-            Character.LastSaveTimestamp = Date.now().toString();
+            Character.WorldData[Character.Campaign] = {};
+
+            const CampaignData = Campaigns.find( c => c.Name == Character.Campaign );
+            if (CampaignData) {
+                Object.keys(CampaignData.WorldData).forEach((RegionData) => {
+                    Character.WorldData[Character.Campaign][RegionData] = {};
+                    Object.keys(CampaignData.WorldData[RegionData]).forEach((obj) => {
+                        Character.WorldData[Character.Campaign][RegionData][obj] = { ...CampaignData.WorldData[RegionData][obj].InitialData ?? null };
+                    });
+                });
+            }
+
+            //Character.WorldData[Character.Campaign] = this.AddCampaignDataToCharacter();
             
             // Add starting items from chosen class to character inventory
             Object.entries(Class.Items).forEach( (item) => {
@@ -346,7 +360,7 @@ export default class Menu extends Phaser.Scene {
     }
 
     ChangeMenu (menu: string) {
-        console.log("menu");
+
         this.CurrentMenu = menu;
         this.TitleScreen.setVisible(false);
         this.MainMenuGroup.setVisible(false);
@@ -355,13 +369,15 @@ export default class Menu extends Phaser.Scene {
         this.CharacterCreationGroup.setVisible(false);
         this.InfoCamera.setVisible(false);
         this.CharacterList.setVisible(false);
+        this.BackButton.setVisible(false);
 
         // Show relevant group based on string
         let menuToGroupMap: { [key: string]: Phaser.GameObjects.Group } = {
             "main": this.MainMenuGroup,
             "controls": this.ControlsGroup,
             "options": this.OptionsGroup,
-            "characterCreation": this.CharacterCreationGroup
+            "create": this.CharacterCreationGroup,
+            "load": this.CharacterList
         };
 
         let Animation = 'Style 1 Page Flip Right';
@@ -372,10 +388,14 @@ export default class Menu extends Phaser.Scene {
         }
 
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
-            if (menuToGroupMap[this.CurrentMenu])
+            if (menuToGroupMap[this.CurrentMenu]) {
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
-            else
+                if ( this.CurrentMenu !== "main" ) {
+                    this.BackButton.setVisible(true);
+                }
+            } else {
                 this.MainMenuGroup.setVisible(true);
+            }
         });
     }
 
@@ -389,12 +409,9 @@ export default class Menu extends Phaser.Scene {
 
                 // Keyboard
                 let keyboardlisten = this.input.keyboard.once('keydown', (event: any) => {
-                    
                     code = event.key;
-
                     if ( event.code )
                         code = event.code;
-
                     keyboardlisten.removeAllListeners();
                     mouselisten.removeAllListeners();
                     button.setText(`${key}: ${code}`);
@@ -407,18 +424,9 @@ export default class Menu extends Phaser.Scene {
                     code = `mouse-${event.button}`;
                     keyboardlisten.removeAllListeners();
                     mouselisten.removeAllListeners();
-
-                    let label = "";
-                    if ( code == "mouse-0" ) {
-                        label = "Mouse Left";
-                    } else if ( code == "mouse-1" ) {
-                        label = "Mouse Middle";
-                    } else if ( code == "mouse-2" ) {
-                        label = "Mouse Right";
-                    } else {
-                        label = code;
-                    }
-
+                    let label = code;
+                    if (this.MouseButtonMap[code])
+                        label = this.MouseButtonMap[code];
                     button.setText(`${key}: ${label}`);
                     this.RebindKey(key, code);
                     this.RebindInProgress = false;

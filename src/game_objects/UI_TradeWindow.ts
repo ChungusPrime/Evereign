@@ -4,14 +4,11 @@ import { GD } from "../scenes/Game";
 class TradeWindowDisplayObject extends Phaser.GameObjects.Rectangle {
 
     public scene: UI;
-
     public ItemSprite: Phaser.GameObjects.Sprite;
     public ItemText: Phaser.GameObjects.Text;
     public ItemPriceText: Phaser.GameObjects.Text;
     public QuantityInput: Phaser.GameObjects.Text;
-
     public TradeWindow: TradeWindow;
-
     public ItemName: string = "";
     public ItemSpriteArr: string[] = [];
     public ItemPrice: number = 0;
@@ -116,8 +113,7 @@ export default class TradeWindow {
     public TraderItems: Phaser.GameObjects.Group;
     public TraderText: Phaser.GameObjects.Text;
     public TraderTextBackground: Phaser.GameObjects.Rectangle;
-
-    public CurrentShopID: number;
+    public CurrentShopID: string;
 
     constructor ( scene: UI ) {
 
@@ -163,11 +159,11 @@ export default class TradeWindow {
         .setVisible(false)
         .setDepth(11);
 
-        this.CurrentShopID = 0;
+        this.CurrentShopID = "";
 
     }
 
-    Show ( id: number ) {
+    Show ( id: string ) {
 
         this.CloseButton.setVisible(true);
         this.CloseButtonText.setVisible(true);
@@ -180,11 +176,12 @@ export default class TradeWindow {
 
         this.CurrentShopID = id;
 
-        this.TraderText.setText(this.scene.Game.DataManager.GetBuildingData(id).Name);
+        //this.TraderText.setText(this.scene.Game.DataManager.GetBuildingData(id).Name);
+        this.TraderText.setText("Trader Name");
 
         let Trader = GD.WorldData[GD.CurrentMap][id];
 
-        Trader.Selling.forEach( ( item, index: number ) => {
+        Trader.InitialData.Selling.forEach( ( item: WorldData, index: number ) => {
             let Object = new TradeWindowDisplayObject(this, item, index, "Selling");
             this.TraderItems.add(Object);
             this.TraderItems.add(Object.ItemText);
@@ -196,7 +193,7 @@ export default class TradeWindow {
             this.TraderItems.add(Object.ConfirmButton);
         });
 
-        Trader.Buying.forEach( ( item, index: number ) => {
+        Trader.Buying.forEach( ( item: WorldData, index: number ) => {
             let Object = new TradeWindowDisplayObject(this, item, index, "Buying");
             this.TraderItems.add(Object);
             this.TraderItems.add(Object.ItemText);
@@ -231,7 +228,7 @@ export default class TradeWindow {
         this.TraderText.setVisible(false);
         this.TraderTextBackground.setVisible(false);
         this.TraderItems.clear(true, true);
-        this.CurrentShopID = 0;
+        this.CurrentShopID = "";
     }
 
     BuyItem ( id: string, quantity: number, price: number ) {

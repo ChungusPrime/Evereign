@@ -1,28 +1,32 @@
-interface BuildingData {
-    name: string;
-    description: string;
-    size: number;
-    housingSlots: number;
-    aggroZone: boolean;
-    productsPerTick: { ID: number; Amount: number; }[];
-    currentJob: string;
-    costMultiplier: number;
-}
-
 const TownCentreData: BuildingData = {
-    name: "Town Centre",
-    description: `The Town Centre provides housing for people and projects an area in which other buildings can be placed.
-    Other buildings must be placed within the radius of the Town Centre but the Town Centre itself can be placed anywhere.
+    ID: "town_centre",
+    Name: "Town Centre",
+    Desc: `The Town Centre provides housing for people and projects an area in which other buildings can be built,
+    but the Town Centre itself can be placed anywhere, as long as there is enough space. 
     Only one Town Centre can be built per map region.`,
-    size: 3,
-    housingSlots: 5,
-    aggroZone: true,
-    productsPerTick: [
-        { ID: 1, Amount: 1 },
-        { ID: 2, Amount: 2 }
+    Size: { Width: 224, Height: 180 },
+    Spritesheet: "Buildings",
+    Sprite: "town-centre-1",
+    PlotSize: { Width: 224, Height: 180 },
+    BaseHousingSlots: 5,
+    BaseCost: [
+        {
+            Tier: 1,
+            Resource: 100,
+            Amount: 50
+        }
     ],
-    currentJob: "None",
-    costMultiplier: 1.0
+    AggroZone: false,
+    Tiers: {
+        1: {
+            Width: 224,
+            Height: 224,
+            BaseResourceCost: [
+                { Resource: 100, Amount: 50 }
+            ]
+        }
+    },
+    RequiresMilestone: 0
 };
 
 export default TownCentreData;

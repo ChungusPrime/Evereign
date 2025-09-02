@@ -36,8 +36,7 @@ export default class EventLog {
 
     NewEvent ( text: string ) {
         const message = this.scene.add.text(0, 0, text, {
-            fontSize: 16,
-            fontFamily: "Augusta",
+            fontSize: 12,
             wordWrap: {
                 useAdvancedWrap: true,
                 width: this.EventLogBackground.width - 2

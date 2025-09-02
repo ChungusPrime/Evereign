@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const webpack = require('webpack');
+const packageJson = require('./package.json');
 
 module.exports = {
     mode: "development",
@@ -32,6 +34,9 @@ module.exports = {
         extensions: [".tsx", ".ts", ".js"],
     },
     plugins: [
+        new webpack.DefinePlugin({
+            PACKAGE_VERSION: JSON.stringify(packageJson.version)
+        }),
         new HtmlWebpackPlugin({
             title: "Evereign",
             filename: "./index.html",

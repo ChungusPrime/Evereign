@@ -5,7 +5,7 @@ import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
 import FloatingText from "./FloatingText";
 import Projectile from "./Projectile";
 import Building from "./Building";
-import PlayerCharacter from "./Character";
+import PlayerCharacter from "./PlayerCharacter";
 import Enemy from "./Enemy";
 import Chest from "./Chest";
 import MiningNode from "./MiningNode";

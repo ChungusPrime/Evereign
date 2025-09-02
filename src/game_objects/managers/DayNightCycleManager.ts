@@ -104,12 +104,14 @@ export default class DayNightCycleManager {
         this.IsRaining = true;
         this.scene.sound.play('rain', { loop: true, volume: 0.5 });
         this.RainEmitter.setActive(true).setVisible(true);
+        this.scene.cameras.main.postFX.addColorMatrix().grayscale(0.3);
     }
 
     StopRaining () {
         this.IsRaining = false;
         this.scene.sound.stopByKey('rain');
         this.RainEmitter.setActive(false).setVisible(false);
+        this.scene.cameras.main.postFX.clear();
     }
 
     update ( delta: number ) {

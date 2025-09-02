@@ -13,9 +13,9 @@ export default class GoblinSlinger extends Enemy {
     public GoldValue: number = 3;
     public ExpValue: number = 5;
     public LootTable: any = [];
-    public Level: number;
+    public Level: number = 1;
     public Data: any;
-    public moving: any;
+    public moving: boolean = false;
     public targetX: number;
     public targetY: number;
     public MovementCooldown: number = 3000;
@@ -24,61 +24,57 @@ export default class GoblinSlinger extends Enemy {
     public MovementSpeed: number = 50;
     public AttackCooldown: number = 1000;
     public Abilities: Abilities = {
-
         'Pinning Shot': {
             Description: "The goblin slinger shoots a heavier arrow at the player's legs, applying a movement speed debuff.",
             Cooldown: 5000,
             CooldownMax: 5000,
             Damage: {
                 1: [
-                    { Type: "Physical", Min: 1, Max: 2, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 1, Max: 2, ApplyDebuff: "Slow" }
                 ],
                 2: [
-                    { Type: "Physical", Min: 3, Max: 7, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 3, Max: 7, ApplyDebuff: "Slow" }
                 ],
                 3: [
-                    { Type: "Physical", Min: 11, Max: 19, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 11, Max: 19, ApplyDebuff: "Slow" }
                 ],
                 4: [
-                    { Type: "Physical", Min: 27, Max: 45, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 27, Max: 45, ApplyDebuff: "Slow" }
                 ],
                 5: [
-                    { Type: "Physical", Min: 84, Max: 125, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 84, Max: 125, ApplyDebuff: "Slow" }
                 ],
             }
         },
-
         'Bow Shot': {
             Description: "The goblin slinger fires a simple arrow at the player.",
             Cooldown: 2000,
             CooldownMax: 2000,
             Damage: {
                 1: [
-                    { Type: "Physical", Min: 1, Max: 4 }
+                    { Type: "Pierce", Min: 1, Max: 4 }
                 ],
                 2: [
-                    { Type: "Physical", Min: 7, Max: 11 }
+                    { Type: "Pierce", Min: 7, Max: 11 }
                 ],
                 3: [
-                    { Type: "Physical", Min: 14, Max: 35 }
+                    { Type: "Pierce", Min: 14, Max: 35 }
                 ],
                 4: [
-                    { Type: "Physical", Min: 42, Max: 56 }
+                    { Type: "Pierce", Min: 42, Max: 56 }
                 ],
                 5: [
-                    { Type: "Physical", Min: 61, Max: 70 }
+                    { Type: "Pierce", Min: 61, Max: 70 }
                 ],
             }
         },
-
     };
     
-    constructor ( scene: Game, SpawnLocation: Building | { x: number, y: number }, level: number ) {
-        super(scene, SpawnLocation, "characters", 118);
-        this.Level = level;
-        this.Health = this.Health * level;
+    constructor ( scene: Game, x: number, y: number, id: string, data: WorldData ) {
+        super(scene, { x, y }, "characters", 118);
+        console.log(id, data);
+        this.SpawnLocation = { x, y };
         this.MaxHealth = this.Health;
-        this.SpawnLocation = SpawnLocation;
     }
 
     update ( time: number, delta: number ) {
@@ -86,8 +82,9 @@ export default class GoblinSlinger extends Enemy {
         this.AttackCooldown -= delta;
         this.MovementCooldown -= delta;
 
-        this.Abilities['Pinning Shot'].Cooldown -= delta;
-        this.Abilities['Bow Shot'].Cooldown -= delta;
+        Object.values(this.Abilities).forEach(ability => {
+            ability.Cooldown -= delta;
+        });
 
         if ( this.InCombat == true ) {
 
@@ -105,7 +102,6 @@ export default class GoblinSlinger extends Enemy {
             }
 
             let DistanceFromPlayer = Phaser.Math.Distance.BetweenPoints(this, { x: this.scene.PlayerCharacter.x, y: this.scene.PlayerCharacter.y });
-
             if ( DistanceFromPlayer > this.AttackRange ) {
                 this.scene.physics.moveTo(this, this.scene.PlayerCharacter.x, this.scene.PlayerCharacter.y, this.MovementSpeed);
             } else {
@@ -149,11 +145,15 @@ export default class GoblinSlinger extends Enemy {
 
         if ( Ability == null ) return;
 
-        if ( Ability == 'Bow Shot' )
+        if ( Ability == 'Bow Shot' ) {
+            console.log("Bow Shot fired");
             this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 150, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
+        }
 
-        if ( Ability == 'Pinning Shot' )
+        if ( Ability == 'Pinning Shot' ) {
+            console.log("Pinning Shot fired");
             this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 125, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
+        }
 
         this.InCombatDelta = 5000;
         this.AttackCooldown = 1000;
