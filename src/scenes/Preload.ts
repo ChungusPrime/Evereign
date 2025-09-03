@@ -91,11 +91,10 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("characters", Assets.Characters, { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet("mining-nodes", Assets.MiningNodes, { frameWidth: 32, frameHeight: 32 });
 
-
         this.load.atlas({
             key: 'Buildings', 
             textureURL: Assets.Buildings,
-            //normalMap: Assets.BuildingsNormalMap,
+            normalMap: Assets.BuildingsNormal,
             atlasURL: Assets.BuildingsJSON 
         });
 

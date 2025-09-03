@@ -72,8 +72,9 @@ export const BloodArcaneOne: string = require('./assets/images/BloodArcane1.png'
 //export const BuildingAtlas: string = require('./assets/images/buildings/atlas/BuildingsAtlas.png');
 //export const BuildingAtlasNormal: string = require('./assets/images/buildings/atlas/BuildingsAtlas-n.png');
 //export const BuildingAtlasJSON: string = require('./assets/images/buildings/atlas/BuildingsAtlas.json');
-export const Buildings: string = require('./assets/images/own/Buildings.png');
-export const BuildingsJSON: string = require('./assets/images/own/Buildings.json');
+export const Buildings: string = require('./assets/images/own/atlas/buildings.png');
+export const BuildingsJSON: string = require('./assets/images/own/atlas/buildings.json');
+export const BuildingsNormal: string = require('./assets/images/own/atlas/buildings_normal.png');
 
 // Rogue Adventure Spritesheets
 export const RA_Animated_Water: string = require('./assets/images/rogue-adventure/RA_Animated_Water.png');
