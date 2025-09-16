@@ -6,7 +6,7 @@ import FloatingText from "./FloatingText";
 import Projectile from "./Projectile";
 import Building from "./Building";
 import PlayerCharacter from "./PlayerCharacter";
-import Enemy from "./Enemy";
+import Enemy from "./Character";
 import Chest from "./Chest";
 import MiningNode from "./MiningNode";
 import Obstacle from "./Obstacle";
@@ -39,8 +39,8 @@ import Farm from "./buildings/Farm";
 import Chapel from "./buildings/Chapel";
 
 // NPCs
-import WarbossGorgutz from "./enemies/WarbossGorgutz";
-import GoblinSlinger from "./enemies/GoblinSlinger";
+import WarbossGorgutz from "./characters/WarbossGorgutz";
+import GoblinSlinger from "./characters/GoblinSlinger";
 import StoneDeposit from "./deposits/StoneDeposit";
 
 export default class MapManager {

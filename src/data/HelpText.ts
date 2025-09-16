@@ -1,73 +1,135 @@
+import RaceData from "./Character/Races";
+import ClassData from "./Character/Classes";
+import Campaigns from "./Campaigns";
+
 const Help: HelpText = {
 
-    "Difficulty - Story": `
-    The Story difficulty is designed for players who want to experience the game without the challenge of combat.\n
-    In this mode, enemies will be significantly weaker, and your character will be much more powerful.\n
+    // Difficulties
+    Story: `The Story difficulty is designed for players who want to experience the game without the challenge of combat.
+    In this mode, enemies will be significantly weaker, and your character will be much more powerful.
     `,
 
-    "Difficulty - Standard": `
-    The Standard difficulty is the default mode for the game, providing a balanced experience for players.\n
-    In this mode, enemies will be of a similar strength to your character, and you will need to use strategy and skill to defeat them.\n
-    This mode is the recommended difficulty, especially for your first playthrough.\n
+    Standard: `The Standard difficulty is the default mode for the game, providing a balanced experience for players.
+    In this mode, enemies will be of a similar strength to your character, and you will need to use strategy and skill to defeat them.
+    This mode is the recommended difficulty, especially for your first playthrough.
     `,
 
-    "Difficulty - Ultra": `
-    The Ultra difficulty is designed for players who want a challenge.\n
-    In this mode, enemies will be significantly stronger than your character, and you will need to use all of your skills and abilities to defeat them.\n
-    This mode is recommended for experienced players who want a more challenging experience.\n
+    Ultra: `The Ultra difficulty is designed for players who want a challenge.
+    In this mode, enemies will be significantly stronger than your character, and you will need to use all of your skills and abilities to defeat them.
+    This mode is recommended for experienced players who want a more challenging experience.
     `,
 
-    "Adaptive Scaling": `
-    Adaptive Scaling keeps enemy levels in line with your character's level, but does not scale the difficulty of the game.\n
-    This means that enemies will be of a similar strength to your character, but the game will not become more difficult as your characters level increases.\n`,
+    // Scaling
+    Adaptive: `Adaptive Scaling keeps enemy levels in line with your character's level, but does not scale the difficulty of the game.
+    This means that enemies will be of a similar strength to your character, but the game will not become more difficult as your characters level increases.`,
 
-    "Fixed Scaling": `
-    Fixed Scaling keeps enemy levels at a fixed value, regardless of your character's level.\n
-    This means that you may encounter enemies that are higher or lower than your current characters level, and you can use this to your advantage, or disadvantage.\n
-    This is the intended way to play the game.\n
+    Fixed: `Fixed Scaling keeps enemy levels at a fixed value, regardless of your character's level.
+    This means that you may encounter enemies that are higher or lower than your current characters level, and you can use this to your advantage, or disadvantage.
     `,
 
-    "The Midnight Accord": `
-    In the ancient and verdant realm of Arlamore, peace and prosperity have long been the pillars of the kingdom. Ruled by the wise and noble King Arlamore, 
-    the land has flourished under his just and benevolent reign. However, in the shadows of this thriving kingdom, dark forces have begun to stir.
+    // Campaigns
+    "The Midnight Accord": Campaigns[0].Description,
+    "The Defence of Emberfall Island": Campaigns[1].Description,
 
-    You are a sage and loyal adviser to the king and have served Arlamore with unwavering dedication. One night, a vision, vivid and harrowing, invaded your dreams. 
-    This vision, unlike any he had experienced before, showed a future where Arlamore lay in ruins, its people suffering under the yoke of unending calamity.
-    
-    The king, though wise, dismissed your vision as a mere nightmare, a product of stress and overwork. Desperate and determined, you took matters into your own hands
-    and decided to embark on a perilous journey to gather allies and warn the people of impending doom.`,
+    // Classes
+    Operative: ClassData[0].Description,
+    Evoker: ClassData[1].Description,
+    Godsworn: ClassData[2].Description,
 
-    "Defence of Emberfall Island": `
-    The island of Emberfall, once a peaceful and prosperous land, has been plunged into chaos by the rise of the Shadow Cult.
-    The cult, a sinister organization dedicated to the worship of dark forces, has unleashed a wave of destruction upon the island, leaving its people in despair.
-    You are a brave and skilled warrior, determined to protect the island and its people from the cult's malevolent influence.
-    Your journey begins in the heart of Emberfall, where you must fortify the island's defenses, and survive until help arrives.`,
+    // Races
+    Human: RaceData[0].Description,
+    Elf: RaceData[1].Description,
+    Dwarf: RaceData[2].Description,
+    "Proto-Struct": RaceData[3].Description,
 
-    "Operative": `
-    Operatives fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and 
-    eliminate threats before they become a problem, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
-    Operatives are skilled in the use of scatterguns, explosives, and have some knowledge of Gadgetry, making them versatile combatants.
+    Morvenite: `Morvenites are a mysterious and ancient race of beings, known for their connection to the arcane and their mastery of magic. They are often seen as the 
+    keepers of ancient knowledge and are highly respected for their wisdom and insight. They have a natural affinity for magical energies, and are often able to sense and manipulate these forces with ease. 
+    Morvenites are also known for their longevity, often living for several centuries.
+
+    Starting Attribute Bonus:
+    +2 Arcana, +2 Expertise
+
+    Starting Trait - Arcane Scholar:
+    - You gain additional experience when using magical abilities
+    - You can identify magical items more easily
     `,
 
-    "Evoker": `
-    Harness the power of the elements to unleash devastating spells. 
-    Unique building allows the evoker to empower their spells with elemental energy by deconstructing magical items.
+    Gnome: `Gnomes are known for their ingenuity and creativity. They are skilled in the use of gadgets and technology, and are often seen as the inventors and engineers of the world.
+    They have a natural affinity for machinery, and are often able to understand and manipulate complex devices with ease. Gnomes are also known for their curiosity, often seeking out new knowledge and experiences.
+
+    Starting Attribute Bonus:
+    +2 Fortitude, +2 Expertise
+
+    Starting Trait - Tinkerer:
+    - You can craft gadgets and devices
+    - You take reduced damage from mechanical traps
     `,
 
+    Kirupean: `Kirupeans are an enigmatic race, known for their elusive nature and mastery of stealth. They are often seen as spies and assassins, using their agility and cunning to outmaneuver their foes. 
+    Kirupeans have a natural affinity for the shadows, allowing them to blend into their surroundings with ease. Kirupeans are also known for their sharp senses, often able to detect danger before it arrives.
 
-    "Character Race": `
-    Your character's Race determines their starting attributes. All Races grant at least one unique trait to your character
+    Starting Attribute Bonus:
+    +2 Personality, +2 Fortune
+
+    Starting Trait - Shadow Walker:
+    - You can move silently and hide more easily
+    - You have advantage on stealth checks
+    `,
+
+    "Half-Orc": `Half-Orcs are a hybrid race, born from the union of humans and orcs. They possess the strength and resilience of their orcish heritage, 
+    combined with the adaptability and cunning of humans. Half-Orcs are often seen as fierce warriors, but they also have a strong sense of honor and loyalty.
+
+    Starting Attribute Bonus:
+    +2 Versatility, +2 Personality
+
+    Starting Trait - Berserker Rage:
+    - You can enter a rage state, increasing your damage output for a short time
+    - You have advantage on saving throws against fear effects
+    `,
+
+    Thogac: `Thogacs are a reptile based lifeform, known for their cunning and adaptability. They are skilled in the use of poisons and toxins, and are often seen as assassins and spies.
+    Thogacs have a natural affinity for stealth, allowing them to move silently and avoid detection. Thogacs are also known for their resilience, often able to withstand harsh environments and conditions.
+
+    Starting Attribute Bonus:
+    +2 Arcana, +2 Grit
+
+    Starting Trait - Venomous Strike:
+    - Your melee attacks have a chance to poison your target, dealing damage over time
+    - You have advantage on saving throws against poison effects
+    `,
+
+    Tiseri: `Tiseri are descendents of a demonic realm, known for their grace and agility. They are skilled swordsmen, and are often seen as explorers and adventurers.
+    Tiseri have a natural affinity for war, allowing them to excel in combat and tactics. Tiseri are also known for their charisma, often able to charm and persuade others to their cause. 
+
+    Starting Attribute Bonus:
+    +2 Personality, +2 Grit
+
+    Starting Trait - Demonborn Heritage:
+    - You have resistance to fire damage
+    - You can see in darkness
+    `,
+
+    Drakonid: `Drakonids are a dragon-based lifeform, known for their strength and resilience. They are skilled in the use of heavy weapons and armor, and are often seen as protectors and guardians.
+    Drakonids have a natural affinity for elemental magic, allowing them to harness the power of fire, ice, and lightning. Drakonids are also known for their wisdom, often able to provide guidance and counsel to others.
+
+    Starting Attribute Bonus:
+    +2 Fortitude, +2 Grit
+
+    Starting Trait - Dragonkin Resilience:
+    - You have resistance to one type of elemental damage (fire, ice, or lightning)
+    - You have advantage on saving throws against being frightened
+    `,
+
+    Race: `Your character's Race determines their starting attributes. All Races grant at least one unique trait to your character
     and can affect your gameplay experience.\n
     Each race starts with different base attribute values, and each races attributes increase at different rates per level up.\n`,
 
-    "Character Class": `
-    Your character's Class provides some starting abilities and traits, as well as provide a small boost to specific attributes.\n
+    Class: `Your character's Class provides some starting abilities and traits, as well as provide a small boost to specific attributes.\n
     A characters class does not determine their playstyle, as any character learn any ability or trait in the game, they simply provide a template for a specific archetype.\n
     However, each class has a unique building that can be constructed in your township, providing a unique benefit.\n
     `,
 
-    "Attributes": `
-    Attributes are the core stats of your character, determining their abilities and effectiveness in combat.\n
+    Attributes: `Attributes are the core stats of your character, determining their abilities and effectiveness in combat.\n
     In addition to the attribute increases provided by your character's race on level up, you will recieve a number of attribute points that you can freely spend to increase your character's attributes.\n
     Each attribute has a specific effect on your character's performance, such as increasing damage dealt, reducing damage taken, or improving healing.\n
     Attributes can be increased by leveling up, acquiring traits, or using abilities.\n
@@ -82,16 +144,14 @@ const Help: HelpText = {
     - Grit: Increases resistance to negative effects and improves the effectiveness of certain abilities.\n
     `,
 
-    "Guns": `
-    Guns are a type of ranged weapon that use bullets to deal damage to enemies.\n
+    Guns: `Guns are a type of ranged weapon that use bullets to deal damage to enemies.\n
     They are powerful and accurate, but require ammunition to use.\n
     Guns can be found in the world, purchased from vendors, or crafted using resources.\n
     A guns effectivness is determined by the ammunition currently loaded, as well as the character's Versatility attribute.\n
     Different ammo types can be used to deal different types of damage, such as piercing, explosive, or shock.\n
     Ammo types may also modify the guns accuracy, projectile count, rate of fire or other effects.\n`,
 
-    "Abilities": `
-    Abilities are special skills that your character can use to perform various actions in the game.\n
+    Abilities: `Abilities are special skills that your character can use to perform various actions in the game.\n
     All abilities are Active, meaning they must be used manually by the player.\n
     They can be used to attack enemies, heal allies, or perform other actions.\n
     They are unlocked as you progress through the game, and can be upgraded to increase their effectiveness.\n
@@ -99,38 +159,32 @@ const Help: HelpText = {
     Each ability has a specific cooldown time, and requires certain traits to be able to use.\n
     `,
 
-    "Traits": `
-    Traits are special bonuses that your character can gain as they progress through the game.\n
+    Traits: `Traits are special bonuses that your character can gain as they progress through the game.\n
     They can be used to increase your character's stats, unlock new abilities, or provide other benefits.\n
     Traits are unlocked as you progress through the game, and can be upgraded to increase their effectiveness.\n
     Traits are Passive, meaning they are always active and do not require any action from the player.\n
     `,
 
-    "Movement": `
-    You can move around your township by using the WASD keys (default) on your keyboard.\n
+    Movement: `You can move around your township by using the WASD keys (default) on your keyboard.\n
     Movement controls can be freely rebound in the settings menu.\n
     Your movement speed is determined by your character's Agility attribute, and can be modified by
     your worn equipment, as well as status effects, traits, abilities, or even random events.\n
     `,
 
-    "Gadgetry": `
-    Though magic is commonplace in the world, not all mortals are able to harness its power. As such, many have turned to technology as a means of achieving their goals. 
+    Gadgetry: `Though magic is commonplace in the world, not all mortals are able to harness its power. As such, many have turned to technology as a means of achieving their goals. 
     Known as Gadgets, the fusion of magic and science, allows mortals to harness the power of magic to power machines and constructions.\n
     `,
 
-    "The Gods": `
-    The Gods are the ancient beings that created the world and its inhabitants. They are powerful and wise, and their influence can be felt throughout the land.\n
+    "The Gods": `The Gods are the ancient beings that created the world and its inhabitants. They are powerful and wise, and their influence can be felt throughout the land.\n
     Each god has their own unique abilities and traits, and they can be worshipped by mortals to gain their favor.\n
     The gods are not directly involved in the affairs of mortals, but they can be called upon for aid in times of need.\n
     `,
 
-    "The Underlords": `
-    The Underlords are the ancient beings that were sealed away by the gods after the Shattering of Valius.\n
+    "The Underlords": `The Underlords are the ancient beings that were sealed away by the gods after the Shattering of Valius.\n
     They are powerful and malevolent, and their influence can be felt throughout the land.\n
     `,
 
-    "Research": `
-    Research is a key aspect of the game, allowing you to unlock new abilities, traits, and technologies.\n
+    Research: `Research is a key aspect of the game, allowing you to unlock new abilities, traits, and technologies.\n
     You can research new technologies by gathering resources and spending time in your township.\n
     Research can be used to improve your character's abilities, unlock new traits, and gain access to new technologies.\n
     Research is done in the Academy, which can be built in your township.\n
@@ -138,25 +192,22 @@ const Help: HelpText = {
     To research a technology, interact with the Academy and select the research option.\n
     `,
 
-    "Construction": 
-    `You can build various buildings in your township to help you gather resources and produce items.\n
+    Construction: `You can build various buildings in your township to help you gather resources and produce items.\n
     Each building has a specific function, such as gathering resources, producing items, or providing housing for workers.\n
     To build a building, you will need to gather the required resources and place it in a suitable location.\n
     Once built, you can interact with the building to manage its production and hire workers to help you.\n
     Constructing a building is instant, but upgrading them takes time.`,
 
-    "Building Types":
-    `There are several types of buildings you can construct in your township, each with its own unique function.\n
+    "Building Types": `There are several types of buildings you can construct in your township, each with its own unique function.\n
     Some buildings are used for gathering resources, while others are used for producing items or providing housing for workers.\n
     You can view the available building types in the construction menu and select the one that best suits your needs.`,
 
-    "Events":
-    `Events are random occurrences that can happen in your township, such as enemy attacks or natural disasters.\n
+    Events: `Events are random occurrences that can happen in your township, such as enemy attacks or natural disasters.\n
     These events can have a significant impact on your township, so it's important to be prepared for them.\n
     You can view the current events in the events menu and take action to mitigate their effects.\n
     Some events may require you to gather specific resources or build certain buildings to overcome them.`,
 
-    "Defensive Structures":
+    Defence:
     `Defensive structures are buildings that can be used to protect your township from enemy attacks.\n
     These structures can be built in strategic locations to provide cover for your workers and resources.\n
     You can view the available defensive structures in the construction menu and select the one that best suits your needs.\n
@@ -164,7 +215,7 @@ const Help: HelpText = {
     When these structures kill an enemy unit, they will gain XP, which is added to a bank. You can choose to spend this XP upgrading the structure,
     or, you can absorb the XP and add it to your own characters XP bar.`,
 
-    "Storage": 
+    Storage: 
     `You can store resources and items in your township by using storage buildings.\n
     Each storage building has a specific capacity, and you can upgrade it to increase its storage capacity.\n
     To store items, simply interact with the storage building and select the items you want to store.\n
@@ -173,14 +224,14 @@ const Help: HelpText = {
     Any buildings that have been assigned a job will automatically use resources stored in your Towns storage, and deposit any produced items there when finished
     Storage is shared across all buildings in a specific town.`,
 
-    "Producing Items":
+    Production:
     `You can produce various items in your township by using the buildings you have constructed.\n
     Each building has a specific production queue, and you can select the items you want to produce from the menu.\n
     Once you have selected the items, the building will start producing them automatically.\n
     You can view the production progress and the items that are currently being produced in the building's menu.\n
     Some items require specific resources to produce, so make sure to gather the required resources before starting production.`,
 
-    "Simulation":
+    Simulation:
     `When you aren't playing the game, your Town will continue to run in the background.\n
     This means that your buildings will continue to produce items, be upgraded, and your workers will continue to work.\n
     When you return to the game, you will be able to see the progress that has been made while you were away.\n
@@ -208,7 +259,7 @@ const Help: HelpText = {
     Once hired, you can assign a worker to specific building. Workers have specialisations and can only work specific buildings, Farmers can work in Farms, Lumberjacks in Logging Camps or Sawmills etc.\n
     Some jobs require workers to be trained in specific skills, so make sure to check the requirements of a job for specifics.`,
 
-    "Farming":
+    Farming:
     `Farming involves growing crops and raising animals in your township.\n
     You can build fields independently of farms and assign them to be used to grow specific crops and raise animals, and you can hire workers to help you manage them.\n
     Each farm can work a certain number of fields, regardless of what the field has been assigned to produce.\n

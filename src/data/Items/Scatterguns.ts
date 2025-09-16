@@ -8,16 +8,16 @@ const Scatterguns: ItemData[] = [
         Stackable: false,
         Craftable: false,
         Properties: {
-            Velocity: 75,
+            Velocity: 500,
             Lifetime: 3,
-            Cooldown: 900,
+            Cooldown: 1000,
             ReloadTime: 3,
-            MagazineSize: 4,
+            MagazineSize: 2,
             Spread: 20
         },
         Sound: "Scattergun_fire",
         Moddable: false,
-        InitialValue: { ID: "grandpa_Scattergun", Quantity: 1, CurrentMagazine: 4, Ammo: "lead_shot" }
+        InitialValue: { ID: "grandpa_Scattergun", Quantity: 1, CurrentMagazine: 2, Ammo: "stone_shot", Cooldown: 0, Mods: {} }
     },
 
     {
@@ -115,8 +115,8 @@ const Scatterguns: ItemData[] = [
         Stackable: false,
         Properties: {
             Damage: [
-                { Type: "Piercing", Amount: 10 },
-                { Type: "Force", Amount: 18 }
+                { Type: "Pierce", Amount: 4 },
+                { Type: "Impact", Amount: 6 }
             ],
             Velocity: 100,
             Lifetime: 5,

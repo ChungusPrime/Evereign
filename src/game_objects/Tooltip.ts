@@ -1,3 +1,4 @@
+import AbilityData from "../data/Character/Abilities";
 import UI from "../scenes/UI";
 
 export default class Tooltip extends Phaser.GameObjects.Rectangle {
@@ -10,11 +11,14 @@ export default class Tooltip extends Phaser.GameObjects.Rectangle {
         super(scene, 0, 0, 200, 300, 0x242424, 1);
         this.scene = scene;
         this.setOrigin(0, 0).setStrokeStyle(2, 0xffffff, 1).setVisible(false);
-        this.Header = this.scene.add.text( this.getTopLeft().x + 5, this.getTopLeft().y + 5, `Tooltip`, { fontFamily: "Augusta", fontSize: 20, wordWrap: { useAdvancedWrap: true, width: this.width - 10 } }).setVisible(false);
-        this.Text = this.scene.add.text( this.Header.getBottomLeft().x + 5, this.Header.getBottomLeft().y + 12, `Tooltip Text`, { fontFamily: "Augusta", fontSize: 16, wordWrap: { useAdvancedWrap: true, width: this.width - 10 } }).setVisible(false);
+        this.Header = this.scene.add.text( this.getTopLeft().x + 5, this.getTopLeft().y + 5, `Tooltip`, { fontFamily: "Augusta", fontSize: 24, wordWrap: { useAdvancedWrap: true, width: this.width - 10 } }).setVisible(false);
+        this.Text = this.scene.add.text( this.Header.getBottomLeft().x + 5, this.Header.getBottomLeft().y + 12, `Tooltip Text`, { fontFamily: "Augusta", fontSize: 18, wordWrap: { useAdvancedWrap: true, width: this.width - 5 } }).setVisible(false);
         this.scene.add.existing(this);
         this.scene.add.existing(this.Header);
         this.scene.add.existing(this.Text);
+        this.setDepth(20000);
+        this.Text.setDepth(20001);
+        this.Header.setDepth(20001);
     }
 
     Move ( x: number, y: number ) {
@@ -27,27 +31,23 @@ export default class Tooltip extends Phaser.GameObjects.Rectangle {
 
         if ( Type == "Item" ) {
             let ItemData = this.scene.Game.DataManager.GetItemData(ID);
+            // Append any custom item data in the GD.Inventory
             this.Header.setText(ItemData.Name);
             this.Text.setText(ItemData.Desc);
-            this.Header.setPosition(this.getTopLeft().x + 5, this.getTopLeft().y + 5);
-            this.Text.setPosition(this.Header.getBottomLeft().x + 5, this.Header.getBottomLeft().y + 12);
-            this.setVisible(true);
-            this.Header.setVisible(true);
-            this.Text.setVisible(true);
         }
 
-        if ( Type == "Building" ) {
-            /*let Building = this.scene.Game.DataManager.BuildingData.find( (building) => building.ID == ID );
-            this.Header.setText(Building.Name);
-            this.Text.setText(Building.Desc);
-            this.Header.setPosition(this.getTopLeft().x + 5, this.getTopLeft().y + 5);
-            this.Text.setPosition(this.Header.getBottomLeft().x + 5, this.Header.getBottomLeft().y + 12);
-            this.setVisible(true);
-            this.Header.setVisible(true);
-            this.Text.setVisible(true);*/
+        if ( Type == "Ability" ) {
+            const BaseAbilityData = AbilityData[ID];
+            this.Header.setText(BaseAbilityData.name);
+            this.Text.setText(BaseAbilityData.description);
         }
 
-        //this.setDisplaySize(this.width, this.Text.height + 20);
+        this.Header.setPosition(this.getTopLeft().x + 5, this.getTopLeft().y + 5);
+        this.Text.setPosition(this.Header.getBottomLeft().x + 5, this.Header.getBottomLeft().y + 12);
+
+        this.setVisible(true);
+        this.Header.setVisible(true);
+        this.Text.setVisible(true);
     }
 
     public Hide () {

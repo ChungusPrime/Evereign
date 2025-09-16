@@ -6,6 +6,8 @@ export default class Farm extends Building {
 
     public width: number = 224;
     public height: number = 224;
+    public PlotWidth: number = 128;
+    public PlotHeight: number = 64;
     
     public AllowWorkers: boolean = true;
     public WorkerSlots: number = 1;

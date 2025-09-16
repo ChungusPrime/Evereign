@@ -1,9 +1,9 @@
 import Game from "../../scenes/Game";
 import Building from "../Building";
-import Enemy from "../Enemy";
+import Character from "../Character";
 import Projectile from "../Projectile";
 
-export default class GoblinSlinger extends Enemy {
+export default class GoblinSlinger extends Character {
 
     public Name: string = "Goblin Slinger";
     public WalkAnimation: string = "GoblinSlingerWalk";
@@ -23,14 +23,16 @@ export default class GoblinSlinger extends Enemy {
     public MaxHealth: number;
     public MovementSpeed: number = 50;
     public AttackCooldown: number = 1000;
-    public Abilities: Abilities = {
+    public Temperament: string = "Hostile";
+    public Faction: string = "Goblin";
+
+    public Abilities: CharacterAbilities = {
         'Pinning Shot': {
-            Description: "The goblin slinger shoots a heavier arrow at the player's legs, applying a movement speed debuff.",
             Cooldown: 5000,
             CooldownMax: 5000,
             Damage: {
                 1: [
-                    { Type: "Pierce", Min: 1, Max: 2, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 12, Max: 18, ApplyDebuff: "Slow" }
                 ],
                 2: [
                     { Type: "Pierce", Min: 3, Max: 7, ApplyDebuff: "Slow" }
@@ -47,12 +49,11 @@ export default class GoblinSlinger extends Enemy {
             }
         },
         'Bow Shot': {
-            Description: "The goblin slinger fires a simple arrow at the player.",
             Cooldown: 2000,
             CooldownMax: 2000,
             Damage: {
                 1: [
-                    { Type: "Pierce", Min: 1, Max: 4 }
+                    { Type: "Pierce", Min: 15, Max: 25 }
                 ],
                 2: [
                     { Type: "Pierce", Min: 7, Max: 11 }
@@ -73,8 +74,10 @@ export default class GoblinSlinger extends Enemy {
     constructor ( scene: Game, x: number, y: number, id: string, data: WorldData ) {
         super(scene, { x, y }, "characters", 118);
         console.log(id, data);
+        this.ID = id;
         this.SpawnLocation = { x, y };
         this.MaxHealth = this.Health;
+        //this.setPipeline('Light2D');
     }
 
     update ( time: number, delta: number ) {
@@ -90,25 +93,20 @@ export default class GoblinSlinger extends Enemy {
 
             this.InCombatDelta -= delta;
 
-            if ( this.InCombatDelta <= 0 ) {
-                this.LoseAggro();
-                return;
-            }
+            if ( this.InCombatDelta <= 0 )
+                return this.LoseAggro();
 
             let DistanceFromSpawnPoint = Phaser.Math.Distance.BetweenPoints(this, { x: this.SpawnLocation.x, y: this.SpawnLocation.y });
-            if ( DistanceFromSpawnPoint > 500 ) {
-                this.LoseAggro();
-                return;
-            }
+            if ( DistanceFromSpawnPoint > 500 )
+                return this.LoseAggro();
 
             let DistanceFromPlayer = Phaser.Math.Distance.BetweenPoints(this, { x: this.scene.PlayerCharacter.x, y: this.scene.PlayerCharacter.y });
             if ( DistanceFromPlayer > this.AttackRange ) {
                 this.scene.physics.moveTo(this, this.scene.PlayerCharacter.x, this.scene.PlayerCharacter.y, this.MovementSpeed);
             } else {
                 this.body.reset(this.x, this.y);
-                if ( this.AttackCooldown <= 0 ) {
+                if ( this.AttackCooldown <= 0 )
                     this.Attack();
-                }
             }
 
         } 
@@ -116,9 +114,8 @@ export default class GoblinSlinger extends Enemy {
         if ( this.InCombat == false ) {
             if ( this.moving ) {
                 const distance = Phaser.Math.Distance.BetweenPoints(this, { x: this.targetX, y: this.targetY });
-                if ( distance <= 10 ) {
+                if ( distance <= 10 )
                     this.StopMoving();
-                }
             }
         }
 
@@ -143,7 +140,10 @@ export default class GoblinSlinger extends Enemy {
             }
         }
 
-        if ( Ability == null ) return;
+        if ( Ability == null ) {
+            this.AttackCooldown = 1000;
+            return console.log("No abilities available to use!");
+        }
 
         if ( Ability == 'Bow Shot' ) {
             console.log("Bow Shot fired");

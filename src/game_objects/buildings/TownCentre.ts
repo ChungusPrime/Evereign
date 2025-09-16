@@ -11,6 +11,8 @@ export default class TownCentre extends Building {
     public CurrentJob: string = "";
     public CostMultiplier: number = 5;
     public BuildZone!: Phaser.GameObjects.Rectangle;
+    public PlotWidth: number = 256;
+    public PlotHeight: number = 256;
 
     constructor ( scene: Game, x: number, y: number ) {
         super( scene, x, y, "Buildings", "towncentre1");

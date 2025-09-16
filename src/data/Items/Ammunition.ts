@@ -9,11 +9,11 @@ const Ammunition: ItemData[] = [
         StackSize: 200,
         Type: "Scattergun",
         Properties: {
-            DamageMod: [                
-                { Type: "Piercing", Amount: 2 },
-                { Type: "Force", Amount: 3 }
+            DamageMod: [
+                { Type: "Pierce", Min: 2, Max: 4 },
+                { Type: "Impact", Min: 3, Max: 5 }
             ],
-            Pellets: 8,
+            Pellets: 5,
         },
         InitialValue: { ID: "stone_shot", Quantity: 1 },
         Craftable: true,

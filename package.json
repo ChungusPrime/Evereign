@@ -1,6 +1,6 @@
 {
     "name": "evereign",
-    "version": "3.9.5",
+    "version": "3.9.6",
     "description": "Evereign",
     "main": "main.js",
     "scripts": {
@@ -49,5 +49,8 @@
             "!.vs",
             "!node_modules/*"
         ]
+    },
+    "dependencies": {
+        "phaser3-rex-plugins": "^1.80.16"
     }
 }

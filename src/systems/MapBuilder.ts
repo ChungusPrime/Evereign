@@ -6,7 +6,7 @@ import FloatingText from "../game_objects/FloatingText";
 import Projectile from "../game_objects/Projectile";
 import Building from "../game_objects/Building";
 import PlayerCharacter from "../game_objects/PlayerCharacter";
-import Enemy from "../game_objects/Enemy";
+import Enemy from "../game_objects/Character";
 import Chest from "../game_objects/Chest";
 import MiningNode from "../game_objects/MiningNode";
 import Obstacle from "../game_objects/Obstacle";
@@ -39,8 +39,8 @@ import Farm from "../game_objects/buildings/Farm";
 import Chapel from "../game_objects/buildings/Chapel";
 
 // NPCs
-import WarbossGorgutz from "../game_objects/enemies/WarbossGorgutz";
-import GoblinSlinger from "../game_objects/enemies/GoblinSlinger";
+import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
+import GoblinSlinger from "../game_objects/characters/GoblinSlinger";
 import StoneDeposit from "../game_objects/deposits/StoneDeposit";
 import IronDeposit from "../game_objects/deposits/IronDeposit";
 import GoblinFirepit from "../game_objects/lights/GoblinFirepit";
@@ -104,12 +104,12 @@ export default class MapBuilder {
             "Dwelling": Dwelling,
             "Trigger": TriggerZone,
             "Goblin Slinger": GoblinSlinger,
+            "Inn": Inn,
             /*"Town Centre": TownCentre,
             "Goblin Outpost": GoblinOutpost,
             "Dwelling": Dwelling,
             "Market": Market,
             "Warehouse": Warehouse,
-            "Inn": Inn,
             "Field": Field,
             "Mine": Mine,
             "Farm": Farm,
@@ -154,7 +154,10 @@ export default class MapBuilder {
                         let Data = Campaign.WorldData[GD.CurrentMap][ID] ?? null;
                         let SavedData = GD.WorldData[GD.Campaign][GD.CurrentMap][ID] ?? null;
                         Object.assign(Data, SavedData);
-                        let instance = new obj(this.scene, object.x, object.y, ID, Data) as any;
+                        let instance = new obj(this.scene, object.x, object.y, ID, Data) as Phaser.GameObjects.GameObject;
+                        if ( instance instanceof Building ) {
+                            this.scene.Buildings.add(instance);
+                        }
                         return instance;
                     } catch (error) {
                         console.error(error);
@@ -208,7 +211,7 @@ export default class MapBuilder {
         this.scene.physics.add.collider(this.scene.Projectiles, this.scene.Enemies, (projectile: Projectile, enemy: Enemy) => {
             this.scene.lights.removeLight(projectile.light);
             projectile.destroy();
-            this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, { message: `-${projectile.damage}`, x: enemy.x, y: enemy.y }));
+            //this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, { message: `-${projectile.damage}`, x: enemy.x, y: enemy.y }));
             enemy.TakeDamage(projectile.damage);
             this.scene.sound.play("KineticBoltHit");
             let hitSprite = this.scene.add.sprite(projectile.x, projectile.y, "BloodArcaneOne", 0).play('blood-arcane-anim-1');

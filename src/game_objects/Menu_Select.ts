@@ -109,11 +109,6 @@ export default class MenuSelect extends Phaser.GameObjects.Sprite {
         })
         .setVisible(false);
 
-        // Get information for current option
-        /*this.InformationButton = new TextButton(this.scene, this.ScrollRight.getRightCenter().x + 15, y, "?", () => {
-            this.scene.SetHelpText(this.CurrentValue ? this.CurrentValue : "No information available for this option.");
-        }, 32).setVisible(false);*/
-
         this.scene.CharacterCreationGroup.addMultiple([
             this,
             this.ScrollLeft,

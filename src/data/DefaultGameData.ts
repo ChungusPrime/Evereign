@@ -28,6 +28,8 @@ const DefaultGameData: GameData = {
         Show_Building_Health_Bars: true,
     },
 
+    LastCharacterPlayed: null,
+
     Characters: {}
 
 };

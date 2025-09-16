@@ -3,7 +3,7 @@ const HandArmour: ItemData[] = [
     {
         ID: "operative_gloves",
         Name: "Operative Gloves",
-        Sprite: "armour-5",
+        Sprite: "leather_dark-22",
         Desc: "A pair of sturdy gloves designed for operatives.",
         Stackable: false,
         InitialValue: { ID: "operative_gloves", Quantity: 1 },

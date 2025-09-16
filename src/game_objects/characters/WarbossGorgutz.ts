@@ -1,6 +1,6 @@
 import Game from "../../scenes/Game";
 import Building from "../Building";
-import Enemy from "../Enemy";
+import Enemy from "../Character";
 
 export default class WarbossGorgutz extends Enemy {
     
@@ -11,18 +11,20 @@ export default class WarbossGorgutz extends Enemy {
     public MaxHealth: number = 250;
     public Type: string = "Melee";
     public SpawnLocation: Building | { x: number, y: number };
+    public Temperament: string = "Hostile";
+    public Faction: string = "Goblin";
 
-    public Abilities: {
+    public Abilities: CharacterAbilities = {
         'Big Axe Throw': {
-            Description: "The Warboss hurls a huge axe towards the target. The axe deals damage in a small area when it lands.",
+            //Description: "The Warboss hurls a huge axe towards the target. The axe deals damage in a small area when it lands.",
             Cooldown: 4000
         },
         'Fistful o Axes': {
-            Description: "The Warboss throws a handful of axes at the target.",
+            //Description: "The Warboss throws a handful of axes at the target.",
             Cooldown: 3000
         },
         'Rally Guards': {
-            Description: "The Warboss calls for reinforcements, summoning a group of goblins to his aid.",
+            //Description: "The Warboss calls for reinforcements, summoning a group of goblins to his aid.",
             Cooldown: 6000
         },
     };

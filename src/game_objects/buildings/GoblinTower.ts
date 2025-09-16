@@ -7,6 +7,8 @@ export default class GoblinTower extends Building {
 
     public width: number = 64;
     public height: number = 64;
+    public PlotWidth: number = 128;
+    public PlotHeight: number = 64;
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
 
     // Hostile building settings

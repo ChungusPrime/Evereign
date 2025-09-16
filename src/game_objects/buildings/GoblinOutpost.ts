@@ -8,6 +8,8 @@ export default class GoblinOutpost extends Building {
     public scene: Game;
     public width: number = 128;
     public height: number = 128;
+    public PlotWidth: number = 128;
+    public PlotHeight: number = 64;
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
 
     // Hostile building settings

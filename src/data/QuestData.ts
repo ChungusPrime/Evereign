@@ -12,12 +12,12 @@ interface Quests {
 
 const QuestData: Quests = {
     [ToLittlePiddleton.ID]: ToLittlePiddleton,
-    [ToWindyRidge.ID]: ToWindyRidge,
+    /*[ToWindyRidge.ID]: ToWindyRidge,
     [TheSource.ID]: TheSource,
     [TheGobboMenace.ID]: TheGobboMenace,
     [WarchiefGorgutz.ID]: WarchiefGorgutz,
     [TheGreatGobboTree.ID]: TheGreatGobboTree,
-    [UncoveringMarXanthir.ID]: UncoveringMarXanthir
+    [UncoveringMarXanthir.ID]: UncoveringMarXanthir*/
 };
 
 export default QuestData;

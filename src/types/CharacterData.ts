@@ -19,34 +19,51 @@ interface Character {
     Difficulty: string;
     Class: string;
     Campaign: string;
-    CurrentHealth: number;
-    MaxHealth: number;
-    CurrentMana: number;
-    MaxMana: number;
     MetNPCs: string[];
+
+    // Stats and attributes
     Fortitude: number;
+    Arcana: number;
     Versatility: number;
     Vigor: number;
     Expertise: number;
     Personality: number;
     Fortune: number;
     Grit: number;
+    MovementSpeed: number;
+    CriticalStrikeChance: number;
+    EvadeChance: number;
+    BlockChance: number;
+    CriticalStrikeDamageModifier: number;
+    LifeSteal: number;
+    HealthRegeneration: number;
+    ManaRegeneration: number;
+    Defence_Pierce: number;
+    Defence_Impact: number;
+    Defence_Slash: number;
+    Defence_Fire: number;
+    Defence_Cold: number;
+    Defence_Lightning: number;
+    Defence_Poison: number;
+    Defence_Arcane: number;
+    Defence_True: number;
+    Defence_Bleed: number;
+    Defence_Radiant: number;
+    Defence_Corruption: number;
+    Defence_Sonic: number;
+    CurrentHealth: number;
+    MaxHealth: number;
+    CurrentMana: number;
+    MaxMana: number;
+    Experience: number;
+    NextLevelExperience: number;
     Inventory: {
-        [key: string]: {
-            ID: string;
-            Quantity: number;
-            CurrentMagazine?: number;
-            Ammo?: string;
-            Mods?: { [key: string]: string | null };
-        } | null;
+        [key: string]: InventoryItem | null;
     };
-    Hotbar: {
-        [key: string]: {
-            ID: string;
-            Item?: string;
-            Ability?: string;
-        } | null;
-    };
+    Hotbar: {[slot: string]: { 
+        Type: string;
+        ID: string;
+    }};
     Quests: {
         ID: string;
         ReadyToHandIn: boolean;
@@ -58,6 +75,7 @@ interface Character {
             Visible: boolean;
         }[]
     }[];
+
     UnlockedBuildings: string[];
     NextBuildingCost: {
         Building: string;

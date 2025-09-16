@@ -3,7 +3,7 @@ const LegArmour: ItemData[] = [
     {
         ID: "operative_legguards",
         Name: "Operative Leg Guards",
-        Sprite: "armour-5",
+        Sprite: "leather_dark-37",
         Desc: "A pair of sturdy leg guards designed for operatives.",
         Stackable: false,
         InitialValue: { ID: "operative_legguards", Quantity: 1 },

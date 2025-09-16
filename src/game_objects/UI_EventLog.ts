@@ -1,4 +1,6 @@
 import UI from "../scenes/UI";
+import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
+import DamageTypes from "../data/DamageTypes";
 
 export default class EventLog {
 
@@ -35,10 +37,15 @@ export default class EventLog {
     }
 
     NewEvent ( text: string ) {
-        const message = this.scene.add.text(0, 0, text, {
+
+        // Replace damage type names with their colours
+        Object.entries(DamageTypes).forEach( ([key, type]) => {
+            text = text.replace(key, `[color=${type}]${key}[/color]`);
+        });
+
+        const message = new BBCodeText(this.scene, 0, 0, text, {
             fontSize: 12,
             wordWrap: {
-                useAdvancedWrap: true,
                 width: this.EventLogBackground.width - 2
             }
         }).setOrigin(0, 0);

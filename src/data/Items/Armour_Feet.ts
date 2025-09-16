@@ -3,7 +3,7 @@ const FeetArmour: ItemData[] = [
     {
         ID: "operative_boots",
         Name: "Operative Boots",
-        Sprite: "armour-5",
+        Sprite: "leather_dark-41",
         Desc: "A pair of sturdy boots designed for operatives, providing protection and comfort during long missions.",
         Stackable: false,
         InitialValue: { ID: "operative_boots", Quantity: 1 },

@@ -2,10 +2,13 @@ const BestiaryData: BestiaryData[] = [
     {
         ID: "gobbo_slinger",
         Name: "Goblin Slinger",
-        Description: "A scrawny wee goblin whom will launch an rock at you via sling, can't take much punishment",
+        Description: `A scrawny Goblin whom has a knack for using a bow. Goblin bows are often crude, but can dish out a fair bit of hurt from a distance.
+        Abilities:
+        - Bow Shot: The goblin slinger fires a simple arrow at the player.
+        - Pinning Shot: The goblin slinger shoots a heavier arrow at the player's legs, applying a movement speed debuff.`,
         Tiers: {
-            1: { Description: "Increases all damage dealt to Goblin Slingers by 2" },
-            2: { Description: "Goblin Slingers now have a chance of dropping Goblin Bows, which can be sold or traded" },
+            1: { Description: `Increases all damage dealt to Goblin Slingers by 2` },
+            2: { Description: `Goblin Slingers now have a chance of dropping Goblin Bows, which can be sold or traded` },
         }
     },
     {

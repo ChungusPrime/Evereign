@@ -14,6 +14,7 @@ const ToLittlePiddleton: QuestData = {
         }
     ],
     IntitialData: {
+        ID: "willowvale_little_piddleton",
         ReadyToHandIn: false,
         Completed: false,
         ObjectiveProgress: [

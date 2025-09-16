@@ -6,7 +6,14 @@ const TheMidnightAccord: Campaign = {
     
     ID: "The Midnight Accord",
     Name: "The Midnight Accord",
-    Description: "Embark on a journey through the mystical lands of Willowvale, exploring caverns and uncovering secrets.",
+    Description: `In the ancient and verdant realm of Arlamore, peace and prosperity have long been the pillars of the kingdom. Ruled by the wise and noble King Arlamore, 
+    the land has flourished under his just and benevolent reign. However, in the shadows of this thriving kingdom, dark forces have begun to stir.
+
+    You are a sage and loyal adviser to the king and have served Arlamore with unwavering dedication. One night, a vision, vivid and harrowing, invaded your dreams. 
+    This vision, unlike any he had experienced before, showed a future where Arlamore lay in ruins, its people suffering under the yoke of unending calamity.
+    
+    The king, though wise, dismissed your vision as a mere nightmare, a product of stress and overwork. Desperate and determined, you took matters into your own hands
+    and decided to embark on a perilous journey to gather allies and warn the people of impending doom.`,
 
     // The starting map and coordinates for the player
     StartingMap: "Willowvale",
@@ -21,7 +28,7 @@ const TheMidnightAccord: Campaign = {
             Size: { Width: 8000, Height: 6000 },
             MapName: "Willowvale",
             Type: "Exterior",
-            Resources: ["Iron", "Stone", "Oak", "Marigold", "Humming Bass", "River Tomato"],
+            Resources: ["Iron Deposit", "Stone Deposit", "Oak Tree", "Marigold", "Humming Bass", "River Tomato"],
             Music: "theme",
         },
         WillowvaleCaverns: {

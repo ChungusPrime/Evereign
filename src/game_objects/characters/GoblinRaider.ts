@@ -1,6 +1,6 @@
 import Game from "../../scenes/Game";
 import Building from "../Building";
-import Enemy from "../Enemy";
+import Enemy from "../Character";
 
 export default class GoblinRaider extends Enemy {
 
@@ -18,10 +18,12 @@ export default class GoblinRaider extends Enemy {
     public LootTable: any = [];
     public Data: any;
     public Level: number;
+    public Temperament: string = "Hostile";
+    public Faction: string = "Goblin";
 
-    public Abilities: {
+    public Abilities: CharacterAbilities = {
         'Bleed them dry': {
-            Description: "The goblin raider slashes at the player, applying a bleed effect.",
+            //Description: "The goblin raider slashes at the player, applying a bleed effect.",
             Cooldown: 2000
         } 
     };

@@ -6,7 +6,7 @@ interface ItemData {
     Craftable?: boolean;
     Components?: any;
     Slot?: string;
-    Properties?: any;
+    Properties?: { [key: string]: any };
     Stackable: boolean;
     StackSize?: number;
     Sound?: string;

@@ -10,6 +10,8 @@ export default class Field extends Building {
     public WorkerType: string = "Farmer";
     public Skill: string = "Farming";
     public ActiveJob: string = "";
+    public PlotWidth: number = 128;
+    public PlotHeight: number = 64;
 
     public Jobs: Job[] = [
         { Name: "Grow Wheat", LevelRequirement: 1 },

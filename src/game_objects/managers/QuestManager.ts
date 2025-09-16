@@ -23,6 +23,17 @@ export default class QuestManager {
     GrantQuest ( id: string ) {
         const QD = QuestData[id];
         this.Game.UI.EventLog.NewEvent(`Quest Accepted: ${QD.Name}`);
+        GD.Quests.push({
+            ID: id,
+            ReadyToHandIn: false,
+            Completed: false,
+            ObjectiveProgress: QD.Objectives.map((objective, index) => ({
+                Step: index,
+                Progress: 0,
+                Completed: false,
+                Visible: true
+            }))
+        });
         this.CreateQuestLogEntry(id);
     }
 

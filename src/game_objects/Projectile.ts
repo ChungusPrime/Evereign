@@ -21,6 +21,14 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
         this.velocity = velocity;
         this.damage = damage;
 
+        if ( type == "ScattergunPellet" ) {
+            this.setTexture("SkillsB", 160);
+            this.setSize(8, 8);
+            this.setDisplaySize(8, 8);
+            scene.physics.moveTo(this, scene.mouseX, scene.mouseY, this.velocity, 0);
+            this.setCircle(8, 0, 0);
+        }
+
         if ( type == "Kinetic Bolt" ) {
             this.preFX.addGlow(0x34a4eb, 4, 0, false, 0.1, 10);
             this.play("arcane-dart-anim");

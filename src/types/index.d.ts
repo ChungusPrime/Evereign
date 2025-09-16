@@ -22,9 +22,18 @@ declare module "*.mp3" {
 
 declare module 'phaser-navmesh';
 
+interface InventoryItem {
+    ID: string;
+    Quantity: number;
+    CurrentMagazine?: number;
+    Ammo?: string;
+    Mods?: { [key: string]: string | null };
+    Cooldown?: number;
+}
+
 interface GameData {
     Controls: {
-        [key: string]: string;
+        [key: string]: string | number;
     };
 
     Options: {
@@ -34,14 +43,15 @@ interface GameData {
     Characters: {
         [key: string]: Character;
     }
+
+    LastCharacterPlayed: string | null;
 }
 
-interface Abilities {
+interface CharacterAbilities {
     [key: string]: {
-        Description: string,
-        Cooldown: number,
-        Damage: AbilityDamageArray,
-        CooldownMax: number
+        Cooldown?: number,
+        Damage?: AbilityDamageArray,
+        CooldownMax?: number
     }
 }
 
@@ -70,6 +80,10 @@ interface RaceData {
     Attributes: {
         [key: string]: number; 
     }
+    Items?: {[slot: string]: { 
+        ID: string;
+        Quantity: number
+    }};
 }
 
 interface LoreEntry {
@@ -210,6 +224,7 @@ interface QuestData {
 
     // The data added to the player's quest log when the quest is accepted
     IntitialData?: {
+        ID: string;
         ReadyToHandIn: boolean;
         Completed: boolean;
         ObjectiveProgress: {

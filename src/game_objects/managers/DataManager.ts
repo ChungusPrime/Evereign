@@ -1,4 +1,4 @@
-import Game from "../../scenes/Game";
+import Game, { GD } from "../../scenes/Game";
 
 import { Base64 } from 'js-base64';
 
@@ -43,31 +43,15 @@ export default class DataManager {
     }
 
     public SaveGame () {
-
-        return; // TODO: Implement saving
-
-        let SaveData = this.CharacterData;
-        SaveData.X = this.scene.PlayerCharacter.x;
-        SaveData.Y = this.scene.PlayerCharacter.y;
-        SaveData.DaytimeDelta = this.scene.DaytimeCycleManager.DaytimeDelta;
-        SaveData.DaytimeHour = this.scene.DaytimeCycleManager.DaytimeHour;
-        SaveData.DaytimeMinute = this.scene.DaytimeCycleManager.DaytimeMinute;
-        SaveData.LastSaveTimestamp = Date.now().toString();
-        SaveData.Inventory = {};
-        SaveData.CurrentHealth = this.scene.PlayerCharacter.Health;
-        SaveData.CurrentMana = this.scene.PlayerCharacter.Mana;
-
-        //(SaveData);
-
+        GD.X = this.scene.PlayerCharacter.x;
+        GD.Y = this.scene.PlayerCharacter.y;
+        GD.DaytimeDelta = this.scene.DaytimeCycleManager.DaytimeDelta;
+        GD.DaytimeHour = this.scene.DaytimeCycleManager.DaytimeHour;
+        GD.DaytimeMinute = this.scene.DaytimeCycleManager.DaytimeMinute;
+        GD.LastSaveTimestamp = Date.now().toString();
         let SavedData = JSON.parse(localStorage.getItem("EvereignData"));
-
-        // Get character data from local storage
-        SavedData.Characters[this.scene.CharacterName] = SaveData;
-
-        // Save the data to local storage
+        SavedData.Characters[this.scene.CharacterName] = GD;
         localStorage.setItem("EvereignData", JSON.stringify(SavedData));
-      
-        
         this.scene.UI.EventLog.NewEvent(`Game saved`);
     }
 

@@ -11,6 +11,8 @@ export default class BallistaTower extends Building {
     public PeopleCapacity: number = 1;
     public Attachment: Phaser.GameObjects.Sprite;
     public AggroZone: boolean = false;
+    public PlotWidth: number = 128;
+    public PlotHeight: number = 64;
 
     // Build radius
     public Radius: Phaser.GameObjects.Arc;

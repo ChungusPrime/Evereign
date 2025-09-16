@@ -2,6 +2,8 @@ import Game from "../scenes/Game";
 import UI from "../scenes/UI";
 import ItemSlot from "../game_objects/UI_ItemSlot";
 import { GD } from "../scenes/Game";
+import DamageTypes from "../data/DamageTypes";
+import TextButton from "../game_objects/UI_TextButton";
 
 export default class Inventory {
 
@@ -14,10 +16,60 @@ export default class Inventory {
     public InventoryHeader: Phaser.GameObjects.Text;
     public UsedSlots: number = 0;
     public InventorySlots: number = 20;
+
+    // Equipment Section
     public EquipmentBackground: Phaser.GameObjects.NineSlice;
-    public EquipmentHeader: Phaser.GameObjects.Text;
+    public EquipmentHeader: TextButton;
+    public ComponentHeader: TextButton;
+
     public HeldItem: Phaser.GameObjects.Sprite | null = null;
     public HoveredOnSlot: any;
+    public CharacterPanelBackground: Phaser.GameObjects.NineSlice;
+    public CharacterPanelHeader: Phaser.GameObjects.Text;
+
+    public LevelClassText: Phaser.GameObjects.Text;
+    public EquipmentWindow = "Equipment";
+    public StatsWindow = "Character";
+
+    // Character Attributes
+    public FortitudeText: Phaser.GameObjects.Text;
+    public VersatilityText: Phaser.GameObjects.Text;
+    public VigorText: Phaser.GameObjects.Text;
+    public ExpertiseText: Phaser.GameObjects.Text;
+    public ArcanaText: Phaser.GameObjects.Text;
+    public PersonalityText: Phaser.GameObjects.Text;
+    public FortuneText: Phaser.GameObjects.Text;
+    public GritText: Phaser.GameObjects.Text;
+    public ExperienceText: Phaser.GameObjects.Text;
+    public HealthText: Phaser.GameObjects.Text;
+    public ManaText: Phaser.GameObjects.Text;
+    public StatsTexts: Phaser.GameObjects.Group;
+
+    //Defences
+    public DefencesHeader: any;
+    public DefencesTexts: Phaser.GameObjects.Group;
+    public PierceText: any;
+    public ImpactText: any;
+    public SlashText: any;
+    public FireText: any;
+    public ColdText: any;
+    public LightningText: any;
+    public PoisonText: any;
+    public ArcaneText: any;
+    public BleedText: any;
+    public RadiantText: any;
+    public CorruptionText: any;
+    public SonicText: any;
+
+    public DefencesButton: any;
+    public CharacterButton: any;
+    AttributesTexts: any;
+    CharacterTexts: any;
+    MovementSpeedText: any;
+
+    BackpackSlot: Phaser.GameObjects.NineSlice;
+    BackpackSprite: Phaser.GameObjects.Sprite;
+    BackpackLabel: any;
 
     constructor ( game: Game, UI: UI ) {
 
@@ -27,7 +79,7 @@ export default class Inventory {
         let HeaderStyle = { fontFamily: "Augusta", fontSize: 28 };
 
         // Inventory Section //
-        this.InventoryBackground = this.UI.add.nineslice ( 65, 175, "Kenney-UI", "panel_blue", 330, 420, 16, 16, 16, 16)
+        this.InventoryBackground = this.UI.add.nineslice ( 65, 120, "Kenney-UI", "panel_blue", 330, 440, 16, 16, 16, 16)
         .setOrigin(0, 0)
         .setVisible(false);
 
@@ -39,66 +91,179 @@ export default class Inventory {
         let InventoryX = this.InventoryBackground.getTopLeft().x + 5;
         let InventoryY = this.InventoryBackground.getTopLeft().y + 36;
 
+        Object.entries(GD.Inventory).forEach( (item, index) => {
+            if ( item[0].includes("Equipment") || item[0].includes("Component") ) return;
+            let Slot = new ItemSlot(this.Game, this.UI, InventoryX, InventoryY, item[0], null, "Inventory");
+            this.Items.push(Slot);
+            if ( Slot.DataInventorySlot != null ) this.UsedSlots++;
+            InventoryX += 64;
+            // Every 4 rows, move down 64 pixels and reset X
+            if ( InventoryCount % 5 == 0 ) {
+                InventoryX = this.InventoryBackground.getTopLeft().x + 5;
+                InventoryY += 64;
+            }
+            InventoryCount++;
+        });
+
         // Equipment Section //
-        this.EquipmentBackground = this.UI.add.nineslice ( this.InventoryBackground.getTopRight().x + 5, this.InventoryBackground.getTopRight().y, "Kenney-UI", "panel_blue", 280, 420, 16, 16, 16, 16)
+        this.EquipmentBackground = this.UI.add.nineslice ( this.InventoryBackground.getTopRight().x + 10, this.InventoryBackground.getTopRight().y, "Kenney-UI", "panel_blue", 280, 440, 16, 16, 16, 16)
         .setOrigin(0, 0)
         .setVisible(false);
 
-        this.EquipmentHeader = this.UI.add.text( this.EquipmentBackground.getTopLeft().x + 10, this.EquipmentBackground.getTopLeft().y + 20, `Equipment`, HeaderStyle)
+        this.EquipmentHeader = new TextButton( this.UI, this.EquipmentBackground.getTopLeft().x + 10, this.EquipmentBackground.getTopLeft().y + 20, `Equipment`, () => {
+            this.EquipmentWindow = "Equipment";
+            this.BackpackLabel.setVisible(true);
+            this.BackpackSlot.setVisible(true);
+            this.BackpackSprite.setVisible(true);
+            this.Items.forEach( (slot) => {
+                if ( slot.Type == "Equipment" ) slot.Show();
+                if ( slot.Type == "Component" ) slot.Hide();
+            });
+        }, 20, '#ffffff')
         .setOrigin(0, 0.5)
-        .setVisible(false);
+        .setVisible(false)
+
+        this.ComponentHeader = new TextButton( this.UI, this.EquipmentBackground.getTopLeft().x + 180, this.EquipmentBackground.getTopLeft().y + 20, `Components`, () => {
+            this.EquipmentWindow = "Components";
+            this.BackpackLabel.setVisible(false);
+            this.BackpackSlot.setVisible(false);
+            this.BackpackSprite.setVisible(false);
+            this.Items.forEach( (slot) => {
+                if ( slot.Type == "Equipment" ) slot.Hide();
+                if ( slot.Type == "Component" ) slot.Show();
+            });
+        }, 20, '#ffffff')
+        .setOrigin(0, 0.5)
+        .setVisible(false)
 
         let EquipmentCount = 1;
         let EquipmentX = this.EquipmentBackground.getTopLeft().x + 10;
         let EquipmentY = this.EquipmentBackground.getTopLeft().y + 36;
 
-        // Add 4 rectangles per row to represent inventory slots
+        // Equipment Slots
         Object.entries(GD.Inventory).forEach( (item, index) => {
-
-            let X = 0;
-            let Y = 0;
-            let Label = null;
-
-            if ( item[0].includes("Equipment") ) {
-                X = EquipmentX;
-                Y = EquipmentY;
-                Label = item[0].replace("Equipment_", "");
-                if ( Label == "MainHand" ) Label = "Main Hand";
-                if ( Label == "OffHand" ) Label = "Off Hand";
-                if ( Label == "Ring_1" ) Label = "Left Ring";
-                if ( Label == "Ring_2" ) Label = "Right Ring";
-            } else {
-                X = InventoryX;
-                Y = InventoryY;
-            }
-
-            let Slot = new ItemSlot(this.Game, this.UI, X, Y, item[0], Label);
+            if ( !item[0].includes("Equipment") ) return;
+            let Label = item[0].replace("Equipment_", "");
+            if ( Label == "MainHand" ) Label = "Main Hand";
+            if ( Label == "OffHand" ) Label = "Off Hand";
+            if ( Label == "Ring_1" ) Label = "Left Ring";
+            if ( Label == "Ring_2" ) Label = "Right Ring";
+            if ( Label == "Back" ) Label = "Cape";
+            let Slot = new ItemSlot(this.Game, this.UI, EquipmentX, EquipmentY, item[0], Label, "Equipment");
             this.Items.push(Slot);
-
-            if ( item[0].includes("Equipment") ) {
-                EquipmentX += 96;
-                if ( EquipmentCount % 3 == 0 ) {
-                    EquipmentX = this.EquipmentBackground.getTopLeft().x + 10;
-                    EquipmentY += 96;
-                }
-                EquipmentCount++;
-            } else {
-                if ( Slot.DataInventorySlot != null ) this.UsedSlots++;
-                InventoryX += 64;
-                // Every 4 rows, move down 64 pixels and reset X
-                if ( InventoryCount % 5 == 0 ) {
-                    InventoryX = this.InventoryBackground.getTopLeft().x + 5;
-                    InventoryY += 64;
-                }
-                InventoryCount++;
+            EquipmentX += 96;
+            if ( EquipmentCount % 3 == 0 ) {
+                EquipmentX = this.EquipmentBackground.getTopLeft().x + 10;
+                EquipmentY += 96;
             }
-
+            EquipmentCount++;
         });
+
+        this.BackpackSlot = this.UI.add.nineslice(EquipmentX, EquipmentY, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setVisible(false).setOrigin(0, 0);
+        this.BackpackSprite = this.UI.add.sprite(this.BackpackSlot.getCenter().x, this.BackpackSlot.getCenter().y, "general", 465).setDisplaySize(48, 48).setVisible(false);
+        this.BackpackLabel = this.UI.add.text(this.BackpackSlot.getBottomCenter().x, this.BackpackSlot.getBottomCenter().y + 5, `Backpack`, { fontFamily: "Augusta", fontSize: 16, align: "center", color: '#ffffff' }).setOrigin(0.5, 0).setVisible(false);
+
+        let ComponentCount = 1;
+        let ComponentX = this.EquipmentBackground.getTopLeft().x + 10;
+        let ComponentY = this.EquipmentBackground.getTopLeft().y + 36;
+
+        // Component Slots
+        Object.entries(GD.Inventory).forEach( (item, index) => {
+            if ( !item[0].includes("Component") ) return;
+            let Label = item[0];
+            let Slot = new ItemSlot(this.Game, this.UI, ComponentX, ComponentY, item[0], Label, "Component");
+            this.Items.push(Slot);
+            ComponentX += 96;
+            if ( ComponentCount % 3 == 0 ) {
+                ComponentX = this.EquipmentBackground.getTopLeft().x + 10;
+                ComponentY += 96;
+            }
+            ComponentCount++;
+        });
+
+        console.log(this.Items);
 
         this.InventoryHeader.setText(`Inventory (${this.UsedSlots}/${this.InventorySlots})`);
 
+        // Character Stats //
+        this.CharacterPanelBackground = this.UI.add.nineslice ( this.EquipmentBackground.getTopRight().x + 5, this.EquipmentBackground.getTopRight().y, "Kenney-UI", "panel_blue", 280, 440, 16, 16, 16, 16).setOrigin(0, 0).setVisible(false);
+        this.CharacterPanelHeader = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 20, `${GD.Name}`, HeaderStyle).setOrigin(0, 0.5).setVisible(false);
+
+        let CPB = this.CharacterPanelBackground.getTopLeft();
+
+        this.CharacterButton = new TextButton(this.UI, CPB.x + 10, CPB.y + 20, `Character`, () =>{
+            this.CharacterTexts.setVisible(true);
+            this.DefencesTexts.setVisible(false);
+            this.StatsWindow = "Character";
+        }, 20, '#ffffff').setOrigin(0, 0.5).setVisible(false);
+
+        this.DefencesButton = new TextButton(this.UI, CPB.x + 180, CPB.y + 20, `Defences`, () =>{
+            this.CharacterTexts.setVisible(false);
+            this.DefencesTexts.setVisible(true);
+            this.StatsWindow = "Defences";
+        }, 20, '#ffffff').setOrigin(0, 0.5).setVisible(false);
+
+        // General Character Information
+        this.LevelClassText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 50, `Level ${GD.Level} ${GD.Race} ${GD.Class}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.ExperienceText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 80, `Experience: ${GD.Experience}/${GD.NextLevelExperience}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.HealthText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 110, `Health: ${this.Game.PlayerCharacter.Health}/${this.Game.PlayerCharacter.MaxHealth} (+${this.Game.PlayerCharacter.HealthRegeneration})`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.ManaText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 140, `Mana: ${this.Game.PlayerCharacter.Mana}/${this.Game.PlayerCharacter.MaxMana} (+${this.Game.PlayerCharacter.ManaRegeneration})`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.MovementSpeedText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 170, `Movement Speed: ${this.Game.PlayerCharacter.MovementSpeed}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.FortitudeText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 200, `Fortitude: ${this.Game.PlayerCharacter.Fortitude}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.VersatilityText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 200, `Versatility: ${this.Game.PlayerCharacter.Versatility}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.VigorText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 230, `Vigor: ${this.Game.PlayerCharacter.Vigor}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.ExpertiseText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 230, `Expertise: ${this.Game.PlayerCharacter.Expertise}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.ArcanaText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 260, `Arcana: ${this.Game.PlayerCharacter.Arcana}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.PersonalityText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 260, `Personality: ${this.Game.PlayerCharacter.Personality}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.FortuneText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 290, `Fortune: ${this.Game.PlayerCharacter.Fortune}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.GritText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 290, `Grit: ${this.Game.PlayerCharacter.Grit}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.CharacterTexts = this.UI.add.group().setVisible(false).addMultiple([
+            this.LevelClassText,
+            this.ExperienceText,
+            this.HealthText,
+            this.ManaText,
+            this.MovementSpeedText,
+            this.FortitudeText,
+            this.VersatilityText,
+            this.VigorText,
+            this.ExpertiseText,
+            this.ArcanaText,
+            this.PersonalityText,
+            this.FortuneText,
+            this.GritText
+        ]);
+
+        // Defences Menu
+        this.DefencesHeader = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 330, `Defences`, { fontFamily: "Augusta", fontSize: 22 }).setOrigin(0, 0.5).setVisible(false);
+        this.PierceText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 50, `Pierce: ${this.Game.PlayerCharacter.Defence_Pierce}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Pierce'] }).setOrigin(0, 0.5).setVisible(false);
+        this.ImpactText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 50, `Impact: ${this.Game.PlayerCharacter.Defence_Impact}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Impact'] }).setOrigin(0, 0.5).setVisible(false);
+        this.SlashText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 100, `Slash: ${this.Game.PlayerCharacter.Defence_Slash}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Slash'] }).setOrigin(0, 0.5).setVisible(false);
+        this.FireText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 100, `Fire: ${this.Game.PlayerCharacter.Defence_Fire}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Fire']}).setOrigin(0, 0.5).setVisible(false);
+        this.ColdText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 150, `Cold: ${this.Game.PlayerCharacter.Defence_Cold}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Cold'] }).setOrigin(0, 0.5).setVisible(false);
+        this.LightningText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 150, `Lightning: ${this.Game.PlayerCharacter.Defence_Lightning}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Lightning'] }).setOrigin(0, 0.5).setVisible(false);
+        this.PoisonText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 200, `Poison: ${this.Game.PlayerCharacter.Defence_Poison}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Poison'] }).setOrigin(0, 0.5).setVisible(false);
+        this.ArcaneText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 200, `Arcane: ${this.Game.PlayerCharacter.Defence_Arcane}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Arcane'] }).setOrigin(0, 0.5).setVisible(false);
+        this.BleedText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 250, `Bleed: ${this.Game.PlayerCharacter.Defence_Bleed}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Bleed'] }).setOrigin(0, 0.5).setVisible(false);
+        this.RadiantText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 250, `Radiant: ${this.Game.PlayerCharacter.Defence_Radiant}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Radiant'] }).setOrigin(0, 0.5).setVisible(false);
+        this.CorruptionText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 300, `Corruption: ${this.Game.PlayerCharacter.Defence_Corruption}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Corruption'] }).setOrigin(0, 0.5).setVisible(false);
+        this.SonicText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 300, `Sonic: ${this.Game.PlayerCharacter.Defence_Sonic}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Sonic'] }).setOrigin(0, 0.5).setVisible(false);
+        this.DefencesTexts = this.UI.add.group().setVisible(false).addMultiple([
+            this.PierceText,
+            this.ImpactText,
+            this.SlashText,
+            this.FireText,
+            this.ColdText,
+            this.LightningText,
+            this.PoisonText,
+            this.ArcaneText,
+            this.BleedText,
+            this.RadiantText,
+            this.CorruptionText,
+            this.SonicText
+        ]);
+
         // Close Button //
-        this.CloseButton = this.UI.add.image(this.EquipmentBackground.getTopRight().x, this.EquipmentBackground.getTopRight().y, "panel-small")
+        this.CloseButton = this.UI.add.image(this.CharacterPanelBackground.getTopRight().x, this.CharacterPanelBackground.getTopRight().y, "panel-small")
         .setOrigin(0.5, 0.5)
         .setVisible(false)
         .setInteractive()
@@ -115,6 +280,11 @@ export default class Inventory {
         .setOrigin(0.5, 0.5)
         .setVisible(false)
         .setDepth(11);
+    }
+
+    UpdateSlot (index: string) {
+        let Slot = this.Items.find((slot) => slot.InventoryIndex === index);
+        if ( Slot !== undefined ) Slot.Refresh();
     }
 
     FindNextEmptySlot() {
@@ -162,49 +332,122 @@ export default class Inventory {
     }
 
     public RemoveItem (ID: string, quantity: number) {
-        /*for ( let i = 0; i < quantity; i++ ) {
-            this.Items.forEach( (item) => {
-                if ( item.getData('ItemID') == ID ) {
-                    if ( item.getData('ItemQuantity') == 1 ) {
-                        item.quantity.destroy();
-                        item.destroy();
-                        this.Items.splice(this.Items.indexOf(item), 1);
-                        item.CurrentSlot.setData('Item', null);
-                    } else {
-                        const NewQuantity = item.getData('ItemQuantity') - 1;
-                        item.setData('ItemQuantity', NewQuantity);
-                        item.quantity.setText(`x${NewQuantity.toString()}`);
-                        if ( NewQuantity == 0 ) {
-                            item.quantity.destroy();
-                            item.destroy();
-                            this.Items.splice(this.Items.indexOf(item), 1);
-                            item.CurrentSlot.setData('Item', null);
-                        }
-                    }
+
+        if ( !this.HasRequiredQuantity(ID, quantity) ) {
+            return console.info(`Player does not have required quantity ID: ${ID}, Quantity: ${quantity}`);
+        }
+
+        for ( let i = 0; i < quantity; i++ ) {
+            let Slot = this.Items.find((slot) => slot.DataInventorySlot !== null && slot.DataInventorySlot.ID === ID);
+            if ( Slot !== undefined ) {
+                if ( Slot.DataInventorySlot.Quantity > 1 ) {
+                    Slot.DataInventorySlot.Quantity--;
+                    Slot.Refresh();
+                } else {
+                    GD.Inventory[Slot.InventoryIndex] = null;
+                    Slot.Refresh();
                 }
-            });
-        }*/
+            }
+        }
+
+    }
+
+    HasRequiredQuantity ( ID: string, quantity: number ) {
+        let total = 0;
+        this.Items.forEach((slot) => {
+            if ( slot.DataInventorySlot !== null && slot.DataInventorySlot.ID === ID ) {
+                total += slot.DataInventorySlot.Quantity;
+            }
+        });
+        return total >= quantity;
+    }
+
+    public UpdateStatsTexts () {
+        this.MovementSpeedText.setText(`Movement Speed: ${this.Game.PlayerCharacter.MovementSpeed}`);
+        this.LevelClassText.setText(`Level ${GD.Level} ${GD.Race} ${GD.Class}`);
+        this.ExperienceText.setText(`Experience: ${GD.Experience}/${GD.NextLevelExperience}`);
+        this.HealthText.setText(`Health: ${this.Game.PlayerCharacter.Health}/${this.Game.PlayerCharacter.MaxHealth} (+${this.Game.PlayerCharacter.HealthRegeneration})`);
+        this.ManaText.setText(`Mana: ${this.Game.PlayerCharacter.Mana}/${this.Game.PlayerCharacter.MaxMana} (+${this.Game.PlayerCharacter.ManaRegeneration})`);
+        this.FortitudeText.setText(`Fortitude: ${this.Game.PlayerCharacter.Fortitude}`);
+        this.VersatilityText.setText(`Versatility: ${this.Game.PlayerCharacter.Versatility}`);
+        this.VigorText.setText(`Vigor: ${this.Game.PlayerCharacter.Vigor}`);
+        this.ExpertiseText.setText(`Expertise: ${this.Game.PlayerCharacter.Expertise}`);
+        this.ArcanaText.setText(`Arcana: ${this.Game.PlayerCharacter.Arcana}`);
+        this.PersonalityText.setText(`Personality: ${this.Game.PlayerCharacter.Personality}`);
+        this.FortuneText.setText(`Fortune: ${this.Game.PlayerCharacter.Fortune}`);
+        this.GritText.setText(`Grit: ${this.Game.PlayerCharacter.Grit}`);
+        this.PierceText.setText(`Pierce: ${this.Game.PlayerCharacter.Defence_Pierce}`);
+        this.ImpactText.setText(`Impact: ${this.Game.PlayerCharacter.Defence_Impact}`);
+        this.SlashText.setText(`Slash: ${this.Game.PlayerCharacter.Defence_Slash}`);
+        this.FireText.setText(`Fire: ${this.Game.PlayerCharacter.Defence_Fire}`);
+        this.ColdText.setText(`Cold: ${this.Game.PlayerCharacter.Defence_Cold}`);
+        this.LightningText.setText(`Lightning: ${this.Game.PlayerCharacter.Defence_Lightning}`);
+        this.PoisonText.setText(`Poison: ${this.Game.PlayerCharacter.Defence_Poison}`);
+        this.ArcaneText.setText(`Arcane: ${this.Game.PlayerCharacter.Defence_Arcane}`);
+        this.BleedText.setText(`Bleed: ${this.Game.PlayerCharacter.Defence_Bleed}`);
+        this.RadiantText.setText(`Radiant: ${this.Game.PlayerCharacter.Defence_Radiant}`);
+        this.CorruptionText.setText(`Corruption: ${this.Game.PlayerCharacter.Defence_Corruption}`);
+        this.SonicText.setText(`Sonic: ${this.Game.PlayerCharacter.Defence_Sonic}`);
     }
 
     Show () {
         this.InventoryBackground.setVisible(true);
         this.EquipmentBackground.setVisible(true);
-        this.Items.forEach( (slot) => slot.Show());
+
+        if ( this.EquipmentWindow == "Equipment" ) {
+            this.BackpackLabel.setVisible(true);
+            this.BackpackSlot.setVisible(true);
+            this.BackpackSprite.setVisible(true);
+        }
+
+        this.Items.forEach( (slot) => {
+            if ( this.EquipmentWindow == "Equipment" ) {
+                if ( slot.Type == "Equipment" ) slot.Show();
+                if ( slot.Type == "Inventory" ) slot.Show();
+            } else {
+                if ( slot.Type == "Component" ) slot.Show();
+                if ( slot.Type == "Inventory" ) slot.Show();
+            }
+        });
         this.InventoryHeader.setVisible(true);
         this.EquipmentHeader.setVisible(true);
+        this.CharacterPanelBackground.setVisible(true);
+        this.CharacterPanelHeader.setVisible(false);
+        this.CharacterButton.setVisible(true);
+        this.ComponentHeader.setVisible(true);
+        this.DefencesButton.setVisible(true);
         this.CloseButton.setVisible(true);
         this.CloseButtonText.setVisible(true);
+        this.BackpackSlot.setVisible(true);
+        this.BackpackSprite.setVisible(true);
+        this.BackpackLabel.setVisible(true);
+
+        if ( this.StatsWindow == "Character" ) {
+            this.CharacterTexts.setVisible(true);
+        } else {
+            this.DefencesTexts.setVisible(true);
+        }
 
     }
 
     Hide () {
+        this.DefencesTexts.setVisible(false);
+        this.BackpackLabel.setVisible(false);
+        this.BackpackSlot.setVisible(false);
+        this.BackpackSprite.setVisible(false);
         this.InventoryBackground.setVisible(false);
         this.EquipmentBackground.setVisible(false);
         this.Items.forEach( (slot) => slot.Hide());
+        this.CharacterPanelBackground.setVisible(false);
+        this.CharacterPanelHeader.setVisible(false);
         this.InventoryHeader.setVisible(false);
+        this.CharacterButton.setVisible(false);
+        this.ComponentHeader.setVisible(false);
+        this.DefencesButton.setVisible(false);
         this.EquipmentHeader.setVisible(false);
         this.CloseButton.setVisible(false);
         this.CloseButtonText.setVisible(false);
+        this.CharacterTexts.setVisible(false);
         this.UI.ActivePanel = null;
     }
 

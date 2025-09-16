@@ -3,8 +3,11 @@ import Preload from "./scenes/Preload";
 import Game from "./scenes/Game";
 import UI from "./scenes/UI";
 import Menu from "./scenes/Menu";
-import { PhaserNavMeshPlugin } from "phaser-navmesh";
 import './assets/sass/main.scss';
+
+// Plugins
+import PhaserNavMeshPlugin from "phaser-navmesh";
+import BBCodeTextPlugin from 'phaser3-rex-plugins/plugins/bbcodetext-plugin.js';
 
 // Game configuration
 const Config: Phaser.Types.Core.GameConfig = {
@@ -33,12 +36,21 @@ const Config: Phaser.Types.Core.GameConfig = {
 		touch: false
 	},
 	plugins: {
-		scene: [{
-			key: "PhaserNavMeshPlugin",
-			plugin: PhaserNavMeshPlugin,
-			mapping: "navMeshPlugin",
-			start: true
-		}]
+		scene: [
+			{
+				key: "PhaserNavMeshPlugin",
+				plugin: PhaserNavMeshPlugin,
+				mapping: "navMeshPlugin",
+				start: true
+			}
+		],
+		global: [
+			{
+				key: 'rexBBCodeTextPlugin',
+				plugin: BBCodeTextPlugin,
+				start: true
+			}
+		]
 	},
 	physics: {
 		default: "arcade",

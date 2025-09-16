@@ -11,7 +11,7 @@ import WorldMap from "../game_objects/UI_WorldMap";
 import JournalButton from "../game_objects/JournalButton";
 import { GD } from "./Game";
 import TradeWindow from "../game_objects/UI_TradeWindow";
-import ItemSlot from "../game_objects/UI_ItemSlot";
+import RestMenu from "../game_objects/UI_RestMenu";
 
 export default class UI extends Phaser.Scene {
 
@@ -89,6 +89,8 @@ export default class UI extends Phaser.Scene {
     QuestObjectivesHeader: Phaser.GameObjects.Text;
     QuestInformationHeader: Phaser.GameObjects.Text;
     ActiveQuestsHeader: Phaser.GameObjects.Text;
+    RestMenu: RestMenu;
+    Traits: JournalButton;
 
     constructor () {
         super("UI");
@@ -155,8 +157,6 @@ export default class UI extends Phaser.Scene {
         SidePanel.add(this.InventoryButton);
         SidePanel.add(this.InventoryButton.text);
 
-        
-
         this.JournalButton = new Button(this, this.SidePanelBackground.getTopLeft().x + 7, this.InventoryButton.getBottomLeft().y + 5, "Journal", () => {
             if ( this.Book.visible == true ) {
                 this.LeftBackground.setVisible(false);
@@ -217,6 +217,8 @@ export default class UI extends Phaser.Scene {
         this.LeftBackground = this.add.rectangle(102, 102, 359, 500, 0x000000, 0.05).setOrigin(0, 0).setVisible(false);
         this.RightBackground = this.add.rectangle(572, 102, 359, 500, 0x000000, 0.05).setOrigin(0, 0).setVisible(false);
 
+        this.RestMenu = new RestMenu(this);
+
         this.QuestObjectivesHeader = this.add.text(this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 20, "Tasks", { 
             fontFamily: "Augusta",
             fontSize: 32
@@ -245,6 +247,8 @@ export default class UI extends Phaser.Scene {
         this.Character = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 50, "Character");
         this.QuestButton = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 100, "Quests");
         this.Bestiary = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 150, "Bestiary");
+        this.Traits = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 150, "Traits");
+        this.Skills = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 150, "Skills");
 
         //this.Skills = new JournalButton( this, this.Character.getBottomCenter().x, this.Character.getBottomCenter().y + 50, "Skills");
         //this.Classes = new JournalButton( this, this.Skills.getBottomCenter().x, this.Skills.getBottomCenter().y + 50, "Classes & Skills");
@@ -307,12 +311,7 @@ export default class UI extends Phaser.Scene {
         this.DeathScreen.add(Limmy);
         this.DeathScreen.setVisible(false).setDepth(1001);
 
-
         this.Tooltip = new Tooltip(this);
-        this.Tooltip.setDepth(1001);
-        this.Tooltip.Text.setDepth(1002);
-        this.Tooltip.Header.setDepth(1002);
-
 
         /**** Camera set up ****/
         // Main Camera
@@ -349,10 +348,6 @@ export default class UI extends Phaser.Scene {
         this.Game.events.on('Building-Mode-Deactivated', () => {
             this.ActivePanel = null;
         });
-
-        //if ( !GD.DialogueFlags.includes("JournalEntries-EntryOne") ) {
-            //this.DialogueWindow.ShowSubject("Journal Entries", "Entry One");
-        //}
 
     }
 

@@ -45,7 +45,7 @@ const ScipiusDialogue = {
 
         "Quest Accepted": {
             Hidden: true,
-            Text: `Thank you, Elyndor! I am sure the people of Little Piddleton and Willowvale as a whole will be most grateful for your assistance. You will find many goblin camps along the road north of here, the first thing you will need to do is
+            Text: `Thank you, {PlayerName}! I am sure the people of Little Piddleton and Willowvale as a whole will be most grateful for your assistance. You will find many goblin camps along the road north of here, the first thing you will need to do is
                    destroy a few of them, this will allow you to get to Pond Meadow, another small village north west of Little Piddleton. Once you have done that, speak to the Mayor of Pond Meadow, he will know what to do next.`,
             Responses: [
                 { Text: 'Back', Flag: "LittlePiddletonQuestAccept1", GoToMain: true }
@@ -54,7 +54,7 @@ const ScipiusDialogue = {
 
         "Quest Rejected": {
             Hidden: true,
-            Text: `I understand, Elyndor. Your journey is your own, and I cannot fault you for choosing your own path. Should you change your mind, the offer will remain open.`,
+            Text: `I understand, {PlayerName}. Your journey is your own, and I cannot fault you for choosing your own path. Should you change your mind, the offer will remain open.`,
             Responses: [
                 { Text: 'Back', Flag: "LittlePiddletonQuestReject1", GoToMain: true }
             ]

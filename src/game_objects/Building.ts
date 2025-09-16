@@ -36,6 +36,9 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     public CurrentSpawnCount?: number;
     public CostMultiplier?: number;
 
+    abstract PlotWidth?: number;
+    abstract PlotHeight?: number;
+
     constructor ( scene: Game, x: number, y: number, type: string, frame: string ) {
 
         super(scene, x, y, "Buildings", frame);
@@ -45,16 +48,6 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.add.existing(this);
 
         this.setOrigin(0, 1);
-
-        //const PlotSize = this.scene.DataManager.BuildingData[this.Type];
-
-        /*if ( PlotSize == undefined ) {
-            console.error(`Building ${this.Type} not found in building data`);
-        } else {
-            this.setBodySize(PlotSize.PlotSize.Width, PlotSize.PlotSize.Height);
-            this.body.offset.y = -PlotSize.PlotSize.Height + this.height;
-        }*/
-        
         this.setInteractive();
         this.setImmovable();
         this.setPipeline("Light2D");
@@ -74,7 +67,17 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
             this.StartDialogue();
         });
 
+        this.SetupPlot();
+
         return this;
+    }
+
+    SetupPlot () {
+        if ( this.PlotWidth !== undefined ) {
+            this.setBodySize(this.PlotWidth, this.PlotHeight);
+            this.body.offset.y = -this.PlotHeight + this.height;
+            this.scene.physics.world.enable(this);
+        }
     }
 
     StartDialogue () {

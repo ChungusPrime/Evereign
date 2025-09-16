@@ -16,6 +16,7 @@ const TheGobboMenace: QuestData = {
         }
     ],
     IntitialData: {
+        ID: "willowvale_little_piddleton_goblins",
         ReadyToHandIn: false,
         Completed: false,
         ObjectiveProgress: [

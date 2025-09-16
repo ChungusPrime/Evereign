@@ -61,7 +61,7 @@ export default class DialogueWindow {
         let BC = this.CharacterPortraitBackground.getTopCenter();
         this.CharacterHead = this.scene.add.sprite(BC.x, BC.y, "Head", 40).setOrigin(0.5, 0).setDisplaySize(81, 81);
         this.CharacterDetail = this.scene.add.sprite(BC.x, BC.y, "Detail", 68).setOrigin(0.5, 0).setDisplaySize(81, 81);
-        this.CharacterName = this.scene.add.text(BC.x, BC.y + 81, "Elyndor", { fontFamily: "Augusta", fontSize: 18 }).setOrigin(0.5, 0);
+        this.CharacterName = this.scene.add.text(BC.x, BC.y + 81, "{PlayerName}", { fontFamily: "Augusta", fontSize: 18 }).setOrigin(0.5, 0);
 
         this.OtherPotraitBackground = this.scene.add.rectangle(this.Background.getTopRight().x + 5, this.Background.getTopRight().y + 5, 100, 100, 0x000000, 0.9)
         .setOrigin(0, 0)
@@ -118,6 +118,8 @@ export default class DialogueWindow {
                 GD.DialogueFlags.push(response.Flag);
 
                 this.Hide();
+
+                console.log(response);
 
                 if ( response.GrantQuest ) {
                     this.scene.Game.QuestManager.GrantQuest(response.GrantQuest);

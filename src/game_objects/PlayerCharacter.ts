@@ -1,6 +1,6 @@
 import Game from '../scenes/Game';
 import Building from './Building';
-import Enemy from './Enemy';
+import Enemy from './Character';
 import Projectile from './Projectile';
 import { GD } from "../scenes/Game";
 import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
@@ -24,22 +24,53 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     public PlayerIsDead: boolean = false;
     public PlayerInCombat: boolean = false;
     public CombatDelta: number = 0;
-    public Health: number;
-    public MaxHealth: number;
-    public Mana: number;
-    public MaxMana: number;
-    public totalMovementSpeed: number = 100;
-    public currentExp: number = 0;
     public UpKeyDown: boolean = false;
     public DownKeyDown: boolean = false;
     public LeftKeyDown: boolean = false;
     public RightKeyDown: boolean = false;
 
+    // Stats
+    public Level: number = 1;
+    public Experience: number = 0;
+    public NextLevelExperience: number = 100;
+    public Class: string = "Operative";
+    public Health: number;
+    public MaxHealth: number;
+    public HealthRegeneration: number = 0;
+    public Mana: number;
+    public MaxMana: number;
+    public ManaRegeneration: number = 0;
+    public MovementSpeed: number = 100;
+    public Defence_Pierce: number = 0;
+    public Defence_Impact: number = 0;
+    public Defence_Slash: number = 0;
+    public Defence_Fire: number = 0;
+    public Defence_Cold: number = 0;
+    public Defence_Lightning: number = 0;
+    public Defence_Poison: number = 0;
+    public Defence_Arcane: number = 0;
+    public Defence_True: number = 0;
+    public Defence_Bleed: number = 0;
+    public Defence_Radiant: number = 0;
+    public Defence_Corruption: number = 0;
+    public Defence_Sonic: number = 0;
+    public CriticalStrikeChance: number = 0;
+    public CriticalStrikeDamageModifier: number = 0;
+    public LifeSteal: number = 0;
+    public AttributePoints: number = 0;
+    public Fortitude: number = 0;
+    public Versatility: number = 0;
+    public Vigor: number = 0;
+    public Expertise: number = 0;
+    public Arcana: number = 0;
+    public Personality: number = 0;
+    public Fortune: number = 0;
+    public Grit: number = 0;
+
     constructor ( scene: Game ) {
         super( scene, GD.X, GD.Y, 'Operative', 0 );
         this.scene = scene;
         this.create();
-
     }
 
     create (): PlayerCharacter {
@@ -51,29 +82,107 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.5);
         this.setBodySize(10, 24, true);
         //this.setCircle(5, 2, 2);
-
         this.setPipeline("Light2D");
         this.flipX = true;
         this.light = this.scene.lights.addLight(this.x, this.y, 228, 0xe3a456, 1);
-
         this.Health = GD.CurrentHealth;
-        this.MaxHealth = GD.MaxHealth;
-
         this.Mana = GD.CurrentMana;
+        this.MaxHealth = GD.MaxHealth;
         this.MaxMana = GD.MaxMana;
-
-        this.MaxHealth = 100;
-        this.MaxMana = 100;
-
+        this.Class = GD.Class;
+        this.Level = GD.Level;
+        this.Experience = GD.Experience;
+        this.NextLevelExperience = GD.NextLevelExperience;
         return this;
     }
 
-    update ( delta: number ): void {
+    ToggleLight () {
+        if ( this.light.intensity > 0 ) {
+            this.light.setIntensity(0);
+        } else {
+            this.light.setIntensity(1);
+        }
+    }
 
-        //if ( this.Ability_1_Cooldown > 0 ) this.Ability_1_Cooldown -= delta;
-        //if ( this.Ability_2_Cooldown > 0 ) this.Ability_2_Cooldown -= delta;
-        //if ( this.Ability_3_Cooldown > 0 ) this.Ability_3_Cooldown -= delta;
-        //if ( this.Ability_4_Cooldown > 0 ) this.Ability_4_Cooldown -= delta;
+    UpdateStats () {
+
+        // Reset stats to base values from character data
+        this.MaxHealth = GD.MaxHealth;
+        this.MaxMana = GD.MaxMana;
+        this.MovementSpeed = GD.MovementSpeed;
+        this.Defence_Pierce = GD.Defence_Pierce;
+        this.Defence_Impact = GD.Defence_Impact;
+        this.Defence_Slash = GD.Defence_Slash;
+        this.Defence_Fire = GD.Defence_Fire;
+        this.Defence_Cold = GD.Defence_Cold;
+        this.Defence_Lightning = GD.Defence_Lightning;
+        this.Defence_Poison = GD.Defence_Poison;
+        this.Defence_Arcane = GD.Defence_Arcane;
+        this.Defence_True = GD.Defence_True;
+        this.Defence_Bleed = GD.Defence_Bleed;
+        this.Defence_Radiant = GD.Defence_Radiant;
+        this.Defence_Corruption = GD.Defence_Corruption;
+        this.Defence_Sonic = GD.Defence_Sonic;
+        this.CriticalStrikeChance = GD.CriticalStrikeChance;
+        this.CriticalStrikeDamageModifier = GD.CriticalStrikeDamageModifier;
+        this.LifeSteal = GD.LifeSteal;
+        this.HealthRegeneration = GD.HealthRegeneration;
+        this.ManaRegeneration = GD.ManaRegeneration;
+        this.Fortitude = GD.Fortitude;
+        this.Versatility = GD.Versatility;
+        this.Vigor = GD.Vigor;
+        this.Expertise = GD.Expertise;
+        this.Arcana = GD.Arcana;
+        this.Personality = GD.Personality;
+        this.Fortune = GD.Fortune;
+        this.Grit = GD.Grit;
+
+        // Apply stats from equipped items
+        Object.entries(GD.Inventory).forEach( (item) => {
+            if ( (item[0].includes("Equipment") || item[0].includes("Component")) && item[1] != null ) {
+                const BaseItemData = this.scene.DataManager.ItemData[item[1].ID];
+                if ( Object.keys(BaseItemData).includes("Properties") ) {
+                    Object.entries(BaseItemData.Properties).forEach( (stat) => {
+                        switch (stat[0]) {
+                            case "MovementSpeed": this.MovementSpeed += stat[1]; break;
+                            case "Defence_Pierce": this.Defence_Pierce += stat[1]; break;
+                            case "Defence_Impact": this.Defence_Impact += stat[1]; break;
+                            case "Defence_Slash": this.Defence_Slash += stat[1]; break;
+                            case "Defence_Fire": this.Defence_Fire += stat[1]; break;
+                            case "Defence_Cold": this.Defence_Cold += stat[1]; break;
+                            case "Defence_Lightning": this.Defence_Lightning += stat[1]; break;
+                            case "Defence_Poison": this.Defence_Poison += stat[1]; break;
+                            case "Defence_Arcane": this.Defence_Arcane += stat[1]; break;
+                            case "Defence_True": this.Defence_True += stat[1]; break;
+                            case "Defence_Bleed": this.Defence_Bleed += stat[1]; break;
+                            case "Defence_Radiant": this.Defence_Radiant += stat[1]; break;
+                            case "Defence_Corruption": this.Defence_Corruption += stat[1]; break;
+                            case "Defence_Sonic": this.Defence_Sonic += stat[1]; break;
+                            case "CriticalStrikeChance": this.CriticalStrikeChance += stat[1]; break;
+                            case "CriticalStrikeDamageModifier": this.CriticalStrikeDamageModifier += stat[1]; break;
+                            case "LifeSteal": this.LifeSteal += stat[1]; break;
+                            case "HealthRegeneration": this.HealthRegeneration += stat[1]; break;
+                            case "ManaRegeneration": this.ManaRegeneration += stat[1]; break;
+                            case "MaxHealth": this.MaxHealth += stat[1]; break;
+                            case "MaxMana": this.MaxMana += stat[1]; break;
+                            case "Fortitude": this.Fortitude += stat[1]; break;
+                            case "Versatility": this.Versatility += stat[1]; break;
+                            case "Vigor": this.Vigor += stat[1]; break;
+                            case "Expertise": this.Expertise += stat[1]; break;
+                            case "Arcana": this.Arcana += stat[1]; break;
+                            case "Personality": this.Personality += stat[1]; break;
+                            case "Fortune": this.Fortune += stat[1]; break;
+                            case "Grit": this.Grit += stat[1]; break;
+                        }
+                    });
+                }
+            }
+        });
+
+        this.scene.Inventory.UpdateStatsTexts();
+    }
+
+    update ( delta: number ): void {
 
         if ( this.CombatDelta > 0 ) {
             this.CombatDelta -= delta;
@@ -86,32 +195,29 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
         if ( this.PlayerHasControl ) {
             if ( this.LeftKeyDown ) {
-                this.setVelocityX(-this.totalMovementSpeed);
+                this.setVelocityX(-this.MovementSpeed);
                 this.flipX = true
             } else if ( this.RightKeyDown ) {
-                this.setVelocityX(this.totalMovementSpeed);
+                this.setVelocityX(this.MovementSpeed);
                 this.flipX = false
             } else {
                 this.setVelocityX(0);
             }
         
             if ( this.UpKeyDown ) {
-                this.setVelocityY(-this.totalMovementSpeed);
+                this.setVelocityY(-this.MovementSpeed);
             } else if ( this.DownKeyDown ) {
-                this.setVelocityY(this.totalMovementSpeed);
+                this.setVelocityY(this.MovementSpeed);
             } else {
                 this.setVelocityY(0);
             }
         }
 
         if ( this.body.velocity.x == 0 && this.body.velocity.y == 0 ) {
-
             this.footstepSoundInterval = 0;
-
             if ( !this.anims.isPlaying || this.anims.currentAnim.key != "Idle" ) {
                 this.play({ key: "Idle" });
             }
-
         } else {
             
             if ( this.scene.ActionManager.CurrentActivity.Type != "" ) {
@@ -121,7 +227,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
             if ( !this.anims.isPlaying || this.anims.currentAnim.key != "Move" ) {
                 this.play("Move");
             }
-                
+
             this.footstepSoundInterval += delta;
 
             if ( this.footstepSoundInterval > 500 ) {
@@ -355,26 +461,39 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     }
 
     TakeDamage ( damage: { Type: string, Min: number, Max: number, ApplyDebuff?: string }[] ): void {
-
         let total = 0;
-        let typesString = `(`;
-        damage.forEach( (dmg) => {
+        let typesArray: string[] = [];
+        damage.forEach((dmg) => {
             let damageAmount = Phaser.Math.Between(dmg.Min, dmg.Max);
+            switch (dmg.Type) {
+                case "Pierce": damageAmount -= this.Defence_Pierce; break;
+                case "Impact": damageAmount -= this.Defence_Impact; break;
+                case "Slash": damageAmount -= this.Defence_Slash; break;
+                case "Fire": damageAmount -= this.Defence_Fire; break;
+                case "Cold": damageAmount -= this.Defence_Cold; break;
+                case "Lightning": damageAmount -= this.Defence_Lightning; break;
+                case "Poison": damageAmount -= this.Defence_Poison; break;
+                case "Arcane": damageAmount -= this.Defence_Arcane; break;
+                case "True": damageAmount -= this.Defence_True; break;
+                case "Bleed": damageAmount -= this.Defence_Bleed; break;
+                case "Radiant": damageAmount -= this.Defence_Radiant; break;
+                case "Corruption": damageAmount -= this.Defence_Corruption; break;
+                case "Sonic": damageAmount -= this.Defence_Sonic; break;
+            }
+            if (damageAmount <= 0) 
+                damageAmount = 0;
+            else
+                typesArray.push(`${damageAmount} ${dmg.Type} damage`);
             total += damageAmount;
-            typesString += `${damageAmount} ${dmg.Type}, `;
         });
-        typesString += `)`;
 
+        let output = `You took ${typesArray.join(', ')}`;
+        this.scene.UI.EventLog.NewEvent(output);
         this.Health -= total;
+        GD.CurrentHealth = this.Health;
         this.scene.UI.CharacterPanel.UpdateVitalsBars();
-
         this.scene.cameras.main.shake(100, 0.01, true);
-
-        let string = `You took ${total} damage ${typesString}`;
-
-        this.scene.UI.EventLog.NewEvent(string);
-
-        if ( this.Health <= 0 ) 
+        if ( this.Health <= 0 )
             this.Die();
     }
 

@@ -1,7 +1,7 @@
 import Game from "../../scenes/Game";
-import GoblinSlinger from "../enemies/GoblinSlinger";
-import GoblinRaider from "../enemies/GoblinRaider";
-import WarbossGorgutz from "../enemies/WarbossGorgutz";
+import GoblinSlinger from "../characters/GoblinSlinger";
+import GoblinRaider from "../characters/GoblinRaider";
+import WarbossGorgutz from "../characters/WarbossGorgutz";
 import Building from "../Building";
 import { GD } from "../../scenes/Game";
 
