@@ -55,79 +55,68 @@ export default class Menu extends Phaser.Scene {
     ScalingInfoButton: TextButton;
     DifficultyInfoButton: TextButton;
 
+    // Menu Buttons
+    ContinueButton: TextButton;
+    CreateButton: TextButton;
+    LoadButton: TextButton;
+    ControlsButton: TextButton;
+    OptionsButton: TextButton;
+    CreditsButton: TextButton;
+    QuitGameButton: TextButton;
+
     constructor () {
         super({ key: "Menu" });
     }
 
     preload (): void {
-
         const ExistingData: string | null = localStorage.getItem("EvereignData");
-
         if ( !(ExistingData) ) {
             const Encoded = JSON.stringify(GameData);
             localStorage.setItem("EvereignData", Encoded);
             return this.Data = JSON.parse(Encoded);
         }
-
         this.Data = JSON.parse(ExistingData);
     }
 
     create (): void {
 
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
-
         this.sound.play("track1", { loop: true });
-
         this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 768 * 2, 560 * 2, 30, 30, 30, 30).setOrigin(0.5);
-
         this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0').setScale(1.5).setOrigin(0.5, 0.55).setVisible(true);
-
         this.add.text(1, 1, this.game.config.gameVersion).setShadow(2, 2, "#000", 1).setOrigin(0).setFontSize(12);
 
         // Title Screen
         this.TitleScreen = this.add.group([]);
         let Logo = this.add.image(this.Book.getCenter().x, this.Book.getCenter().y, "logo").setOrigin(0.5, 0.5).setDisplaySize(this.scale.width * 0.2, this.scale.height * 0.45);
         let TitleText = this.add.text(Logo.getTopCenter().x, Logo.getTopCenter().y - 35, "EVEREIGN", { fontSize: 72, align: "center", fontFamily: "Augusta" }).setOrigin(0.5);
-        let StartButton = new TextButton(this, Logo.getBottomCenter().x, Logo.getBottomCenter().y + 35, "Click To Start", () => {
-            this.ChangeMenu("main");
-        }, 48, "#FFFFFF");
+        let StartButton = new TextButton(this, Logo.getBottomCenter().x, Logo.getBottomCenter().y + 35, "Click To Start", () => { this.ChangeMenu("main") }, 48, "#FFFFFF");
         this.TitleScreen.addMultiple([Logo, TitleText, StartButton]);
 
         // Main Menu Buttons
+        this.ContinueButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.45, `Last Character Played`, () => { this.StartGame(this.Data.LastCharacterPlayed) });
 
-        let ContinueButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.45, `Last Character Played`, () => {
-            this.StartGame(this.Data.LastCharacterPlayed);
-        }).setVisible(this.Data.LastCharacterPlayed && this.Data.LastCharacterPlayed != null);
+        console.log(this.Data.LastCharacterPlayed);
+        if ( this.Data.LastCharacterPlayed && this.Data.LastCharacterPlayed != null ) {
+            this.ContinueButton.setText(`Last Character Played\n\n${this.Data.LastCharacterPlayed ?? ""}\n\nLevel ${this.Data.Characters[this.Data.LastCharacterPlayed].Level ?? ""} ${this.Data.Characters[this.Data.LastCharacterPlayed].Class ?? ""}`);
+        }
 
-        if ( this.Data['LastCharacterPlayed'] && this.Data['LastCharacterPlayed'] != null ) {
-            ContinueButton.setText(`Last Character Played\n\n${this.Data.LastCharacterPlayed ?? ""}\n\nLevel ${this.Data.Characters[this.Data.LastCharacterPlayed].Level ?? ""} ${this.Data.Characters[this.Data.LastCharacterPlayed].Class ?? ""}`);
-        };
-
-        let CreateButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "New Game", () => {
-            this.ChangeMenu("create");
-        });
-
-        let LoadButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.33, "Load Game", () => {
-            this.ChangeMenu("load");
-        });
-
-        let ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.41, "Controls", () => {
-            this.ChangeMenu("controls");
-        });
-
-        let OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.49, "Options", () => {
-            this.ChangeMenu("options");
-        });
-
-        let CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.57, "Credits", () => { 
-            console.log("credits");
-        });
-
-        let QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Quit", () => { 
-            window.close();
-        });
-
-        this.MainMenuGroup = this.add.group([ CreateButton, LoadButton, ControlsButton, OptionsButton, CreditsButton, QuitGameButton, ContinueButton ]).setVisible(false);
+        this.CreateButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "New Game", () => { this.ChangeMenu("create") });
+        this.LoadButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.33, "Load Game", () => { this.ChangeMenu("load") });
+        this.ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.41, "Controls", () => { this.ChangeMenu("controls") });
+        this.OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.49, "Options", () => { this.ChangeMenu("options") });
+        this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.57, "Credits", () => { console.log("credits") });
+        this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Quit", () => { window.close() });
+        
+        this.MainMenuGroup = this.add.group([ 
+            this.CreateButton,
+            this.LoadButton,
+            this.ControlsButton,
+            this.OptionsButton,
+            this.CreditsButton,
+            this.QuitGameButton,
+            this.ContinueButton
+        ]).setVisible(false);
 
         // Controls Menu
         this.ControlsGroup = this.add.group().setVisible(false);
@@ -423,8 +412,14 @@ export default class Menu extends Phaser.Scene {
         }
 
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
+
             if (menuToGroupMap[this.CurrentMenu]) {
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
+                if (this.Data.LastCharacterPlayed != null) {
+                    this.ContinueButton.setVisible(true);
+                } else {
+                    this.ContinueButton.setVisible(false);
+                }
                 if ( this.CurrentMenu !== "main" ) {
                     this.BackButton.setVisible(true);
                 }
@@ -432,8 +427,9 @@ export default class Menu extends Phaser.Scene {
                     this.InfoCamera.setVisible(true);
                 }
             } else {
-                this.MainMenuGroup.setVisible(true);
-                this.InfoCamera.setVisible(false);
+                this.TitleScreen.setVisible(true);
+                this.BookOpen = false;
+                this.Book.play({ key: "Book Close", frameRate: 16 });
             }
         });
     }

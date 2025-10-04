@@ -20,7 +20,7 @@ export default class IronDeposit extends Phaser.Physics.Arcade.Sprite {
     public HarvestExperienceValue = 10;
 
     constructor ( scene: Game, x: number, y: number, ID: string, Data: WorldData ) {
-        super( scene, x, y, "mining-nodes", 0);
+        super( scene, x, y, "mining-nodes", 1);
         scene.physics.add.existing(this);
         scene.add.existing(this);
         this.setOrigin(0, 1)

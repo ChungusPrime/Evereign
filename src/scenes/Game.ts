@@ -375,23 +375,8 @@ export default class Game extends Phaser.Scene {
 
             // if its ammo, try to reload weapon
             if ( BaseItemData.Type == "Scattergun" ) {
-                // Try to reload mainhand weapon
-                let MainhandItem = ItemData[GD.Inventory.Equipment_MainHand.ID];
-                let CurrentLoadedAmmo = GD.Inventory.Equipment_MainHand.Ammo;
-                let MaxMagazine = MainhandItem.Properties.MagazineSize;
-                console.log(MainhandItem, CurrentLoadedAmmo, MaxMagazine);
-                // Try to find ammo in inventory
-                Object.entries(GD.Inventory).find( ([key, invItem]) => {
-                    if ( invItem && invItem.ID == CurrentLoadedAmmo ) {
-                        GD.Inventory.Equipment_MainHand.CurrentMagazine = MaxMagazine;
-                        this.Inventory.RemoveItem(CurrentLoadedAmmo, MaxMagazine);
-                        console.log("Reloaded!");
-                        return true;
-                    }
-                });
-                console.log("No ammo!");
+                this.ActionManager.ReloadMainhandWeapon();
             }
-
 
         }
     }

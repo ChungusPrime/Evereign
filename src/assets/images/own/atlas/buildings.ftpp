@@ -2,11 +2,90 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "C:\\code\\Evereign\\src\\assets\\images\\own\\atlas",
-  "images": [],
-  "folders": [
-    "C:/code/Evereign/src/assets/images/own/buildings"
+  "savePath": "D:\\code\\Evereign\\src\\assets\\images\\own\\atlas",
+  "images": [
+    {
+      "name": "BallistaTower.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/BallistaTower.png",
+      "folder": ""
+    },
+    {
+      "name": "church1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/church1.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/dwelling1.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling2.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/dwelling2.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling3.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/dwelling3.png",
+      "folder": ""
+    },
+    {
+      "name": "dwelling4.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/dwelling4.png",
+      "folder": ""
+    },
+    {
+      "name": "farm1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/farm1.png",
+      "folder": ""
+    },
+    {
+      "name": "field.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/field.png",
+      "folder": ""
+    },
+    {
+      "name": "goblinoutpost1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/goblinoutpost1.png",
+      "folder": ""
+    },
+    {
+      "name": "goblinpit.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/goblinpit.png",
+      "folder": ""
+    },
+    {
+      "name": "inn1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/inn1.png",
+      "folder": ""
+    },
+    {
+      "name": "loggingcamp.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/loggingcamp.png",
+      "folder": ""
+    },
+    {
+      "name": "market1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/market1.png",
+      "folder": ""
+    },
+    {
+      "name": "mine1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/mine1.png",
+      "folder": ""
+    },
+    {
+      "name": "towncentre1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/towncentre1.png",
+      "folder": ""
+    },
+    {
+      "name": "warehouse1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/warehouse1.png",
+      "folder": ""
+    }
   ],
+  "folders": [],
   "packOptions": {
     "textureName": "buildings",
     "textureFormat": "png",
@@ -19,7 +98,7 @@
     "filter": "none",
     "exporter": "Phaser 3",
     "fileName": "pack-result",
-    "savePath": "C:\\code\\Evereign\\src\\assets\\images\\own\\atlas",
+    "savePath": "D:\\code\\Evereign\\src\\assets\\images\\own\\atlas",
     "width": 2048,
     "height": 2048,
     "fixedSize": false,

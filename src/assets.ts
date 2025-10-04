@@ -45,7 +45,8 @@ export const Items: string = require('./assets/images/items.png');
 export const CombatSheet: string = require('./assets/images/Combat-Sheet.png');
 export const GoblinArrow: string = require('./assets/images/GoblinArrow.png');
 export const Tiles: string = require('./assets/images/background.png');
-export const MiningNodes: string = require('./assets/images/MiningNodes.png');
+export const MiningNodes: string = require('./assets/images/own/smalldeposits.png');
+export const OwnMiscItems: string = require('./assets/images/own/miscitems.png');
 
 // Player Projectiles
 export const ArcaneDart: string = require('./assets/images/ArcaneDart.png');
@@ -123,6 +124,8 @@ export const Mining: string = require('./assets/audio/mining.mp3'); // Zapslat -
 export const Footstep: string = require('./assets/audio/footstep.mp3'); // Zapslat - https://www.zapsplat.com/music/adult-sized-wellington-boots-single-footstep-on-gravel-stones-12/
 export const Click: string = require('./assets/audio/button_click.mp3'); // Zapslat - https://www.zapsplat.com/music/bright-button-click-1/
 export const ShotgunFire: string = require('./assets/audio/zapsplat_warfare_gun_rifles_single_shot_designed_71743.mp3'); // Zapslat - https://www.zapsplat.com/music/gun-rifle-single-shot-designed/
+export const ShotgunReload: string = require('./assets/audio/weapon_gun_charles_daly_H_6.mp3'); // Zapslat - https://www.zapsplat.com/music/charles-daly-cd-ftaw-shotgun-pump-action-12-gauge-full-cycle-loaded-mag/
+
 
 export const Theme: string = require('./assets/audio/Into-Oblivion.mp3'); // Peaceful Forest - Into Oblivion by Darren Curtis (https://www.darrencurtismusic.com)
 

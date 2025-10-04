@@ -7,7 +7,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
 
     constructor ( scene: Game, x: number, y: number, id: string, data: WorldData ) {
 
-        super( scene, x, y, 128, 128, 0xff0000, 0.75 );
+        super( scene, x, y, 128, 128, 0xff0000, 0 );
         this.scene = scene;
 
         this.setOrigin(0, 0);

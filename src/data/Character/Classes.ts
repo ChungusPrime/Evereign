@@ -41,7 +41,7 @@ const ClassData: ClassData[] = [
             Equipment_Feet: { ID: "operative_boots", Quantity: 1 },
             Equipment_Legs: { ID: "operative_legguards", Quantity: 1 },
             1: { ID: "marigold_brew", Quantity: 5 },
-            2: { ID: "stone_shot", Quantity: 2 },
+            2: { ID: "stone_shot", Quantity: 100 },
             3: { ID: "grenade_mk1", Quantity: 5 }
         },
         UniqueBuilding: "Arco-Tech Support Relay",

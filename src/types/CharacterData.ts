@@ -1,27 +1,39 @@
-/** This interface represents a save data file */
+/** This interface represents a single saved player character and all of their associated data. */
 interface Character {
-    CreatedAtTimestamp: string;
-    LastSaveTimestamp: string;
-    Reincarnation: number;
-    CurrentMap: string;
+
+    // Character creation choices    
     Name: string;
-    Level: number;
-    Head: number;
-    Hair: number;
-    Eyes: number;
-    Mouth: number;
     Race: string;
-    AttributePoints: number;
-    BackpackTier: number;
-    Abilities: { ID: string; Tier: number, Cooldown: number }[];
-    Traits: { ID: string; Tier: number }[];
     Scaling: string;
     Difficulty: string;
     Class: string;
     Campaign: string;
-    MetNPCs: string[];
 
-    // Stats and attributes
+    // Character progression
+    Reincarnation: number;
+    Level: number;
+    Experience: number;
+    NextLevelExperience: number;
+    AttributePoints: number;
+    CurrentMap: string;
+    BackpackTier: number;
+    Abilities: { ID: string; Tier: number, Cooldown: number }[];
+    Traits: { ID: string; Tier: number }[];
+    MetNPCs: string[];
+    UnlockedBuildings: string[];
+    ProgressFlags: number[];
+
+    // Timestamps
+    CreatedAtTimestamp: string;
+    LastSaveTimestamp: string;
+
+    // Portrait
+    Head: number;
+    Hair: number;
+    Eyes: number;
+    Mouth: number;
+
+    // Primary attributes
     Fortitude: number;
     Arcana: number;
     Versatility: number;
@@ -30,6 +42,8 @@ interface Character {
     Personality: number;
     Fortune: number;
     Grit: number;
+
+    // Stats
     MovementSpeed: number;
     CriticalStrikeChance: number;
     EvadeChance: number;
@@ -55,15 +69,16 @@ interface Character {
     MaxHealth: number;
     CurrentMana: number;
     MaxMana: number;
-    Experience: number;
-    NextLevelExperience: number;
+
     Inventory: {
         [key: string]: InventoryItem | null;
     };
+    
     Hotbar: {[slot: string]: { 
         Type: string;
         ID: string;
     }};
+
     Quests: {
         ID: string;
         ReadyToHandIn: boolean;
@@ -76,7 +91,6 @@ interface Character {
         }[]
     }[];
 
-    UnlockedBuildings: string[];
     NextBuildingCost: {
         Building: string;
         Cost: {
@@ -84,16 +98,18 @@ interface Character {
             Amount: number;
         }[]
     }[];
+
     Bestiary: {
         ID: string;
         Progress: number;
     }[];
-    ProgressFlags: number[];
+
     Reputation: { 
         Name: string;
         Value: number;
         Towns: string[] 
     }[];
+
     PlayerTowns: {
         [key: string]: {
             Name: string;
@@ -111,11 +127,14 @@ interface Character {
             }[]
         }
     };
+
     DaytimeHour: number;
     DaytimeMinute: number;
     DaytimeDelta: number;
+
     X: number;
     Y: number;
+    
     FoundLoreEntries: string[];
     DialogueFlags: string[];
     CompletedMilestones: number[];

@@ -115,6 +115,48 @@
 					}
 				},
 				{
+					"filename": "goblinpit",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 130,
+						"y": 628,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "BallistaTower",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 1,
+						"w": 62,
+						"h": 62
+					},
+					"frame": {
+						"x": 194,
+						"y": 628,
+						"w": 62,
+						"h": 62
+					}
+				},
+				{
 					"filename": "dwelling4",
 					"rotated": false,
 					"trimmed": false,

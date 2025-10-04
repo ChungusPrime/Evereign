@@ -1,8 +1,8 @@
 const ProtoStructComponents: ItemData[] = [
 
     {
-        ID: "micro_replication_unit_1",
-        Name: "Micro Replication Unit Mk.1",
+        ID: "salvaged_micro_replication_unit_1",
+        Name: "Salvaged Micro Replication Unit Mk.1",
         Sprite: "weapons-293",
         Desc: "Increases Health Regeneration by 2.",
         Stackable: false,
@@ -15,14 +15,57 @@ const ProtoStructComponents: ItemData[] = [
     },
 
     {
-        ID: "micro_replication_unit_2",
-        Name: "Micro Replication Unit Mk.2",
+        ID: "salvaged_sustain_unit_1",
+        Name: "Salvaged Sustain Unit V.1",
+        Sprite: "weapons-293",
+        Desc: "Increases Maximum Health by 10.",
+        Stackable: false,
+        Craftable: false,
+        Properties: {
+            MaxHealth: 10
+        },
+        Moddable: false,
+        InitialValue: { ID: "salvaged_sustain_unit_1", Quantity: 1 }
+    },
+
+    {
+        ID: "salvaged_mana_intake_unit_1",
+        Name: "Salvaged Mana Intake Unit Mk.1",
+        Sprite: "weapons-293",
+        Desc: "Increases Mana Regeneration by 2.",
+        Stackable: false,
+        Craftable: false,
+        Properties: {
+            ManaRegeneration: 2
+        },
+        Moddable: false,
+        InitialValue: { ID: "salvaged_mana_intake_unit_1", Quantity: 1 }
+    },
+
+
+    {
+        ID: "micro_replication_unit_1",
+        Name: "Micro Replication Unit Mk.1",
         Sprite: "weapons-293",
         Desc: "Increases Health Regeneration by 4.",
         Stackable: false,
         Craftable: false,
         Properties: {
             HealthRegeneration: 4
+        },
+        Moddable: false,
+        InitialValue: { ID: "micro_replication_unit_1", Quantity: 1 }
+    },
+
+    {
+        ID: "micro_replication_unit_2",
+        Name: "Micro Replication Unit Mk.2",
+        Sprite: "weapons-293",
+        Desc: "Increases Health Regeneration by 8.",
+        Stackable: false,
+        Craftable: false,
+        Properties: {
+            HealthRegeneration: 8
         },
         Moddable: false,
         InitialValue: { ID: "micro_replication_unit_2", Quantity: 1 }
@@ -46,11 +89,11 @@ const ProtoStructComponents: ItemData[] = [
         ID: "mana_intake_unit_1",
         Name: "Mana Intake Unit Mk.1",
         Sprite: "weapons-293",
-        Desc: "Increases Mana Regeneration by 2.",
+        Desc: "Increases Mana Regeneration by 4.",
         Stackable: false,
         Craftable: false,
         Properties: {
-            ManaRegeneration: 2
+            ManaRegeneration: 4
         },
         Moddable: false,
         InitialValue: { ID: "mana_intake_unit_1", Quantity: 1 }
@@ -60,14 +103,28 @@ const ProtoStructComponents: ItemData[] = [
         ID: "mana_intake_unit_2",
         Name: "Mana Intake Unit Mk.2",
         Sprite: "weapons-293",
-        Desc: "Increases Mana Regeneration by 4.",
+        Desc: "Increases Mana Regeneration by 6.",
         Stackable: false,
         Craftable: false,
         Properties: {
-            ManaRegeneration: 4
+            ManaRegeneration: 6
         },
         Moddable: false,
         InitialValue: { ID: "mana_intake_unit_2", Quantity: 1 }
+    },
+
+    {
+        ID: "salvaged_crodite_plate_lv1",
+        Name: "Salvaged Crodite Plating Lv.I",
+        Sprite: "weapons-293",
+        Desc: "Increases Pierce Resistance by 2.",
+        Stackable: false,
+        Craftable: false,
+        Properties: {
+            Defence_Pierce: 2
+        },
+        Moddable: false,
+        InitialValue: { ID: "salvaged_crodite_plate_lv1", Quantity: 1 }
     },
 
     {

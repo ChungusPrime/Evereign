@@ -2,30 +2,35 @@ import Game from "../scenes/Game";
 import UI from "../scenes/UI";
 import FloatingText from "../game_objects/FloatingText";
 import { GD } from "../scenes/Game";
+import ItemData from "../data/ItemData";
 
 export default class ActionManager {
 
     public scene: Game;
-
-    public CurrentActivity: Activity = {
-        Type: "",
-        Delta: 0
-    }
-
-    public ActivityProgressBarBG: Phaser.GameObjects.Rectangle;
-    public ActivityProgressBar: Phaser.GameObjects.Image;
-    public ActivityProgressText: Phaser.GameObjects.Text;
     public UI: UI;
-
+    public CurrentActivity: Activity = { Type: "", Delta: 0 }
+    public ActivityProgressBarBG: Phaser.GameObjects.Rectangle;
+    public ActivityProgressBar: Phaser.GameObjects.Sprite;
+    public ActivityProgressText: Phaser.GameObjects.Text;
+    
     constructor ( scene: Game, UI: UI ) {
         this.scene = scene;
         this.UI = UI;
         this.ActivityProgressBarBG = this.UI.add.rectangle(this.UI.cameras.main.width / 2 - 200, this.UI.cameras.main.height * 0.85, 200, 20, 0x000000, 0.9).setDisplaySize(200, 20).setOrigin(0, 0.5).setVisible(false);
-        this.ActivityProgressBar = this.UI.add.image(this.UI.cameras.main.width / 2 - 200, this.UI.cameras.main.height * 0.85, "blue-bar").setDisplaySize(200, 20).setOrigin(0, 0.5).setVisible(false);
+        this.ActivityProgressBar = this.UI.add.sprite(this.UI.cameras.main.width / 2 - 200, this.UI.cameras.main.height * 0.85, "Kenney-UI", "barYellow_horizontalMid").setDisplaySize(200, 20).setOrigin(0, 0.5).setVisible(false);
         this.ActivityProgressText = this.UI.add.text(this.ActivityProgressBar.getTopCenter().x, this.ActivityProgressBar.getTopCenter().y - this.ActivityProgressBar.height, "Current Activity", { 
             fontFamily: "Augusta",
             fontSize: 24 
         }).setOrigin(0.5).setVisible(false);
+    }
+
+    ReloadMainhandWeapon () {
+        this.CurrentActivity.Delta = 0;
+        this.ActivityProgressBar.setDisplaySize(0, 20);
+        this.ActivityProgressBar.setVisible(true);
+        this.CurrentActivity.Type = "Reloading"
+        this.ActivityProgressText.setText("Reloading...").setVisible(true);
+        this.ActivityProgressBarBG.setVisible(true);
     }
 
     StartActivity( object: Phaser.Physics.Arcade.Sprite | Phaser.GameObjects.Rectangle ) {
@@ -83,7 +88,7 @@ export default class ActionManager {
 
         this.CurrentActivity.Delta += delta;
 
-        this.ActivityProgressBar.setDisplaySize( this.CurrentActivity.Delta / 1000 * 200 , 20 );
+        this.ActivityProgressBar.setDisplaySize( this.CurrentActivity.Delta / 1000 * 200, 20 );
 
         if ( this.CurrentActivity.Delta < 1000 ) return;
 
@@ -135,13 +140,37 @@ export default class ActionManager {
             ev.sprite2 = 333;
             //this.scene.Inventory.AddItem("humming_bass", 1);
             GD.Skills.Fishing += 5;
+
+        } else if ( this.CurrentActivity.Type == "Reloading" ) {
+            let MainhandItem = ItemData[GD.Inventory.Equipment_MainHand.ID];
+            let CurrentLoadedAmmo = GD.Inventory.Equipment_MainHand.Ammo;
+            let MaxMagazine = MainhandItem.Properties.MagazineSize;
+            let Match = Object.entries(GD.Inventory).find( ([key, invItem]) => {
+                if ( invItem && invItem.ID == CurrentLoadedAmmo ) {
+                    GD.Inventory.Equipment_MainHand.CurrentMagazine = MaxMagazine;
+                    this.scene.Inventory.RemoveItem(CurrentLoadedAmmo, MaxMagazine);
+                    console.log("Reloaded!");
+                    this.scene.sound.play("ShotgunReload");
+                    return true;
+                }
+            });
+            if ( !Match ) console.log("No ammo!");;
+            
         }
 
-        this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, ev));
+        if ( this.CurrentActivity.Type != "Reloading" ) {
+            this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, ev));
+            return;
+        }
+
+        this.CancelActivity();
+
     }
 
     CancelActivity () {
-        this.scene.UI.EventLog.NewEvent(`You stop ${this.CurrentActivity.Type}`);
+        if ( this.CurrentActivity.Type != "Reloading" ) {
+            this.scene.UI.EventLog.NewEvent(`You stop ${this.CurrentActivity.Type}`);
+        }
         this.CurrentActivity = { Type: "", Delta: 0 };
         this.scene.sound.stopByKey("woodcutting");
         this.scene.sound.stopByKey("mining");

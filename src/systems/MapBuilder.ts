@@ -45,6 +45,7 @@ import StoneDeposit from "../game_objects/deposits/StoneDeposit";
 import IronDeposit from "../game_objects/deposits/IronDeposit";
 import GoblinFirepit from "../game_objects/lights/GoblinFirepit";
 import Torch from "../game_objects/lights/Torch";
+import BallistaTower from "../game_objects/buildings/BallistaTower";
 
 export default class MapBuilder {
 
@@ -105,6 +106,7 @@ export default class MapBuilder {
             "Trigger": TriggerZone,
             "Goblin Slinger": GoblinSlinger,
             "Inn": Inn,
+            "Ballista Tower": BallistaTower,
             /*"Town Centre": TownCentre,
             "Goblin Outpost": GoblinOutpost,
             "Dwelling": Dwelling,

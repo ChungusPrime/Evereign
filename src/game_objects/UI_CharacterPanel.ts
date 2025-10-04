@@ -11,12 +11,12 @@ export default class CharacterPanel {
 
     // Life Bar
     public LifeBG: Phaser.GameObjects.Rectangle;
-    public LifeBar: Phaser.GameObjects.Image;
+    public LifeBar: Phaser.GameObjects.Sprite;
     public LifeText: Phaser.GameObjects.Text;
 
     // Mana Bar
     public ManaBG: Phaser.GameObjects.Rectangle;
-    public ManaBar: Phaser.GameObjects.Image;
+    public ManaBar: Phaser.GameObjects.Sprite;
     public ManaText: Phaser.GameObjects.Text;
 
     // Mainhand Item
@@ -42,11 +42,11 @@ export default class CharacterPanel {
         this.Background = this.scene.add.nineslice(0, this.scene.cameras.main.height, "Kenney-UI", "panelInset_blue", 1024, 70, 12, 12, 12, 12).setOrigin(0, 1).setDepth(0);
 
         this.LifeBG = this.scene.add.rectangle(this.Background.getTopLeft().x + 5, this.Background.getTopLeft().y + 3, 220, 25, 0x000000, 1).setOrigin(0, 0);
-        this.LifeBar = this.scene.add.image(this.LifeBG.getTopLeft().x, this.LifeBG.getTopLeft().y, "red-bar").setDisplaySize(this.LifeBG.width, 30).setOrigin(0, 0);
+        this.LifeBar = this.scene.add.sprite(this.LifeBG.getTopLeft().x, this.LifeBG.getTopLeft().y, "Kenney-UI", "barRed_horizontalMid").setDisplaySize(this.LifeBG.width, 30).setOrigin(0, 0);
         this.LifeText = this.scene.add.text(this.LifeBar.getLeftCenter().x + 5, this.LifeBar.getLeftCenter().y, "LIFE", { fontFamily: "Augusta"} ).setOrigin(0, 0.5);
 
         this.ManaBG = this.scene.add.rectangle(this.LifeBG.getBottomLeft().x, this.LifeBG.getBottomLeft().y + 3, 220, 25, 0x000000, 1).setOrigin(0, 0);
-        this.ManaBar = this.scene.add.image(this.ManaBG.getTopLeft().x, this.ManaBG.getTopLeft().y, "blue-bar").setDisplaySize(this.ManaBG.width, 30).setOrigin(0, 0);
+        this.ManaBar = this.scene.add.sprite(this.ManaBG.getTopLeft().x, this.ManaBG.getTopLeft().y, "Kenney-UI", "barBlue_horizontalBlue").setDisplaySize(this.ManaBG.width, 30).setOrigin(0, 0);
         this.ManaText = this.scene.add.text(this.ManaBar.getLeftCenter().x + 5, this.ManaBar.getLeftCenter().y, "MANA", { fontFamily: "Augusta"}).setOrigin(0, 0.5);
 200
         const controls: {[key: string]: string | number } = JSON.parse(localStorage.getItem("EvereignData")).Controls;

@@ -55,6 +55,7 @@ export default class Preload extends Phaser.Scene {
         this.load.audio('InventoryPickup', [Assets.InventoryPickup]);
         this.load.audio('InventoryPutdown', [Assets.InventoryPutdown]);
         this.load.audio('ShotgunFire', [Assets.ShotgunFire]);
+        this.load.audio('ShotgunReload', [Assets.ShotgunReload]);
 
         //this.load.spritesheet("Operative", Assets.Operative, { frameWidth: 32, frameHeight: 32 });
 
@@ -91,6 +92,7 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("wood-tile", Assets.WoodTile, { frameWidth: 82, frameHeight: 82 });
         this.load.spritesheet("characters", Assets.Characters, { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet("mining-nodes", Assets.MiningNodes, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("ownmisc", Assets.OwnMiscItems, { frameWidth: 32, frameHeight: 32 });
 
         this.load.atlas({
             key: 'Buildings', 

@@ -46,7 +46,7 @@ const Scatterguns: ItemData[] = [
             { ID: "bronze_ingot", Amount: 4 },
             { ID: "oak_plank", Amount: 3 }
         ],
-        InitialValue: { ID: "scattergun_farmhand", Quantity: 1, CurrentMagazine: 3, Mods: { "Barrel": null }, Ammo: null }
+        InitialValue: { ID: "scattergun_farmhand", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null }
     },
 
     {

@@ -7,12 +7,19 @@ const RaceData: RaceData[] = [
         exploration and discovery, often seeking out new lands and experiences.
 
         Starting Attribute Bonus:
-        +2 Versatility, +2 Expertise, +1 Vigor
+        +2 Versatility
+        +2 Expertise
+        +1 Vigor
 
-        Starting Trait - On the Frontier:
-        - Each Town Centre you build gives you a free random worker
-        - Defensive structures are slightly cheaper to build`,
-        RacialTrait: "On the Frontier",
+        Starting Traits -
+        
+        Well Connected:
+        Each Town Centre you build gives you a free random worker
+
+        On the Frontier:
+        Defensive structures are slightly cheaper to build`,
+
+        RacialTrait: "Well Connected & On the Frontier",
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -94,9 +101,9 @@ const RaceData: RaceData[] = [
         RacialTrait: "Ultris-Grade Unit",
         Attributes: {},
         Items: {
-            Component_1: { ID: "micro_replication_unit_1", Quantity: 1 },
-            Component_2: { ID: "crodite_plate_lv1", Quantity: 1 },
-            Component_3: { ID: "sustain_unit_1", Quantity: 1 },
+            Component_1: { ID: "salvaged_micro_replication_unit_1", Quantity: 1 },
+            Component_2: { ID: "salvaged_crodite_plate_lv1", Quantity: 1 },
+            Component_3: { ID: "salvaged_sustain_unit_1", Quantity: 1 },
         },
 
     },
@@ -147,22 +154,6 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
-    },
-
-    {
-        Name: "Half-Orc",
-        Description: "Strong and resilient",
-        RacialTrait: "Berserker Rage",
-        Attributes: {
-            Fortitude: 5,
-            Versatility: 5,
-            Vigor: 5,
-            Expertise: 5,
-            Personality: 5,
-            Fortune: 5,
-            Grit: 5,
-            Arcana: 5
-        }
     },
 
     {

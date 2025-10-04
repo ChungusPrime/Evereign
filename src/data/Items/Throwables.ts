@@ -3,7 +3,7 @@ const Throwables: ItemData[] = [
     {
         ID: "grenade_mk1",
         Name: "Grenade Mk1",
-        Sprite: "general-15",
+        Sprite: "ownmisc-0",
         Desc: "A basic high explosive grenade.",
         Stackable: true,
         StackSize: 200,

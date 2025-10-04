@@ -22,15 +22,6 @@ declare module "*.mp3" {
 
 declare module 'phaser-navmesh';
 
-interface InventoryItem {
-    ID: string;
-    Quantity: number;
-    CurrentMagazine?: number;
-    Ammo?: string;
-    Mods?: { [key: string]: string | null };
-    Cooldown?: number;
-}
-
 interface GameData {
     Controls: {
         [key: string]: string | number;
@@ -45,6 +36,15 @@ interface GameData {
     }
 
     LastCharacterPlayed: string | null;
+}
+
+interface InventoryItem {
+    ID: string;
+    Quantity: number;
+    CurrentMagazine?: number;
+    Ammo?: string;
+    Mods?: { [key: string]: string | null };
+    Cooldown?: number;
 }
 
 interface CharacterAbilities {

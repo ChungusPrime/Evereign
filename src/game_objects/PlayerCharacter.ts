@@ -220,7 +220,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
             }
         } else {
             
-            if ( this.scene.ActionManager.CurrentActivity.Type != "" ) {
+            if ( this.scene.ActionManager.CurrentActivity.Type != "" && this.scene.ActionManager.CurrentActivity.Type != "Reloading" ) {
                 this.scene.ActionManager.CancelActivity();
             }
                 
