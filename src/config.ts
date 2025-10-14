@@ -53,7 +53,7 @@ export const Config: Phaser.Types.Core.GameConfig = {
 	physics: {
 		default: "arcade",
 		arcade: {
-			debug: false,
+			debug: true,
 			gravity: {
 				x: 0,
 				y: 0,
@@ -64,8 +64,7 @@ export const Config: Phaser.Types.Core.GameConfig = {
 		width: 1280,
 		height: 720,
 		mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-		resizeInterval: 100,
+        autoCenter: Phaser.Scale.CENTER_BOTH
     },
 	banner: true,
 	antialiasGL: true,

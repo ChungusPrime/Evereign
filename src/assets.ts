@@ -81,6 +81,7 @@ export const RA_Jungle_Animation: string = require('./assets/images/rogue-advent
 export const RA_Jungle_Extras: string = require('./assets/images/rogue-adventure/RA_Jungle_Extras.png');
 export const RA_Village: string = require('./assets/images/rogue-adventure/RA_Village.png');
 export const RA_Village_Animations: string = require('./assets/images/rogue-adventure/RA_Village_Animations.png');
+export const RA_Village_Animation02: string = require('./assets/images/rogue-adventure/RA_Village_Animation02.png');
 export const RA_Wasteland_Water: string = require('./assets/images/rogue-adventure/RA_Wasteland_Water.png');
 export const RA_Wasteland: string = require('./assets/images/rogue-adventure/RA_Wasteland.png');
 export const RA_Interior: string = require('./assets/images/rogue-adventure/RA_Interior.png');

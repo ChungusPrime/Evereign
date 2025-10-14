@@ -45,10 +45,8 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
         this.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if ( pointer.leftButtonDown() && Inv.HeldItem != null && this.DataInventorySlot == null ) {
-                console.log(`Item dropped: ${Inv.HeldItem.getData('slot')} to slot ${this.InventoryIndex}`);
                 let FromSlot = Inv.HeldItem.getData('slot');
                 let ToSlot = this.InventoryIndex;
-                console.log(`Swapping items: ${FromSlot} with ${ToSlot}`);
                 GD.Inventory[ToSlot] = GD.Inventory[FromSlot];
                 GD.Inventory[FromSlot] = null;
                 Inv.Items.find((item) => item.InventoryIndex == FromSlot).Refresh();
@@ -149,7 +147,6 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
             this.Item.setTexture(sprite[0], sprite[1]);
         }
 
-        console.log(GD.Inventory[this.InventoryIndex]);
         if ( GD.Inventory[this.InventoryIndex] == null ) {
             this.Item.setVisible(false);
             this.Item.setTexture(null, null);

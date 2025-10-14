@@ -19,8 +19,8 @@ export default class OakTree extends Phaser.Physics.Arcade.Sprite {
     public HarvestExperienceType = "Forestry";
     public HarvestExperienceValue = 5;
 
-    constructor ( scene: Game, x: number, y: number, ID: string, Data: WorldData ) {
-        super( scene, x, y, "tree03_s_01_animation", 0);
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
+        super( scene, object.x, object.y, "tree03_s_01_animation", 0);
         scene.physics.add.existing(this);
         scene.add.existing(this);
         this.setOrigin(0, 1)

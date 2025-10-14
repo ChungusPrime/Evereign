@@ -10,6 +10,9 @@
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
-		"strict": false
-	}
+		"strict": false,
+	},
+	"exclude": [
+		"src/assets/CustomTilesets"
+	]
 }

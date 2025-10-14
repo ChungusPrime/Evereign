@@ -71,11 +71,14 @@ export default class GoblinSlinger extends Character {
         },
     };
     
-    constructor ( scene: Game, x: number, y: number, id: string, data: WorldData ) {
-        super(scene, { x, y }, "characters", 118);
-        console.log(id, data);
-        this.ID = id;
-        this.SpawnLocation = { x, y };
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
+        super(scene, { x: object.x, y: object.y }, "characters", 118);
+
+        if ( object.properties ) {
+            this.ID = object.properties[0].value ?? null;
+        }
+
+        this.SpawnLocation = { x: object.x, y: object.y };
         this.MaxHealth = this.Health;
         //this.setPipeline('Light2D');
     }

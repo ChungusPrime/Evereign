@@ -1,18 +1,21 @@
 import AbilityData from "../data/Character/Abilities";
+import ItemData from "../data/ItemData";
 import UI from "../scenes/UI";
+import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
+import DamageTypes from "../data/DamageTypes";
 
 export default class Tooltip extends Phaser.GameObjects.Rectangle {
 
     public scene: UI;
     public Header: Phaser.GameObjects.Text;
-    public Text: Phaser.GameObjects.Text;
+    public Text: BBCodeText;
 
     constructor ( scene: UI ) {
         super(scene, 0, 0, 200, 300, 0x242424, 1);
         this.scene = scene;
         this.setOrigin(0, 0).setStrokeStyle(2, 0xffffff, 1).setVisible(false);
         this.Header = this.scene.add.text( this.getTopLeft().x + 5, this.getTopLeft().y + 5, `Tooltip`, { fontFamily: "Augusta", fontSize: 24, wordWrap: { useAdvancedWrap: true, width: this.width - 10 } }).setVisible(false);
-        this.Text = this.scene.add.text( this.Header.getBottomLeft().x + 5, this.Header.getBottomLeft().y + 12, `Tooltip Text`, { fontFamily: "Augusta", fontSize: 18, wordWrap: { useAdvancedWrap: true, width: this.width - 5 } }).setVisible(false);
+        this.Text = new BBCodeText(this.scene, this.Header.getBottomLeft().x + 5, this.Header.getBottomLeft().y + 12, `Tooltip Text`, { fontFamily: "Augusta", fontSize: 18, wordWrap: { width: this.width - 5 } }).setVisible(false);
         this.scene.add.existing(this);
         this.scene.add.existing(this.Header);
         this.scene.add.existing(this.Text);
@@ -30,10 +33,44 @@ export default class Tooltip extends Phaser.GameObjects.Rectangle {
     public Show ( Type: string, ID: string ) {
 
         if ( Type == "Item" ) {
-            let ItemData = this.scene.Game.DataManager.GetItemData(ID);
+            const BaseItemData = ItemData[ID];
+            console.log(BaseItemData);
             // Append any custom item data in the GD.Inventory
-            this.Header.setText(ItemData.Name);
-            this.Text.setText(ItemData.Desc);
+            this.Header.setText(BaseItemData.Name);
+
+            let text = BaseItemData.Desc;
+
+            if ( BaseItemData.Category == "Ammunition" ) {
+
+                Object.entries(BaseItemData.Properties).forEach( ([key, property]: [string, any]) => {
+                    console.log(key, property);
+
+                    if ( key == "Pellets" ) {
+                        text += `\nPellets per shot: [color=yellow]${BaseItemData.Properties.Pellets}[/color]`;
+                    }
+
+                    if ( key == "DamageMod" ) {
+                        text += `\n\nDamage per pellet:`;
+                        BaseItemData.Properties.DamageMod.forEach( (mod: any) => {
+                            if ( mod.Value ) {
+                                text += `\n - ${mod.Type}: ${mod.Value}`;
+                            } else {
+                                text += `\n - ${mod.Type}: ${mod.Min}-${mod.Max}`;
+                            }
+                        });
+                    }
+
+
+
+                });
+            }
+
+            // Replace damage type names with their colours
+            Object.entries(DamageTypes).forEach( ([key, type]) => {
+                text = text.replace(key, `[color=${type}]${key}[/color]`);
+            });
+
+            this.Text.setText(text);
         }
 
         if ( Type == "Ability" ) {

@@ -9,6 +9,15 @@ export const Willowvale: WorldData = {
         },
     },
 
+    "WV_Abandoned_Shack": {
+        Type: "Dwelling",
+        Name: "Abandoned Shack",
+        InitialData: {
+            Tier: 1,
+            Owner: "Unknown"
+        }
+    },
+
     "WV_Discover_LP": {
         Type: "Trigger",
         QuestProgressID: "willowvale_little_piddleton",
@@ -110,13 +119,6 @@ export const Willowvale: WorldData = {
         Type: "Dwelling",
         Name: "Vilhelm Dasfoe's Home",
         Level: 2,
-        InitialData: {}
-    },
-
-    "WV_Abandoned_Shack": {
-        Type: "Dwelling",
-        Name: "Abandoned Shack",
-        Level: 1,
         InitialData: {}
     },
 

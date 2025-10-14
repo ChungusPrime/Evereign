@@ -76,7 +76,7 @@ interface AbilityDamageArray {
 interface RaceData {
     Name: string;
     Description: string;
-    RacialTrait: string;
+    Traits: string[];
     Attributes: {
         [key: string]: number; 
     }

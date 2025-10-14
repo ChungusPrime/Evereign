@@ -1,6 +1,6 @@
 {
     "name": "evereign",
-    "version": "3.9.6",
+    "version": "3.9.8",
     "description": "Evereign",
     "main": "main.js",
     "scripts": {

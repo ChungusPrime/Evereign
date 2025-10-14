@@ -217,15 +217,67 @@ const TraitData: Traits = {
         Description: "Intellect bonus from equipment grants bonus damage (1dmg x class level) to abilities and increases max mana (3mp x class level).",
     },
 
+    "well_connected": {
+        Name: "Well Connected",
+        Description: "Each Town Centre you build gives you a free random worker.",
+    },
+
+    "on_the_frontier": {
+        Name: "On the Frontier",
+        Description: "Defensive structures are slightly cheaper to build.",
+    },
+
+    "forest_kin": {
+        Name: "Forest Kin",
+        Description: `
+        - You can see hidden paths in forests on the world map
+        - You take reduced damage from natural hazards
+        `
+    },
+
     "defence_specialist": {
         Name: "Defence Specialist",
         Description: `
-        - +3 to base strength and constitution per level
-        - Bonuses to melee combat (Higher damage and reduces time to attack)
+        - You take reduced damage from melee attacks
+        - You can build defensive structures at a reduced cost
+        `,
+    },
+
+    "human_1": {
+        Name: "Human Versatility",
+        Description: `
+        - +3 to all base attributes per level
+        - Bonuses to diplomacy and barter
+        - Resistance to all damage types (Incoming damage is reduced by 2 per level)
+        `,
+    },
+
+    "dwarf_1": {
+        Name: "Dwarf Resilience",
+        Description: `
+        - +2 to base constitution and strength per level
+        - Bonuses to mining (Higher yield and reduces time to gather)
         - Bonuses to smithing (Higher yield and reduces time to craft)
         - Resistance to physical damage (Incoming physical damage is reduced by 4 per level)
         - Resistance to fire damage (Incoming fire damage is reduced by 4 per level)
-        - Buildings constructed by Defence Specialists have higher health.
+        - Buildings constructed by Dwarves have higher health.
+        `,
+    },
+
+    "elf_1": {
+        Name: "Elven Grace",
+        Description: `
+        - +2 to base agility and intelligence per level
+        - +1 to all other base attributes per level
+        - Bonuses to archery (Higher damage and reduces time to attack)
+        - Bonuses to herbalism (Higher yield and reduces time to gather)
+        - Bonuses to alchemy (Higher yield and reduces time to craft)
+        - Resistance to nature damage (Incoming nature damage is reduced by 4 per level)
+        - Resistance to cold damage (Incoming cold damage is reduced by 4 per level)
+        - Bonuses to stealth (Reduces chance to be detected while sneaking)
+        - Bonuses to perception (Increases chance to detect hidden objects and enemies)
+        - You can see hidden paths in forests on the world map
+        - You take reduced damage from natural hazards
         `,
     },
 
@@ -239,28 +291,14 @@ const TraitData: Traits = {
         `,
     },
 
-    "forest_kin": {
-        Name: "Forest Kin",
+    "ultris_grade_unit": {
+        Name: "ULTRIS Grade Unit",
         Description: `
-        - Bonuses to hunting
-        - Bonuses to horticulture 
-        - Resistance to poisons and nature damage
-        - +2 to base agility and intelligence per level
-        - +1 to all other base attributes per level
+        - No starting attribute bonuses
+        - Start with 3 proto-struct component slots
+        - Gain one additional component slot every level
+        - You can interface with ancient machines and devices
         `
-    },
-
-    "ultra_protocol": {
-        Name: "ULTRA Protocol",
-        Description: `
-            - Instead of base attribute increases, Proto-Structs gain access to component slots, which can be filled with various components that grant bonuses and abilities.
-            - 1 component slot is granted at level 1, and an additional component slot is gained every 3 levels.
-            - Components can be swapped out and upgraded, allowing for customization and specialization.
-            - Components can be used to increase base attributes, resistances, and other abilities.
-            - Components can be crafted and upgraded using engineering and smithing skills.
-            - Components can be used to create unique abilities and effects, such as elemental damage, healing, or defensive capabilities.
-            - Bonuses to engineering and smithing.
-            `
     }
 
 };

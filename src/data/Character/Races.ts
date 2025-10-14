@@ -19,7 +19,8 @@ const RaceData: RaceData[] = [
         On the Frontier:
         Defensive structures are slightly cheaper to build`,
 
-        RacialTrait: "Well Connected & On the Frontier",
+        Traits: ["well_connected", "on_the_frontier"],
+
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -44,7 +45,7 @@ const RaceData: RaceData[] = [
         - You can see hidden paths in forests on the world map
         - You take reduced damage from natural hazards
         `,
-        RacialTrait: "Forest Kin",
+        Traits: ["forest_kin"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -70,7 +71,7 @@ const RaceData: RaceData[] = [
         - You take reduced damage from melee attacks
         - You can build defensive structures at a reduced cost
         `,
-        RacialTrait: "Defence Specialist",
+        Traits: ["defence_specialist"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -98,7 +99,7 @@ const RaceData: RaceData[] = [
         - Start with 3 component slots, and gain one additional component slot every level
         - You can interface with ancient machines and devices
         `,
-        RacialTrait: "Ultris-Grade Unit",
+        Traits: ["ultris_grade_unit"],
         Attributes: {},
         Items: {
             Component_1: { ID: "salvaged_micro_replication_unit_1", Quantity: 1 },
@@ -111,7 +112,7 @@ const RaceData: RaceData[] = [
     {
         Name: "Morvenite",
         Description: "Bird-based lifeform",
-        RacialTrait: "Bird Resilience",
+        Traits: ["bird_resilience"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -127,7 +128,7 @@ const RaceData: RaceData[] = [
     {
         Name: "Gnome",
         Description: "Clever and inventive",
-        RacialTrait: "Tinkerer",
+        Traits: ["tinkerer"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -142,8 +143,8 @@ const RaceData: RaceData[] = [
 
     {
         Name: "Kirupean",
-        Description: "Mysterious and elusive",
-        RacialTrait: "Shadow Walker",
+        Description: "Cat-like, Mysterious and elusive",
+        Traits: ["shadow_walker"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -158,8 +159,8 @@ const RaceData: RaceData[] = [
 
     {
         Name: "Thogac",
-        Description: "Ancient and wise",
-        RacialTrait: "Elder's Insight",
+        Description: "Lizardfolk, Ancient and wise",
+        Traits: ["elders_insight"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -174,8 +175,8 @@ const RaceData: RaceData[] = [
 
     {
         Name: "Tiseri",
-        Description: "Swift and agile",
-        RacialTrait: "Wind Dancer",
+        Description: "Demon-born, Swift and agile",
+        Traits: ["wind_dancer"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -190,8 +191,8 @@ const RaceData: RaceData[] = [
 
     {
         Name: "Drakonid",
-        Description: "Strong and noble",
-        RacialTrait: "Dragon's Might",
+        Description: "Dragon-kin, Strong and noble",
+        Traits: ["dragons_might"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,

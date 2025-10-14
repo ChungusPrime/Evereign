@@ -40,6 +40,7 @@ export default class DataManager {
         let SavedData = JSON.parse(localStorage.getItem("EvereignData"));
         this.CharacterData = SavedData.Characters[this.scene.CharacterName];
         this.MapData = CampaignData.find( (campaign) => campaign.ID == this.CharacterData.Campaign ).WorldData;
+        console.log(this.CalculateTimeSinceLastSave());
     }
 
     public SaveGame () {

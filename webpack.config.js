@@ -15,7 +15,12 @@ module.exports = {
     module: {
         rules: [
             { 
-                test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ 
+                test: /\.tsx?$/,
+                use: "ts-loader",
+                exclude: [
+                    /node_modules/,
+                    path.resolve(__dirname, "src/assets/CustomTilesets/")
+                ]
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif|html|mp3|json|wav|xml|ttf)$/i,

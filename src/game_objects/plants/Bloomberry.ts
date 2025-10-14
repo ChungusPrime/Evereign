@@ -19,8 +19,8 @@ export default class Bloomberry extends Phaser.Physics.Arcade.Sprite {
     public HarvestExperienceType = "Botany";
     public HarvestExperienceValue = 5;
 
-    constructor ( scene: Game, x: number, y: number, ID: string, Data: WorldData ) {
-        super( scene, x, y, "RA_Jungle", 1179);
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
+        super( scene, object.x, object.y, "RA_Jungle", 1179);
         scene.physics.add.existing(this);
         scene.add.existing(this);
         this.setData('type', "Bloomberry")

@@ -8,6 +8,7 @@ import MapBuilder from '../systems/MapBuilder';
 import { PlayerRect, EnemyRect } from '../game_objects/QuadTree_Rects';
 import Campaigns from '../data/Campaigns';
 import ItemData from '../data/ItemData';
+import DefaultCharacterData from '../data/DefaultCharacter';
 
 // Global copy of the current character data
 export let GD: Character;
@@ -34,6 +35,35 @@ import QuestManager from '../game_objects/managers/QuestManager';
 
 import ActionManager from '../systems/ActionManager';
 import Projectile from '../game_objects/Projectile';
+import BallistaTower from '../game_objects/buildings/BallistaTower';
+import Dwelling from '../game_objects/buildings/Dwelling';
+import Inn from '../game_objects/buildings/Inn';
+import GoblinSlinger from '../game_objects/characters/GoblinSlinger';
+import StoneDeposit from "../game_objects/deposits/StoneDeposit";
+import IronDeposit from "../game_objects/deposits/IronDeposit";
+import GoblinFirepit from '../game_objects/lights/GoblinFirepit';
+import Torch from '../game_objects/lights/Torch';
+import Bloomberry from '../game_objects/plants/Bloomberry';
+import Marigold from '../game_objects/plants/Marigold';
+import MunklesBrightcap from '../game_objects/plants/MunklesBrightcap';
+import OakTree from '../game_objects/plants/OakTree';
+import TriggerZone from '../game_objects/Zones/TriggerZone';
+import Chapel from '../game_objects/buildings/Chapel';
+import Chest from '../game_objects/Chest';
+import Obstacle from '../game_objects/Obstacle';
+import Switch from '../game_objects/Switch';
+import FishingZone from '../game_objects/Zones/FishingZone';
+import RespawnZone from '../game_objects/Zones/Respawn';
+import Transition from '../game_objects/Zones/Transition';
+import Farm from '../game_objects/buildings/Farm';
+import Field from '../game_objects/buildings/Field';
+import GoblinOutpost from '../game_objects/buildings/GoblinOutpost';
+import Market from '../game_objects/buildings/Market';
+import Mine from '../game_objects/buildings/Mine';
+import TownCentre from '../game_objects/buildings/TownCentre';
+import Warehouse from '../game_objects/buildings/Warehouse';
+import WarbossGorgutz from '../game_objects/characters/WarbossGorgutz';
+import Grenade from '../game_objects/Grenade';
 
 export let QM: QuestManager;
 
@@ -51,16 +81,20 @@ export default class Game extends Phaser.Scene {
     public Controls: Phaser.Input.Keyboard.Key[] = [];
     public ActiveTransition: number;
     public PlayerCollisionLayerCollider: Phaser.Physics.Arcade.Collider;
+
+    // Navmesh
     public NavMesh: any;
+    //public NavMesh: PhaserNavMesh.NavMesh;
+    //public NavMeshDebugGraphics: Phaser.GameObjects.Graphics;
     public navMeshPlugin: any;
+
     public Map: Phaser.Tilemaps.Tilemap;
     public PlayerCharacter: PlayerCharacter;
     public MapRespawnPoint: Phaser.GameObjects.Rectangle;
     public CollisionLayer: Phaser.Tilemaps.TilemapLayer;
-    public MapLights: Phaser.GameObjects.Light[] = [];
+    public MapLights: Phaser.GameObjects.Group;
     public SelectedBuilding: string = "";
     public SelectedObject: Phaser.Physics.Arcade.Sprite | Building | null = null;
-
     public CameraColourMatrix: Phaser.FX.ColorMatrix = null;
 
     // Systems
@@ -93,12 +127,23 @@ export default class Game extends Phaser.Scene {
     }
 
     init ( data: { character: string } ): void {
+
         this.CharacterName = data.character;
-        this.DataManager = new DataManager(this);
-        const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
-        Options = SavedData.Options;
-        GD = SavedData.Characters[data.character];
-        CD = Campaigns.find(c => c.Name == GD.Campaign);
+
+        if ( data.character == "Tutorial" ) {
+            //GD = 
+            //
+            // this.Data.Characters[this.characterNameInput.CurrentValue] = DefaultCharacterData;
+            // let Character = this.Data.Characters[this.characterNameInput.CurrentValue];
+
+        } else {
+            this.DataManager = new DataManager(this);
+            const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
+            Options = SavedData.Options;
+            GD = SavedData.Characters[data.character];
+            CD = Campaigns.find(c => c.Name == GD.Campaign);
+        }
+
     }
 
     async create () {
@@ -107,6 +152,8 @@ export default class Game extends Phaser.Scene {
         this.scene.launch("UI", this);
         this.UI = this.scene.get("UI") as UI;
         this.CameraColourMatrix = this.cameras.main.postFX.addColorMatrix();
+
+        console.log(this.navMeshPlugin);
 
         // Set cursor image
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
@@ -122,6 +169,7 @@ export default class Game extends Phaser.Scene {
         this.Enemies = this.add.group([], { runChildUpdate: true });
         this.Characters = this.add.group([], { runChildUpdate: true });
         this.Trees = this.add.group([]);
+        this.MapLights = this.add.group([], { runChildUpdate: true });
         this.Nodes = this.add.group([]);
         this.Chests = this.add.group([]);
         this.Plants = this.add.group([]);
@@ -217,8 +265,6 @@ export default class Game extends Phaser.Scene {
             }
         }
 
-        console.log(this.Controls);
-
         this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).on('down', () => console.log(GD));
         this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => console.log(this.Inventory.Items));
         this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N).on('down', () => this.UI.RestMenu.showMenu());
@@ -253,8 +299,9 @@ export default class Game extends Phaser.Scene {
             }
         });
 
-        this.MapBuilder.CreateMap(this);
-        
+        this.LoadMap();
+
+        //this.MapBuilder.CreateMap(this);
         //this.CreateNavMesh();
         //this.GetNavMeshPath(this.PlayerCharacter.x, this.PlayerCharacter.y, GD.X, GD.Y);
     }
@@ -305,6 +352,243 @@ export default class Game extends Phaser.Scene {
 
     }
 
+    LoadMap () {
+    
+        this.physics.pause();
+        this.physics.disableUpdate();
+        this.scene.pause("Game");
+
+        // Clear current map
+        // Disable collision between player and collision layer
+        if ( this.PlayerCollisionLayerCollider !== undefined ) {
+            this.PlayerCollisionLayerCollider.active = false;
+        }
+        
+        // Clean up current map
+        this.Projectiles.getChildren().forEach((proj: Projectile) => proj.delete());
+        this.Projectiles.clear(true, true);
+        this.EnemyProjectiles.clear(true, true);
+        this.Trees.clear(true, true);
+        this.Nodes.clear(true, true);
+        this.Chests.clear(true, true);
+        this.Plants.clear(true, true);
+        this.Zones.clear(true, true);
+        this.Enemies.clear(true, true);
+        this.Pickups.clear(true, true);
+        this.Switches.clear(true, true);
+        this.Obstacles.clear(true, true);
+        //this.MapLights.forEach((light: Phaser.GameObjects.Light) => this.lights.removeLight(light));
+        
+        this.Buildings.getChildren().forEach((building: Building) => {
+            if ( building.AggroCollider !== undefined )
+                building.AggroCollider.destroy();
+        });
+        
+        this.Buildings.clear(true, true);
+        
+        if ( this.Map !== undefined ) {
+            this.Map.destroy();
+        }
+        
+        // Start building new map
+        let Map = this.make.tilemap({
+            key: GD.CurrentMap
+        });
+        
+        // Load Tilesets
+        let Tilesets: Phaser.Tilemaps.Tileset[] = [];
+        Map.tilesets.forEach( (tileset: Phaser.Tilemaps.Tileset) => {
+            if ( tileset.total == 1 ) return;
+            Tilesets.push(Map.addTilesetImage(tileset.name, tileset.name, 32, 32));
+        });
+        
+        // Load Layers
+        let Layers: Phaser.Tilemaps.TilemapLayer[] = [];
+        Map.getTileLayerNames().forEach( (name: string) => {
+            let Layer = Map.createLayer(name, Tilesets, 0, 0);
+            if ( Layer === null ) return;
+            if ( name == "Collision" ) {
+                this.CollisionLayer = Layer;
+                this.CollisionLayer.setCollisionByExclusion([-1]);
+                this.CollisionLayer.setVisible(false);
+            }
+            Layer.setPipeline("Light2D");
+            Layers.push(Layer);
+        });
+
+        // Get default campaign data
+        const Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
+
+        const objectTypeToClass: { [key: string]: any } = {
+            "Oak Tree": OakTree,
+            "Stone Deposit": StoneDeposit,
+            "Marigold": Marigold,
+            "Iron Deposit": IronDeposit,
+            "Bloomberry": Bloomberry,
+            "Munkle's Brightcap": MunklesBrightcap,
+            "Torch": Torch,
+            "Goblin Firepit": GoblinFirepit,
+            "Dwelling": Dwelling,
+            "Trigger": TriggerZone,
+            "Orc Slinger": GoblinSlinger,
+            "Inn": Inn,
+            "Ballista Tower": BallistaTower,
+            "Chapel": Chapel,
+            "Town Centre": TownCentre,
+            "Goblin Outpost": GoblinOutpost,
+            "Market": Market,
+            "Warehouse": Warehouse,
+            "Field": Field,
+            "Mine": Mine,
+            "Farm": Farm,
+            "Warboss Gorgutz": WarbossGorgutz,
+            "Chest": Chest,
+            "Obstacle": Obstacle,
+            "Fishing Spot": FishingZone,
+            "Graveyard": RespawnZone,
+            "Transition": Transition,
+            "Switch": Switch
+        };
+
+        // Spawn World Objects
+        try {
+            Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
+                //layer.objects = layer.objects.sort((a, b) => a.id - b.id);
+                layer.objects.forEach( (object) => {
+                    let objectInstance = objectTypeToClass[object.type];
+                    if (objectInstance) {
+                        let instance = new objectInstance(this, object, false) as Phaser.GameObjects.GameObject;
+
+                        if ( instance instanceof Building ) {
+                            this.Buildings.add(instance);
+                        }
+
+                        if ( instance instanceof GoblinSlinger ) {
+                            this.Enemies.add(instance);
+                        }
+
+                    } else {
+                        console.warn(`No class found for object type: ${object.type}`);
+                    }
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        console.log(this.Buildings.getChildren());
+        console.log(this.Enemies.getChildren());
+
+        if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {
+            GD.PlayerTowns[GD.CurrentMap].Buildings.forEach((building: { type: string, x: number, y: number, area: string, level: number }) => {
+                let objectInstance = objectTypeToClass[building.type];
+                if (objectInstance) {
+                    let instance = new objectInstance(this, building, true) as Phaser.GameObjects.GameObject;
+                    if ( instance instanceof Building ) {
+                        this.Buildings.add(instance);
+                    }
+                } else {
+                    console.warn(`No class found for object type: ${building.type}`);
+                }
+            });
+        }
+        
+        // Set up collisions
+        this.physics.world.setBounds(0, 0, Map.widthInPixels, Map.heightInPixels);
+        
+        // Player
+        this.PlayerCollisionLayerCollider = this.physics.add.collider(this.PlayerCharacter, this.CollisionLayer);
+        this.physics.add.collider(this.PlayerCharacter, this.Buildings);
+        this.physics.add.collider(this.PlayerCharacter, this.Obstacles);
+        this.physics.add.collider(this.PlayerCharacter, this.Trees);
+        this.physics.add.collider(this.PlayerCharacter, this.Nodes);
+        
+        // Enable collision between pickups and collision layer so they dont go out of bounds
+        this.physics.add.collider(this.Pickups, this.CollisionLayer);
+        
+        // Placeholder collisions
+        this.physics.add.collider(this.BuildingHelper.Placeholder, this.Trees);
+        this.physics.add.collider(this.BuildingHelper.Placeholder, this.Buildings);
+        
+        this.physics.add.collider(this.Projectiles, this.Trees, (projectile: Projectile, tree: any) => {
+            this.sound.play("KineticBoltHit");
+            projectile.delete();
+            let hitSprite = this.add.sprite(projectile.x, projectile.y, "BloodArcaneOne", 0).play('blood-arcane-anim-1');
+            hitSprite.once('animationcomplete', () => {
+                hitSprite.destroy();
+            });
+        });
+        
+        this.physics.add.collider(this.Projectiles, this.Nodes, (projectile: Projectile, node) => {
+            projectile.delete();
+        });
+        
+        this.physics.add.collider(this.EnemyProjectiles, this.PlayerCharacter, (projectile: Projectile, player: PlayerCharacter) => {
+            projectile.destroy();
+            player.TakeDamage(projectile.damage);
+        });
+        
+        this.physics.add.collider(this.Projectiles, this.Enemies, (projectile: Projectile, enemy: Enemy) => {
+            this.lights.removeLight(projectile.light);
+            projectile.destroy();
+            //this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, { message: `-${projectile.damage}`, x: enemy.x, y: enemy.y }));
+            enemy.TakeDamage(projectile.damage);
+            this.sound.play("KineticBoltHit");
+            let hitSprite = this.add.sprite(projectile.x, projectile.y, "BloodArcaneOne", 0).play('blood-arcane-anim-1');
+            hitSprite.once('animationcomplete', () => {
+                hitSprite.destroy();
+            });
+        });
+        
+        // Set up aggro zones for each building
+        this.Buildings.getChildren().forEach( (Building: Building) => {
+            if ( !Building.AggroZone ) return;
+            let AggroZone = this.physics.add.sprite(Building.getCenter().x - Building.width * 2, Building.getCenter().y - Building.height * 2, "character", 0).setCircle(300);
+            Building.AggroCollider = AggroZone;
+            this.physics.add.overlap(AggroZone, this.PlayerCharacter, (building: Building, PlayerCharacter: PlayerCharacter) => {
+                if ( Building.OnAlert == false ) {
+                    Building.OnAlert = true;
+                }
+            });
+        });
+        
+        this.Quadtree = new Quadtree({
+            width: Map.widthInPixels,
+            height: Map.heightInPixels,
+            x: 0,
+            y: 0,
+            maxObjects: 20,
+            maxLevels: 4
+        });
+        
+        this.Map = Map;
+        this.DaytimeCycleManager.SetPhase();
+        
+        let MapType = Campaign.WorldMapInformation[GD.CurrentMap].Type;
+        if ( MapType == "Exterior" ) {
+            this.DaytimeCycleManager.StartRaining();
+        } else {
+            this.DaytimeCycleManager.StopRaining();
+        }
+        
+        // Camera
+        this.cameras.main
+        .setSize(1024, 720)
+        .setZoom(1)
+        .setBounds(0, 0, Map.widthInPixels, Map.heightInPixels)
+        .centerOn(Map.widthInPixels / 2, Map.heightInPixels / 2)
+        .fadeIn(2000, 0, 0, 0, () => {})
+        .on('camerafadeincomplete', () => {
+            this.PlayerCharacter.PlayerHasControl = true;
+        });
+        
+        // Re-enable collision between player and collision layer
+        this.PlayerCollisionLayerCollider.active = true;
+        this.physics.resume();
+        this.physics.enableUpdate();
+        this.scene.resume("Game");
+    }
+
     UseMainhandItem () {
 
         console.log("Using mainhand item");
@@ -347,21 +631,43 @@ export default class Game extends Phaser.Scene {
 
     }
 
+    UseScattergun () {
+        console.log("Using scattergun");
+    }
+
     UseOffhandItem () {
-        console.log("Using offhand item");
-        let Item = GD.Inventory.Equipment_OffHand;
-        if (!Item) 
-            return console.log("No offhand item equipped");
+        //console.log("Using offhand item");
+        //let Item = GD.Inventory.Equipment_OffHand;
+        //if (!Item) 
+            //return console.log("No offhand item equipped");
     }
 
     CreateNavMesh () {
         this.NavMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", this.Map, [ this.CollisionLayer ]);
+        //console.log(this.NavMesh);
+        /*this.NavMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
+        this.NavMesh.debugDrawClear(); // Clears the overlay
+        // Visualize the underlying navmesh
+        this.NavMesh.debugDrawMesh({
+            drawCentroid: true,
+            drawBounds: false,
+            drawNeighbors: true,
+            drawPortals: true
+        });*/
+        // Find a path from one point to another
+        //const path = this.NavMesh.findPath({ x: this.PlayerCharacter.x, y: this.PlayerCharacter.y }, { x: 4000, y: 4000 });
+        //console.log(path);
+        // Visualize an individual path
+        //this.NavMesh.debugDrawPath(path, 0xffd900);
     }
 
     UseHotbarSlot (slot: string) {
         console.log("Using hotbar slot");
+
         let Item = GD.Hotbar[slot];
+
         console.log(Item);
+
         if (!Item) 
             return console.log("No item equipped in hotbar slot " + slot);
         if ( Item.Type == "Ability" ) {
@@ -374,11 +680,36 @@ export default class Game extends Phaser.Scene {
             console.log(BaseItemData);
 
             // if its ammo, try to reload weapon
-            if ( BaseItemData.Type == "Scattergun" ) {
+            if ( BaseItemData.Category == "Ammunition" ) {
                 this.ActionManager.ReloadMainhandWeapon();
             }
 
+            if ( BaseItemData.Category == "Throwable" ) {
+                this.ThrowItem(BaseItemData.ID);
+            }
+
         }
+    }
+
+    ThrowItem (itemId: string) {
+        console.log("Throwing item");
+
+        console.log(itemId);
+
+        let data = ItemData[itemId];
+
+        if ( !Inv.HasRequiredQuantity(itemId, 1)  )
+            return console.log("You have no more of this item left");
+
+
+        Inv.RemoveItem(itemId, 1);
+        let Proj = new Grenade(this, this.PlayerCharacter.x, this.PlayerCharacter.y, 180, [], data.Sprite);
+
+        // Throw grenade towards mouse cursor
+        Proj.rotation = Phaser.Math.Angle.Between( this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY );
+        Proj.setVelocity( Math.cos(Proj.rotation) * 80, Math.sin(Proj.rotation) * 180 );
+        this.Projectiles.add(Proj);
+
     }
 
     GetNavMeshPath (x: number, y: number, targetX: number, targetY: number) {

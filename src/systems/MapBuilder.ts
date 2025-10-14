@@ -127,44 +127,14 @@ export default class MapBuilder {
 
         // Objects
         Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
-
             layer.objects = layer.objects.sort((a, b) => a.id - b.id);
-
             layer.objects.forEach( (object) => {
-
-                const obj = objectTypeToClass[object.type];
-        
-                if (obj) {
-
-                    // If no properties are defined, initialize with default values and no ID
-                    if ( !object.properties || object.properties.length === 0 ) {
-                        //console.warn(`Object of type "${object.type}" at (${object.x}, ${object.y}) has no properties, initializing with default values.`);
-                        return new obj(this.scene, object.x, object.y, null, null);
+                const Instance = objectTypeToClass[object.type];
+                if (Instance) {
+                    let instance = new Instance(this.scene, object, false) as Phaser.GameObjects.GameObject;
+                    if ( instance instanceof Building ) {
+                        this.scene.Buildings.add(instance);
                     }
-
-                    // Get custom tiled ID from properties
-                    let ID = object.properties[0].value ?? null;
-
-                    // If ID is null, initialize with default values, but with the ID
-                    if ( ID === null ) {
-                        console.warn(`Object ID is null for object type "${object.type}" at (${object.x}, ${object.y}).`);
-                        return new obj(this.scene, object.x, object.y, ID, null);
-                    }
-
-                    // If properties and ID are defined, use them to create the object
-                    try {
-                        let Data = Campaign.WorldData[GD.CurrentMap][ID] ?? null;
-                        let SavedData = GD.WorldData[GD.Campaign][GD.CurrentMap][ID] ?? null;
-                        Object.assign(Data, SavedData);
-                        let instance = new obj(this.scene, object.x, object.y, ID, Data) as Phaser.GameObjects.GameObject;
-                        if ( instance instanceof Building ) {
-                            this.scene.Buildings.add(instance);
-                        }
-                        return instance;
-                    } catch (error) {
-                        console.error(error);
-                    }
-                    
                 }
             });
         });
@@ -290,7 +260,7 @@ export default class MapBuilder {
         this.scene.Pickups.clear(true, true);
         this.scene.Switches.clear(true, true);
         this.scene.Obstacles.clear(true, true);
-        this.scene.MapLights.forEach((light: Phaser.GameObjects.Light) => this.scene.lights.removeLight(light));
+        //this.scene.MapLights.forEach((light: Phaser.GameObjects.Light) => this.scene.lights.removeLight(light));
         
         this.scene.Buildings.getChildren().forEach((building: Building) => {
             if ( building.AggroCollider !== undefined ) {

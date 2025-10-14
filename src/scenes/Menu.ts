@@ -63,6 +63,9 @@ export default class Menu extends Phaser.Scene {
     OptionsButton: TextButton;
     CreditsButton: TextButton;
     QuitGameButton: TextButton;
+    TutorialButton: TextButton;
+
+    public PointLight: Phaser.GameObjects.Light;
 
     constructor () {
         super({ key: "Menu" });
@@ -82,8 +85,15 @@ export default class Menu extends Phaser.Scene {
 
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
         this.sound.play("track1", { loop: true });
+
+        //this.PointLight = this.lights.addLight(this.cameras.main.width / 2, this.cameras.main.height / 2, 2048, 0xffffff, 4);
+
+        //this.lights.enable().setAmbientColor(0x000000);
+
         this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 768 * 2, 560 * 2, 30, 30, 30, 30).setOrigin(0.5);
+
         this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0').setScale(1.5).setOrigin(0.5, 0.55).setVisible(true);
+
         this.add.text(1, 1, this.game.config.gameVersion).setShadow(2, 2, "#000", 1).setOrigin(0).setFontSize(12);
 
         // Title Screen
@@ -96,21 +106,22 @@ export default class Menu extends Phaser.Scene {
         // Main Menu Buttons
         this.ContinueButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.45, `Last Character Played`, () => { this.StartGame(this.Data.LastCharacterPlayed) });
 
-        console.log(this.Data.LastCharacterPlayed);
         if ( this.Data.LastCharacterPlayed && this.Data.LastCharacterPlayed != null ) {
             this.ContinueButton.setText(`Last Character Played\n\n${this.Data.LastCharacterPlayed ?? ""}\n\nLevel ${this.Data.Characters[this.Data.LastCharacterPlayed].Level ?? ""} ${this.Data.Characters[this.Data.LastCharacterPlayed].Class ?? ""}`);
         }
 
         this.CreateButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "New Game", () => { this.ChangeMenu("create") });
         this.LoadButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.33, "Load Game", () => { this.ChangeMenu("load") });
-        this.ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.41, "Controls", () => { this.ChangeMenu("controls") });
-        this.OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.49, "Options", () => { this.ChangeMenu("options") });
-        this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.57, "Credits", () => { console.log("credits") });
-        this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Quit", () => { window.close() });
-        
+        this.TutorialButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.41, "Tutorial", () => { this.StartGame("Tutorial") });
+        this.ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.49, "Controls", () => { this.ChangeMenu("controls") });
+        this.OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.57, "Options", () => { this.ChangeMenu("options") });
+        this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Credits", () => { console.log("credits") });
+        this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.73, "Quit", () => { window.close() });
+
         this.MainMenuGroup = this.add.group([ 
             this.CreateButton,
             this.LoadButton,
+            this.TutorialButton,
             this.ControlsButton,
             this.OptionsButton,
             this.CreditsButton,
@@ -283,14 +294,16 @@ export default class Menu extends Phaser.Scene {
             Character.CurrentMap = Campaign.StartingMap;
             Character.X = Campaign.StartingX;
             Character.Y = Campaign.StartingY;
-            Character.WorldData[Character.Campaign] = {};
+            Character.WorldData = {};
 
             const CampaignData = Campaigns.find( c => c.Name == Character.Campaign );
+
+            // Copy the initial data property for each object in this campaign to the character world data
             if (CampaignData) {
                 Object.keys(CampaignData.WorldData).forEach((RegionData) => {
-                    Character.WorldData[Character.Campaign][RegionData] = {};
+                    Character.WorldData[RegionData] = {};
                     Object.keys(CampaignData.WorldData[RegionData]).forEach((obj) => {
-                        Character.WorldData[Character.Campaign][RegionData][obj] = { ...CampaignData.WorldData[RegionData][obj].InitialData ?? null };
+                        Character.WorldData[RegionData][obj] = { ...CampaignData.WorldData[RegionData][obj].InitialData ?? null };
                     });
                 });
             }
@@ -315,6 +328,9 @@ export default class Menu extends Phaser.Scene {
 
             // Add starting traits from chosen class to character traits
             Class.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
+
+            // Add racial traits to character traits
+            Race.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
 
             localStorage.setItem("EvereignData", JSON.stringify(this.Data));
 
@@ -361,10 +377,7 @@ export default class Menu extends Phaser.Scene {
 
         this.CharacterCreationGroup.add(this.InfoText);
         this.cameras.main.ignore(this.InfoText);
-
-
-        // Character List
-        // Character Slots
+        
         this.CharacterList = this.add.group().setVisible(false);
         this.RefreshCharacterList();
 
@@ -511,6 +524,11 @@ export default class Menu extends Phaser.Scene {
 
     SetError ( message: string ) {
 
+    }
+
+    update(time: number, delta: number): void {
+        //this.PointLight.x = this.input.activePointer.x;
+        //this.PointLight.y = this.input.activePointer.y;
     }
     
 }

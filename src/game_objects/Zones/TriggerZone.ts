@@ -38,7 +38,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
                 this.scene.UI.DialogueWindow.ShowSubject(TriggerData.StartDialogue, TriggerData.DialogueSubject);
             }
 
-            GD.WorldData[GD.Campaign][GD.CurrentMap][id].Active = false;
+            GD.WorldData[GD.CurrentMap][id].Active = false;
 
             this.destroy();
         });
@@ -46,7 +46,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
         this.scene.physics.add.existing(this);
         this.scene.add.existing(this);
 
-        let savedData = GD.WorldData[GD.Campaign][GD.CurrentMap][id];
+        let savedData = GD.WorldData[GD.CurrentMap][id];
 
         if ( !savedData ) {
             return;

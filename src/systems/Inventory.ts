@@ -181,8 +181,6 @@ export default class Inventory {
             ComponentCount++;
         });
 
-        console.log(this.Items);
-
         this.InventoryHeader.setText(`Inventory (${this.UsedSlots}/${this.InventorySlots})`);
 
         // Character Stats //

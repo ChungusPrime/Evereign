@@ -36,9 +36,6 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     public CurrentSpawnCount?: number;
     public CostMultiplier?: number;
 
-    abstract PlotWidth?: number;
-    abstract PlotHeight?: number;
-
     constructor ( scene: Game, x: number, y: number, type: string, frame: string ) {
 
         super(scene, x, y, "Buildings", frame);
@@ -60,24 +57,14 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            if ( !pointer.rightButtonDown() ) return;
-            console.log(this.StaticData);
-            if ( this.IsPlayerOwned == true )
-                return this.OpenManagementScreen();
-            this.StartDialogue();
+            //if ( !pointer.rightButtonDown() ) return;
+            //console.log(this.StaticData);
+            //if ( this.IsPlayerOwned == true )
+            //    return this.OpenManagementScreen();
+            //this.StartDialogue();
         });
 
-        this.SetupPlot();
-
         return this;
-    }
-
-    SetupPlot () {
-        if ( this.PlotWidth !== undefined ) {
-            this.setBodySize(this.PlotWidth, this.PlotHeight);
-            this.body.offset.y = -this.PlotHeight + this.height;
-            this.scene.physics.world.enable(this);
-        }
     }
 
     StartDialogue () {

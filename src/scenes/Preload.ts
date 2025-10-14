@@ -95,10 +95,10 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("ownmisc", Assets.OwnMiscItems, { frameWidth: 32, frameHeight: 32 });
 
         this.load.atlas({
-            key: 'Buildings', 
+            key: 'Buildings',
             textureURL: Assets.Buildings,
-            normalMap: Assets.BuildingsNormal,
-            atlasURL: Assets.BuildingsJSON 
+            atlasURL: Assets.BuildingsJSON,
+            normalMap: Assets.BuildingsNormal
         });
 
         this.load.image('WillowvaleMap', Assets.WillowvaleMap);
@@ -139,6 +139,7 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("RA_Jungle_Extras", Assets.RA_Jungle_Extras, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("RA_Village", Assets.RA_Village, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("RA_Village_Animations", Assets.RA_Village_Animations, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("RA_Village_Animation02", Assets.RA_Village_Animation02, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("RA_Wasteland_Water", Assets.RA_Wasteland_Water, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("RA_Wasteland", Assets.RA_Wasteland, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("RA_Cavern_Full", Assets.RA_Cavern_Full, { frameWidth: 32, frameHeight: 32 });
@@ -148,7 +149,9 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("The Ground V1-1", Assets.TheGroundV1, { frameWidth: 32, frameHeight: 32 });
 
         this.load.spritesheet("Limmy", Assets.Limmy, { frameWidth: 56, frameHeight: 56 });
+
         this.load.aseprite({ key: 'Journal', textureURL: Assets.JournalImage, atlasURL: Assets.JournalJSON });
+
         this.load.aseprite({ key: 'Panel-Borders', textureURL: Assets.PanelBordersImage, atlasURL: Assets.PanelBordersJSON });
         this.load.atlas({ key: 'Kenney-UI', textureURL: Assets.KenneyUIImage, atlasURL: Assets.KenneyUIJSON });
 
@@ -163,6 +166,14 @@ export default class Preload extends Phaser.Scene {
     create () {
 
         this.anims.createFromAseprite('Operative');
+        this.anims.createFromAseprite('Journal');
+
+        this.anims.create({
+            key: "torch-anim", 
+            frames: this.anims.generateFrameNumbers('RA_Village_Animation02', { start: 20, end: 23 }),
+            frameRate: 8,
+            repeat: 1
+        });
 
         this.anims.create({
             key: "rain-end", 
@@ -191,8 +202,6 @@ export default class Preload extends Phaser.Scene {
             frameRate: 15,
             repeat: -1
         });
-
-        this.anims.createFromAseprite('Journal');
 
         /*this.anims.create({ 
             key: "OperativeWalk", 

@@ -49,13 +49,11 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-        this.scene.Enemies.add(this);
+        this.scene.physics.world.enable(this);
         this.setDepth(99);
         this.setOrigin(0.5);
         this.setScale(2);
-        this.setInteractive();
         this.setBodySize(6, 10);
-        this.setImmovable(true);
     }
 
     Aggro () {
@@ -130,7 +128,7 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
         this.scene.Enemies.remove(this, true, true);
 
         if ( !(this.SpawnLocation instanceof Building) ) {
-            GD.WorldData[GD.Campaign][GD.CurrentMap][this.ID].Alive = false;
+            GD.WorldData[GD.CurrentMap][this.ID].Alive = false;
         }
 
     }

@@ -70,7 +70,7 @@ export default class MapManager {
         this.scene.Pickups.clear(true, true);
         this.scene.Switches.clear(true, true);
         this.scene.Obstacles.clear(true, true);
-        this.scene.MapLights.forEach((light: Phaser.GameObjects.Light) => this.scene.lights.removeLight(light));
+        //this.scene.MapLights.forEach((light: Phaser.GameObjects.Light) => this.scene.lights.removeLight(light));
         
         this.scene.Buildings.getChildren().forEach((building: Building) => {
             if ( building.AggroCollider !== undefined ) {

@@ -8,6 +8,7 @@ const DefaultCharacter: Character = {
     CurrentMap: "Willowvale",
     Campaign: "The Midnight Accord",
     WorldData: {},
+    PlayerTowns: {},
     Name: "Chungus",
     Race: "Human",
     Class: "Operative",
@@ -138,8 +139,6 @@ const DefaultCharacter: Character = {
             ]
         },
     ],
-
-    PlayerTowns: {},
 
     DaytimeHour: 0,
     DaytimeMinute: 0,
