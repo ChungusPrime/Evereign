@@ -72,7 +72,7 @@ export default class GoblinSlinger extends Character {
     };
     
     constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
-        super(scene, { x: object.x, y: object.y }, "characters", 118);
+        super(scene, { x: object.x, y: object.y }, "Orcs", 0);
 
         if ( object.properties ) {
             this.ID = object.properties[0].value ?? null;

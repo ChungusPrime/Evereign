@@ -91,6 +91,7 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("combat", Assets.CombatSheet, { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet("wood-tile", Assets.WoodTile, { frameWidth: 82, frameHeight: 82 });
         this.load.spritesheet("characters", Assets.Characters, { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet("Orcs", Assets.Orcs, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("mining-nodes", Assets.MiningNodes, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("ownmisc", Assets.OwnMiscItems, { frameWidth: 32, frameHeight: 32 });
 

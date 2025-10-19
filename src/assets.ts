@@ -93,6 +93,8 @@ export const TheGroundV1: string = require('./assets/images/The Ground V1-1.png'
 
 export const XanthirGate: string = require('./assets/images/rogue-adventure/XanthirGate.png');
 
+export const Orcs: string = require('./assets/images/own/Orcs.png');
+
 
 export const BookBG: string = require('./assets/images/bookbg.png');
 export const Woodland: string = require('./assets/images/own/woodland.png');

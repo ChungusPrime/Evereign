@@ -603,16 +603,13 @@ export default class Game extends Phaser.Scene {
 
         let Data = ItemData[GD.Inventory.Equipment_MainHand.ID];
 
-        if ( Data.Type == "Scattergun" ) {
-
+        /*if ( Data.Type == "Scattergun" ) {
             if (GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0) {
                 console.log("Out of ammo");
                 return false;
             }
-
             let AmmoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
             this.sound.play("ShotgunFire");
-
             for ( let i = 0; i < AmmoData.Properties.Pellets; i++ ) {
                 let Proj = new Projectile(this, this.PlayerCharacter.x, this.PlayerCharacter.y, Data.Properties.Velocity, AmmoData.Properties.DamageMod, "ScattergunPellet");
                 const baseAngle = Phaser.Math.Angle.Between( this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY );
@@ -627,7 +624,68 @@ export default class Game extends Phaser.Scene {
             GD.Inventory.Equipment_MainHand.Cooldown = Data.Properties.Cooldown;
             GD.Inventory.Equipment_MainHand.CurrentMagazine = GD.Inventory.Equipment_MainHand.CurrentMagazine - 1;
             console.table(GD.Inventory.Equipment_MainHand);
+        }*/
+
+        if ( Data.Type == "Scattergun" ) {
+
+            console.log("Using sword");
+
+            const pc = this.PlayerCharacter.getCenter();
+            const baseAngle = Phaser.Math.Angle.Between(pc.x, pc.y, this.mouseX, this.mouseY);
+
+            const length = 32;
+            const spreadDeg = 64;
+            const halfSpread = Phaser.Math.DegToRad(spreadDeg / 2);
+
+            // Boundary rays (left/right of aim)
+            const leftAngle = baseAngle - halfSpread;
+            const rightAngle = baseAngle + halfSpread;
+
+            const leftEnd = new Phaser.Math.Vector2(
+                pc.x + Math.cos(leftAngle) * length,
+                pc.y + Math.sin(leftAngle) * length
+            );
+            const rightEnd = new Phaser.Math.Vector2(
+                pc.x + Math.cos(rightAngle) * length,
+                pc.y + Math.sin(rightAngle) * length
+            );
+
+            // Perpendicular crossbar (rotated 90° from aim)
+            const dir = new Phaser.Math.Vector2(Math.cos(baseAngle), Math.sin(baseAngle));
+            const barCenter = new Phaser.Math.Vector2(pc.x, pc.y).add(dir.clone().scale(length * 0.6)); // move out along aim
+            const perp = new Phaser.Math.Vector2(-dir.y, dir.x).normalize().scale(20); // 90° left, half-length = 20
+
+            const p1 = barCenter.clone().add(perp);
+            const p2 = barCenter.clone().subtract(perp);
+
+            this.graphics.clear();
+            //this.graphics.lineStyle(2, 0xffd37f, 1);
+            //this.graphics.lineBetween(pc.x, pc.y, leftEnd.x, leftEnd.y);
+            //this.graphics.lineBetween(pc.x, pc.y, rightEnd.x, rightEnd.y);
+
+            this.graphics.lineStyle(6, 0x00ff00, 0.5);
+            this.graphics.lineBetween(p1.x, p1.y, p2.x, p2.y);
+
+            // Check for enemy collisions
+            const hitEnemies: Enemy[] = [];
+            this.Enemies.getChildren().forEach( (enemy: Enemy) => {
+                const enemyRect = enemy.getBounds();
+                const line = new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y);
+                if ( Phaser.Geom.Intersects.LineToRectangle(line, enemyRect) ) {
+                    hitEnemies.push(enemy);
+                }
+            });
+
+            if ( hitEnemies.length > 0 ) {
+                console.log("Hit enemies:", hitEnemies);
+            } else {
+                console.log("No enemies hit");
+            }
+
+
         }
+
+        GD.Inventory.Equipment_MainHand.Cooldown = Data.Properties.Cooldown;
 
     }
 
