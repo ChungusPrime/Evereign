@@ -58,6 +58,12 @@ export default class Grenade extends Phaser.Physics.Arcade.Sprite {
             ease: 'Sine.easeInOut'
         });
 
+        this.scene.time.delayedCall(1000, () => {
+            if (this.light) {
+                this.scene.lights.removeLight(this.light);
+            }
+        });
+
         let damageArea = new Phaser.Geom.Circle(this.x, this.y, 128);
         const enemies = this.scene.Quadtree.retrieve(new Circle({x: damageArea.x, y: damageArea.y, r: damageArea.radius}));
         enemies.forEach( (element: EnemyRect) => {
@@ -65,10 +71,6 @@ export default class Grenade extends Phaser.Physics.Arcade.Sprite {
                 console.log(element.enemy);
             }
         });
-
-        if ( this.light ) {
-            //this.scene.lights.removeLight(this.light);
-        }
 
         this.destroy();
 
