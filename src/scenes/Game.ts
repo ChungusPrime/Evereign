@@ -64,6 +64,7 @@ import TownCentre from '../game_objects/buildings/TownCentre';
 import Warehouse from '../game_objects/buildings/Warehouse';
 import WarbossGorgutz from '../game_objects/characters/WarbossGorgutz';
 import Grenade from '../game_objects/Grenade';
+import TorchPole from '../game_objects/lights/TorchPole';
 
 export let QM: QuestManager;
 
@@ -314,7 +315,8 @@ export default class Game extends Phaser.Scene {
 
         if ( GD.Inventory.Equipment_MainHand && GD.Inventory.Equipment_MainHand.Cooldown > 0 )
             GD.Inventory.Equipment_MainHand.Cooldown -= delta;
-        if ( GD.Inventory.Equipment_MainHand.Cooldown < 0 ) 
+
+        if ( GD.Inventory.Equipment_MainHand && GD.Inventory.Equipment_MainHand.Cooldown < 0 ) 
             GD.Inventory.Equipment_MainHand.Cooldown = 0;
 
         /*let PC = this.PlayerCharacter.getCenter();
@@ -447,7 +449,8 @@ export default class Game extends Phaser.Scene {
             "Fishing Spot": FishingZone,
             "Graveyard": RespawnZone,
             "Transition": Transition,
-            "Switch": Switch
+            "Switch": Switch,
+            "TorchPole": TorchPole
         };
 
         // Spawn World Objects
@@ -455,6 +458,7 @@ export default class Game extends Phaser.Scene {
             Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
                 //layer.objects = layer.objects.sort((a, b) => a.id - b.id);
                 layer.objects.forEach( (object) => {
+                    console.log(object.type);
                     let objectInstance = objectTypeToClass[object.type];
                     if (objectInstance) {
                         let instance = new objectInstance(this, object, false) as Phaser.GameObjects.GameObject;
@@ -596,16 +600,16 @@ export default class Game extends Phaser.Scene {
         let Item = GD.Inventory.Equipment_MainHand;
 
         if (!Item)
-            return console.log("No mainhand item equipped");
+            return this.UI.EventLog.NewEvent("No mainhand item equipped!");
 
         if ( Item.Cooldown && Item.Cooldown > 0 )
-            return console.log("Item is on cooldown");
+            return this.UI.EventLog.NewEvent("Item is on cooldown!");
 
         let Data = ItemData[GD.Inventory.Equipment_MainHand.ID];
 
-        /*if ( Data.Type == "Scattergun" ) {
+        if ( Data.Type == "Scattergun" ) {
             if (GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0) {
-                console.log("Out of ammo");
+                this.UI.EventLog.NewEvent("Item is out of ammo!");
                 return false;
             }
             let AmmoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
@@ -624,9 +628,9 @@ export default class Game extends Phaser.Scene {
             GD.Inventory.Equipment_MainHand.Cooldown = Data.Properties.Cooldown;
             GD.Inventory.Equipment_MainHand.CurrentMagazine = GD.Inventory.Equipment_MainHand.CurrentMagazine - 1;
             console.table(GD.Inventory.Equipment_MainHand);
-        }*/
+        }
 
-        if ( Data.Type == "Scattergun" ) {
+        if ( Data.Type == "Sword" ) {
 
             console.log("Using sword");
 

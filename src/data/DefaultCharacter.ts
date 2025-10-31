@@ -26,7 +26,7 @@ const DefaultCharacter: Character = {
     Eyes: 1,
     Mouth: 1,
 
-    // Base Stats and attributes
+    // Attributes
     Fortitude: 0,
     Versatility: 0,
     Vigor: 0,
@@ -35,7 +35,22 @@ const DefaultCharacter: Character = {
     Personality: 0,
     Fortune: 0,
     Grit: 0,
+
+    // Stats
     MovementSpeed: 80,
+    CriticalStrikeChance: 5,
+    CriticalStrikeDamageModifier: 2.0,
+    BlockChance: 0,
+    EvadeChance: 0,
+    LifeSteal: 0,
+    HealthRegeneration: 0,
+    ManaRegeneration: 0,
+    CurrentHealth: 20,
+    MaxHealth: 20,
+    CurrentMana: 20,
+    MaxMana: 20,
+
+    // Defences
     Defence_Pierce: 0,
     Defence_Impact: 0,
     Defence_Slash: 0,
@@ -49,17 +64,6 @@ const DefaultCharacter: Character = {
     Defence_Radiant: 0,
     Defence_Corruption: 0,
     Defence_Sonic: 0,
-    CriticalStrikeChance: 5,
-    CriticalStrikeDamageModifier: 2.0,
-    BlockChance: 0,
-    EvadeChance: 0,
-    LifeSteal: 0,
-    HealthRegeneration: 0,
-    ManaRegeneration: 0,
-    CurrentHealth: 20,
-    MaxHealth: 20,
-    CurrentMana: 20,
-    MaxMana: 20,
 
     Traits: [],
     Abilities: [],

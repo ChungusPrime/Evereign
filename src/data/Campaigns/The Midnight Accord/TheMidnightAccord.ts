@@ -19,6 +19,8 @@ const TheMidnightAccord: Campaign = {
     StartingMap: "Willowvale",
     StartingX: 6333,
     StartingY: 5692,
+    StartingHour: 9,
+    StartingMinute: 0,
 
     WorldMapInformation: {
         Willowvale: {

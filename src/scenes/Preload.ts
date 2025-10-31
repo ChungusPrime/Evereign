@@ -68,14 +68,6 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("BloodOne", Assets.BloodOne, { frameWidth: 100, frameHeight: 100 });
         this.load.spritesheet("BloodTwo", Assets.BloodTwo, { frameWidth: 100, frameHeight: 100 });
         this.load.spritesheet("BloodArcaneOne", Assets.BloodArcaneOne, { frameWidth: 100, frameHeight: 100 });
-        this.load.image('blue-bar', Assets.BlueBar);
-        this.load.image('red-bar', Assets.RedBar);
-        this.load.image('yellow-bar', Assets.YellowBar);
-        this.load.image('green-bar', Assets.GreenBar);
-        this.load.image('panel', Assets.Panel);
-        this.load.image('panel-small', Assets.PanelSmall);
-        this.load.image('button', Assets.Button);
-        this.load.image('button-down', Assets.ButtonDown);
         this.load.atlas({ key: 'inputs', textureURL: Assets.InputAtlas, atlasURL: Assets.InputAtlasJSON });
 
         this.load.spritesheet("Kinetic Bolt", Assets.ArcaneDart, { frameWidth: 16, frameHeight: 16 });
@@ -127,6 +119,7 @@ export default class Preload extends Phaser.Scene {
         this.load.tilemapTiledJSON("TestMap", Assets.TestMap);
         this.load.tilemapTiledJSON("Willowvale", Assets.Willowvale);
         this.load.tilemapTiledJSON("WillowvaleCaverns", Assets.WillowvaleCaverns);
+        this.load.tilemapTiledJSON("Tutors Island", Assets.TutorsIsland);
 
         this.load.spritesheet("woodland", Assets.Woodland, { frameWidth: 32, frameHeight: 32 });
 
@@ -144,9 +137,12 @@ export default class Preload extends Phaser.Scene {
         this.load.spritesheet("RA_Wasteland_Water", Assets.RA_Wasteland_Water, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("RA_Wasteland", Assets.RA_Wasteland, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("RA_Cavern_Full", Assets.RA_Cavern_Full, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("RA_Ship", Assets.RA_Ship, { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet("tree03_s_01_animation", Assets.tree03_s_01_animation, { frameWidth: 128, frameHeight: 160 });
         this.load.spritesheet("XanthirGate", Assets.XanthirGate, { frameWidth: 92, frameHeight: 114 });
         this.load.spritesheet("RA_Animated_Water", Assets.RA_Animated_Water, { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet("RA_Village_Animation03", Assets.RA_Village_Animation03, { frameWidth: 64, frameHeight: 64 });
+
         this.load.spritesheet("The Ground V1-1", Assets.TheGroundV1, { frameWidth: 32, frameHeight: 32 });
 
         this.load.spritesheet("Limmy", Assets.Limmy, { frameWidth: 56, frameHeight: 56 });
@@ -172,6 +168,13 @@ export default class Preload extends Phaser.Scene {
         this.anims.create({
             key: "torch-anim", 
             frames: this.anims.generateFrameNumbers('RA_Village_Animation02', { start: 20, end: 23 }),
+            frameRate: 8,
+            repeat: 1
+        });
+
+        this.anims.create({
+            key: "torch-pole-anim", 
+            frames: this.anims.generateFrameNumbers('RA_Village_Animation03', { start: 0, end: 3 }),
             frameRate: 8,
             repeat: 1
         });

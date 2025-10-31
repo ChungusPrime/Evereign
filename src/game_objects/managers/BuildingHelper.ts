@@ -93,10 +93,23 @@ export default class BuildingHelper {
 
         let Map = GD.CurrentMap;
         if ( GD.PlayerTowns[Map] == undefined ) {
-            GD.PlayerTowns[Map] = { Name: `New Town in ${Map}`, Buildings: [], StorageMax: 0, Storage: [] };
+            GD.PlayerTowns[Map] = { 
+                Name: `New Town in ${Map}`,
+                Buildings: [],
+                StorageMax: 0,
+                Storage: []
+            };
         }
 
-        GD.PlayerTowns[Map].Buildings.push({ type: type, x: x, y: y, area: GD.CurrentMap, level: 1 });
+        GD.PlayerTowns[Map].Buildings.push({
+            id: crypto.randomUUID(),
+            type: type,
+            name: `New ${type}`,
+            x: x,
+            y: y,
+            area: GD.CurrentMap,
+            level: 1
+        });
 
         if ( Building instanceof TownCentre ) {
             Building.CreateBuildZone();

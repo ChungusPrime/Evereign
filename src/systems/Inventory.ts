@@ -350,6 +350,10 @@ export default class Inventory {
 
     }
 
+    public SwapItems () {
+        
+    }
+
     HasRequiredQuantity ( ID: string, quantity: number ) {
         let total = 0;
         this.Items.forEach((slot) => {

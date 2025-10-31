@@ -47,8 +47,11 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
             if ( pointer.leftButtonDown() && Inv.HeldItem != null && this.DataInventorySlot == null ) {
                 let FromSlot = Inv.HeldItem.getData('slot');
                 let ToSlot = this.InventoryIndex;
+                console.log(`Moving Item from ${FromSlot} to ${ToSlot}`);
                 GD.Inventory[ToSlot] = GD.Inventory[FromSlot];
                 GD.Inventory[FromSlot] = null;
+                console.log(GD.Inventory[ToSlot]);
+                console.log(GD.Inventory[FromSlot]);
                 Inv.Items.find((item) => item.InventoryIndex == FromSlot).Refresh();
                 Inv.Items.find((item) => item.InventoryIndex == ToSlot).Refresh();
                 scene.input.topOnly = true;
@@ -154,7 +157,7 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
     }
 
-    public Refresh () {
+    /*public Refresh () {
         this.DataInventorySlot = GD.Inventory[this.InventoryIndex];
         if ( this.DataInventorySlot && this.DataInventorySlot.Quantity > 1 ) {
             this.QuantityText.setText(`x${this.DataInventorySlot.Quantity}`);
@@ -163,6 +166,24 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
             GD.Inventory[this.InventoryIndex] = null;
             this.QuantityText.setVisible(false);
         }
+        this.SetupSprite(this.scene);
+    }*/
+
+    public Refresh () {
+        this.DataInventorySlot = GD.Inventory[this.InventoryIndex] ?? null;
+
+        if (this.DataInventorySlot) {
+            const q = this.DataInventorySlot.Quantity ?? 1;
+            if (q > 1) {
+                this.QuantityText.setText(`x${q}`);
+                this.QuantityText.setVisible(true);
+            } else {
+                this.QuantityText.setVisible(false);
+            }
+        } else {
+            this.QuantityText.setVisible(false);
+        }
+
         this.SetupSprite(this.scene);
     }
 

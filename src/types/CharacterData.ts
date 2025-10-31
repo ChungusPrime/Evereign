@@ -114,11 +114,13 @@ interface Character {
         [key: string]: {
             Name: string;
             Buildings: {
+                name: string;
                 type: string; 
                 x: number;
                 y: number;
                 area: string;
-                level: number 
+                level: number;
+                id: string;
             }[];
             StorageMax: number;
             Storage: { 

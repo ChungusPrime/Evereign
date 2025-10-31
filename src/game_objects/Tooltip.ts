@@ -34,7 +34,6 @@ export default class Tooltip extends Phaser.GameObjects.Rectangle {
 
         if ( Type == "Item" ) {
             const BaseItemData = ItemData[ID];
-            console.log(BaseItemData);
             // Append any custom item data in the GD.Inventory
             this.Header.setText(BaseItemData.Name);
 
@@ -43,7 +42,6 @@ export default class Tooltip extends Phaser.GameObjects.Rectangle {
             if ( BaseItemData.Category == "Ammunition" ) {
 
                 Object.entries(BaseItemData.Properties).forEach( ([key, property]: [string, any]) => {
-                    console.log(key, property);
 
                     if ( key == "Pellets" ) {
                         text += `\nPellets per shot: [color=yellow]${BaseItemData.Properties.Pellets}[/color]`;

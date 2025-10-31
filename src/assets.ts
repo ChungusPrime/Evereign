@@ -12,16 +12,10 @@ export const Flesh: string = require('./assets/fonts/Fleshandblood-MVA5x.ttf');
 export const Mooli: string = require('./assets/fonts/Mooli-Regular.ttf');
 
 // KenneyNL
-export const BlueBar: string = require('./assets/images/bluebar.png');
-export const RedBar: string = require('./assets/images/redbar.png');
-export const GreenBar: string = require('./assets/images/greenbar.png');
-export const YellowBar: string = require('./assets/images/yellowbar.png');
-export const Panel: string = require('./assets/images/panel.png');
-export const PanelSmall: string = require('./assets/images/panel-small.png');
-export const Button: string = require('./assets/images/button.png');
-export const ButtonDown: string = require('./assets/images/button_pressed.png');
 export const InputAtlas: string = require('./assets/images/inputatlas.png');
 export const InputAtlasJSON: string = require('./assets/images/inputatlas.json');
+export const KenneyUIImage: string = require('./assets/images/KenneyUI.png');
+export const KenneyUIJSON: string = require('./assets/images/KenneyUI.json');
 
 // Admurin
 export const AdmurinGeneral: string = require('./assets/images/admurin/ItemsGeneral.png');
@@ -56,6 +50,7 @@ export const DartVolley: string = require('./assets/images/DartVolley.png');
 export const TestMap: string = require('./assets/maps/TestMap.json');
 export const Willowvale: string = require('./assets/maps/Willowvale.json');
 export const WillowvaleCaverns: string = require('./assets/maps/WillowvaleCaverns.json');
+export const TutorsIsland: string = require('./assets/maps/TutorsIsland.json');
 
 // Map images
 export const WillowvaleMap: string = require('./assets/maps/Willowvale.png');
@@ -88,13 +83,12 @@ export const RA_Interior: string = require('./assets/images/rogue-adventure/RA_I
 export const tree03_s_01_animation: string = require('./assets/images/rogue-adventure/tree03_s_01_animation.png');
 export const RA_Cavern_Full: string = require('./assets/images/rogue-adventure/RA_Cavern_Full.png');
 export const Tileset_Indoors_v1: string = require('./assets/images/admurin/Tileset_Indoors_v1.png');
+export const RA_Village_Animation03: string = require('./assets/images/rogue-adventure/RA_Village_Animation03.png');
+export const RA_Ship: string = require('./assets/images/rogue-adventure/RA_Ship.png');
 
 export const TheGroundV1: string = require('./assets/images/The Ground V1-1.png');
-
 export const XanthirGate: string = require('./assets/images/rogue-adventure/XanthirGate.png');
-
 export const Orcs: string = require('./assets/images/own/Orcs.png');
-
 
 export const BookBG: string = require('./assets/images/bookbg.png');
 export const Woodland: string = require('./assets/images/own/woodland.png');
@@ -102,7 +96,6 @@ export const Woodland: string = require('./assets/images/own/woodland.png');
 export const Explosion1: string = require('./assets/images/336.png');
 export const Explosion2: string = require('./assets/images/293.png');
 
-// Leophaz;
 export const Head: string = require('./assets/images/portraits/Head.png');
 export const Detail: string = require('./assets/images/portraits/Detail.png');
 export const Body: string = require('./assets/images/portraits/Body.png');
@@ -116,36 +109,62 @@ export const RainSpritesheet: string = require('./assets/images/RainEnd.png');
 export const Limmy: string = require('./assets/images/limmy.png');
 export const PanelBordersImage: string = require('./assets/images/panel-borders.png');
 export const PanelBordersJSON: string = require('./assets/images/panel-borders.json');
-export const KenneyUIImage: string = require('./assets/images/KenneyUI.png');
-export const KenneyUIJSON: string = require('./assets/images/KenneyUI.json');
-
 
 // Need to find author
 export const Harvesting: string = require('./assets/audio/harvest.mp3'); 
-export const Woodcutting: string = require('./assets/audio/woodcutting.mp3'); // Zapslat - https://www.zapsplat.com/music/axe-chop-wood-7/
-export const Mining: string = require('./assets/audio/mining.mp3'); // Zapslat - https://www.zapsplat.com/music/brick-throw-and-hit-paving-stone-4/
-export const Footstep: string = require('./assets/audio/footstep.mp3'); // Zapslat - https://www.zapsplat.com/music/adult-sized-wellington-boots-single-footstep-on-gravel-stones-12/
-export const Click: string = require('./assets/audio/button_click.mp3'); // Zapslat - https://www.zapsplat.com/music/bright-button-click-1/
-export const ShotgunFire: string = require('./assets/audio/zapsplat_warfare_gun_rifles_single_shot_designed_71743.mp3'); // Zapslat - https://www.zapsplat.com/music/gun-rifle-single-shot-designed/
-export const ShotgunReload: string = require('./assets/audio/weapon_gun_charles_daly_H_6.mp3'); // Zapslat - https://www.zapsplat.com/music/charles-daly-cd-ftaw-shotgun-pump-action-12-gauge-full-cycle-loaded-mag/
 
+// Zapslat - https://www.zapsplat.com/music/axe-chop-wood-7/
+export const Woodcutting: string = require('./assets/audio/woodcutting.mp3'); 
 
-export const Theme: string = require('./assets/audio/Into-Oblivion.mp3'); // Peaceful Forest - Into Oblivion by Darren Curtis (https://www.darrencurtismusic.com)
+// Zapslat - https://www.zapsplat.com/music/brick-throw-and-hit-paving-stone-4/
+export const Mining: string = require('./assets/audio/mining.mp3'); 
+
+// Zapslat - https://www.zapsplat.com/music/adult-sized-wellington-boots-single-footstep-on-gravel-stones-12/
+export const Footstep: string = require('./assets/audio/footstep.mp3'); 
+
+// Zapslat - https://www.zapsplat.com/music/bright-button-click-1/
+export const Click: string = require('./assets/audio/button_click.mp3');
+
+// Zapslat - https://www.zapsplat.com/music/gun-rifle-single-shot-designed/
+export const ShotgunFire: string = require('./assets/audio/zapsplat_warfare_gun_rifles_single_shot_designed_71743.mp3'); 
+
+// Zapslat - https://www.zapsplat.com/music/charles-daly-cd-ftaw-shotgun-pump-action-12-gauge-full-cycle-loaded-mag/
+export const ShotgunReload: string = require('./assets/audio/weapon_gun_charles_daly_H_6.mp3');
+
+// Peaceful Forest - Into Oblivion by Darren Curtis (https://www.darrencurtismusic.com)
+export const Theme: string = require('./assets/audio/Into-Oblivion.mp3'); 
 
 // Music: One Bard Band by Alexander Nakarada (www.creatorchords.com)
 // Licensed under Creative Commons BY Attribution 4.0 License
 // https://creativecommons.org/licenses/by/4.0/
 export const Track1: string = require('./assets/audio/One-Bard-Band.mp3');
 
-export const Track2: string = require('./assets/audio/Over the Plains of Snow MP3.mp3'); // Darren Curtis (https://www.darrencurtismusic.com)
+// Darren Curtis (https://www.darrencurtismusic.com)
+export const Track2: string = require('./assets/audio/Over the Plains of Snow MP3.mp3'); 
 
-export const RainLoop: string = require('./assets/audio/rain.wav'); // Helton Yan - https://heltonyan.itch.io/weatherelements
-export const Money: string = require('./assets/audio/Coins.wav'); // Leophaz - Inventory_SFX_Pack
-export const Cast: string = require('./assets/audio/03_Wind_Throw.wav'); // MiniFantasy - Minifantasy_MagicAndSorcery_SFX
-export const Cast2: string = require('./assets/audio/01_Cast.wav'); // Leophaz - Lightning_magic_SFX
-export const Hit: string = require('./assets/audio/02_Hit.wav'); // Leophaz - Lightning_magic_SFX
-export const Hit2: string = require('./assets/audio/04_Wind_Hit.wav'); // MiniFantasy - Minifantasy_MagicAndSorcery_SFX
-export const ExplosionHit: string = require('./assets/audio/05_Fire_explosion_05_large.wav'); // Leophaz - 50_RPG_Battle_Magic_SFX
+// Helton Yan - https://heltonyan.itch.io/weatherelements
+export const RainLoop: string = require('./assets/audio/rain.wav'); 
 
-export const InventoryPickup: string = require('./assets/audio/Item_Pick.wav'); // Leophaz Inventory_SFX_Pack
-export const InventoryPutdown: string = require('./assets/audio/Item_Place.wav'); // Leophaz Inventory_SFX_Pack
+// Leophaz - Inventory_SFX_Pack
+export const Money: string = require('./assets/audio/Coins.wav'); 
+
+// MiniFantasy - Minifantasy_MagicAndSorcery_SFX
+export const Cast: string = require('./assets/audio/03_Wind_Throw.wav'); 
+
+// Leophaz - Lightning_magic_SFX
+export const Cast2: string = require('./assets/audio/01_Cast.wav'); 
+
+// Leophaz - Lightning_magic_SFX
+export const Hit: string = require('./assets/audio/02_Hit.wav'); 
+
+// MiniFantasy - Minifantasy_MagicAndSorcery_SFX
+export const Hit2: string = require('./assets/audio/04_Wind_Hit.wav');
+
+// Leophaz - 50_RPG_Battle_Magic_SFX
+export const ExplosionHit: string = require('./assets/audio/05_Fire_explosion_05_large.wav');
+
+// Leophaz Inventory_SFX_Pack
+export const InventoryPickup: string = require('./assets/audio/Item_Pick.wav'); 
+
+// Leophaz Inventory_SFX_Pack
+export const InventoryPutdown: string = require('./assets/audio/Item_Place.wav');

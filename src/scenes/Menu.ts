@@ -425,7 +425,6 @@ export default class Menu extends Phaser.Scene {
         }
 
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
-
             if (menuToGroupMap[this.CurrentMenu]) {
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
                 if (this.Data.LastCharacterPlayed != null) {
@@ -522,13 +521,4 @@ export default class Menu extends Phaser.Scene {
         this.InfoCamera.setScroll(0, 0);
     }
 
-    SetError ( message: string ) {
-
-    }
-
-    update(time: number, delta: number): void {
-        //this.PointLight.x = this.input.activePointer.x;
-        //this.PointLight.y = this.input.activePointer.y;
-    }
-    
 }

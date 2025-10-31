@@ -106,7 +106,9 @@ export default class BuildMode {
             x: x,
             y: y,
             area: GD.CurrentMap,
-            level: 1
+            level: 1,
+            name: "",
+            id: ""
         });
 
 

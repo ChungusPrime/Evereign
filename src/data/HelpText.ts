@@ -1,6 +1,7 @@
 import RaceData from "./Character/Races";
 import ClassData from "./Character/Classes";
 import Campaigns from "./Campaigns";
+import Scatterguns from "./Items/Scatterguns";
 
 const Help: HelpText = {
 
@@ -143,6 +144,12 @@ const Help: HelpText = {
     - Fortune: Increases the chance of critical hits and reduces the chance of negative effects.\n
     - Grit: Increases resistance to negative effects and improves the effectiveness of certain abilities.\n
     `,
+
+    Scatterguns: `Scatterguns are a type of ranged weapon that fire multiple projectiles in a spread pattern.\n
+    They are most effective at close range, and can deal significant damage to multiple enemies at once.\n
+    A scatterguns effectiveness is determined by the type of ammunition currently loaded, as well as the character's Versatility attribute.\n
+    Different ammo types can be used to modify the spread, damage, rate of fire or other effects of the scattergun.\n
+    All Scatterguns, as a base, inflict Pierce and Impact damage.\n`,
 
     Guns: `Guns are a type of ranged weapon that use bullets to deal damage to enemies.\n
     They are powerful and accurate, but require ammunition to use.\n

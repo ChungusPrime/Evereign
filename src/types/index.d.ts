@@ -298,6 +298,8 @@ interface Campaign {
     StartingMap?: string,
     StartingX?: number,
     StartingY?: number,
+    StartingHour?: number,
+    StartingMinute?: number,
     WorldMapInformation?: {[key: string]: {
         Name: string;
         Description: string;
