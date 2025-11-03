@@ -4,26 +4,27 @@ import Game, { GD } from "../../scenes/Game";
 export default class TriggerZone extends Phaser.GameObjects.Rectangle {
 
     public scene: Game;
+    public ID: any;
 
-    constructor ( scene: Game, x: number, y: number, id: string, data: WorldData ) {
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
 
-        super( scene, x, y, 128, 128, 0xff0000, 0 );
+        super( scene, object.x, object.y, 128, 128, 0xff0000, 0 );
+
         this.scene = scene;
 
-        this.setOrigin(0, 0);
-        this.setData('Type', "Trigger");
-        this.setData('ID', id);
-        this.setInteractive();
+        this.setOrigin(0, 0).setInteractive();
+
+        console.log(object);
+
+        if ( object.properties ) {
+            this.ID = object.properties[0].value ?? null;
+        }
 
         this.scene.physics.add.overlap(this, this.scene.PlayerCharacter, () => {
 
-            // Get trigger data
-            //const TriggerData = GD.WorldData[GD.CurrentMap][id];
-
-            let TriggerData = this.scene.DataManager.MapData[GD.CurrentMap][id];
+            let TriggerData = this.scene.DataManager.MapData[GD.CurrentMap][this.ID];
 
             console.log(TriggerData);
-
 
             if ( TriggerData.QuestProgressID ) {
                 this.scene.QuestManager.UpdateQuest(TriggerData.QuestProgressID, TriggerData.QuestProgressStep);
@@ -38,7 +39,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
                 this.scene.UI.DialogueWindow.ShowSubject(TriggerData.StartDialogue, TriggerData.DialogueSubject);
             }
 
-            GD.WorldData[GD.CurrentMap][id].Active = false;
+            GD.WorldData[GD.CurrentMap][this.ID].Active = false;
 
             this.destroy();
         });
@@ -46,7 +47,7 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
         this.scene.physics.add.existing(this);
         this.scene.add.existing(this);
 
-        let savedData = GD.WorldData[GD.CurrentMap][id];
+        let savedData = GD.WorldData[GD.CurrentMap][this.ID];
 
         if ( !savedData ) {
             return;

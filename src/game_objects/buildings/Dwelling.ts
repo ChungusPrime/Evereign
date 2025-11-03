@@ -18,7 +18,7 @@ export default class Dwelling extends Building {
         //this.ID = id;
         //this.IsPlayerOwned = PlayerOwned;
 
-        console.log(object);
+        //console.log(object);
 
         this.ID = null;
         
@@ -30,7 +30,7 @@ export default class Dwelling extends Building {
 
         this.Data = GD.WorldData[GD.CurrentMap][this.ID] ?? null;
 
-        console.log(this.Data);
+        //console.log(this.Data);
 
         this.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
             if ( pointer.rightButtonDown() ) {

@@ -3,6 +3,7 @@ import Building from "./Building";
 import Pickup from "./Pickup";
 import Projectile from "./Projectile";
 import { GD } from "../scenes/Game";
+import FloatingText from "./FloatingText";
 
 export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
 
@@ -30,19 +31,20 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
     abstract Level: number;
     abstract Abilities: CharacterAbilities;
     abstract Faction: string;
-    Defence_Pierce: number = 0;
-    Defence_Impact: number = 0;
-    Defence_Slash: number = 0;
-    Defence_Fire: number = 0;
-    Defence_Cold: number = 0;
-    Defence_Lightning: number = 0;
-    Defence_Poison: number = 0;
-    Defence_Arcane: number = 0;
-    Defence_True: number = 0;
-    Defence_Bleed: number = 0;
-    Defence_Radiant: number = 0;
-    Defence_Corruption: number = 0;
-    Defence_Sonic: number = 0;
+
+    abstract Defence_Pierce: number;
+    abstract Defence_Impact: number;
+    abstract Defence_Slash: number;
+    abstract Defence_Fire: number;
+    abstract Defence_Cold: number;
+    abstract Defence_Lightning: number;
+    abstract Defence_Poison: number;
+    abstract Defence_Arcane: number;
+    abstract Defence_True: number;
+    abstract Defence_Bleed: number;
+    abstract Defence_Radiant: number;
+    abstract Defence_Corruption: number;
+    abstract Defence_Sonic: number;
 
     constructor (scene: Game, SpawnLocation: Building | { x: number, y: number }, Spritesheet: string, SpriteIndex: number ) {
         super (scene, SpawnLocation.x, SpawnLocation.y, Spritesheet, SpriteIndex);
@@ -52,8 +54,7 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.world.enable(this);
         this.setDepth(99);
         this.setOrigin(0.5);
-        this.setScale(2);
-        this.setBodySize(6, 10);
+        this.setBodySize(18, 24);
     }
 
     Aggro () {
@@ -80,6 +81,7 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
     TakeDamage ( damage: { Type: string, Min: number, Max: number }[] ) {
         console.log(damage);
         let total = 0;
+        let string = `You dealt `;
         damage.forEach((dmg) => {
             let damageAmount = Phaser.Math.Between(dmg.Min, dmg.Max);
             switch (dmg.Type) {
@@ -97,9 +99,21 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
                 case "Corruption": damageAmount -= this.Defence_Corruption; break;
                 case "Sonic": damageAmount -= this.Defence_Sonic; break;
             }
-            if (damageAmount <= 0) damageAmount = 0;
+
+            if (damageAmount <= 0) {
+                damageAmount = 0;
+            }
+                
             total += damageAmount;
+
+            string += `${damageAmount} ${dmg.Type} damage, `;
         });
+
+        string = string.slice(0, -2);
+
+        this.scene.UI.EventLog.NewEvent(string);
+
+        this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, { message: `-${total}`, x: this.x, y: this.y }));
 
         this.Health -= total;
         if ( this.Health <= 0 )

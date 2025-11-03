@@ -427,11 +427,11 @@ export default class Menu extends Phaser.Scene {
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
             if (menuToGroupMap[this.CurrentMenu]) {
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
-                if (this.Data.LastCharacterPlayed != null) {
+                /*if (this.Data.LastCharacterPlayed != null) {
                     this.ContinueButton.setVisible(true);
                 } else {
                     this.ContinueButton.setVisible(false);
-                }
+                }*/
                 if ( this.CurrentMenu !== "main" ) {
                     this.BackButton.setVisible(true);
                 }

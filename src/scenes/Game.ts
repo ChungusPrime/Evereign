@@ -65,6 +65,7 @@ import Warehouse from '../game_objects/buildings/Warehouse';
 import WarbossGorgutz from '../game_objects/characters/WarbossGorgutz';
 import Grenade from '../game_objects/Grenade';
 import TorchPole from '../game_objects/lights/TorchPole';
+import FloatingText from '../game_objects/FloatingText';
 
 export let QM: QuestManager;
 
@@ -422,7 +423,7 @@ export default class Game extends Phaser.Scene {
         const Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
 
         const objectTypeToClass: { [key: string]: any } = {
-            "Oak Tree": OakTree,
+            "Willow Tree": OakTree,
             "Stone Deposit": StoneDeposit,
             "Marigold": Marigold,
             "Iron Deposit": IronDeposit,
@@ -445,7 +446,7 @@ export default class Game extends Phaser.Scene {
             "Farm": Farm,
             "Warboss Gorgutz": WarbossGorgutz,
             "Chest": Chest,
-            "Obstacle": Obstacle,
+            //"Obstacle": Obstacle,
             "Fishing Spot": FishingZone,
             "Graveyard": RespawnZone,
             "Transition": Transition,
@@ -458,7 +459,6 @@ export default class Game extends Phaser.Scene {
             Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
                 //layer.objects = layer.objects.sort((a, b) => a.id - b.id);
                 layer.objects.forEach( (object) => {
-                    console.log(object.type);
                     let objectInstance = objectTypeToClass[object.type];
                     if (objectInstance) {
                         let instance = new objectInstance(this, object, false) as Phaser.GameObjects.GameObject;
@@ -515,12 +515,18 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(this.BuildingHelper.Placeholder, this.Buildings);
         
         this.physics.add.collider(this.Projectiles, this.Trees, (projectile: Projectile, tree: any) => {
-            this.sound.play("KineticBoltHit");
-            projectile.delete();
-            let hitSprite = this.add.sprite(projectile.x, projectile.y, "BloodArcaneOne", 0).play('blood-arcane-anim-1');
-            hitSprite.once('animationcomplete', () => {
-                hitSprite.destroy();
-            });
+
+            if (projectile instanceof Grenade) {
+
+            } else {
+                this.sound.play("KineticBoltHit");
+                projectile.delete();
+                let hitSprite = this.add.sprite(projectile.x, projectile.y, "BloodArcaneOne", 0).play('blood-arcane-anim-1');
+                hitSprite.once('animationcomplete', () => {
+                    hitSprite.destroy();
+                });
+            }
+
         });
         
         this.physics.add.collider(this.Projectiles, this.Nodes, (projectile: Projectile, node) => {
@@ -535,7 +541,6 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(this.Projectiles, this.Enemies, (projectile: Projectile, enemy: Enemy) => {
             this.lights.removeLight(projectile.light);
             projectile.destroy();
-            //this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, { message: `-${projectile.damage}`, x: enemy.x, y: enemy.y }));
             enemy.TakeDamage(projectile.damage);
             this.sound.play("KineticBoltHit");
             let hitSprite = this.add.sprite(projectile.x, projectile.y, "BloodArcaneOne", 0).play('blood-arcane-anim-1');
@@ -769,9 +774,8 @@ export default class Game extends Phaser.Scene {
 
         // Throw grenade towards mouse cursor
         Proj.rotation = Phaser.Math.Angle.Between( this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY );
-        Proj.setVelocity( Math.cos(Proj.rotation) * 80, Math.sin(Proj.rotation) * 180 );
+        Proj.setVelocity( Math.cos(Proj.rotation) * 160, Math.sin(Proj.rotation) * 360 );
         this.Projectiles.add(Proj);
-
     }
 
     GetNavMeshPath (x: number, y: number, targetX: number, targetY: number) {

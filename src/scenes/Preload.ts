@@ -214,8 +214,14 @@ export default class Preload extends Phaser.Scene {
             repeat: -1
         });*/
 
+        this.anims.create({
+            key: "GoblinSlingerWalk", 
+            frames: this.anims.generateFrameNumbers('Orcs', { frames: [ 2, 3] }),
+            frameRate: 5,
+            repeat: -1
+        });
+
         const animations = [
-            { key: 'GoblinSlingerWalk', frames: [ 118, 119 ] },
             { key: 'gladiator_walk', frames: [ 0, 1 ] },
             { key: 'godsworn_walk', frames: [ 6, 7 ] },
             { key: 'operative_walk', frames: [ 8, 9 ] },

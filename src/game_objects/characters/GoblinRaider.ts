@@ -21,6 +21,20 @@ export default class GoblinRaider extends Enemy {
     public Temperament: string = "Hostile";
     public Faction: string = "Goblin";
 
+    public Defence_Pierce: number = 0;
+    public Defence_Impact: number = 0;
+    public Defence_Slash: number = 0;
+    public Defence_Fire: number = 0;
+    public Defence_Cold: number = 0;
+    public Defence_Lightning: number = 0;
+    public Defence_Poison: number = 0;
+    public Defence_Arcane: number = 0;
+    public Defence_True: number = 0;
+    public Defence_Bleed: number = 0;
+    public Defence_Radiant: number = 0;
+    public Defence_Corruption: number = 0;
+    public Defence_Sonic: number = 0;
+
     public Abilities: CharacterAbilities = {
         'Bleed them dry': {
             //Description: "The goblin raider slashes at the player, applying a bleed effect.",
