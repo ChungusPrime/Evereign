@@ -176,11 +176,11 @@ export default class Menu extends Phaser.Scene {
         });
 
         // Character Creation
-        Y = this.scale.height * 0.22;
+        Y = this.scale.height * 0.15;
         this.CharacterCreationGroup = this.add.group().setVisible(false);
         
         this.CharacterCreationGroup.add(
-            this.add.text(this.scale.width * 0.32, Y, "Create Character", { fontSize: 36, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
+            this.add.text(this.scale.width * 0.32, Y, "New Adventurer", { fontSize: 36, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
         );
 
         Y = Y + 50;
@@ -351,12 +351,12 @@ export default class Menu extends Phaser.Scene {
         this.InfoBackground = this.add.nineslice(this.scale.width * 0.7, this.scale.height * 0.45, "Kenney-UI", "panel_beigeLight", this.scale.width * 0.29, this.scale.height * 0.65, 25, 25, 25, 25)
         .setOrigin(0.5)
         .setVisible(false)
-        .setAlpha(1);
+        .setAlpha(0);
         this.CharacterCreationGroup.add(this.InfoBackground);
 
-        this.InfoText = this.add.text(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, "Click ? for more information", { 
+        this.InfoText = this.add.text(this.InfoBackground.getCenter().x, this.InfoBackground.getCenter().y, "Click ? for more information", { 
             fontSize: 24,
-            align: "left",
+            align: "center",
             fontFamily: "Augusta",
             color: "#000",
             wordWrap: { 
@@ -364,7 +364,7 @@ export default class Menu extends Phaser.Scene {
                 useAdvancedWrap: true 
             }
         })
-        .setOrigin(0, 0)
+        .setOrigin(0.5)
         .setVisible(true)
         .setInteractive()
         .on("wheel", ( pointer: Phaser.Input.Pointer ) => {
@@ -516,7 +516,17 @@ export default class Menu extends Phaser.Scene {
     }
     
     SetHelpText ( key: string ) {
+
         this.InfoText.setText(Help[key] ?? "No help text available for this option.");
+
+        if ( this.InfoText.height >= this.InfoBackground.height ) {
+            this.InfoText.setPosition(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y);
+            this.InfoText.setOrigin(0, 0);
+        } else {
+            this.InfoText.setPosition(this.InfoBackground.getCenter().x, this.InfoBackground.getCenter().y);
+            this.InfoText.setOrigin(0.5);
+        }
+
         this.InfoCamera.setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoText.height);
         this.InfoCamera.setScroll(0, 0);
     }

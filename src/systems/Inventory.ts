@@ -350,8 +350,20 @@ export default class Inventory {
 
     }
 
-    public SwapItems () {
-        
+    public SwapItems (slotA: string, slotB: string) {
+        console.log(`Moving Item from ${slotA} to ${slotB}`);
+        GD.Inventory[slotB] = GD.Inventory[slotA];
+        GD.Inventory[slotA] = null;
+        console.log(GD.Inventory[slotB]);
+        console.log(GD.Inventory[slotA]);
+        this.Items.find((item) => item.InventoryIndex == slotA).Refresh();
+        this.Items.find((item) => item.InventoryIndex == slotB).Refresh();
+        this.UI.input.topOnly = true;
+        this.HeldItem.destroy();
+        this.HeldItem = null;
+        this.HoveredOnSlot = null;
+        this.UI.sound.play("InventoryPutdown");
+        this.UI.Game.PlayerCharacter.UpdateStats();
     }
 
     HasRequiredQuantity ( ID: string, quantity: number ) {

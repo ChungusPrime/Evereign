@@ -47,19 +47,7 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
             if ( pointer.leftButtonDown() && Inv.HeldItem != null && this.DataInventorySlot == null ) {
                 let FromSlot = Inv.HeldItem.getData('slot');
                 let ToSlot = this.InventoryIndex;
-                console.log(`Moving Item from ${FromSlot} to ${ToSlot}`);
-                GD.Inventory[ToSlot] = GD.Inventory[FromSlot];
-                GD.Inventory[FromSlot] = null;
-                console.log(GD.Inventory[ToSlot]);
-                console.log(GD.Inventory[FromSlot]);
-                Inv.Items.find((item) => item.InventoryIndex == FromSlot).Refresh();
-                Inv.Items.find((item) => item.InventoryIndex == ToSlot).Refresh();
-                scene.input.topOnly = true;
-                Inv.HeldItem.destroy();
-                Inv.HeldItem = null;
-                Inv.HoveredOnSlot = null;
-                scene.sound.play("InventoryPutdown");
-                scene.Game.PlayerCharacter.UpdateStats();
+                Inv.SwapItems(FromSlot, ToSlot);
             }
         });
 
@@ -168,6 +156,10 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         }
         this.SetupSprite(this.scene);
     }*/
+
+    public update () {
+
+    }
 
     public Refresh () {
         this.DataInventorySlot = GD.Inventory[this.InventoryIndex] ?? null;
