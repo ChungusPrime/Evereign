@@ -390,8 +390,4 @@ export default class UI extends Phaser.Scene {
         this.TransitionScreen.setVisible(false);
     }
 
-    ChangeClass () {
-        this.CharacterPanel.SetupPanel();
-    }
-
 }

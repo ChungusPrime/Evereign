@@ -91,9 +91,8 @@ export default class BuildMode {
 
         Building.IsPlayerOwned = true;
 
-        let Map = GD.CurrentMap;
-        if ( GD.PlayerTowns[Map] == undefined ) {
-            GD.PlayerTowns[Map] = {
+        if ( GD.PlayerTowns[GD.CurrentMap] == undefined ) {
+            GD.PlayerTowns[GD.CurrentMap] = {
                 Name: "New Town",
                 Buildings: [],
                 StorageMax: 0,
@@ -101,7 +100,7 @@ export default class BuildMode {
             };
         }
 
-        GD.PlayerTowns[Map].Buildings.push({
+        GD.PlayerTowns[GD.CurrentMap].Buildings.push({
             type: type,
             x: x,
             y: y,

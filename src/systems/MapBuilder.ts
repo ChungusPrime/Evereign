@@ -18,7 +18,7 @@ import Marigold from "../game_objects/plants/Marigold";
 import MunklesBrightcap from "../game_objects/plants/MunklesBrightcap";
 
 // Trees
-import OakTree from "../game_objects/plants/OakTree";
+import OakTree from "../game_objects/plants/WillowTree";
 
 // Zones
 import FishingZone from "../game_objects/Zones/FishingZone";

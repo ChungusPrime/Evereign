@@ -17,7 +17,6 @@ const FirstNames: string[] = [
     "Orin",
     "Maelis",
     "Calyra",
-    "Torin",
     "Elyndra",
     "Jarek",
     "Sylara",
@@ -29,7 +28,29 @@ const FirstNames: string[] = [
     "Eldrin",
     "Sable",
     "Rowan",
-    "Tavis"
+    "Tavis",
+    "Aric",
+    "Selene",
+    "Kaelen",
+    "Lyra",
+    "Darian",
+    "Mirelle",
+    "Roran",
+    "Zyra",
+    "Caius",
+    "Elara",
+    "Fenris",
+    "Vaela",
+    "Jorin",
+    "Sylas",
+    "Liora",
+    "Torin",
+    "Elysia",
+    "Kaida",
+    "Dorian",
+    "Mara",
+    "Rylan",
+    "Zarek"
 ];
 
 export default FirstNames;

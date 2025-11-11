@@ -1,7 +1,25 @@
 import UI from "../scenes/UI";
-import { GD } from "../scenes/Game";
+import { GD, Inv } from "../scenes/Game";
 import ItemData from "../data/ItemData";
 import AbilityData from "../data/Character/Abilities";
+
+class HotbarSlot extends Phaser.GameObjects.NineSlice {
+
+    public Type: string
+    public ID: string
+    public Index: number;
+    public Sprite: Phaser.GameObjects.Sprite;
+    public InputIcon: Phaser.GameObjects.Image;
+
+    constructor ( scene: UI, x: number, y: number, slot: { Type: string, ID: string }, index: number ) {
+        super(scene, 0, 0, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6);
+        this.scene = scene;
+        this.setOrigin(0, 0);
+        this.Index = index;
+        this.Type = slot.Type;
+        this.ID = slot.ID;
+    }
+}
 
 export default class CharacterPanel {
 
@@ -20,24 +38,22 @@ export default class CharacterPanel {
     public ManaText: Phaser.GameObjects.Text;
 
     // Mainhand Item
-    MainhandItemSlot: any;
-    MainhandItemInput: any;
-    MainhandItemSprite: any;
+    public MainhandItemSlot: any;
+    public MainhandItemInput: any;
+    public MainhandItemSprite: any;
 
     // Offhand Item
-    OffhandItemSlot: any;
-    OffhandItemInput: any;
-    OffhandItemSprite: any;
+    public OffhandItemSlot: any;
+    public OffhandItemInput: any;
+    public OffhandItemSprite: any;
+
+    public HotbarSlots: any[] = [];
 
     constructor ( scene: UI ) {
+
         this.scene = scene;
+
         this.Group = this.scene.add.group();
-        this.SetupPanel();
-    }
-
-    SetupPanel () {
-
-        this.Group.clear(true, true);
 
         this.Background = this.scene.add.nineslice(0, this.scene.cameras.main.height, "Kenney-UI", "panelInset_blue", 1024, 70, 12, 12, 12, 12).setOrigin(0, 1).setDepth(0);
 
@@ -48,7 +64,7 @@ export default class CharacterPanel {
         this.ManaBG = this.scene.add.rectangle(this.LifeBG.getBottomLeft().x, this.LifeBG.getBottomLeft().y + 3, 220, 25, 0x000000, 1).setOrigin(0, 0);
         this.ManaBar = this.scene.add.sprite(this.ManaBG.getTopLeft().x, this.ManaBG.getTopLeft().y, "Kenney-UI", "barBlue_horizontalBlue").setDisplaySize(this.ManaBG.width, 30).setOrigin(0, 0);
         this.ManaText = this.scene.add.text(this.ManaBar.getLeftCenter().x + 5, this.ManaBar.getLeftCenter().y, "MANA", { fontFamily: "Augusta"}).setOrigin(0, 0.5);
-200
+        
         const controls: {[key: string]: string | number } = JSON.parse(localStorage.getItem("EvereignData")).Controls;
 
         let MainhandItemData = ItemData[GD.Inventory.Equipment_MainHand ? GD.Inventory.Equipment_MainHand.ID : null];
@@ -96,9 +112,19 @@ export default class CharacterPanel {
             let X = this.OffhandItemSlot.getTopRight().x + 10 + (index * 64);
             let Y = this.OffhandItemSlot.getTopRight().y;
 
+            let Slot = new HotbarSlot(this.scene, X, Y, slot[1], index);
+
             let rect = this.scene.add.nineslice(X, Y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 0);
             let input = this.scene.add.image(rect.getTopRight().x, rect.getTopRight().y, "inputs", controls['Use_Hotbar_' + (index + 1)]).setOrigin(1, 0).setDisplaySize(24, 24);
             let sprite = this.scene.add.sprite(rect.getCenter().x, rect.getCenter().y, "general", 0).setDisplaySize(64, 64).setOrigin(0.5, 0.5).setVisible(false);
+
+            rect.setInteractive();
+            rect.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
+                if ( pointer.leftButtonDown() && Inv.HeldItem != null ) {
+                    let FromSlot = Inv.HeldItem.getData('slot');
+                    // Update hotbar slot with the held item or ability
+                }
+            });
 
             if ( slot[1] == null ) return;
 
@@ -129,6 +155,15 @@ export default class CharacterPanel {
         });
 
     }
+
+    UpdateHotbarSlot ( slot: string ) {
+        // Find the slot index
+        let slotIndex = Object.keys(GD.Hotbar).indexOf(slot);
+
+    }
+        
+
+
 
     UpdateVitalsBars () {
         let HealthWidth = (GD.CurrentHealth / GD.MaxHealth * this.LifeBG.width);

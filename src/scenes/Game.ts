@@ -8,7 +8,6 @@ import MapBuilder from '../systems/MapBuilder';
 import { PlayerRect, EnemyRect } from '../game_objects/QuadTree_Rects';
 import Campaigns from '../data/Campaigns';
 import ItemData from '../data/ItemData';
-import DefaultCharacterData from '../data/DefaultCharacter';
 
 // Global copy of the current character data
 export let GD: Character;
@@ -35,37 +34,9 @@ import QuestManager from '../game_objects/managers/QuestManager';
 
 import ActionManager from '../systems/ActionManager';
 import Projectile from '../game_objects/Projectile';
-import BallistaTower from '../game_objects/buildings/BallistaTower';
-import Dwelling from '../game_objects/buildings/Dwelling';
-import Inn from '../game_objects/buildings/Inn';
 import GoblinSlinger from '../game_objects/characters/GoblinSlinger';
-import StoneDeposit from "../game_objects/deposits/StoneDeposit";
-import IronDeposit from "../game_objects/deposits/IronDeposit";
-import GoblinFirepit from '../game_objects/lights/GoblinFirepit';
-import Torch from '../game_objects/lights/Torch';
-import Bloomberry from '../game_objects/plants/Bloomberry';
-import Marigold from '../game_objects/plants/Marigold';
-import MunklesBrightcap from '../game_objects/plants/MunklesBrightcap';
-import OakTree from '../game_objects/plants/OakTree';
-import TriggerZone from '../game_objects/Zones/TriggerZone';
-import Chapel from '../game_objects/buildings/Chapel';
-import Chest from '../game_objects/Chest';
-import Obstacle from '../game_objects/Obstacle';
-import Switch from '../game_objects/Switch';
-import FishingZone from '../game_objects/Zones/FishingZone';
-import RespawnZone from '../game_objects/Zones/Respawn';
-import Transition from '../game_objects/Zones/Transition';
-import Farm from '../game_objects/buildings/Farm';
-import Field from '../game_objects/buildings/Field';
-import GoblinOutpost from '../game_objects/buildings/GoblinOutpost';
-import Market from '../game_objects/buildings/Market';
-import Mine from '../game_objects/buildings/Mine';
-import TownCentre from '../game_objects/buildings/TownCentre';
-import Warehouse from '../game_objects/buildings/Warehouse';
-import WarbossGorgutz from '../game_objects/characters/WarbossGorgutz';
 import Grenade from '../game_objects/Grenade';
-import TorchPole from '../game_objects/lights/TorchPole';
-import FloatingText from '../game_objects/FloatingText';
+import GameObjectsMap from '../data/GameObjects';
 
 export let QM: QuestManager;
 
@@ -407,59 +378,28 @@ export default class Game extends Phaser.Scene {
         
         // Load Layers
         let Layers: Phaser.Tilemaps.TilemapLayer[] = [];
-        Map.getTileLayerNames().forEach( (name: string) => {
-            let Layer = Map.createLayer(name, Tilesets, 0, 0);
+        Map.layers.forEach( (layerData: Phaser.Tilemaps.LayerData) => {
+            let Layer = Map.createLayer(layerData.name, Tilesets, 0, 0);
             if ( Layer === null ) return;
-            if ( name == "Collision" ) {
+            if ( layerData.name == "Collision" ) {
                 this.CollisionLayer = Layer;
                 this.CollisionLayer.setCollisionByExclusion([-1]);
                 this.CollisionLayer.setVisible(false);
+            } else {
+                Layer.setPipeline("Light2D");
             }
-            Layer.setPipeline("Light2D");
             Layers.push(Layer);
         });
 
         // Get default campaign data
         const Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
 
-        const objectTypeToClass: { [key: string]: any } = {
-            "Willow Tree": OakTree,
-            "Stone Deposit": StoneDeposit,
-            "Marigold": Marigold,
-            "Iron Deposit": IronDeposit,
-            "Bloomberry": Bloomberry,
-            "Munkle's Brightcap": MunklesBrightcap,
-            "Torch": Torch,
-            "Goblin Firepit": GoblinFirepit,
-            "Dwelling": Dwelling,
-            "Trigger": TriggerZone,
-            "Orc Slinger": GoblinSlinger,
-            "Inn": Inn,
-            "Ballista Tower": BallistaTower,
-            "Chapel": Chapel,
-            "Town Centre": TownCentre,
-            "Goblin Outpost": GoblinOutpost,
-            "Market": Market,
-            "Warehouse": Warehouse,
-            "Field": Field,
-            "Mine": Mine,
-            "Farm": Farm,
-            "Warboss Gorgutz": WarbossGorgutz,
-            "Chest": Chest,
-            //"Obstacle": Obstacle,
-            "Fishing Spot": FishingZone,
-            "Graveyard": RespawnZone,
-            "Transition": Transition,
-            "Switch": Switch,
-            "TorchPole": TorchPole
-        };
-
         // Spawn World Objects
         try {
             Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
                 //layer.objects = layer.objects.sort((a, b) => a.id - b.id);
                 layer.objects.forEach( (object) => {
-                    let objectInstance = objectTypeToClass[object.type];
+                    let objectInstance = GameObjectsMap[object.type];
                     if (objectInstance) {
                         let instance = new objectInstance(this, object, false) as Phaser.GameObjects.GameObject;
 
@@ -485,7 +425,7 @@ export default class Game extends Phaser.Scene {
 
         if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {
             GD.PlayerTowns[GD.CurrentMap].Buildings.forEach((building: { type: string, x: number, y: number, area: string, level: number }) => {
-                let objectInstance = objectTypeToClass[building.type];
+                let objectInstance = GameObjectsMap[building.type];
                 if (objectInstance) {
                     let instance = new objectInstance(this, building, true) as Phaser.GameObjects.GameObject;
                     if ( instance instanceof Building ) {
@@ -729,7 +669,7 @@ export default class Game extends Phaser.Scene {
     }
 
     UseHotbarSlot (slot: string) {
-        console.log("Using hotbar slot");
+        console.log(`Using hotbar slot ${slot}`);
 
         let Item = GD.Hotbar[slot];
 

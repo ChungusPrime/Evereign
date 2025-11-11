@@ -1,9 +1,9 @@
 import Game from "../../scenes/Game";
 
-export default class OakTree extends Phaser.Physics.Arcade.Sprite {
+export default class WillowTree extends Phaser.Physics.Arcade.Sprite {
 
-    public Name = "Oak Tree";
-    public Description = "A sturdy oak tree, providing shade and resources.";
+    public Name = "Willow Tree";
+    public Description = "A sturdy willow tree, providing shade and resources.";
 
     public Category = "Trees";
     public IsObstacle = true;
@@ -12,7 +12,7 @@ export default class OakTree extends Phaser.Physics.Arcade.Sprite {
     // Harvesting properties
     public IsHarvestable = true;
     public HarvestAmount = 1;
-    public HarvestItem = "log_oak";
+    public HarvestItem = "log_willow";
     public HarvestTime = 3000;
     public HarvestSound = "woodcutting";
     public HarvestRequiresToolType = "Felling Axe";
@@ -25,7 +25,7 @@ export default class OakTree extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         this.setOrigin(0, 1)
         .setDisplaySize(100, 125)
-        .setData("type", "Oak Tree")
+        .setData("type", "Willow Tree")
         .setDisplaySize(100, 120)
         .setPipeline("Light2D")
         .setDepth(100)

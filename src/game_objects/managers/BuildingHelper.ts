@@ -12,6 +12,7 @@ import Game from "../../scenes/Game";
 import UI from "../../scenes/UI";
 import Placeholder from "../placeholder";
 import { GD } from "../../scenes/Game";
+import { TownNames } from "../../data/TownNames";
 
 export default class BuildingHelper {
 
@@ -91,17 +92,16 @@ export default class BuildingHelper {
 
         Building.IsPlayerOwned = true;
 
-        let Map = GD.CurrentMap;
-        if ( GD.PlayerTowns[Map] == undefined ) {
-            GD.PlayerTowns[Map] = { 
-                Name: `New Town in ${Map}`,
+        if ( GD.PlayerTowns[GD.CurrentMap] == undefined ) {
+            GD.PlayerTowns[GD.CurrentMap] = { 
+                Name: TownNames[Math.floor(Math.random() * TownNames.length)],
                 Buildings: [],
                 StorageMax: 0,
                 Storage: []
             };
         }
 
-        GD.PlayerTowns[Map].Buildings.push({
+        GD.PlayerTowns[GD.CurrentMap].Buildings.push({
             id: crypto.randomUUID(),
             type: type,
             name: `New ${type}`,
