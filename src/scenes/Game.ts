@@ -126,8 +126,6 @@ export default class Game extends Phaser.Scene {
         this.UI = this.scene.get("UI") as UI;
         this.CameraColourMatrix = this.cameras.main.postFX.addColorMatrix();
 
-        console.log(this.navMeshPlugin);
-
         // Set cursor image
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
 

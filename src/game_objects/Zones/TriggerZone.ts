@@ -14,11 +14,9 @@ export default class TriggerZone extends Phaser.GameObjects.Rectangle {
 
         this.setOrigin(0, 0).setInteractive();
 
-        console.log(object);
+        this.ID = object.properties[0].value;
 
-        if ( object.properties ) {
-            this.ID = object.properties[0].value ?? null;
-        }
+        console.log(this.ID);
 
         this.scene.physics.add.overlap(this, this.scene.PlayerCharacter, () => {
 

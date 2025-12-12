@@ -2321,7 +2321,7 @@
          "opacity":1,
          "tintcolor":"#64aa0000",
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":200,
          "x":0,
          "y":0
@@ -6495,6 +6495,18 @@
                  "width":127.702700669233,
                  "x":6048,
                  "y":5632
+                }, 
+                {
+                 "gid":15971,
+                 "height":121.75,
+                 "id":885,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Willow Tree",
+                 "visible":true,
+                 "width":121.75,
+                 "x":5888,
+                 "y":5632
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -7744,7 +7756,7 @@
          "y":0
         }],
  "nextlayerid":34,
- "nextobjectid":884,
+ "nextobjectid":886,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -8215,6 +8227,19 @@
          "tilecount":8,
          "tileheight":32,
          "tilewidth":32
+        }, 
+        {
+         "columns":4,
+         "firstgid":15971,
+         "image":"..\/..\/..\/..\/..\/BACKUP\/Evereign Assets Master\/Pixel tree pack\/Pixel tree pack\/willowonly.png",
+         "imageheight":48,
+         "imagewidth":192,
+         "margin":0,
+         "name":"willowonly",
+         "spacing":0,
+         "tilecount":4,
+         "tileheight":48,
+         "tilewidth":48
         }],
  "tilewidth":32,
  "type":"map",

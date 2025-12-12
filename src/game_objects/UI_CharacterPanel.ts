@@ -16,8 +16,10 @@ class HotbarSlot extends Phaser.GameObjects.NineSlice {
         this.scene = scene;
         this.setOrigin(0, 0);
         this.Index = index;
-        this.Type = slot.Type;
-        this.ID = slot.ID;
+        if ( slot ) {
+            this.Type = slot.Type;
+            this.ID = slot.ID;
+        }
     }
 }
 
