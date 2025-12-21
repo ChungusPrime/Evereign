@@ -1,6 +1,6 @@
 import { Willowvale } from "./Willowvale";
-import { Willowvale_Caverns } from "./Willowvale_Caverns";
-import { WillowvaleNorth } from "./Willowvale_North";
+import { WillowvaleCaverns } from "./WillowvaleCaverns";
+import { WillowvaleNorth } from "./WillowvaleNorth";
 
 const TheMidnightAccord: Campaign = {
     
@@ -57,7 +57,7 @@ const TheMidnightAccord: Campaign = {
 
     WorldData: {
         Willowvale: Willowvale,
-        WillowvaleCaverns: Willowvale_Caverns,
+        WillowvaleCaverns: WillowvaleCaverns,
         WillowvaleNorth: WillowvaleNorth
     },
     

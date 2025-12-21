@@ -1,5 +1,4 @@
-import * as Assets from '../assets';
-import Cursor from '../assets/images/click_cursor.png';
+import { Manifest, Cursor } from '../assets';
 
 export default class Preload extends Phaser.Scene {
 
@@ -32,132 +31,56 @@ export default class Preload extends Phaser.Scene {
             loadingBar.destroy();
         });
 
-        this.load.font("Dungeon", Assets.Dungeon, 'truetype');
-        this.load.font("Augusta", Assets.Augusta, 'truetype');
-        this.load.font("Flesh", Assets.Flesh, 'truetype');
-        this.load.font("Mooli", Assets.Mooli, 'truetype');
-        this.load.image('BookBG', Assets.BookBG);
-        this.load.image('logo', Assets.Logo);
-        this.load.audio('woodcutting', [Assets.Woodcutting]);
-        this.load.audio('mining', [Assets.Mining]);
-        this.load.audio('harvesting', [Assets.Harvesting]);
-        this.load.audio('footstep', [Assets.Footstep]);
-        this.load.audio('click', [Assets.Click]);
-        this.load.audio('theme', [Assets.Theme]);
-        this.load.audio('track1', [Assets.Track1]);
-        this.load.audio('rain', [Assets.RainLoop]);
-        this.load.audio('KineticBoltCast', [Assets.Cast]);
-        this.load.audio('DartVolleyCast', [Assets.Cast2]);
-        this.load.audio('Hit', [Assets.Hit]);
-        this.load.audio('KineticBoltHit', [Assets.Hit2]);
-        this.load.audio('ExplosionHit', [Assets.ExplosionHit]);
-        this.load.audio('Money', [Assets.Money]);
-        this.load.audio('InventoryPickup', [Assets.InventoryPickup]);
-        this.load.audio('InventoryPutdown', [Assets.InventoryPutdown]);
-        this.load.audio('ShotgunFire', [Assets.ShotgunFire]);
-        this.load.audio('ShotgunReload', [Assets.ShotgunReload]);
+        // ====================================================================
+        // Load all assets from manifest
+        // ====================================================================
 
-        //this.load.spritesheet("Operative", Assets.Operative, { frameWidth: 32, frameHeight: 32 });
+        // Fonts
+        for (const font of Manifest.fonts) {
+            this.load.font(font.key, font.path, font.type || 'truetype');
+        }
 
-        this.load.aseprite({
-            key: 'Operative',
-            textureURL: Assets.HumanOperativeSpritesheet,
-            atlasURL: Assets.HumanOperativeJSON,
-        });
+        // Images
+        for (const image of Manifest.images) {
+            this.load.image(image.key, image.path);
+        }
 
-        this.load.spritesheet("BloodOne", Assets.BloodOne, { frameWidth: 100, frameHeight: 100 });
-        this.load.spritesheet("BloodTwo", Assets.BloodTwo, { frameWidth: 100, frameHeight: 100 });
-        this.load.spritesheet("BloodArcaneOne", Assets.BloodArcaneOne, { frameWidth: 100, frameHeight: 100 });
-        this.load.atlas({ key: 'inputs', textureURL: Assets.InputAtlas, atlasURL: Assets.InputAtlasJSON });
+        // Audio
+        for (const audio of Manifest.audio) {
+            this.load.audio(audio.key, [audio.path]);
+        }
 
-        this.load.spritesheet("Kinetic Bolt", Assets.ArcaneDart, { frameWidth: 16, frameHeight: 16 });
-        this.load.spritesheet("Dart Volley", Assets.DartVolley, { frameWidth: 16, frameHeight: 16 });
-        this.load.spritesheet("Goblin-Arrow", Assets.GoblinArrow, { frameWidth: 16, frameHeight: 8 });
+        // Spritesheets
+        for (const sheet of Manifest.spritesheets) {
+            this.load.spritesheet(sheet.key, sheet.path, { 
+                frameWidth: sheet.frameWidth, 
+                frameHeight: sheet.frameHeight 
+            });
+        }
 
-        // Portraits
-        this.load.spritesheet("Head", Assets.Head, { frameWidth: 162, frameHeight: 162 });
-        this.load.spritesheet("Body", Assets.Body, { frameWidth: 162, frameHeight: 162 });
-        this.load.spritesheet("Detail", Assets.Detail, { frameWidth: 162, frameHeight: 162 });
+        // Tilemaps
+        for (const tilemap of Manifest.tilemaps) {
+            this.load.tilemapTiledJSON(tilemap.key, tilemap.path);
+        }
 
-        // Buildings
-        this.load.spritesheet("combat", Assets.CombatSheet, { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet("wood-tile", Assets.WoodTile, { frameWidth: 82, frameHeight: 82 });
-        this.load.spritesheet("characters", Assets.Characters, { frameWidth: 16, frameHeight: 16 });
-        this.load.spritesheet("Orcs", Assets.Orcs, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("mining-nodes", Assets.MiningNodes, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("ownmisc", Assets.OwnMiscItems, { frameWidth: 32, frameHeight: 32 });
+        // Atlases
+        for (const atlas of Manifest.atlases) {
+            this.load.atlas({
+                key: atlas.key,
+                textureURL: atlas.texturePath,
+                atlasURL: atlas.atlasPath,
+                ...(atlas.normalMapPath && { normalMap: atlas.normalMapPath })
+            });
+        }
 
-        this.load.atlas({
-            key: 'Buildings',
-            textureURL: Assets.Buildings,
-            atlasURL: Assets.BuildingsJSON,
-            normalMap: Assets.BuildingsNormal
-        });
-
-        this.load.image('WillowvaleMap', Assets.WillowvaleMap);
-        this.load.image('WillowvaleNorthMap', Assets.WillowvaleNorthMap);
-
-        this.load.spritesheet("monsters", Assets.Monsters, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("items", Assets.Items, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("tiles", Assets.Tiles, { frameWidth: 32, frameHeight: 32 });
-
-        // Admurin
-        this.load.spritesheet("general", Assets.AdmurinGeneral, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("botany", Assets.AdmurinBotany, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("gems2", Assets.AdmurinGemsTwo, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("potions", Assets.AdmurinPotions, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("librarium", Assets.AdmuringLibrarium, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("flowers", Assets.AdmurinFlowers, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("fishing", Assets.AdmurinFishingB, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("SkillsA", Assets.SkillsA, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("SkillsB", Assets.SkillsB, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("bonus1", Assets.AdmurinBonus1, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("weapons", Assets.Weapons, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("armour", Assets.Armour, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("leather_dark", Assets.LeatherDark, { frameWidth: 32, frameHeight: 32 });
-
-        this.load.tilemapTiledJSON("TestMap", Assets.TestMap);
-        this.load.tilemapTiledJSON("Willowvale", Assets.Willowvale);
-        this.load.tilemapTiledJSON("WillowvaleCaverns", Assets.WillowvaleCaverns);
-        this.load.tilemapTiledJSON("Tutors Island", Assets.TutorsIsland);
-
-        this.load.spritesheet("woodland", Assets.Woodland, { frameWidth: 32, frameHeight: 32 });
-
-        this.load.spritesheet("RA_Animated_Water", Assets.RA_Animated_Water, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Interior", Assets.RA_Interior, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Crypt", Assets.RA_Crypt, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Graveyard", Assets.RA_Graveyard, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Ground_Tiles", Assets.RA_Ground_Tiles, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Jungle", Assets.RA_Jungle, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Jungle_Animation", Assets.RA_Jungle_Animation, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Jungle_Extras", Assets.RA_Jungle_Extras, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Village", Assets.RA_Village, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Village_Animations", Assets.RA_Village_Animations, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Village_Animation02", Assets.RA_Village_Animation02, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Wasteland_Water", Assets.RA_Wasteland_Water, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Wasteland", Assets.RA_Wasteland, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Cavern_Full", Assets.RA_Cavern_Full, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Ship", Assets.RA_Ship, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("tree03_s_01_animation", Assets.tree03_s_01_animation, { frameWidth: 128, frameHeight: 160 });
-        this.load.spritesheet("XanthirGate", Assets.XanthirGate, { frameWidth: 92, frameHeight: 114 });
-        this.load.spritesheet("RA_Animated_Water", Assets.RA_Animated_Water, { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet("RA_Village_Animation03", Assets.RA_Village_Animation03, { frameWidth: 64, frameHeight: 64 });
-
-        this.load.spritesheet("The Ground V1-1", Assets.TheGroundV1, { frameWidth: 32, frameHeight: 32 });
-
-        this.load.spritesheet("Limmy", Assets.Limmy, { frameWidth: 56, frameHeight: 56 });
-
-        this.load.aseprite({ key: 'Journal', textureURL: Assets.JournalImage, atlasURL: Assets.JournalJSON });
-
-        this.load.aseprite({ key: 'Panel-Borders', textureURL: Assets.PanelBordersImage, atlasURL: Assets.PanelBordersJSON });
-        this.load.atlas({ key: 'Kenney-UI', textureURL: Assets.KenneyUIImage, atlasURL: Assets.KenneyUIJSON });
-
-        this.load.spritesheet("Explosion1Sheet", Assets.Explosion1, { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet("Explosion2Sheet", Assets.Explosion2, { frameWidth: 64, frameHeight: 64 });
-
-        this.load.image('Rain', Assets.Rain);
-        this.load.spritesheet('RainSpritesheet', Assets.RainSpritesheet, { frameWidth: 16, frameHeight: 16 });
-
+        // Aseprite animations
+        for (const aseprite of Manifest.aseprites) {
+            this.load.aseprite({
+                key: aseprite.key,
+                textureURL: aseprite.texturePath,
+                atlasURL: aseprite.atlasPath,
+            });
+        }
     }
 
     create () {

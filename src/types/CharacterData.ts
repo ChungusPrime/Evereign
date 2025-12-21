@@ -22,6 +22,8 @@ interface Character {
     MetNPCs: string[];
     UnlockedBuildings: string[];
     ProgressFlags: number[];
+    ComputedStats: Stats;
+    Stats: Stats;
 
     // Timestamps
     CreatedAtTimestamp: string;
@@ -32,43 +34,6 @@ interface Character {
     Hair: number;
     Eyes: number;
     Mouth: number;
-
-    // Primary attributes
-    Fortitude: number;
-    Arcana: number;
-    Versatility: number;
-    Vigor: number;
-    Expertise: number;
-    Personality: number;
-    Fortune: number;
-    Grit: number;
-
-    // Stats
-    MovementSpeed: number;
-    CriticalStrikeChance: number;
-    EvadeChance: number;
-    BlockChance: number;
-    CriticalStrikeDamageModifier: number;
-    LifeSteal: number;
-    HealthRegeneration: number;
-    ManaRegeneration: number;
-    Defence_Pierce: number;
-    Defence_Impact: number;
-    Defence_Slash: number;
-    Defence_Fire: number;
-    Defence_Cold: number;
-    Defence_Lightning: number;
-    Defence_Poison: number;
-    Defence_Arcane: number;
-    Defence_True: number;
-    Defence_Bleed: number;
-    Defence_Radiant: number;
-    Defence_Corruption: number;
-    Defence_Sonic: number;
-    CurrentHealth: number;
-    MaxHealth: number;
-    CurrentMana: number;
-    MaxMana: number;
 
     Inventory: {
         [key: string]: InventoryItem | null;
@@ -142,4 +107,39 @@ interface Character {
     CompletedMilestones: number[];
     Skills: Skills;
     WorldData: {[key: string]: WorldData};
+}
+
+// Stat block for holding base and computed stats
+interface Stats {
+    CurrentHealth: number;
+    CurrentMana: number;
+    MaxHealth: number;
+    MaxMana: number;
+    MovementSpeed: number;
+    HealthRegeneration: number;
+    ManaRegeneration: number;
+    CriticalStrikeChance: number;
+    CriticalStrikeDamageModifier: number;
+    LifeSteal: number;
+    Defence_Pierce: number;
+    Defence_Impact: number;
+    Defence_Slash: number;
+    Defence_Fire: number;
+    Defence_Cold: number;
+    Defence_Lightning: number;
+    Defence_Poison: number;
+    Defence_Arcane: number;
+    Defence_True: number;
+    Defence_Bleed: number;
+    Defence_Radiant: number;
+    Defence_Corruption: number;
+    Defence_Sonic: number;
+    Fortitude: number;
+    Versatility: number;
+    Vigor: number;
+    Expertise: number;
+    Arcana: number;
+    Personality: number;
+    Fortune: number;
+    Grit: number;
 }

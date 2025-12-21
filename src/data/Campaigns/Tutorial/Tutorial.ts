@@ -1,7 +1,9 @@
-const TutorialIsland: Campaign = {
+import { TutorsIsland } from "./TutorsIsland";
+
+const Tutorial: Campaign = {
     
-    ID: "Tutorial Island",
-    Name: "Tutorial Island",
+    ID: "Tutorial",
+    Name: "Tutorial",
     Description: `The perfect place to learn the basics of Evereign. Explore a serene island, gather resources, learn to fight and build your first town in this tranquil setting.`,
 
     // The starting map and coordinates for the player
@@ -23,9 +25,9 @@ const TutorialIsland: Campaign = {
     },
 
     WorldData: {
-        "Tutors Island": {},
+        "Tutors Island": TutorsIsland,
     },
 
 }
 
-export default TutorialIsland;
+export default Tutorial;

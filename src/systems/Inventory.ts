@@ -204,17 +204,17 @@ export default class Inventory {
         // General Character Information
         this.LevelClassText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 50, `Level ${GD.Level} ${GD.Race} ${GD.Class}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
         this.ExperienceText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 80, `Experience: ${GD.Experience}/${GD.NextLevelExperience}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.HealthText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 110, `Health: ${this.Game.PlayerCharacter.Health}/${this.Game.PlayerCharacter.MaxHealth} (+${this.Game.PlayerCharacter.HealthRegeneration})`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.ManaText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 140, `Mana: ${this.Game.PlayerCharacter.Mana}/${this.Game.PlayerCharacter.MaxMana} (+${this.Game.PlayerCharacter.ManaRegeneration})`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.MovementSpeedText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 170, `Movement Speed: ${this.Game.PlayerCharacter.MovementSpeed}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.FortitudeText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 200, `Fortitude: ${this.Game.PlayerCharacter.Fortitude}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.VersatilityText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 200, `Versatility: ${this.Game.PlayerCharacter.Versatility}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.VigorText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 230, `Vigor: ${this.Game.PlayerCharacter.Vigor}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.ExpertiseText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 230, `Expertise: ${this.Game.PlayerCharacter.Expertise}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.ArcanaText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 260, `Arcana: ${this.Game.PlayerCharacter.Arcana}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.PersonalityText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 260, `Personality: ${this.Game.PlayerCharacter.Personality}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.FortuneText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 290, `Fortune: ${this.Game.PlayerCharacter.Fortune}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
-        this.GritText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 290, `Grit: ${this.Game.PlayerCharacter.Grit}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.HealthText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 110, `Health: ${GD.Stats.CurrentHealth}/${GD.ComputedStats.MaxHealth} (+${GD.ComputedStats.HealthRegeneration})`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.ManaText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 140, `Mana: ${GD.Stats.CurrentMana}/${GD.ComputedStats.MaxMana} (+${GD.ComputedStats.ManaRegeneration})`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.MovementSpeedText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 170, `Movement Speed: ${GD.ComputedStats.MovementSpeed}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.FortitudeText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 200, `Fortitude: ${GD.ComputedStats.Fortitude}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.VersatilityText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 200, `Versatility: ${GD.ComputedStats.Versatility}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.VigorText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 230, `Vigor: ${GD.ComputedStats.Vigor}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.ExpertiseText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 230, `Expertise: ${GD.ComputedStats.Expertise}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.ArcanaText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 260, `Arcana: ${GD.ComputedStats.Arcana}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.PersonalityText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 260, `Personality: ${GD.ComputedStats.Personality}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.FortuneText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 290, `Fortune: ${GD.ComputedStats.Fortune}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
+        this.GritText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 290, `Grit: ${GD.ComputedStats.Grit}`, { fontFamily: "Augusta", fontSize: 20 }).setOrigin(0, 0.5).setVisible(false);
         this.CharacterTexts = this.UI.add.group().setVisible(false).addMultiple([
             this.LevelClassText,
             this.ExperienceText,
@@ -233,18 +233,18 @@ export default class Inventory {
 
         // Defences Menu
         this.DefencesHeader = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 330, `Defences`, { fontFamily: "Augusta", fontSize: 22 }).setOrigin(0, 0.5).setVisible(false);
-        this.PierceText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 50, `Pierce: ${this.Game.PlayerCharacter.Defence_Pierce}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Pierce'] }).setOrigin(0, 0.5).setVisible(false);
-        this.ImpactText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 50, `Impact: ${this.Game.PlayerCharacter.Defence_Impact}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Impact'] }).setOrigin(0, 0.5).setVisible(false);
-        this.SlashText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 100, `Slash: ${this.Game.PlayerCharacter.Defence_Slash}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Slash'] }).setOrigin(0, 0.5).setVisible(false);
-        this.FireText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 100, `Fire: ${this.Game.PlayerCharacter.Defence_Fire}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Fire']}).setOrigin(0, 0.5).setVisible(false);
-        this.ColdText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 150, `Cold: ${this.Game.PlayerCharacter.Defence_Cold}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Cold'] }).setOrigin(0, 0.5).setVisible(false);
-        this.LightningText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 150, `Lightning: ${this.Game.PlayerCharacter.Defence_Lightning}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Lightning'] }).setOrigin(0, 0.5).setVisible(false);
-        this.PoisonText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 200, `Poison: ${this.Game.PlayerCharacter.Defence_Poison}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Poison'] }).setOrigin(0, 0.5).setVisible(false);
-        this.ArcaneText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 200, `Arcane: ${this.Game.PlayerCharacter.Defence_Arcane}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Arcane'] }).setOrigin(0, 0.5).setVisible(false);
-        this.BleedText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 250, `Bleed: ${this.Game.PlayerCharacter.Defence_Bleed}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Bleed'] }).setOrigin(0, 0.5).setVisible(false);
-        this.RadiantText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 250, `Radiant: ${this.Game.PlayerCharacter.Defence_Radiant}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Radiant'] }).setOrigin(0, 0.5).setVisible(false);
-        this.CorruptionText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 300, `Corruption: ${this.Game.PlayerCharacter.Defence_Corruption}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Corruption'] }).setOrigin(0, 0.5).setVisible(false);
-        this.SonicText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 300, `Sonic: ${this.Game.PlayerCharacter.Defence_Sonic}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Sonic'] }).setOrigin(0, 0.5).setVisible(false);
+        this.PierceText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 50, `Pierce: ${GD.ComputedStats.Defence_Pierce}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Pierce'] }).setOrigin(0, 0.5).setVisible(false);
+        this.ImpactText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 50, `Impact: ${GD.ComputedStats.Defence_Impact}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Impact'] }).setOrigin(0, 0.5).setVisible(false);
+        this.SlashText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 100, `Slash: ${GD.ComputedStats.Defence_Slash}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Slash'] }).setOrigin(0, 0.5).setVisible(false);
+        this.FireText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 100, `Fire: ${GD.ComputedStats.Defence_Fire}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Fire']}).setOrigin(0, 0.5).setVisible(false);
+        this.ColdText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 150, `Cold: ${GD.ComputedStats.Defence_Cold}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Cold'] }).setOrigin(0, 0.5).setVisible(false);
+        this.LightningText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 150, `Lightning: ${GD.ComputedStats.Defence_Lightning}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Lightning'] }).setOrigin(0, 0.5).setVisible(false);
+        this.PoisonText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 200, `Poison: ${GD.ComputedStats.Defence_Poison}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Poison'] }).setOrigin(0, 0.5).setVisible(false);
+        this.ArcaneText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 200, `Arcane: ${GD.ComputedStats.Defence_Arcane}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Arcane'] }).setOrigin(0, 0.5).setVisible(false);
+        this.BleedText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 250, `Bleed: ${GD.ComputedStats.Defence_Bleed}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Bleed'] }).setOrigin(0, 0.5).setVisible(false);
+        this.RadiantText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 250, `Radiant: ${GD.ComputedStats.Defence_Radiant}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Radiant'] }).setOrigin(0, 0.5).setVisible(false);
+        this.CorruptionText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 300, `Corruption: ${GD.ComputedStats.Defence_Corruption}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Corruption'] }).setOrigin(0, 0.5).setVisible(false);
+        this.SonicText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 300, `Sonic: ${GD.ComputedStats.Defence_Sonic}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Sonic'] }).setOrigin(0, 0.5).setVisible(false);
         this.DefencesTexts = this.UI.add.group().setVisible(false).addMultiple([
             this.PierceText,
             this.ImpactText,
@@ -377,31 +377,32 @@ export default class Inventory {
     }
 
     public UpdateStatsTexts () {
-        this.MovementSpeedText.setText(`Movement Speed: ${this.Game.PlayerCharacter.MovementSpeed}`);
+        const stats = GD.ComputedStats;
+        this.MovementSpeedText.setText(`Movement Speed: ${stats.MovementSpeed}`);
         this.LevelClassText.setText(`Level ${GD.Level} ${GD.Race} ${GD.Class}`);
         this.ExperienceText.setText(`Experience: ${GD.Experience}/${GD.NextLevelExperience}`);
-        this.HealthText.setText(`Health: ${this.Game.PlayerCharacter.Health}/${this.Game.PlayerCharacter.MaxHealth} (+${this.Game.PlayerCharacter.HealthRegeneration})`);
-        this.ManaText.setText(`Mana: ${this.Game.PlayerCharacter.Mana}/${this.Game.PlayerCharacter.MaxMana} (+${this.Game.PlayerCharacter.ManaRegeneration})`);
-        this.FortitudeText.setText(`Fortitude: ${this.Game.PlayerCharacter.Fortitude}`);
-        this.VersatilityText.setText(`Versatility: ${this.Game.PlayerCharacter.Versatility}`);
-        this.VigorText.setText(`Vigor: ${this.Game.PlayerCharacter.Vigor}`);
-        this.ExpertiseText.setText(`Expertise: ${this.Game.PlayerCharacter.Expertise}`);
-        this.ArcanaText.setText(`Arcana: ${this.Game.PlayerCharacter.Arcana}`);
-        this.PersonalityText.setText(`Personality: ${this.Game.PlayerCharacter.Personality}`);
-        this.FortuneText.setText(`Fortune: ${this.Game.PlayerCharacter.Fortune}`);
-        this.GritText.setText(`Grit: ${this.Game.PlayerCharacter.Grit}`);
-        this.PierceText.setText(`Pierce: ${this.Game.PlayerCharacter.Defence_Pierce}`);
-        this.ImpactText.setText(`Impact: ${this.Game.PlayerCharacter.Defence_Impact}`);
-        this.SlashText.setText(`Slash: ${this.Game.PlayerCharacter.Defence_Slash}`);
-        this.FireText.setText(`Fire: ${this.Game.PlayerCharacter.Defence_Fire}`);
-        this.ColdText.setText(`Cold: ${this.Game.PlayerCharacter.Defence_Cold}`);
-        this.LightningText.setText(`Lightning: ${this.Game.PlayerCharacter.Defence_Lightning}`);
-        this.PoisonText.setText(`Poison: ${this.Game.PlayerCharacter.Defence_Poison}`);
-        this.ArcaneText.setText(`Arcane: ${this.Game.PlayerCharacter.Defence_Arcane}`);
-        this.BleedText.setText(`Bleed: ${this.Game.PlayerCharacter.Defence_Bleed}`);
-        this.RadiantText.setText(`Radiant: ${this.Game.PlayerCharacter.Defence_Radiant}`);
-        this.CorruptionText.setText(`Corruption: ${this.Game.PlayerCharacter.Defence_Corruption}`);
-        this.SonicText.setText(`Sonic: ${this.Game.PlayerCharacter.Defence_Sonic}`);
+        this.HealthText.setText(`Health: ${GD.Stats.CurrentHealth}/${stats.MaxHealth} (+${stats.HealthRegeneration})`);
+        this.ManaText.setText(`Mana: ${GD.Stats.CurrentMana}/${stats.MaxMana} (+${stats.ManaRegeneration})`);
+        this.FortitudeText.setText(`Fortitude: ${stats.Fortitude}`);
+        this.VersatilityText.setText(`Versatility: ${stats.Versatility}`);
+        this.VigorText.setText(`Vigor: ${stats.Vigor}`);
+        this.ExpertiseText.setText(`Expertise: ${stats.Expertise}`);
+        this.ArcanaText.setText(`Arcana: ${stats.Arcana}`);
+        this.PersonalityText.setText(`Personality: ${stats.Personality}`);
+        this.FortuneText.setText(`Fortune: ${stats.Fortune}`);
+        this.GritText.setText(`Grit: ${stats.Grit}`);
+        this.PierceText.setText(`Pierce: ${stats.Defence_Pierce}`);
+        this.ImpactText.setText(`Impact: ${stats.Defence_Impact}`);
+        this.SlashText.setText(`Slash: ${stats.Defence_Slash}`);
+        this.FireText.setText(`Fire: ${stats.Defence_Fire}`);
+        this.ColdText.setText(`Cold: ${stats.Defence_Cold}`);
+        this.LightningText.setText(`Lightning: ${stats.Defence_Lightning}`);
+        this.PoisonText.setText(`Poison: ${stats.Defence_Poison}`);
+        this.ArcaneText.setText(`Arcane: ${stats.Defence_Arcane}`);
+        this.BleedText.setText(`Bleed: ${stats.Defence_Bleed}`);
+        this.RadiantText.setText(`Radiant: ${stats.Defence_Radiant}`);
+        this.CorruptionText.setText(`Corruption: ${stats.Defence_Corruption}`);
+        this.SonicText.setText(`Sonic: ${stats.Defence_Sonic}`);
     }
 
     Show () {

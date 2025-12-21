@@ -168,9 +168,9 @@ export default class CharacterPanel {
 
 
     UpdateVitalsBars () {
-        let HealthWidth = (GD.CurrentHealth / GD.MaxHealth * this.LifeBG.width);
+        let HealthWidth = (GD.Stats.CurrentHealth / GD.ComputedStats.MaxHealth * this.LifeBG.width);
         this.LifeBar.setDisplaySize(HealthWidth, 30);
-        let ManaWidth = (GD.CurrentMana / GD.MaxHealth * this.ManaBG.width);
+        let ManaWidth = (GD.Stats.CurrentMana / GD.ComputedStats.MaxMana * this.ManaBG.width);
         this.ManaBar.setDisplaySize(ManaWidth, 30);
     }
 

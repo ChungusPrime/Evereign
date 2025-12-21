@@ -9,6 +9,7 @@ import ItemData from '../data/ItemData';
 import Campaigns from '../data/Campaigns';
 import Help from '../data/HelpText';
 import MenuInput from '../game_objects/Menu_Input';
+import { extractInitialWorldData } from '../utils/WorldDataUtils';
 
 export default class Menu extends Phaser.Scene {
 
@@ -271,20 +272,20 @@ export default class Menu extends Phaser.Scene {
             Character.Difficulty = this.difficultySelect.CurrentValue;
             Character.Reincarnation = 1;
 
-            Character.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
-            Character.Versatility = Race.Attributes.Versatility + Class.AttributeBonuses.Versatility;
-            Character.Vigor = Race.Attributes.Vigor + Class.AttributeBonuses.Vigor;
-            Character.Expertise = Race.Attributes.Expertise + Class.AttributeBonuses.Expertise;
-            Character.Personality = Race.Attributes.Personality + Class.AttributeBonuses.Personality;
-            Character.Fortune = Race.Attributes.Fortune + Class.AttributeBonuses.Fortune;
-            Character.Grit = Race.Attributes.Grit + Class.AttributeBonuses.Grit;
-            Character.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
+            Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
+            Character.Stats.Versatility = Race.Attributes.Versatility + Class.AttributeBonuses.Versatility;
+            Character.Stats.Vigor = Race.Attributes.Vigor + Class.AttributeBonuses.Vigor;
+            Character.Stats.Expertise = Race.Attributes.Expertise + Class.AttributeBonuses.Expertise;
+            Character.Stats.Personality = Race.Attributes.Personality + Class.AttributeBonuses.Personality;
+            Character.Stats.Fortune = Race.Attributes.Fortune + Class.AttributeBonuses.Fortune;
+            Character.Stats.Grit = Race.Attributes.Grit + Class.AttributeBonuses.Grit;
+            Character.Stats.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
 
-            Character.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
-            Character.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
-            Character.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
-            Character.MaxHealth = Character.CurrentHealth;
-            Character.MaxMana = Character.CurrentMana;
+            Character.Stats.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
+            Character.Stats.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
+            Character.Stats.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
+            Character.Stats.MaxHealth = Character.Stats.CurrentHealth;
+            Character.Stats.MaxMana = Character.Stats.CurrentMana;
             Character.Level = 1;
             Character.AttributePoints = 0;
 
@@ -294,19 +295,12 @@ export default class Menu extends Phaser.Scene {
             Character.CurrentMap = Campaign.StartingMap;
             Character.X = Campaign.StartingX;
             Character.Y = Campaign.StartingY;
-            Character.WorldData = {};
 
             const CampaignData = Campaigns.find( c => c.Name == Character.Campaign );
 
-            // Copy the initial data property for each object in this campaign to the character world data
-            if (CampaignData) {
-                Object.keys(CampaignData.WorldData).forEach((RegionData) => {
-                    Character.WorldData[RegionData] = {};
-                    Object.keys(CampaignData.WorldData[RegionData]).forEach((obj) => {
-                        Character.WorldData[RegionData][obj] = { ...CampaignData.WorldData[RegionData][obj].InitialData ?? null };
-                    });
-                });
-            }
+            // Copy only the dynamic InitialData to character save data
+            // Static data (Type, Name, Level, etc.) stays in Campaign and is looked up at runtime
+            Character.WorldData = CampaignData ? extractInitialWorldData(CampaignData.WorldData) : {};
             
             // Add starting items from chosen class to character inventory
             Object.entries(Class.Items).forEach( (item) => {

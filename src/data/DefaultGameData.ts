@@ -1,4 +1,8 @@
-const DefaultGameData: GameData = {
+import { extractInitialWorldData } from "../utils/WorldDataUtils";
+import DefaultCharacter from "./DefaultCharacter";
+import Campaigns from "../data/Campaigns";
+
+let DefaultGameData: GameData = {
 
     Controls: {
         Move_Up: 'w',
@@ -30,8 +34,13 @@ const DefaultGameData: GameData = {
 
     LastCharacterPlayed: null,
 
-    Characters: {}
+    Characters: {
+        'Bithmas': DefaultCharacter
+    }
 
 };
+
+const CampaignData = Campaigns.find( c => c.Name == "Tutorial" );
+DefaultGameData.Characters['Bithmas'].WorldData = extractInitialWorldData(CampaignData.WorldData);
 
 export default DefaultGameData;
