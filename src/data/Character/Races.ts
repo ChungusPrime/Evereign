@@ -21,6 +21,8 @@ const RaceData: RaceData[] = [
 
         Traits: ["well_connected", "on_the_frontier"],
 
+        Skins: ["1", "2", "3"],
+
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -46,6 +48,7 @@ const RaceData: RaceData[] = [
         - You take reduced damage from natural hazards
         `,
         Traits: ["forest_kin"],
+        Skins: ["1", "2", "3"],
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -82,6 +85,7 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
+        Skins: []
     },
     
     {
@@ -106,7 +110,7 @@ const RaceData: RaceData[] = [
             Component_2: { ID: "salvaged_crodite_plate_lv1", Quantity: 1 },
             Component_3: { ID: "salvaged_sustain_unit_1", Quantity: 1 },
         },
-
+        Skins: []
     },
 
     {
@@ -123,6 +127,7 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
+        Skins: []
     },
 
     {
@@ -139,6 +144,7 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
+        Skins: []
     },
 
     {
@@ -155,6 +161,7 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
+        Skins: []
     },
 
     {
@@ -170,7 +177,8 @@ const RaceData: RaceData[] = [
             Fortune: 5,
             Grit: 5,
             Arcana: 5
-        }
+        },
+        Skins: []
     },
 
     {
@@ -186,7 +194,8 @@ const RaceData: RaceData[] = [
             Fortune: 5,
             Grit: 5,
             Arcana: 5
-        }
+        },
+        Skins: []
     },
 
     {
@@ -203,6 +212,7 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
+        Skins: []
     }
 
 ];

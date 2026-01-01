@@ -77,6 +77,7 @@ interface RaceData {
     Name: string;
     Description: string;
     Traits: string[];
+    Skins: string[];
     Attributes: {
         [key: string]: number; 
     }
