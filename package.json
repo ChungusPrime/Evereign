@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "webpack --config webpack.config.js --mode=development --watch",
         "prod": "webpack --config webpack.config.js --mode=production",
-        "build": "npm install && npm run prod && electron-builder",
+        "build": "npm run prod && electron-builder",
         "build-standalone": "electron-builder",
         "start": "electron ."
     },
