@@ -20,17 +20,17 @@ export default class WillowTree extends Phaser.Physics.Arcade.Sprite {
     public HarvestExperienceValue = 5;
 
     constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
-        super( scene, object.x, object.y, "tree03_s_01_animation", 0);
+        super( scene, object.x, object.y, "WillowTree", 0);
         scene.physics.add.existing(this);
         scene.add.existing(this);
         this.setOrigin(0, 1)
-        .setDisplaySize(100, 125)
+        .setDisplaySize(object.width, object.height)
         .setData("type", "Willow Tree")
-        .setDisplaySize(100, 120)
+        .setDisplaySize(object.width, object.height)
         .setPipeline("Light2D")
         .setDepth(100)
         .setBodySize(40, 60)
-        .play('tree-03-anim')
+        //.play('tree-03-anim')
         .setImmovable(true)
         .setInteractive()
         .on('pointerdown', () => {

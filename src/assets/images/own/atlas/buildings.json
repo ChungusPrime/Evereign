@@ -5,7 +5,7 @@
 			"format": "RGBA8888",
 			"size": {
 				"w": 478,
-				"h": 1297
+				"h": 1148
 			},
 			"scale": 1,
 			"frames": [
@@ -136,27 +136,6 @@
 					}
 				},
 				{
-					"filename": "BallistaTower",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 1,
-						"w": 62,
-						"h": 62
-					},
-					"frame": {
-						"x": 194,
-						"y": 628,
-						"w": 62,
-						"h": 62
-					}
-				},
-				{
 					"filename": "dwelling4",
 					"rotated": false,
 					"trimmed": false,
@@ -178,7 +157,7 @@
 					}
 				},
 				{
-					"filename": "dwelling3",
+					"filename": "dwelling2",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -187,15 +166,15 @@
 					},
 					"spriteSourceSize": {
 						"x": 0,
-						"y": 38,
+						"y": 36,
 						"w": 128,
-						"h": 90
+						"h": 92
 					},
 					"frame": {
 						"x": 216,
 						"y": 384,
 						"w": 128,
-						"h": 90
+						"h": 92
 					}
 				},
 				{
@@ -262,6 +241,27 @@
 					}
 				},
 				{
+					"filename": "dwelling3",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 38,
+						"w": 128,
+						"h": 90
+					},
+					"frame": {
+						"x": 0,
+						"y": 970,
+						"w": 128,
+						"h": 90
+					}
+				},
+				{
 					"filename": "farm1",
 					"rotated": false,
 					"trimmed": true,
@@ -277,30 +277,9 @@
 					},
 					"frame": {
 						"x": 0,
-						"y": 970,
+						"y": 1060,
 						"w": 183,
 						"h": 88
-					}
-				},
-				{
-					"filename": "dwelling2",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 128,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 13,
-						"y": 45,
-						"w": 102,
-						"h": 83
-					},
-					"frame": {
-						"x": 0,
-						"y": 1058,
-						"w": 102,
-						"h": 83
 					}
 				},
 				{
@@ -312,16 +291,37 @@
 						"h": 128
 					},
 					"spriteSourceSize": {
-						"x": 14,
-						"y": 46,
-						"w": 100,
-						"h": 82
+						"x": 0,
+						"y": 40,
+						"w": 128,
+						"h": 88
 					},
 					"frame": {
-						"x": 0,
-						"y": 1141,
-						"w": 100,
-						"h": 82
+						"x": 128,
+						"y": 970,
+						"w": 128,
+						"h": 88
+					}
+				},
+				{
+					"filename": "BallistaTower",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 51,
+						"w": 60,
+						"h": 77
+					},
+					"frame": {
+						"x": 192,
+						"y": 860,
+						"w": 60,
+						"h": 77
 					}
 				},
 				{
@@ -339,8 +339,8 @@
 						"h": 74
 					},
 					"frame": {
-						"x": 0,
-						"y": 1223,
+						"x": 252,
+						"y": 860,
 						"w": 148,
 						"h": 74
 					}

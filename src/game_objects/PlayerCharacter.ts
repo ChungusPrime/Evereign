@@ -133,7 +133,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         if ( this.body.velocity.x == 0 && this.body.velocity.y == 0 ) {
             this.footstepSoundInterval = 0;
             if ( !this.anims.isPlaying || this.anims.currentAnim.key != "Idle" ) {
-                this.play({ key: "Idle" });
+                //this.play({ key: "Idle" });
             }
         } else {
             
@@ -142,7 +142,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
             }
                 
             if ( !this.anims.isPlaying || this.anims.currentAnim.key != "Move" ) {
-                this.play("Move");
+                //this.play("Move");
             }
 
             this.footstepSoundInterval += delta;

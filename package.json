@@ -1,7 +1,7 @@
 {
     "name": "evereign",
-    "version": "3.9.9",
-    "description": "Evereign",
+    "version": "0.0.1",
+    "description": "A fantasy MMORPG built with Phaser and Electron.",
     "main": "main.js",
     "scripts": {
         "dev": "webpack --config webpack.config.js --mode=development --watch",

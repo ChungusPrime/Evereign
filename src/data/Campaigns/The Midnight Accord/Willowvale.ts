@@ -28,6 +28,13 @@ export const Willowvale: WorldData = {
         },
     },
 
+    "Discover_Briarton": {
+        Type: "Trigger",
+        InitialData: {
+            Active: true
+        },
+    },
+
     "LP_Ballista_Tower_1": {
         Type: "Ballistae Tower",
         InitialData: {}

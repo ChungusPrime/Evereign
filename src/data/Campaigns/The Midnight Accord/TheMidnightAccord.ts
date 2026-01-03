@@ -17,8 +17,8 @@ const TheMidnightAccord: Campaign = {
 
     // The starting map and coordinates for the player
     StartingMap: "Willowvale",
-    StartingX: 6333,
-    StartingY: 5692,
+    StartingX: 6332,
+    StartingY: 5245,
     StartingHour: 9,
     StartingMinute: 0,
 

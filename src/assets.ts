@@ -134,7 +134,7 @@ export const Manifest: AssetManifest = {
         
         // Characters/Enemies
         { key: 'characters', path: require('./assets/images/characters.png'), frameWidth: 16, frameHeight: 16 },
-        { key: 'Orcs', path: require('./assets/images/own/Orcs.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'Orcs', path: require('./assets/images/own/characters/Orcs.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'monsters', path: require('./assets/images/monsters.png'), frameWidth: 32, frameHeight: 32 },
         
         // Items/Resources
@@ -178,7 +178,9 @@ export const Manifest: AssetManifest = {
         { key: 'RA_Cavern_Full', path: require('./assets/images/rogue-adventure/RA_Cavern_Full.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'RA_Ship', path: require('./assets/images/rogue-adventure/RA_Ship.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'RA_Village_Animation03', path: require('./assets/images/rogue-adventure/RA_Village_Animation03.png'), frameWidth: 64, frameHeight: 64 },
-        
+
+        { key: 'WillowTree', path: require('./assets/images/own/WillowTree.png'), frameWidth: 192, frameHeight: 192 },
+
         // Special/Animated
         { key: 'tree03_s_01_animation', path: require('./assets/images/rogue-adventure/tree03_s_01_animation.png'), frameWidth: 128, frameHeight: 160 },
         { key: 'XanthirGate', path: require('./assets/images/rogue-adventure/XanthirGate.png'), frameWidth: 92, frameHeight: 114 },
@@ -208,7 +210,7 @@ export const Manifest: AssetManifest = {
     // ========================================================================
     atlases: [
         { key: 'inputs', texturePath: require('./assets/images/inputatlas.png'), atlasPath: require('./assets/images/inputatlas.json') },
-        { key: 'Buildings', texturePath: require('./assets/images/own/atlas/buildings.png'), atlasPath: require('./assets/images/own/atlas/buildings.json'), normalMapPath: require('./assets/images/own/atlas/buildings_normal.png') },
+        { key: 'Buildings', texturePath: require('./assets/images/own/atlas/buildings.png'), atlasPath: require('./assets/images/own/atlas/buildings.json'), /*normalMapPath: require('./assets/images/own/atlas/buildings_normal.png')*/ },
         { key: 'Kenney-UI', texturePath: require('./assets/images/KenneyUI.png'), atlasPath: require('./assets/images/KenneyUI.json') },
     ],
 
@@ -216,7 +218,7 @@ export const Manifest: AssetManifest = {
     // Aseprite Animations
     // ========================================================================
     aseprites: [
-        { key: 'Operative', texturePath: require('./assets/images/own/Human-Operative.png'), atlasPath: require('./assets/images/own/Human-Operative.json') },
+        { key: 'Operative', texturePath: require('./assets/images/own/characters/Humans.png'), atlasPath: require('./assets/images/own/characters/Humans.json') },
         { key: 'Journal', texturePath: require('./assets/images/Journal.png'), atlasPath: require('./assets/images/Journal.json') },
         { key: 'Panel-Borders', texturePath: require('./assets/images/panel-borders.png'), atlasPath: require('./assets/images/panel-borders.json') },
     ],
