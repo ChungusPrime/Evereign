@@ -1,7 +1,10 @@
-const ScipiusBogtrotter = {
+const ScipiusBogtrotter: DialogueData = {
+
     FirstTimeGreeting: `Good day sir, I haven't seen your face before and you're certainly better dressed than anyone in Willowvale. 
                         Do you travel from the Capital? I would be happy to discuss local tidings with you.`,
+                        
     NormalGreeting: `Greetings, {playerName}. How can I help you?`,
+
     Subjects: {
 
         "Ask about Little Piddleton": {
@@ -13,16 +16,15 @@ const ScipiusBogtrotter = {
 
         "Tell Scipius of your vision": {
 
-            // The ID of the quest to complete
+            
             CompleteQuest: "willowvale_little_piddleton",
 
-            // The ID of the quest to progress
             QuestProgressID: "willowvale_little_piddleton",
 
             // The specific objective of the quest to add progress to
             QuestProgressStep: 1,
 
-            // Dont show dialogue if the player is on a specific quest
+            
             HideIfOnQuest: "willowvale_little_piddleton_goblins",
             
             Text: `Well, that is certainly quite the tale. It's not entirely unbelievable, especially given recent events. Currently all of our efforts are focussed on quelling the recent 

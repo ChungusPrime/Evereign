@@ -146,31 +146,51 @@ interface StaticBuildingData {
 }
 
 interface DialogueData {
-    [key: string]: {
-        FirstTimeGreeting?: string;
-        NormalGreeting?: string;
-        Subjects: {
-            [key: string]: {
+
+    // Greeting text for the first time meeting the NPC
+    FirstTimeGreeting?: string;
+
+    // Standard greeting text for subsequent interactions
+    NormalGreeting?: string;
+
+    // Dialogue subjects available with the NPC
+    Subjects: {
+        [key: string]: {
+
+            Text: string;
+            Hidden?: boolean;
+            
+            // The ID of the quest to progress
+            QuestProgressID?: string;
+
+            // The specific objective of the quest to add progress to
+            QuestProgressStep?: number;
+
+            // The ID of the quest to complete
+            CompleteQuest?: string;
+
+            RequiresFlag?: string;
+
+            Locked?: boolean;
+
+            // Dont show dialogue if the player is on a specific quest
+            HideIfOnQuest?: string;
+
+            RequiresQuest?: string;
+
+            Responses?: { 
                 Text: string;
-                Hidden?: boolean;
-                CompleteQuest?: string;
-                QuestProgressID?: string;
-                QuestProgressStep?: number;
-                HideIfOnQuest?: string;
-                RequiresQuest?: string;
-                Responses?: { 
-                    Text: string;
-                    Flag: string;
-                    EndDialogue?: boolean;
-                    GrantQuest?: string;
-                    GoToSubject?: string;
-                    GoToMain?: boolean;
-                    DestroyObstacles?: number[];
-                }[];
-                OtherPerson?: string;
-            }
+                Flag: string;
+                EndDialogue?: boolean;
+                GrantQuest?: string;
+                GoToSubject?: string;
+                GoToMain?: boolean;
+                DestroyObstacles?: number[];
+            }[];
+            OtherPerson?: string;
         }
     }
+
 }
 
 interface Job {
