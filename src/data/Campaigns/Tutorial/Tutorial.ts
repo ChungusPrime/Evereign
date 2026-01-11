@@ -5,11 +5,14 @@ const Tutorial: Campaign = {
     ID: "Tutorial",
     Name: "Tutorial",
     Description: `The perfect place to learn the basics of Evereign. Explore a serene island, gather resources, learn to fight and build your first town in this tranquil setting.`,
+    Available: false,
 
     // The starting map and coordinates for the player
     StartingMap: "Tutors Island",
     StartingX: 6222,
     StartingY: 12136,
+    StartingHour: 9,
+    StartingMinute: 0,
 
     WorldMapInformation: {
         "Tutors Island": {

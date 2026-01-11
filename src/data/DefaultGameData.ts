@@ -1,8 +1,4 @@
-import { extractInitialWorldData } from "../utils/WorldDataUtils";
-import DefaultCharacter from "./DefaultCharacter";
-import Campaigns from "../data/Campaigns";
-
-let DefaultGameData: GameData = {
+const DefaultGameData: GameData = {
 
     Controls: {
         Move_Up: 'w',
@@ -26,21 +22,16 @@ let DefaultGameData: GameData = {
     },
 
     Options: {
-        Show_Aim_Indicator: false,
-        Show_Damage_Numbers: true,
-        Show_Enemy_Health_Bars: true,
-        Show_Building_Health_Bars: true,
+        "Aim Indicator": false,
+        "Damage Numbers": true,
+        "Health Bars": true,
     },
 
     LastCharacterPlayed: null,
-
-    Characters: {
-        'Bithmas': DefaultCharacter
-    }
-
+    SoulGems: 0,
+    CompletedCampaigns: [],
+    ReincarnationTraits: [],
+    Characters: {}
 };
-
-const CampaignData = Campaigns.find( c => c.Name == "Tutorial" );
-DefaultGameData.Characters['Bithmas'].WorldData = extractInitialWorldData(CampaignData.WorldData);
 
 export default DefaultGameData;

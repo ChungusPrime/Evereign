@@ -15,21 +15,12 @@ const ScipiusBogtrotter: DialogueData = {
         },
 
         "Tell Scipius of your vision": {
-
-            
             CompleteQuest: "willowvale_little_piddleton",
-
             QuestProgressID: "willowvale_little_piddleton",
-
-            // The specific objective of the quest to add progress to
             QuestProgressStep: 1,
-
-            
             HideIfOnQuest: "willowvale_little_piddleton_goblins",
-            
             Text: `Well, that is certainly quite the tale. It's not entirely unbelievable, especially given recent events. Currently all of our efforts are focussed on quelling the recent 
                    embiggening of goblin numbers in Willowvale. If you were willing to lend your aid to us, it would allow us to offer our help to your cause.`,
-                   
             Responses: [
                 { Text: 'Offer to help Scipius', Flag: "AcceptQuest", GrantQuest: "willowvale_little_piddleton_goblins", GoToSubject: "Quest Accepted", DestroyObstacles: [725, 726, 727, 728] },
                 { Text: 'Decline to help', Flag: "QuestRejected", GoToSubject: "Quest Rejected" }

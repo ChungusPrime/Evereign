@@ -5,7 +5,7 @@ export default class Torch extends Phaser.GameObjects.Sprite {
     public scene: Game;
     public light: Phaser.GameObjects.Light;
 
-    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
+    constructor ( scene: Game, object: { x: number, y: number, width: number, height: number }, isPlayerOwned: boolean = false ) {
         super( scene, object.x, object.y, "RA_Village_Animations", 20 );
         this.scene = scene;
         scene.add.existing(this);

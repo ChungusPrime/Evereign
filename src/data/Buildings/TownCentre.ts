@@ -4,7 +4,7 @@ const TownCentreData: BuildingData = {
     Desc: `The Town Centre provides housing for people and projects an area in which other buildings can be built,
     but the Town Centre itself can be placed anywhere, as long as there is enough space. 
     Only one Town Centre can be built per map region.`,
-    Size: { Width: 224, Height: 180 },
+    Size: { Width: 256, Height: 256 },
     Spritesheet: "Buildings",
     Sprite: "town-centre-1",
     PlotSize: { Width: 224, Height: 180 },

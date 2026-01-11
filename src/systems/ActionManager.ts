@@ -48,8 +48,8 @@ export default class ActionManager {
             
         this.CurrentActivity.Delta = 0;
 
-        if ( ObjectType == "Oak Tree" ) {
-            this.CurrentActivity.Type = "Cutting Oak Tree";
+        if ( ObjectType == "Willow Tree" ) {
+            this.CurrentActivity.Type = "Cutting Willow Tree";
             this.scene.sound.play("woodcutting", { loop: true });
         } else if ( ObjectType == "Marigold" ) {
             this.CurrentActivity.Type = "Harvesting Marigold";
@@ -98,17 +98,17 @@ export default class ActionManager {
 
         let ev = { message: "", sprite1: "", sprite2: 0, x: this.scene.PlayerCharacter.x, y: this.scene.PlayerCharacter.y };
 
-        if ( this.CurrentActivity.Type == "Cutting Oak Tree" ) {
-            ev.message = "+1 Oak Log";
+        if ( this.CurrentActivity.Type == "Cutting Willow Tree" ) {
+            ev.message = "+1 Willow Log";
             ev.sprite1 = "general";
             ev.sprite2 = 21;
-            this.scene.Inventory.AddItem("log_oak", 1);
+            this.scene.Inventory.AddItem("log_willow", 1);
             GD.Skills.Forestry += 5;
         } else if ( this.CurrentActivity.Type == "Harvesting Marigold" ) {
             ev.message = "+1 Marigold";
             ev.sprite1 = "flowers";
             ev.sprite2 = 32;
-            //this.scene.Inventory.AddItem("marigold", 1);
+            this.scene.Inventory.AddItem("marigold", 1);
             GD.Skills.Botany += 5;
         } else if ( this.CurrentActivity.Type == "Harvesting Munkle's Brightcap" ) {
             ev.message = "+1 Munkle's Brightcap";

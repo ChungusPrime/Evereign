@@ -5,7 +5,7 @@ export default class TorchPole extends Phaser.GameObjects.Sprite {
     public scene: Game;
     public light: Phaser.GameObjects.Light;
 
-    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
+    constructor ( scene: Game, object: { x: number, y: number, width: number, height: number, flippedHorizontal: boolean }, isPlayerOwned: boolean = false ) {
         super( scene, object.x, object.y, "RA_Village_Animation03", 0 );
         this.scene = scene;
         scene.add.existing(this);
@@ -13,7 +13,12 @@ export default class TorchPole extends Phaser.GameObjects.Sprite {
         .setDisplaySize(64, 64)
         .setPipeline("Light2D")
         .play({ key: "torch-pole-anim", repeat: -1 })
-        this.light = scene.lights.addLight(object.x + 32, object.y - 32, 256, 0xFE9900, 1);
+
+        if ( object.flippedHorizontal ) {
+            this.setFlipX(true);
+        }
+
+        this.light = scene.lights.addLight(this.x + 32, this.y - 32, 256, 0xFE9900, 1);
         scene.MapLights.add(this);
 
         scene.add.tween({

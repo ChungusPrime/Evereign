@@ -1,6 +1,7 @@
 import { GD } from "../scenes/Game";
 import UI from "../scenes/UI";
 import Obstacle from "./Obstacle";
+import DD from "../data/DialogueData";
 
 export default class DialogueWindow {
 
@@ -90,7 +91,7 @@ export default class DialogueWindow {
 
         this.CurrentDialogueKey = key;
 
-        const DialogueData = this.scene.Game.DataManager.DialogueData[key].Subjects[subject];
+        const DialogueData = DD[key].Subjects[subject];
 
         this.Text.setText(DialogueData.Text).setPosition(this.Background.getTopLeft().x + 8, this.Background.getTopLeft().y + 8);
 
@@ -172,7 +173,7 @@ export default class DialogueWindow {
 
         this.CurrentDialogueKey = person;
 
-        const Person = this.scene.Game.DataManager.DialogueData[person];
+        const Person = DD[person];
 
         if ( GD.MetNPCs.includes(person) == false ) {
             this.Text.setText(Person.FirstTimeGreeting).setPosition(this.Background.getTopLeft().x + 8, this.Background.getTopLeft().y + 8);

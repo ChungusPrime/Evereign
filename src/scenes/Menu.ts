@@ -65,8 +65,8 @@ export default class Menu extends Phaser.Scene {
     CreditsButton: TextButton;
     QuitGameButton: TextButton;
     TutorialButton: TextButton;
-
-    public PointLight: Phaser.GameObjects.Light;
+    ReincarnationButton: TextButton;
+    CloudButton: TextButton;
 
     constructor () {
         super({ key: "Menu" });
@@ -84,12 +84,12 @@ export default class Menu extends Phaser.Scene {
 
     create (): void {
 
+        if ( this.Data.Characters['Bithmas'] == undefined ) {
+            this.CreateCharacter("Bithmas", "Standard", "Fixed", Campaigns[0], ClassData[0], RaceData[0]);
+        }
+
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
         this.sound.play("track1", { loop: true });
-
-        //this.PointLight = this.lights.addLight(this.cameras.main.width / 2, this.cameras.main.height / 2, 2048, 0xffffff, 4);
-
-        //this.lights.enable().setAmbientColor(0x000000);
 
         this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 768 * 2, 560 * 2, 30, 30, 30, 30).setOrigin(0.5);
 
@@ -105,19 +105,17 @@ export default class Menu extends Phaser.Scene {
         this.TitleScreen.addMultiple([Logo, TitleText, StartButton]);
 
         // Main Menu Buttons
-        this.ContinueButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.45, `Last Character Played`, () => { this.StartGame(this.Data.LastCharacterPlayed) });
+        this.ContinueButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.25, `Load Last Played`, () => { this.StartGame(this.Data.LastCharacterPlayed) });
+        this.CreateButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.35, "New Game", () => { this.ChangeMenu("create") });
+        this.LoadButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.45, "Load Game", () => { this.ChangeMenu("load") });
+        this.TutorialButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.55, "Tutorial", () => { this.StartGame("Bithmas") });
+        this.CloudButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.65, "Cloud Saves", () => { this.ChangeMenu("cloud") });
 
-        if ( this.Data.LastCharacterPlayed && this.Data.LastCharacterPlayed != null ) {
-            this.ContinueButton.setText(`Last Character Played\n\n${this.Data.LastCharacterPlayed ?? ""}\n\nLevel ${this.Data.Characters[this.Data.LastCharacterPlayed].Level ?? ""} ${this.Data.Characters[this.Data.LastCharacterPlayed].Class ?? ""}`);
-        }
-
-        this.CreateButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "New Game", () => { this.ChangeMenu("create") });
-        this.LoadButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.33, "Load Game", () => { this.ChangeMenu("load") });
-        this.TutorialButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.41, "Tutorial", () => { this.StartGame("Tutorial") });
-        this.ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.49, "Controls", () => { this.ChangeMenu("controls") });
-        this.OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.57, "Options", () => { this.ChangeMenu("options") });
-        this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Credits", () => { console.log("credits") });
-        this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.73, "Quit", () => { window.close() });
+        this.ReincarnationButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "Reincarnation", () => { this.ChangeMenu("reincarnation") });
+        this.ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, "Controls", () => { this.ChangeMenu("controls") });
+        this.OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Options", () => { this.ChangeMenu("options") });
+        this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.55, "Credits", () => { console.log("credits") });
+        this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Quit", () => { window.close() });
 
         this.MainMenuGroup = this.add.group([ 
             this.CreateButton,
@@ -125,6 +123,8 @@ export default class Menu extends Phaser.Scene {
             this.TutorialButton,
             this.ControlsButton,
             this.OptionsButton,
+            this.CloudButton,
+            this.ReincarnationButton,
             this.CreditsButton,
             this.QuitGameButton,
             this.ContinueButton
@@ -173,7 +173,7 @@ export default class Menu extends Phaser.Scene {
             let label = option[1].toLocaleString();
             let OptionButton = new TextButton(this, X, Y, `${option[0]}: ${label}`, () => {}, 32).setVisible(false);
             this.OptionsGroup.add(OptionButton);
-            Y += OptionButton.height + 10;
+            Y += OptionButton.height + 15;
         });
 
         // Character Creation
@@ -207,7 +207,7 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 50;
 
         // Campaign
-        this.campaignSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Campaign", Campaigns.map( c => c.Name ));
+        this.campaignSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Campaign", Campaigns.filter( c => c.Available ).map( c => c.Name ));
         this.CampaignInfoButton = new TextButton(this, this.campaignSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
             this.SetHelpText(this.campaignSelect.CurrentValue);
         }, 32).setVisible(false);
@@ -259,17 +259,81 @@ export default class Menu extends Phaser.Scene {
             let Race = RaceData.find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
             let Campaign = Campaigns.find( (c) => c.ID == this.campaignSelect.CurrentValue );
 
+            this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, this.scalingSelect.CurrentValue, Campaign, Class, Race);
+
+            //this.StartGame(this.CharacterName);
+            this.RefreshCharacterList();
+
+        }).setVisible(false);
+
+        this.CharacterCreationGroup.add(CreateNewCharButton);
+
+        // Character Validation Errors Text
+        let ErrorText = this.add.text(this.scale.width * 0.32, this.scale.height * 0.79, "", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#cf200c" }).setOrigin(0.5).setVisible(false);
+        this.CharacterCreationGroup.add(ErrorText);
+
+        // Info panel background
+        this.InfoBackground = this.add.nineslice(this.scale.width * 0.7, this.scale.height * 0.45, "Kenney-UI", "panel_beigeLight", this.scale.width * 0.29, this.scale.height * 0.65, 25, 25, 25, 25)
+        .setOrigin(0.5)
+        .setVisible(false)
+        .setAlpha(0);
+        this.CharacterCreationGroup.add(this.InfoBackground);
+
+        this.InfoText = this.add.text(this.InfoBackground.getCenter().x, this.InfoBackground.getCenter().y, "Click ? for more information", { 
+            fontSize: 24,
+            align: "center",
+            fontFamily: "Augusta",
+            color: "#000",
+            wordWrap: { 
+                width: this.InfoBackground.width - 10,
+                useAdvancedWrap: true 
+            }
+        })
+        .setOrigin(0.5)
+        .setVisible(true)
+        .setInteractive()
+        .on("wheel", ( pointer: Phaser.Input.Pointer ) => {
+            if ( pointer.deltaY > 0 ) {
+                this.InfoCamera.scrollY += 10;
+            } else {
+                this.InfoCamera.scrollY -= 10;
+            }
+        });
+
+        this.CharacterCreationGroup.add(this.InfoText);
+        this.cameras.main.ignore(this.InfoText);
+        
+        this.CharacterList = this.add.group().setVisible(false);
+        this.RefreshCharacterList();
+
+        this.BackButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.8, "Back", () => {
+            this.ChangeMenu("main");
+        }).setVisible(false);
+
+        this.InfoCamera = this.cameras.add(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height, false, "InfoCamera")
+        .setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height)
+        .setOrigin(0, 0)
+        .setScroll(0, 0)
+        .setVisible(false)
+        .ignore([this.BackButton, this.Book, this.Background, this.InfoBackground]);
+
+        this.cameras.main.fadeIn(2000);
+
+    }
+
+    CreateCharacter ( Name: string, Difficulty: string, Scaling: string, Campaign: Campaign, Class: ClassData, Race: RaceData ) {
+
             // Create new character data
-            this.Data.Characters[this.characterNameInput.CurrentValue] = DefaultCharacterData;
-            let Character = this.Data.Characters[this.characterNameInput.CurrentValue];
+            this.Data.Characters[Name] = DefaultCharacterData;
+            let Character = this.Data.Characters[Name];
 
             // Set character properties
-            Character.Name = this.characterNameInput.CurrentValue;
-            Character.Class = this.characterClassSelect.CurrentValue;
-            Character.Race = this.characterRaceSelect.CurrentValue;
-            Character.Campaign = this.campaignSelect.CurrentValue;
-            Character.Scaling = this.scalingSelect.CurrentValue;
-            Character.Difficulty = this.difficultySelect.CurrentValue;
+            Character.Name = Name;
+            Character.Class = Class.Name;
+            Character.Race = Race.Name;
+            Character.Campaign = Campaign.Name;
+            Character.Scaling = Scaling;
+            Character.Difficulty = Difficulty;
             Character.Reincarnation = 1;
 
             Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
@@ -329,64 +393,6 @@ export default class Menu extends Phaser.Scene {
             localStorage.setItem("EvereignData", JSON.stringify(this.Data));
 
             this.Data = JSON.parse(localStorage.getItem("EvereignData"));
-
-            //this.StartGame(this.CharacterName);
-            this.RefreshCharacterList();
-
-        }).setVisible(false);
-
-        this.CharacterCreationGroup.add(CreateNewCharButton);
-
-        // Character Validation Errors Text
-        let ErrorText = this.add.text(this.scale.width * 0.32, this.scale.height * 0.79, "", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#cf200c" }).setOrigin(0.5).setVisible(false);
-        this.CharacterCreationGroup.add(ErrorText);
-
-        // Info panel background
-        this.InfoBackground = this.add.nineslice(this.scale.width * 0.7, this.scale.height * 0.45, "Kenney-UI", "panel_beigeLight", this.scale.width * 0.29, this.scale.height * 0.65, 25, 25, 25, 25)
-        .setOrigin(0.5)
-        .setVisible(false)
-        .setAlpha(0);
-        this.CharacterCreationGroup.add(this.InfoBackground);
-
-        this.InfoText = this.add.text(this.InfoBackground.getCenter().x, this.InfoBackground.getCenter().y, "Click ? for more information", { 
-            fontSize: 24,
-            align: "center",
-            fontFamily: "Augusta",
-            color: "#000",
-            wordWrap: { 
-                width: this.InfoBackground.width - 10,
-                useAdvancedWrap: true 
-            }
-        })
-        .setOrigin(0.5)
-        .setVisible(true)
-        .setInteractive()
-        .on("wheel", ( pointer: Phaser.Input.Pointer ) => {
-            if ( pointer.deltaY > 0 ) {
-                this.InfoCamera.scrollY += 10;
-            } else {
-                this.InfoCamera.scrollY -= 10;
-            }
-        });
-
-        this.CharacterCreationGroup.add(this.InfoText);
-        this.cameras.main.ignore(this.InfoText);
-        
-        this.CharacterList = this.add.group().setVisible(false);
-        this.RefreshCharacterList();
-
-        this.BackButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.8, "Back", () => {
-            this.ChangeMenu("main");
-        }).setVisible(false);
-
-        this.InfoCamera = this.cameras.add(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height, false, "InfoCamera")
-        .setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height)
-        .setOrigin(0, 0)
-        .setScroll(0, 0)
-        .setVisible(false)
-        .ignore([this.BackButton, this.Book, this.Background, this.InfoBackground]);
-
-        this.cameras.main.fadeIn(2000);
 
     }
 

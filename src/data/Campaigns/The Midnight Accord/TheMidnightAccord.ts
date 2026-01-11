@@ -15,6 +15,8 @@ const TheMidnightAccord: Campaign = {
     The king, though wise, dismissed your vision as a mere nightmare, a product of stress and overwork. Desperate and determined, you took matters into your own hands
     and decided to embark on a perilous journey to gather allies and warn the people of impending doom.`,
 
+    Available: true,
+
     // The starting map and coordinates for the player
     StartingMap: "Willowvale",
     StartingX: 6332,

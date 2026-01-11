@@ -296,6 +296,8 @@ export default class Inventory {
         if ( BaseItemData == undefined )
             return console.log(`Item does not exist! ID: ${ID}`);
 
+        console.log(BaseItemData);
+
         for ( let i = 0; i < quantity; i++ ) {
             if ( BaseItemData.Stackable ) {
                 // If the item is stackable, try to find an existing stack
@@ -305,8 +307,10 @@ export default class Inventory {
                     Slot.Refresh();
                 } else {
                     let EmptySlot = this.Items.find((slot) => slot.DataInventorySlot == null);
+                    console.log(EmptySlot);
                     if ( EmptySlot !== undefined ) {
                         GD.Inventory[EmptySlot.InventoryIndex] = { ...BaseItemData.InitialValue };
+                        console.log(BaseItemData.InitialValue);
                         EmptySlot.Refresh();
                     } else {
                         this.UI.EventLog.NewEvent(`Inventory is full!`);

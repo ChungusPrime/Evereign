@@ -19,8 +19,14 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     public LeftKeyDown: boolean = false;
     public RightKeyDown: boolean = false;
 
+    public HelmetArmourSprite: Phaser.GameObjects.Sprite;
+    public ChestArmourSprite: Phaser.GameObjects.Sprite
+    public LegArmourSprite: Phaser.GameObjects.Sprite;
+    public BootArmourSprite: Phaser.GameObjects.Sprite
+    public HandArmourSprite: Phaser.GameObjects.Sprite;
+
     constructor ( scene: Game ) {
-        super( scene, GD.X, GD.Y, 'Operative', 0 );
+        super( scene, GD.X, GD.Y, 'Player', 0 );
         this.scene = scene;
         this.create();
     }

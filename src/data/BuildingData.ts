@@ -1,14 +1,13 @@
 import TownCentre from "./Buildings/TownCentre";
-import WarehouseData from "./Buildings/Warehouse";
-import InnData from "./Buildings/Inn";
-import DwellingData from "./Buildings/Dwelling";
+import Warehouse from "./Buildings/Warehouse";
+import Inn from "./Buildings/Inn";
+import Dwelling from "./Buildings/Dwelling";
 
 const BuildingData: { [key: string]: BuildingData } = {
-    [TownCentre.ID]: TownCentre,
-    [WarehouseData.ID]: WarehouseData,
-    [InnData.ID]: InnData,
-    [DwellingData.ID]: DwellingData
-
+    ["Town Centre"]: TownCentre,
+    ["Warehouse"]: Warehouse,
+    ["Inn"]: Inn,
+    ["Dwelling"]: Dwelling
 };
 
 export default BuildingData;

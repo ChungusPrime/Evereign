@@ -1,13 +1,13 @@
 const Resources: ItemData[] = [
 
     {
-        ID: "log_oak",
-        Name: "Oak Log",
+        ID: "log_willow",
+        Name: "Willow Log",
         Sprite: "general-21",
-        Desc: "A log cut from an oak tree, can be refined and used in various production recipes.",
+        Desc: "A log cut from a willow tree, can be refined and used in various production recipes.",
         Stackable: true,
         StackSize: 10,
-        InitialValue: { ID: "log_oak", Quantity: 1 }
+        InitialValue: { ID: "log_willow", Quantity: 1 }
     },
 
     {

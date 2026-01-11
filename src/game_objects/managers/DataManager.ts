@@ -6,7 +6,6 @@ import { Base64 } from 'js-base64';
 import FlagData from '../../data/FlagData';
 import ClassData from '../../data/Character/Classes';
 import BuildingData from '../../data/BuildingData';
-import DialogueData from '../../data/DialogueData';
 import FirstNames from "../../data/Character/FirstNames";
 import Lastnames from "../../data/Character/LastNames";
 import ItemData from "../../data/ItemData";
@@ -25,7 +24,6 @@ export default class DataManager {
     public BuildingData: BuildingData;
     //public ClassData: ClassData = ClassData;
     public FlagData: GameFlags = FlagData;
-    public DialogueData: DialogueData = DialogueData;
     public ItemData = ItemData;
     public QuestData: QuestData;
     public CampaignData: Campaign[] = CampaignData;
@@ -53,7 +51,7 @@ export default class DataManager {
         let SavedData = JSON.parse(localStorage.getItem("EvereignData"));
         SavedData.Characters[this.scene.CharacterName] = GD;
         localStorage.setItem("EvereignData", JSON.stringify(SavedData));
-        this.scene.UI.EventLog.NewEvent(`Game saved`);
+        this.scene.UI.EventLog.NewEvent(`Game saved! ${GD.LastSaveTimestamp}`);
     }
 
     public CalculateTimeSinceLastSave () {

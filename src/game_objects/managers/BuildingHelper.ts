@@ -10,9 +10,9 @@ import Market from "../buildings/Market";
 import GoblinTower from "../buildings/GoblinTower";
 import Game from "../../scenes/Game";
 import UI from "../../scenes/UI";
-import Placeholder from "../placeholder";
 import { GD } from "../../scenes/Game";
 import { TownNames } from "../../data/TownNames";
+import BuildingData from "../../data/BuildingData";
 
 export default class BuildingHelper {
 
@@ -20,12 +20,20 @@ export default class BuildingHelper {
     public UI: UI;
     public ValidPlacement: boolean = true;
     public BuildingPlacementMode: boolean = false;
-    public Placeholder: Placeholder;
+    public Placeholder: Phaser.GameObjects.Rectangle;
 
     constructor ( scene: Game, UI: UI ) {
         this.scene = scene;
         this.UI = UI;
-        this.Placeholder = new Placeholder(scene);
+        this.Placeholder = this.scene.add.rectangle(0, 0, 0, 0, 0xdb382c, 0.8);
+        this.scene.add.existing(this.Placeholder);
+        this.scene.physics.add.existing(this.Placeholder);
+        this.Placeholder.setOrigin(0).setSize(0, 0).setFillStyle(0xdb382c, 0.8).setDepth(99999999).setActive(false).setVisible(false);
+        console.log(BuildingData);
+    }
+
+    public SetPlaceholder (Width: number, Height: number) {
+        this.Placeholder.setSize(Width, Height).setActive(true).setVisible(true);
     }
 
     private CreateBuilding(scene: Game, type: string, x: number, y: number): Building | null {
@@ -135,10 +143,10 @@ export default class BuildingHelper {
 
     ActivateBuildingMode ( Building: string ) : void {
 
-        if ( !GD.UnlockedBuildings.includes(Building) ) {
+        /*if ( !GD.UnlockedBuildings.includes(Building) ) {
             this.UI.EventLog.NewEvent(`You have not unlocked ${Building} yet`);
             return;
-        }
+        }*/
 
         if ( Building == "Town Centre" && this.scene.TownCentre !== null ) {
             this.scene.TownCentre.BuildZone.setVisible(false);
@@ -148,10 +156,9 @@ export default class BuildingHelper {
         }
 
         this.scene.SelectedBuilding = Building;
-        this.Placeholder.setVisible(true);
+        this.Placeholder.setActive(true).setVisible(true);
         this.UI.BuidlingPlacementModeHelpText.setVisible(true);
         this.UI.TownManagementPanel.Hide();
-        this.Placeholder.setActive(true);
         this.BuildingPlacementMode = true;
 
         if ( this.scene.TownCentre !== null && this.scene.TownCentre.BuildZone !== undefined ) {
@@ -162,12 +169,10 @@ export default class BuildingHelper {
 
     DeactivateBuildingMode () : void {
         this.scene.SelectedBuilding = "";
-        this.Placeholder.setVisible(false);
-        this.Placeholder.setActive(false);
+        this.Placeholder.setVisible(false).setActive(false).setPosition(0, 0);
         this.BuildingPlacementMode = false;
         this.UI.BuidlingPlacementModeHelpText.setVisible(false);
         this.UI.TownManagementPanel.Hide();
-        this.Placeholder.setPosition(0, 0);
         this.scene.events.emit('Building-Mode-Deactivated');
         if ( this.scene.TownCentre !== null && this.scene.TownCentre.BuildZone !== undefined ) {
             this.scene.TownCentre.BuildZone.setVisible(false);
@@ -177,12 +182,16 @@ export default class BuildingHelper {
 
     CheckIfPlacementValid () {
 
-        if ( this.BuildingPlacementMode == false ) return;
+        if ( this.BuildingPlacementMode == false ) 
+            return console.log("Not in building placement mode");
  
         // Get the size of the currently selected building
-        //let Size = this.scene.DataManager.BuildingData.find((b) => b.Name == this.scene.SelectedBuilding)?.Size ?? null;
-        //if ( Size == null ) return this.DeactivateBuildingMode();
-
+        let Size = BuildingData[this.scene.SelectedBuilding].Size ?? null;
+        if ( Size == null ) {
+            console.error(`Building data for ${this.scene.SelectedBuilding} not found`);
+            return this.DeactivateBuildingMode();
+        }
+            
         // Get the tile the mouse is currently hovered on
         const tile = this.scene.Map.worldToTileXY(this.scene.mouseX, this.scene.mouseY);
 
@@ -191,7 +200,7 @@ export default class BuildingHelper {
 
         // Set the placeholder to this x and y
         this.Placeholder.setPosition(world.x, world.y);
-        //this.Placeholder.setPlaceholder(Size);
+        this.SetPlaceholder(Size.Width, Size.Height);
 
         let isContained = true;
         // Convert the game objects to Phaser.Geom.Rectangles
@@ -207,36 +216,39 @@ export default class BuildingHelper {
             }
         }
 
-        //const tiles = this.scene.Map.getTilesWithinWorldXY( world.x, world.y, Size, Size, null, this.scene.cameras.main, "Collision" );
-        //const overlapping = tiles.find( (tile) => tile.index !== -1 );
+        console.log(`Checking placement for ${this.scene.SelectedBuilding} at (${world.x}, ${world.y})`);
 
-        /*
-        let overlapping_building = false;
-        this.scene.physics.overlap(this.Placeholder, this.scene.Buildings, (overlap) => {
-            overlapping_building = true;
-        }, null, this);
+        const tiles = this.scene.Map.getTilesWithinWorldXY( world.x, world.y, Size.Width, Size.Height, null, this.scene.cameras.main, "Collision" );
+        console.log(tiles);
 
-        this.scene.physics.overlap(this.Placeholder, this.scene.Trees, (overlap) => {
-            overlapping_building = true;
-        }, null, this);
+        const overlapping = tiles.find( (tile) => tile.index !== -1 );
+        console.log(overlapping);
+
+        let OverlapObject = false;
+        this.scene.physics.overlap(this.Placeholder, this.scene.Buildings, (overlap) => { OverlapObject = true; }, null, this);
+        this.scene.physics.overlap(this.Placeholder, this.scene.Trees, (overlap) => { OverlapObject = true; }, null, this);
+
+        console.log(OverlapObject);
 
         if ( this.scene.SelectedBuilding == "Town Centre" ) {
-            if ( overlapping == undefined && !overlapping_building ) {
+            if ( overlapping == undefined && !OverlapObject ) {
+                console.log("Valid placement for Town Centre");
                 this.Placeholder.setFillStyle(0x44a617, 0.8);
                 this.ValidPlacement = true;
             } else {
+                console.log("Invalid placement for Town Centre");
                 this.Placeholder.setFillStyle(0xdb382c, 0.8);
                 this.ValidPlacement = false;
             }
         } else {
-            if ( overlapping == undefined && !overlapping_building && isContained ) {
+            if ( overlapping == undefined && !OverlapObject && isContained ) {
                 this.Placeholder.setFillStyle(0x44a617, 0.8);
                 this.ValidPlacement = true;
             } else {
                 this.Placeholder.setFillStyle(0xdb382c, 0.8);
                 this.ValidPlacement = false;
             }
-        }*/
+        }
 
     }
 

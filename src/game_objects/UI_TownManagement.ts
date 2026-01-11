@@ -57,6 +57,7 @@ export default class TownManagement {
         .on('pointerdown', () => { 
             this.scene.Game.BuildingHelper.ActivateBuildingMode("Town Centre");
         }, this);
+        
         this.NewTownButtonText = scene.add.text(this.NewTownButton.getCenter().x, this.NewTownButton.getCenter().y, "New Town", { align: "center", fontFamily: "Augusta" })
         .setOrigin(0.5, 0.5)
         .setVisible(false);
@@ -68,11 +69,8 @@ export default class TownManagement {
         .on('pointerdown', () => { 
             this.scene.Game.BuildingHelper.ActivateBuildingMode("Town Centre");
         }, this);
-        this.NewBuildingButtonText = scene.add.text(this.NewBuildingButton.getCenter().x, this.NewBuildingButton.getCenter().y, "New Building", { align: "center", fontFamily: "Augusta" })
-        .setOrigin(0.5, 0.5)
-        .setVisible(false);
 
-        this.NewTownButtonText = scene.add.text(this.NewTownButton.getCenter().x, this.NewTownButton.getCenter().y, "New Town", { align: "center", fontFamily: "Augusta" })
+        this.NewBuildingButtonText = scene.add.text(this.NewBuildingButton.getCenter().x, this.NewBuildingButton.getCenter().y, "New Building", { align: "center", fontFamily: "Augusta" })
         .setOrigin(0.5, 0.5)
         .setVisible(false);
 

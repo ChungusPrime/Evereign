@@ -1,4 +1,4 @@
-const JournalEntries = {
+const JournalEntries: DialogueData = {
 
         Subjects: {
 

@@ -100,23 +100,12 @@ export default class Game extends Phaser.Scene {
     }
 
     init ( data: { character: string } ): void {
-
         this.CharacterName = data.character;
-
-        if ( data.character == "Tutorial" ) {
-            //GD = 
-            //
-            // this.Data.Characters[this.characterNameInput.CurrentValue] = DefaultCharacterData;
-            // let Character = this.Data.Characters[this.characterNameInput.CurrentValue];
-
-        } else {
-            this.DataManager = new DataManager(this);
-            const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
-            Options = SavedData.Options;
-            GD = SavedData.Characters[data.character];
-            CD = Campaigns.find(c => c.Name == GD.Campaign);
-        }
-
+        this.DataManager = new DataManager(this);
+        const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
+        Options = SavedData.Options;
+        GD = SavedData.Characters[data.character];
+        CD = Campaigns.find(c => c.Name == GD.Campaign);
     }
 
     async create () {
@@ -253,21 +242,27 @@ export default class Game extends Phaser.Scene {
                 this.graphics.strokePath();
             }
 
-            if ( !this.BuildingHelper.BuildingPlacementMode ) return;
-            this.BuildingHelper.CheckIfPlacementValid();
+            if ( this.BuildingHelper.BuildingPlacementMode ) {
+                this.BuildingHelper.CheckIfPlacementValid();
+            }
+                
         });
 
         this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            if ( !this.BuildingHelper.BuildingPlacementMode ) return;
-            if ( pointer.leftButtonDown() && this.BuildingHelper.ValidPlacement ) {
+
+            // If building mode is active, try to place building
+            if ( pointer.leftButtonDown() && this.BuildingHelper.BuildingPlacementMode && this.BuildingHelper.ValidPlacement ) {
                 const tile = this.Map.worldToTileXY(this.mouseX, this.mouseY);
                 const world = this.Map.tileToWorldXY(tile.x, tile.y);
                 this.BuildingHelper.CreateNewPlayerBuilding(this, this.SelectedBuilding, world.x, world.y);
                 this.BuildingHelper.DeactivateBuildingMode();
             }
+
+            // Right click to cancel building mode
             if ( pointer.rightButtonDown() ) {
                 this.BuildingHelper.DeactivateBuildingMode();
             }
+
         });
 
         this.LoadMap();
@@ -395,8 +390,8 @@ export default class Game extends Phaser.Scene {
         // Spawn World Objects
         try {
             Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
-                //layer.objects = layer.objects.sort((a, b) => a.id - b.id);
                 layer.objects.forEach( (object) => {
+                    console.log(object);
                     let objectInstance = GameObjectsMap[object.type];
                     if (objectInstance) {
                         let instance = new objectInstance(this, object, false) as Phaser.GameObjects.GameObject;
@@ -537,6 +532,9 @@ export default class Game extends Phaser.Scene {
     }
 
     UseMainhandItem () {
+
+        if ( this.PlayerCharacter.PlayerIsDead ) return;
+        if ( this.BuildingHelper.BuildingPlacementMode ) return;
 
         console.log("Using mainhand item");
 

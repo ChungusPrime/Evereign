@@ -35,6 +35,12 @@ interface GameData {
         [key: string]: Character;
     }
 
+    SoulGems: number;
+
+    CompletedCampaigns: string[];
+
+    ReincarnationTraits: string[];
+
     LastCharacterPlayed: string | null;
 }
 
@@ -312,6 +318,7 @@ interface BestiaryData {
 
 interface Campaign {
     ID: string;
+    Available: boolean;
     Name: string;
     Description: string;
     WorldData: {[key: string]: WorldData};

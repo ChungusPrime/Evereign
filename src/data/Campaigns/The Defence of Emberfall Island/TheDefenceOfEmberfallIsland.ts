@@ -1,6 +1,7 @@
 import EmberfallIsland from "./Emberfall Island";
 
 const TheDefenceOfEmberfallIsland: Campaign = {
+    Available: true,
     ID: "defence",
     Name: "The Defence of Emberfall",
     Description: `Defence of Emberfall Island:
