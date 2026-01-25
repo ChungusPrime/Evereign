@@ -2,8 +2,9 @@ import Game from '../../scenes/Game';
 import Building from '../Building';
 import Obstacle from '../Obstacle';
 import { GD } from "../../scenes/Game";
+import GameObjectsMap from '../../data/GameObjects';
 
-export default class GoblinOutpost extends Building {
+export default class OrcOutpost extends Building {
 
     public scene: Game;
     public width: number = 128;
@@ -23,8 +24,9 @@ export default class GoblinOutpost extends Building {
     public MaxSpawnCount: number = 3;
     public CurrentSpawnCount: number = 0;
     
-    constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "Buildings", "goblinoutpost1");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        super( scene, "orc_outpost_1", object);
+        this.IsPlayerOwned = false;
         this.scene = scene;
         this.setOrigin(0, 1);
     }
@@ -78,7 +80,11 @@ export default class GoblinOutpost extends Building {
         if ( this.SpawnDelta >= this.SpawnInterval ) {
             let RandomUnit = availableUnits[Phaser.Math.Between(0, availableUnits.length - 1)];
             let RandomSpawnPoint = this.getBounds().getRandomPoint();
-            this.scene.EnemyManager.SpawnBuildingEnemy(RandomUnit.Name, RandomSpawnPoint.x, RandomSpawnPoint.y, this, 1).Aggro();
+            const EnemyClass = GameObjectsMap[RandomUnit.Name];
+            let Instance = new EnemyClass(this.scene, { x: RandomSpawnPoint.x, y: RandomSpawnPoint.y });
+            Instance.SpawnLocation = this;
+            this.scene.Enemies.add(Instance);
+            Instance.Aggro();
             RandomUnit.Alive++;
             this.CurrentSpawnCount += 1;
             this.SpawnDelta = 0;

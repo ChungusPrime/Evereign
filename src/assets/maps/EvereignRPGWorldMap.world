@@ -11,8 +11,8 @@
             "fileName": "WillowvaleCaverns.json",
             "height": 6400,
             "width": 6400,
-            "x": -7456,
-            "y": 960
+            "x": -19872,
+            "y": 448
         },
         {
             "fileName": "WillowvaleNorth.json",
@@ -81,15 +81,15 @@
             "fileName": "TestMap.json",
             "height": 6400,
             "width": 6400,
-            "x": -224,
-            "y": 6912
+            "x": -19840,
+            "y": 7104
         },
         {
             "fileName": "Mar'Xanthir.json",
             "height": 6400,
             "width": 6400,
-            "x": -14464,
-            "y": 960
+            "x": -19872,
+            "y": -6400
         }
     ],
     "onlyShowAdjacentMaps": false,

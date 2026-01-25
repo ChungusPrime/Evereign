@@ -31,7 +31,7 @@ import Market from "../game_objects/buildings/Market";
 import Warehouse from "../game_objects/buildings/Warehouse";
 import Inn from "../game_objects/buildings/Inn";
 import Field from "../game_objects/buildings/Field";
-import GoblinOutpost from "../game_objects/buildings/GoblinOutpost";
+import GoblinOutpost from "../game_objects/buildings/OrcOutpost";
 import Mine from "../game_objects/buildings/Mine";
 import Dwelling from "../game_objects/buildings/Dwelling";
 import TownCentre from "../game_objects/buildings/TownCentre";

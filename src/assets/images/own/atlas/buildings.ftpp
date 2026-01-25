@@ -45,11 +45,6 @@
       "folder": ""
     },
     {
-      "name": "goblinoutpost1.png",
-      "path": "D:/code/Evereign/src/assets/images/own/buildings/goblinoutpost1.png",
-      "folder": ""
-    },
-    {
       "name": "goblinpit.png",
       "path": "D:/code/Evereign/src/assets/images/own/buildings/goblinpit.png",
       "folder": ""
@@ -72,6 +67,11 @@
     {
       "name": "mine1.png",
       "path": "D:/code/Evereign/src/assets/images/own/buildings/mine1.png",
+      "folder": ""
+    },
+    {
+      "name": "orc_outpost_1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/orc_outpost_1.png",
       "folder": ""
     },
     {

@@ -55,6 +55,14 @@ const Consumables: ItemData[] = [
         Stackable: false
     },
 
+    {
+        ID: "basic_town_kit",
+        Name: "Basic Town Kit",
+        Sprite: "librarium-45",
+        Desc: "Contains several blueprints and the necessary materials to found a new town.",
+        Stackable: false
+    },
+
 ];
 
 Consumables.forEach((item) => {

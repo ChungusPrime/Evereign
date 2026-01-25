@@ -3,7 +3,7 @@ import Building from '../Building';
 import Obstacle from '../Obstacle';
 import { GD } from "../../scenes/Game";
 
-export default class GoblinTower extends Building {
+export default class OrcTower extends Building {
 
     public width: number = 64;
     public height: number = 64;
@@ -22,8 +22,8 @@ export default class GoblinTower extends Building {
     public MaxSpawnCount: number = 3;
     public CurrentSpawnCount: number = 0;
 
-    constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "Buildings", "goblin_tower_1");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        super( scene, "goblin_tower_1", object);
         this.setOrigin(0, 1);
     }
 

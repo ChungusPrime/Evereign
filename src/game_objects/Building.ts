@@ -6,7 +6,7 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     public scene: Game;
     public StaticData: StaticBuildingData | null = null;
     public VariableData: any | null = null;
-    public ID: string = "";
+    public ID: string | null = null;
     public Level: number = 1;
     public Area: string = "";
     public TickTime: number = 12000;
@@ -36,57 +36,64 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     public CurrentSpawnCount?: number;
     public CostMultiplier?: number;
 
-    constructor ( scene: Game, x: number, y: number, type: string, frame: string ) {
+    constructor ( scene: Game, frame: string, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
 
-        super(scene, x, y, "Buildings", frame);
+        super(scene, object.x, object.y, "Buildings", frame);
         this.scene = scene;
-        this.Type = type;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
+        
+        if ( 'properties' in object && object.properties ) {
+            // If the object is from Tiled, take the ID from the first index of properties
+            this.ID = object.properties[0].value ?? null;
+            this.IsPlayerOwned = false;
+        }
+        else if ( 'id' in object ) {
+            // If the object is from PlayerData, take the ID directly from the object
+            this.ID = object.id as string ?? null;
+            this.IsPlayerOwned = true;
+        }
+        
+        this.setOrigin(0, 1).setInteractive().setImmovable().setPipeline("Light2D");
 
-        this.setOrigin(0, 1);
-        this.setInteractive();
-        this.setImmovable();
-        this.setPipeline("Light2D");
+        this.scene.Buildings.add(this);
 
-        if ( this.Type == "TownCentre" && this.IsPlayerOwned == true ) {
+        /*if ( this.Type == "TownCentre" && this.IsPlayerOwned == true ) {
             let BuildZone = this.scene.add.rectangle(this.getCenter().x, this.getCenter().y, 672 + 1, 672  + 1, 0xffffff, 0.2).setVisible(false);
             this.scene.physics.world.enable(BuildZone);
             this.BuildZone = BuildZone;
             this.scene.TownCentre = this;
-        }
+        }*/
 
         this.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            //if ( !pointer.rightButtonDown() ) return;
-            //console.log(this.StaticData);
-            //if ( this.IsPlayerOwned == true )
-            //    return this.OpenManagementScreen();
-            //this.StartDialogue();
+
+            if ( pointer.rightButtonDown() ) {
+                console.log(this.ID, this.IsPlayerOwned);
+            }
+
+            if ( this.IsPlayerOwned == true ) {
+                return this.OpenManagementPanel();
+            }
+
+            // Market = Open trade window
+            if ( this.Type == "Market")
+                this.scene.UI.TradeWindow.Show(this.ID);
+
+            // Town Centre = Start Dialogue with town leader
+            if ( this.Type == "Town Centre") {
+                // Find town leader
+                let Data = this.scene.DataManager.GetBuildingData(this.ID);
+                this.scene.UI.DialogueWindow.StartConversation(Data.Person);
+            }
+                
+
         });
 
         return this;
     }
 
-    StartDialogue () {
-
-        console.log("Start dialogue with this building");
-
-        // Market = Open trade window
-        if ( this.Type == "Market")
-            this.scene.UI.TradeWindow.Show(this.ID);
-
-        // Town Centre = Start Dialogue with town leader
-        if ( this.Type == "Town Centre") {
-            // Find town leader
-            let Data = this.scene.DataManager.GetBuildingData(this.ID);
-            this.scene.UI.DialogueWindow.StartConversation(Data.Person);
-        }
-
-    }
-
-    OpenManagementScreen () {
+    OpenManagementPanel () {
         console.log("Open building management screen");
-
     }
 
     CreateBuildZone () {

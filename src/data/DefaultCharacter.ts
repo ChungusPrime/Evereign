@@ -116,6 +116,16 @@ const DefaultCharacter: Character = {
         Botany: 0,
         Alchemy: 0,
         Cooking: 0,
+        Security: 0,
+        Smithing: 0,
+        Tailoring: 0,
+        Engineering: 0,
+        Enchanting: 0,
+        Carpentry: 0,
+        Trading: 0,
+        Diplomacy: 0,
+        Stealth: 0,
+        Survival: 0,
     },
 
     Bestiary: [

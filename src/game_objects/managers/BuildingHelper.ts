@@ -4,10 +4,10 @@ import Building from "../Building";
 import TownCentre from "../buildings/TownCentre";
 import Warehouse from "../buildings/Warehouse";
 import BallistaTower from "../buildings/BallistaTower";
-import GoblinOutpost from "../buildings/GoblinOutpost";
+import GoblinOutpost from "../buildings/OrcOutpost";
 import Dwelling from "../buildings/Dwelling";
 import Market from "../buildings/Market";
-import GoblinTower from "../buildings/GoblinTower";
+import GoblinTower from "../buildings/OrcTower";
 import Game from "../../scenes/Game";
 import UI from "../../scenes/UI";
 import { GD } from "../../scenes/Game";
@@ -47,8 +47,8 @@ export default class BuildingHelper {
             "Farm": Farm,
             "Dwelling": Dwelling,
             "Market": Market,
-            "Goblin Outpost": GoblinOutpost,
-            "Goblin Tower": GoblinTower
+            "Orc Outpost": GoblinOutpost,
+            "Orc Tower": GoblinTower
         };
     
         // Check if the type is valid and create an instance of the appropriate class
@@ -64,7 +64,7 @@ export default class BuildingHelper {
     public CreateBuildingFromMapData ( scene: Game, type: string, x: number, y: number, id: string ) {
 
         if ( type == "Abandoned Mine" ) return;
-        if ( type == "Goblin Stronghold" ) return;
+        if ( type == "Orc Stronghold" ) return;
 
         const StaticBuildingData = this.scene.DataManager.GetBuildingData(id);
 

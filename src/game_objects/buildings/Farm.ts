@@ -1,4 +1,4 @@
-import Town from '../../scenes/Game';
+import Game from '../../scenes/Game';
 import Building from '../Building';
 import Field from './Field';
 
@@ -17,8 +17,8 @@ export default class Farm extends Building {
 
     public AssignedFields: Field[] = [];
 
-    constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Buildings", "farm1");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        super( scene, "farm1" , object);
         return this;
     }
 

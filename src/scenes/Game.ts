@@ -259,7 +259,7 @@ export default class Game extends Phaser.Scene {
             }
 
             // Right click to cancel building mode
-            if ( pointer.rightButtonDown() ) {
+            if ( pointer.rightButtonDown() && this.BuildingHelper.BuildingPlacementMode ) {
                 this.BuildingHelper.DeactivateBuildingMode();
             }
 
@@ -319,19 +319,8 @@ export default class Game extends Phaser.Scene {
 
     }
 
-    LoadMap () {
-    
-        this.physics.pause();
-        this.physics.disableUpdate();
-        this.scene.pause("Game");
+    UnloadCurrentMap () {
 
-        // Clear current map
-        // Disable collision between player and collision layer
-        if ( this.PlayerCollisionLayerCollider !== undefined ) {
-            this.PlayerCollisionLayerCollider.active = false;
-        }
-        
-        // Clean up current map
         this.Projectiles.getChildren().forEach((proj: Projectile) => proj.delete());
         this.Projectiles.clear(true, true);
         this.EnemyProjectiles.clear(true, true);
@@ -344,7 +333,6 @@ export default class Game extends Phaser.Scene {
         this.Pickups.clear(true, true);
         this.Switches.clear(true, true);
         this.Obstacles.clear(true, true);
-        //this.MapLights.forEach((light: Phaser.GameObjects.Light) => this.lights.removeLight(light));
         
         this.Buildings.getChildren().forEach((building: Building) => {
             if ( building.AggroCollider !== undefined )
@@ -356,23 +344,35 @@ export default class Game extends Phaser.Scene {
         if ( this.Map !== undefined ) {
             this.Map.destroy();
         }
+
+    }
+
+    LoadMap () {
+        
+        // Pause the scene while we load the new map
+        this.physics.pause();
+        this.physics.disableUpdate();
+        this.scene.pause("Game");
+
+        if ( this.PlayerCollisionLayerCollider !== undefined )
+            this.PlayerCollisionLayerCollider.active = false;
+
+        this.UnloadCurrentMap();
         
         // Start building new map
-        let Map = this.make.tilemap({
-            key: GD.CurrentMap
-        });
+        this.Map = this.make.tilemap({ key: GD.CurrentMap });
         
         // Load Tilesets
         let Tilesets: Phaser.Tilemaps.Tileset[] = [];
-        Map.tilesets.forEach( (tileset: Phaser.Tilemaps.Tileset) => {
+        this.Map.tilesets.forEach( (tileset: Phaser.Tilemaps.Tileset) => {
             if ( tileset.total == 1 ) return;
-            Tilesets.push(Map.addTilesetImage(tileset.name, tileset.name, 32, 32));
+            Tilesets.push(this.Map.addTilesetImage(tileset.name, tileset.name, 32, 32));
         });
         
         // Load Layers
         let Layers: Phaser.Tilemaps.TilemapLayer[] = [];
-        Map.layers.forEach( (layerData: Phaser.Tilemaps.LayerData) => {
-            let Layer = Map.createLayer(layerData.name, Tilesets, 0, 0);
+        this.Map.layers.forEach( (layerData: Phaser.Tilemaps.LayerData) => {
+            let Layer = this.Map.createLayer(layerData.name, Tilesets, 0, 0);
             if ( Layer === null ) return;
             if ( layerData.name == "Collision" ) {
                 this.CollisionLayer = Layer;
@@ -389,21 +389,11 @@ export default class Game extends Phaser.Scene {
 
         // Spawn World Objects
         try {
-            Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
-                layer.objects.forEach( (object) => {
-                    console.log(object);
+            this.Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
+                layer.objects.forEach( (object: Phaser.Types.Tilemaps.TiledObject) => {
                     let objectInstance = GameObjectsMap[object.type];
                     if (objectInstance) {
-                        let instance = new objectInstance(this, object, false) as Phaser.GameObjects.GameObject;
-
-                        if ( instance instanceof Building ) {
-                            this.Buildings.add(instance);
-                        }
-
-                        if ( instance instanceof GoblinSlinger ) {
-                            this.Enemies.add(instance);
-                        }
-
+                        new objectInstance(this, object) as Phaser.GameObjects.GameObject;
                     } else {
                         console.warn(`No class found for object type: ${object.type}`);
                     }
@@ -413,17 +403,12 @@ export default class Game extends Phaser.Scene {
             console.log(error);
         }
 
-        console.log(this.Buildings.getChildren());
-        console.log(this.Enemies.getChildren());
-
+        // Spawn Player Buildings
         if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {
-            GD.PlayerTowns[GD.CurrentMap].Buildings.forEach((building: { type: string, x: number, y: number, area: string, level: number }) => {
+            GD.PlayerTowns[GD.CurrentMap].Buildings.forEach((building) => {
                 let objectInstance = GameObjectsMap[building.type];
                 if (objectInstance) {
-                    let instance = new objectInstance(this, building, true) as Phaser.GameObjects.GameObject;
-                    if ( instance instanceof Building ) {
-                        this.Buildings.add(instance);
-                    }
+                    new objectInstance(this, building) as Phaser.GameObjects.GameObject;
                 } else {
                     console.warn(`No class found for object type: ${building.type}`);
                 }
@@ -431,7 +416,7 @@ export default class Game extends Phaser.Scene {
         }
         
         // Set up collisions
-        this.physics.world.setBounds(0, 0, Map.widthInPixels, Map.heightInPixels);
+        this.physics.world.setBounds(0, 0, this.Map.widthInPixels, this.Map.heightInPixels);
         
         // Player
         this.PlayerCollisionLayerCollider = this.physics.add.collider(this.PlayerCharacter, this.CollisionLayer);
@@ -495,15 +480,14 @@ export default class Game extends Phaser.Scene {
         });
         
         this.Quadtree = new Quadtree({
-            width: Map.widthInPixels,
-            height: Map.heightInPixels,
+            width: this.Map.widthInPixels,
+            height: this.Map.heightInPixels,
             x: 0,
             y: 0,
             maxObjects: 20,
             maxLevels: 4
         });
         
-        this.Map = Map;
         this.DaytimeCycleManager.SetPhase();
         
         let MapType = Campaign.WorldMapInformation[GD.CurrentMap].Type;
@@ -517,8 +501,8 @@ export default class Game extends Phaser.Scene {
         this.cameras.main
         .setSize(1024, 720)
         .setZoom(1)
-        .setBounds(0, 0, Map.widthInPixels, Map.heightInPixels)
-        .centerOn(Map.widthInPixels / 2, Map.heightInPixels / 2)
+        .setBounds(0, 0, this.Map.widthInPixels, this.Map.heightInPixels)
+        .centerOn(this.Map.widthInPixels / 2, this.Map.heightInPixels / 2)
         .fadeIn(2000, 0, 0, 0, () => {})
         .on('camerafadeincomplete', () => {
             this.PlayerCharacter.PlayerHasControl = true;

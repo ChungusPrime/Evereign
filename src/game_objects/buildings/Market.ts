@@ -1,4 +1,4 @@
-import Town from '../../scenes/Game';
+import Game from '../../scenes/Game';
 import Building from '../Building';
 
 export default class Market extends Building {
@@ -9,8 +9,8 @@ export default class Market extends Building {
     public PlotHeight: number = 64;
     public AggroZone: boolean = false;
 
-    constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Buildings", "market1");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        super( scene, "market1", object);
         return this;
     }
 

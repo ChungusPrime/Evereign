@@ -129,38 +129,64 @@ export const Willowvale: WorldData = {
         InitialData: {}
     },
 
-    "WV_World_Goblin_1": {
-        Type: "Goblin Slinger",
+    "LP_Town_Hall": {
+        Type: "Town Centre",
+        Name: "Little Piddleton Town Hall",
+        Level: 2,
+        Person: "Scipius Bogtrotter",
+        InitialData: {
+
+        }
+    },
+
+
+    "WV_World_Orc_1": {
+        Type: "Orc Slinger",
         Level: 1,
         InitialData: {
             Alive: true,
             Health: 10
         }
     },
-    "WV_World_Goblin_2": {
-        Type: "Goblin Slinger",
+    "WV_World_Orc_2": {
+        Type: "Orc Slinger",
         Level: 1,
         InitialData: {
             Alive: true,
             Health: 10
         }
     },
-    "WV_World_Goblin_3": {
-        Type: "Goblin Slinger",
+    "WV_World_Orc_3": {
+        Type: "Orc Slinger",
         Level: 1,
         InitialData: {
             Alive: true,
             Health: 10
         }
     },
-    "WV_World_Goblin_4": {
-        Type: "Goblin Slinger",
+    "WV_World_Orc_4": {
+        Type: "Orc Slinger",
         Level: 1,
         InitialData: {
             Alive: true,
             Health: 10
         }
     },
+    "WV_Orc_Outpost_1": {
+        Type: "Orc Outpost",
+        Name: "Orc Outpost",
+        Level: 1,
+        OnDestroyDisableObstacle: [554, 555],
+        InitialData: {
+            Units: [
+                { Name: "Orc Slinger", Total: 3, Alive: 0, Dead: 0 },
+            ]
+        }
+    },
+
+
+
+
 
 
     "382": {
@@ -203,15 +229,6 @@ export const Willowvale: WorldData = {
                 { ItemID: "town_centre_blueprint", Amount: 1 },
                 { ItemID: "apprentice_spellbook", Amount: 1 },
             ],
-        }
-    },
-    "713": {
-        Type: "Town Centre",
-        Name: "Little Piddleton Town Hall",
-        Level: 2,
-        Person: "Scipius Bogtrotter",
-        InitialData: {
-
         }
     },
     "667": {
@@ -301,17 +318,6 @@ export const Willowvale: WorldData = {
         Level: 1,
         InitialData: {
 
-        }
-    },
-    "87": {
-        Type: "Goblin Outpost",
-        Name: "Goblin Outpost",
-        Level: 1,
-        OnDestroyDisableObstacle: [554, 555],
-        InitialData: {
-            Units: [
-                { Name: "Goblin Slinger", Total: 3, Alive: 0, Dead: 0 },
-            ]
         }
     },
     "300": {

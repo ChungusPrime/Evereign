@@ -42,84 +42,12 @@ const Help: HelpText = {
     Elf: RaceData[1].Description,
     Dwarf: RaceData[2].Description,
     "Proto-Struct": RaceData[3].Description,
-
-    Morvenite: `Morvenites are a mysterious and ancient race of beings, known for their connection to the arcane and their mastery of magic. They are often seen as the 
-    keepers of ancient knowledge and are highly respected for their wisdom and insight. They have a natural affinity for magical energies, and are often able to sense and manipulate these forces with ease. 
-    Morvenites are also known for their longevity, often living for several centuries.
-
-    Starting Attribute Bonus:
-    +2 Arcana, +2 Expertise
-
-    Starting Trait - Arcane Scholar:
-    - You gain additional experience when using magical abilities
-    - You can identify magical items more easily
-    `,
-
-    Gnome: `Gnomes are known for their ingenuity and creativity. They are skilled in the use of gadgets and technology, and are often seen as the inventors and engineers of the world.
-    They have a natural affinity for machinery, and are often able to understand and manipulate complex devices with ease. Gnomes are also known for their curiosity, often seeking out new knowledge and experiences.
-
-    Starting Attribute Bonus:
-    +2 Fortitude, +2 Expertise
-
-    Starting Trait - Tinkerer:
-    - You can craft gadgets and devices
-    - You take reduced damage from mechanical traps
-    `,
-
-    Kirupean: `Kirupeans are an enigmatic race, known for their elusive nature and mastery of stealth. They are often seen as spies and assassins, using their agility and cunning to outmaneuver their foes. 
-    Kirupeans have a natural affinity for the shadows, allowing them to blend into their surroundings with ease. Kirupeans are also known for their sharp senses, often able to detect danger before it arrives.
-
-    Starting Attribute Bonus:
-    +2 Personality, +2 Fortune
-
-    Starting Trait - Shadow Walker:
-    - You can move silently and hide more easily
-    - You have advantage on stealth checks
-    `,
-
-    "Half-Orc": `Half-Orcs are a hybrid race, born from the union of humans and orcs. They possess the strength and resilience of their orcish heritage, 
-    combined with the adaptability and cunning of humans. Half-Orcs are often seen as fierce warriors, but they also have a strong sense of honor and loyalty.
-
-    Starting Attribute Bonus:
-    +2 Versatility, +2 Personality
-
-    Starting Trait - Berserker Rage:
-    - You can enter a rage state, increasing your damage output for a short time
-    - You have advantage on saving throws against fear effects
-    `,
-
-    Thogac: `Thogacs are a reptile based lifeform, known for their cunning and adaptability. They are skilled in the use of poisons and toxins, and are often seen as assassins and spies.
-    Thogacs have a natural affinity for stealth, allowing them to move silently and avoid detection. Thogacs are also known for their resilience, often able to withstand harsh environments and conditions.
-
-    Starting Attribute Bonus:
-    +2 Arcana, +2 Grit
-
-    Starting Trait - Venomous Strike:
-    - Your melee attacks have a chance to poison your target, dealing damage over time
-    - You have advantage on saving throws against poison effects
-    `,
-
-    Tiseri: `Tiseri are descendents of a demonic realm, known for their grace and agility. They are skilled swordsmen, and are often seen as explorers and adventurers.
-    Tiseri have a natural affinity for war, allowing them to excel in combat and tactics. Tiseri are also known for their charisma, often able to charm and persuade others to their cause. 
-
-    Starting Attribute Bonus:
-    +2 Personality, +2 Grit
-
-    Starting Trait - Demonborn Heritage:
-    - You have resistance to fire damage
-    - You can see in darkness
-    `,
-
-    Drakonid: `Drakonids are a dragon-based lifeform, known for their strength and resilience. They are skilled in the use of heavy weapons and armor, and are often seen as protectors and guardians.
-    Drakonids have a natural affinity for elemental magic, allowing them to harness the power of fire, ice, and lightning. Drakonids are also known for their wisdom, often able to provide guidance and counsel to others.
-
-    Starting Attribute Bonus:
-    +2 Fortitude, +2 Grit
-
-    Starting Trait - Dragonkin Resilience:
-    - You have resistance to one type of elemental damage (fire, ice, or lightning)
-    - You have advantage on saving throws against being frightened
-    `,
+    Morvenite: RaceData[4].Description,
+    Gnome: RaceData[5].Description,
+    Kirupean: RaceData[6].Description,
+    Thogac: RaceData[7].Description,
+    Tiseri: RaceData[8].Description,
+    Drakonid: RaceData[9].Description,
 
     Race: `Your character's Race determines their starting attributes. All Races grant at least one unique trait to your character
     and can affect your gameplay experience.\n

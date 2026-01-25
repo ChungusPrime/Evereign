@@ -2,11 +2,9 @@ import BallistaTower from "../game_objects/buildings/BallistaTower";
 import Chapel from "../game_objects/buildings/Chapel";
 import Farm from "../game_objects/buildings/Farm";
 import Field from "../game_objects/buildings/Field";
-import GoblinOutpost from "../game_objects/buildings/GoblinOutpost";
+import OrcOutpost from "../game_objects/buildings/OrcOutpost";
 import Market from "../game_objects/buildings/Market";
 import Mine from "../game_objects/buildings/Mine";
-import GoblinSlinger from "../game_objects/characters/GoblinSlinger";
-import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
 import Chest from "../game_objects/Chest";
 import IronDeposit from "../game_objects/deposits/IronDeposit";
 import StoneDeposit from "../game_objects/deposits/StoneDeposit";
@@ -26,6 +24,9 @@ import Dwelling from "./../game_objects/buildings/Dwelling";
 import Inn from "../game_objects/buildings/Inn";
 import TownCentre from "../game_objects/buildings/TownCentre";
 import Warehouse from "../game_objects/buildings/Warehouse";
+
+import GoblinSlinger from "../game_objects/characters/GoblinSlinger";
+import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
 
 const GameObjectsMap: { [key: string]: any } = {
 
@@ -50,7 +51,7 @@ const GameObjectsMap: { [key: string]: any } = {
     "Ballista Tower": BallistaTower,
     "Chapel": Chapel,
     "Town Centre": TownCentre,
-    "Goblin Outpost": GoblinOutpost,
+    "Orc Outpost": OrcOutpost,
     "Market": Market,
     "Warehouse": Warehouse,
     "Field": Field,

@@ -4,8 +4,8 @@
 			"image": "buildings",
 			"format": "RGBA8888",
 			"size": {
-				"w": 478,
-				"h": 1148
+				"w": 1630,
+				"h": 550
 			},
 			"scale": 1,
 			"frames": [
@@ -31,7 +31,7 @@
 					}
 				},
 				{
-					"filename": "goblinoutpost1",
+					"filename": "orc_outpost_1",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -39,16 +39,205 @@
 						"h": 224
 					},
 					"spriteSourceSize": {
-						"x": 3,
+						"x": 0,
+						"y": 2,
+						"w": 224,
+						"h": 222
+					},
+					"frame": {
+						"x": 256,
 						"y": 0,
-						"w": 216,
-						"h": 224
+						"w": 224,
+						"h": 222
+					}
+				},
+				{
+					"filename": "field",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 224,
+						"h": 160
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 224,
+						"h": 160
+					},
+					"frame": {
+						"x": 480,
+						"y": 0,
+						"w": 224,
+						"h": 160
+					}
+				},
+				{
+					"filename": "warehouse1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 224,
+						"h": 160
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 222,
+						"h": 127
+					},
+					"frame": {
+						"x": 704,
+						"y": 0,
+						"w": 222,
+						"h": 127
+					}
+				},
+				{
+					"filename": "loggingcamp",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 192,
+						"h": 192
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 44,
+						"w": 192,
+						"h": 148
+					},
+					"frame": {
+						"x": 926,
+						"y": 0,
+						"w": 192,
+						"h": 148
+					}
+				},
+				{
+					"filename": "mine1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 192,
+						"h": 192
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 82,
+						"w": 192,
+						"h": 110
+					},
+					"frame": {
+						"x": 704,
+						"y": 127,
+						"w": 192,
+						"h": 110
+					}
+				},
+				{
+					"filename": "farm1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 192,
+						"h": 160
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 72,
+						"w": 183,
+						"h": 88
+					},
+					"frame": {
+						"x": 480,
+						"y": 160,
+						"w": 183,
+						"h": 88
+					}
+				},
+				{
+					"filename": "inn1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 160,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 13,
+						"w": 160,
+						"h": 115
+					},
+					"frame": {
+						"x": 256,
+						"y": 222,
+						"w": 160,
+						"h": 115
+					}
+				},
+				{
+					"filename": "goblinpit",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 64
+					},
+					"frame": {
+						"x": 416,
+						"y": 222,
+						"w": 64,
+						"h": 64
+					}
+				},
+				{
+					"filename": "market1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 160,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 54,
+						"w": 148,
+						"h": 74
 					},
 					"frame": {
 						"x": 0,
 						"y": 256,
-						"w": 216,
-						"h": 224
+						"w": 148,
+						"h": 74
+					}
+				},
+				{
+					"filename": "BallistaTower",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 51,
+						"w": 60,
+						"h": 77
+					},
+					"frame": {
+						"x": 148,
+						"y": 256,
+						"w": 60,
+						"h": 77
 					}
 				},
 				{
@@ -67,72 +256,9 @@
 					},
 					"frame": {
 						"x": 0,
-						"y": 480,
+						"y": 330,
 						"w": 130,
 						"h": 220
-					}
-				},
-				{
-					"filename": "field",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 224,
-						"h": 160
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 224,
-						"h": 160
-					},
-					"frame": {
-						"x": 0,
-						"y": 700,
-						"w": 224,
-						"h": 160
-					}
-				},
-				{
-					"filename": "loggingcamp",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 192,
-						"h": 192
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 44,
-						"w": 192,
-						"h": 148
-					},
-					"frame": {
-						"x": 130,
-						"y": 480,
-						"w": 192,
-						"h": 148
-					}
-				},
-				{
-					"filename": "goblinpit",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
-					},
-					"frame": {
-						"x": 130,
-						"y": 628,
-						"w": 64,
-						"h": 64
 					}
 				},
 				{
@@ -150,8 +276,8 @@
 						"h": 128
 					},
 					"frame": {
-						"x": 216,
-						"y": 256,
+						"x": 1118,
+						"y": 0,
 						"w": 128,
 						"h": 128
 					}
@@ -171,73 +297,10 @@
 						"h": 92
 					},
 					"frame": {
-						"x": 216,
-						"y": 384,
+						"x": 1246,
+						"y": 0,
 						"w": 128,
 						"h": 92
-					}
-				},
-				{
-					"filename": "warehouse1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 224,
-						"h": 160
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 33,
-						"w": 222,
-						"h": 127
-					},
-					"frame": {
-						"x": 256,
-						"y": 0,
-						"w": 222,
-						"h": 127
-					}
-				},
-				{
-					"filename": "inn1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 160,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 13,
-						"w": 160,
-						"h": 115
-					},
-					"frame": {
-						"x": 256,
-						"y": 127,
-						"w": 160,
-						"h": 115
-					}
-				},
-				{
-					"filename": "mine1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 192,
-						"h": 192
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 82,
-						"w": 192,
-						"h": 110
-					},
-					"frame": {
-						"x": 0,
-						"y": 860,
-						"w": 192,
-						"h": 110
 					}
 				},
 				{
@@ -255,31 +318,10 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 0,
-						"y": 970,
+						"x": 1374,
+						"y": 0,
 						"w": 128,
 						"h": 90
-					}
-				},
-				{
-					"filename": "farm1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 192,
-						"h": 160
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 72,
-						"w": 183,
-						"h": 88
-					},
-					"frame": {
-						"x": 0,
-						"y": 1060,
-						"w": 183,
-						"h": 88
 					}
 				},
 				{
@@ -297,52 +339,10 @@
 						"h": 88
 					},
 					"frame": {
-						"x": 128,
-						"y": 970,
+						"x": 1502,
+						"y": 0,
 						"w": 128,
 						"h": 88
-					}
-				},
-				{
-					"filename": "BallistaTower",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 51,
-						"w": 60,
-						"h": 77
-					},
-					"frame": {
-						"x": 192,
-						"y": 860,
-						"w": 60,
-						"h": 77
-					}
-				},
-				{
-					"filename": "market1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 160,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 6,
-						"y": 54,
-						"w": 148,
-						"h": 74
-					},
-					"frame": {
-						"x": 252,
-						"y": 860,
-						"w": 148,
-						"h": 74
 					}
 				}
 			]

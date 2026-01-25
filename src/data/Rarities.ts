@@ -3,11 +3,12 @@ interface RarityData {
 }
 
 const Rarities: RarityData = {
-    "Common": "#FFFFFF",
-    "Uncommon": "#00FF00",
+    "Common": "#6b6b6b",
+    "Uncommon": "#00b900",
     "Rare": "#0000FF",
-    "Epic": "#800080",
+    "Epic": "#a824a8",
     "Legendary": "#FFD700",
+    "Mythic": "#FF4500"
 };
 
 export default Rarities;

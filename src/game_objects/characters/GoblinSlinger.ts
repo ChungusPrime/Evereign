@@ -85,7 +85,7 @@ export default class GoblinSlinger extends Character {
         },
     };
     
-    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject ) {
         super(scene, { x: object.x, y: object.y }, "Orcs", 0);
 
         if ( object.properties ) {
@@ -94,6 +94,8 @@ export default class GoblinSlinger extends Character {
 
         this.SpawnLocation = { x: object.x, y: object.y };
         this.MaxHealth = this.Health;
+
+        this.scene.Enemies.add(this);
         //this.setPipeline('Light2D');
     }
 

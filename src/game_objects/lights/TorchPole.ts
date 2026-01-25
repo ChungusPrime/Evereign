@@ -5,12 +5,12 @@ export default class TorchPole extends Phaser.GameObjects.Sprite {
     public scene: Game;
     public light: Phaser.GameObjects.Light;
 
-    constructor ( scene: Game, object: { x: number, y: number, width: number, height: number, flippedHorizontal: boolean }, isPlayerOwned: boolean = false ) {
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject, isPlayerOwned: boolean = false ) {
         super( scene, object.x, object.y, "RA_Village_Animation03", 0 );
         this.scene = scene;
         scene.add.existing(this);
         this.setOrigin(0, 1)
-        .setDisplaySize(64, 64)
+        .setDisplaySize(object.width, object.height)
         .setPipeline("Light2D")
         .play({ key: "torch-pole-anim", repeat: -1 })
 

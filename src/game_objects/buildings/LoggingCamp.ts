@@ -1,4 +1,4 @@
-import Town from '../../scenes/Game';
+import Game from '../../scenes/Game';
 import Building from '../Building';
 
 export default class LoggingCamp extends Building {
@@ -11,8 +11,8 @@ export default class LoggingCamp extends Building {
 
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
 
-    constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Buildings", "loggingcamp");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        super( scene, "loggingcamp1", object);
         return this;
     }
 

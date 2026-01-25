@@ -78,15 +78,7 @@ interface Character {
     PlayerTowns: {
         [key: string]: {
             Name: string;
-            Buildings: {
-                name: string;
-                type: string; 
-                x: number;
-                y: number;
-                area: string;
-                level: number;
-                id: string;
-            }[];
+            Buildings: PlayerBuilding[];
             StorageMax: number;
             Storage: { 
                 ItemID: number;

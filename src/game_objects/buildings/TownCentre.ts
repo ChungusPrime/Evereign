@@ -14,16 +14,18 @@ export default class TownCentre extends Building {
     public PlotWidth: number = 256;
     public PlotHeight: number = 256;
 
-    constructor ( scene: Game, x: number, y: number ) {
-        super( scene, x, y, "Buildings", "towncentre1");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        
+        super( scene, "towncentre1", object);
+
         this.scene = scene;
 
-        /*if ( this.IsPlayerOwned == true ) {
-            let BuildZone = this.scene.add.rectangle(this.getCenter().x, this.getCenter().y, 640 + 32 + 1, 640 + 32  + 1, 0xffffff, 0.2).setVisible(false);
+        if ( this.IsPlayerOwned ) {
+            let BuildZone = this.scene.add.rectangle(this.getCenter().x, this.getCenter().y, 672 + 1, 672  + 1, 0xffffff, 0.2).setVisible(false);
             this.scene.physics.world.enable(BuildZone);
             this.BuildZone = BuildZone;
+            this.scene.TownCentre = this;
         }
-        this.scene.TownCentre = this;*/
 
         return this;
     }

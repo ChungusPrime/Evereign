@@ -44,7 +44,7 @@ export default class EnemyManager {
         // Check if the type is valid and create an instance of the appropriate enemy
         const EnemyClass = enemyClasses[name];
         if (EnemyClass) {
-            return new EnemyClass(this.scene, { x: x, y: y }, level);
+            return new EnemyClass(this.scene, { x: x, y: y });
         }
 
         // Return null if the type is not valid

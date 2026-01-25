@@ -11,13 +11,13 @@ const Resources: ItemData[] = [
     },
 
     {
-        ID: "oak_plank",
-        Name: "Oak Plank",
+        ID: "plank_willow",
+        Name: "Willow Plank",
         Sprite: "general-21",
-        Desc: "A plank cut from an oak log, can be used in various production recipes.",
+        Desc: "A plank cut from a willow log, can be used in various production recipes.",
         Stackable: true,
         StackSize: 10,
-        InitialValue: { ID: "oak_plank", Quantity: 1 }
+        InitialValue: { ID: "plank_willow", Quantity: 1 }
     },
 
     {
@@ -64,7 +64,7 @@ const Resources: ItemData[] = [
         ID: "munkles_brightcap",
         Name: "Munkle's Brightcap",
         Sprite: "RA_Cavern_Full-902",
-        Desc: "A common mushroom that is very nutritious, it is often used in cooking and alchemy. It is often found growing in muddy, wet areas.",
+        Desc: "A common mushroom that is very nutritious, it is often used in cooking and alchemy. It is often found growing in elevated, muddy areas.",
         Stackable: true,
         StackSize: 10,
         InitialValue: { ID: "munkles_brightcap", Quantity: 1 }

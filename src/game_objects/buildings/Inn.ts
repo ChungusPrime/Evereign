@@ -8,8 +8,8 @@ export default class Inn extends Building {
     public PlotHeight: number = 64;
     
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
-    constructor ( scene: Game, x: number, y: number, id: string, data: WorldData, TiledProperties: Phaser.Types.Tilemaps.TiledObject ) {
-        super( scene, x, y, "Buildings", "inn1");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        super( scene, "inn1", object);
         this.on('pointerdown', () => {
             this.scene.UI.RestMenu.showMenu();
         });

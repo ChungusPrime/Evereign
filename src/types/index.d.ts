@@ -22,6 +22,35 @@ declare module "*.mp3" {
 
 declare module 'phaser-navmesh';
 
+interface SkillData {
+    [skillName: string]: {
+        Description?: string;
+        Levels?: {
+            [level: number]: {
+                Unlock?: string | string[] | boolean;
+            };
+        }
+    }
+}
+
+interface ObjectDefinition {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    flippedHorizontal?: boolean;
+}
+
+type PlayerBuilding = {
+    name: string;
+    type: string; 
+    x: number;
+    y: number;
+    area: string;
+    level: number;
+    id: string;
+}
+
 interface GameData {
     Controls: {
         [key: string]: string | number;
@@ -224,11 +253,12 @@ interface BuildingData {
             }[]
         }
     }
-    BaseCost: {
-        Tier: number;
-        Resource: number;
-        Amount: number;
-    }[];
+    BuildingCost: {
+        [key: number]: {
+            ItemID: string;
+            Quantity: number;
+        }[];
+    };
     RequiresMilestone: number | boolean;
     AggroZone: boolean;
 }

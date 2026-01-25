@@ -1,4 +1,4 @@
-import Town from '../../scenes/Game';
+import Game from '../../scenes/Game';
 import Building from '../Building';
 
 export default class Field extends Building {
@@ -22,8 +22,8 @@ export default class Field extends Building {
         { Name: "Grow Hops", LevelRequirement: 3 }
     ];
 
-    constructor ( scene: Town, x: number, y: number ) {
-        super( scene, x, y, "Buildings", "field");
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | PlayerBuilding ) {
+        super( scene, "field", object);
         return this;
     }
 

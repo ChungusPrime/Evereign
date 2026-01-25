@@ -1,4 +1,3 @@
-// /D:/code/Evereign/src/data/TownNames.ts
 export const TownNames: string[] = [
 	"Amberfall",
 	"Ashford",
