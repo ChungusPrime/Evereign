@@ -8,13 +8,21 @@ const Dwelling: BuildingData = {
     Sprite: "dwelling-1",
     PlotSize: { Width: 224, Height: 180 },
     BaseHousingSlots: 5,
-    BaseCost: [
-        {
-            Tier: 1,
-            Resource: 100,
-            Amount: 50
-        }
-    ],
+    BuildingCost: {
+        1: [
+            { ItemID: "log_willow", Quantity: 24 },
+            { ItemID: "stone_rough", Quantity: 12 }
+        ],
+        2: [
+            { ItemID: "plank_willow", Quantity: 24 },
+            { ItemID: "stone_rough", Quantity: 48 },
+            { ItemID: "ingot_iron", Quantity: 6 }
+        ],
+        3: [
+            { ItemID: "plank_willow", Quantity: 72 },
+            { ItemID: "ingot_steel", Quantity: 24 },
+        ]
+    },
     AggroZone: false,
     Tiers: {
         1: {

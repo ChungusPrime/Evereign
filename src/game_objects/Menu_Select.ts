@@ -1,7 +1,7 @@
 import Menu from "../scenes/Menu";
 import TextButton from "./UI_TextButton";
 
-export default class MenuSelect extends Phaser.GameObjects.Sprite {
+export default class MenuSelect extends Phaser.GameObjects.NineSlice {
 
     public scene: Menu;
 
@@ -15,7 +15,7 @@ export default class MenuSelect extends Phaser.GameObjects.Sprite {
 
     constructor ( scene: Menu, x: number, y: number, text: string, options: string[] ) {
 
-        super(scene, x, y, "Kenney-UI", "buttonLong_beige_pressed");
+        super(scene, x, y, "Kenney-UI", "buttonLong_blue_pressed", 312, 32, 16, 16, 16, 16);
 
         this.scene = scene;
         this.Options = options;
@@ -36,7 +36,7 @@ export default class MenuSelect extends Phaser.GameObjects.Sprite {
         })
         .setVisible(false);
 
-        this.setTint(0xdaa475);
+        //this.setTint(0xdaa475);
         this.displayWidth = 300;
 
         this.scene.add.existing(this);
@@ -55,9 +55,9 @@ export default class MenuSelect extends Phaser.GameObjects.Sprite {
         .setVisible(false);
 
         // Get previous option
-        this.ScrollLeft = this.scene.add.sprite(this.getLeftCenter().x - 15, y, "Kenney-UI", "arrowBeige_left");
+        this.ScrollLeft = this.scene.add.sprite(this.getLeftCenter().x - 15, y, "Kenney-UI", "arrowBlue_left");
         this.ScrollLeft.setOrigin(0.5);
-        this.ScrollLeft.setTint(0xE0BA99);
+        //this.ScrollLeft.setTint(0xE0BA99);
         this.ScrollLeft.setInteractive();
         this.ScrollLeft.on('pointerover', () => {
 
@@ -83,9 +83,9 @@ export default class MenuSelect extends Phaser.GameObjects.Sprite {
         .setVisible(false);
 
         // Get next option
-        this.ScrollRight = this.scene.add.sprite(this.getRightCenter().x + 15, y, "Kenney-UI", "arrowBeige_right");
+        this.ScrollRight = this.scene.add.sprite(this.getRightCenter().x + 15, y, "Kenney-UI", "arrowBlue_right");
         this.ScrollRight.setOrigin(0.5);
-        this.ScrollRight.setTint(0xdaa475);
+        //this.ScrollRight.setTint(0xdaa475);
         this.ScrollRight.setInteractive();
         this.ScrollRight.on('pointerover', () => {
 

@@ -110,9 +110,11 @@ interface AbilityDamageArray {
 
 interface RaceData {
     Name: string;
+    Skin: number;
     Description: string;
     Traits: string[];
     Skins: string[];
+    Available: boolean;
     Attributes: {
         [key: string]: number; 
     }

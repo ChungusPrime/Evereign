@@ -67,6 +67,14 @@ export default class Menu extends Phaser.Scene {
     TutorialButton: TextButton;
     ReincarnationButton: TextButton;
     CloudButton: TextButton;
+    CharacterSkin: any;
+    CharacterHeadItem: any;
+    CharacterBodyItem: any;
+    CharacterLegsItem: any;
+    CharacterHandsItem: any;
+    CharacterFeetItem: any;
+    SoulGemIcon: any;
+    SoulGemValue: any;
 
     constructor () {
         super({ key: "Menu" });
@@ -91,7 +99,7 @@ export default class Menu extends Phaser.Scene {
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
         this.sound.play("track1", { loop: true });
 
-        this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 768 * 2, 560 * 2, 30, 30, 30, 30).setOrigin(0.5);
+        this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 1280, 720, 16, 16, 16, 16).setOrigin(0.5);
 
         this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0').setScale(1.5).setOrigin(0.5, 0.55).setVisible(true);
 
@@ -117,7 +125,7 @@ export default class Menu extends Phaser.Scene {
         this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.55, "Credits", () => { console.log("credits") });
         this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Quit", () => { window.close() });
 
-        this.MainMenuGroup = this.add.group([ 
+        this.MainMenuGroup = this.add.group([
             this.CreateButton,
             this.LoadButton,
             this.TutorialButton,
@@ -181,22 +189,33 @@ export default class Menu extends Phaser.Scene {
         this.CharacterCreationGroup = this.add.group().setVisible(false);
         
         this.CharacterCreationGroup.add(
-            this.add.text(this.scale.width * 0.32, Y, "New Adventurer", { fontSize: 36, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
+            this.add.text(this.scale.width * 0.32, Y, "New Character", { fontSize: 36, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
         );
 
         Y = Y + 50;
 
         // Name
         this.characterNameInput = new MenuInput(this, this.scale.width * 0.32, Y, "Character Name");
-        Y = Y + 50;
+        Y = Y + 40;
 
         // Race
-        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", RaceData.map( r => r.Name ));
+        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", RaceData.filter( c => c.Available ).map( r => r.Name ));
+
+        this.characterRaceSelect.ScrollRight.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
+            if ( pointer.leftButtonDown() )
+                this.UpdateCharacterPreview();
+        });
+
+        this.characterRaceSelect.ScrollRight.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
+            if ( pointer.leftButtonDown() )
+                this.UpdateCharacterPreview();
+        });
+
         this.RaceInfoButton = new TextButton(this, this.characterRaceSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
             this.SetHelpText(this.characterRaceSelect.CurrentValue);
         }, 32).setVisible(false);
         this.CharacterCreationGroup.add(this.RaceInfoButton);
-        Y = Y + 50;
+        Y = Y + 40;
 
         // Class
         this.characterClassSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Class", ClassData.map( c => c.Name ));
@@ -204,7 +223,7 @@ export default class Menu extends Phaser.Scene {
             this.SetHelpText(this.characterClassSelect.CurrentValue);
         }, 32).setVisible(false);
         this.CharacterCreationGroup.add(this.ClassInfoButton);
-        Y = Y + 50;
+        Y = Y + 40;
 
         // Campaign
         this.campaignSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Campaign", Campaigns.filter( c => c.Available ).map( c => c.Name ));
@@ -212,7 +231,7 @@ export default class Menu extends Phaser.Scene {
             this.SetHelpText(this.campaignSelect.CurrentValue);
         }, 32).setVisible(false);
         this.CharacterCreationGroup.add(this.CampaignInfoButton);
-        Y = Y + 50;
+        Y = Y + 40;
 
         // Scaling
         this.scalingSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Scaling", ["Fixed", "Adaptive"]);
@@ -220,7 +239,7 @@ export default class Menu extends Phaser.Scene {
             this.SetHelpText(this.scalingSelect.CurrentValue);
         }, 32).setVisible(false);
         this.CharacterCreationGroup.add(this.ScalingInfoButton);
-        Y = Y + 50;
+        Y = Y + 40;
 
         // Difficulty
         this.difficultySelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Difficulty", ["Standard", "Story", "Ultra"]);
@@ -228,9 +247,30 @@ export default class Menu extends Phaser.Scene {
             this.SetHelpText(this.difficultySelect.CurrentValue);
         }, 32).setVisible(false);
         this.CharacterCreationGroup.add(this.DifficultyInfoButton);
-        Y = Y + 50;
+        Y = Y + 80;
 
-        let CreateNewCharButton = new TextButton(this, this.scale.width * 0.32, this.scale.height * 0.73, "Confirm Character", () => {
+        // Character Preview Placeholder
+        this.CharacterSkin = this.add.sprite(this.scale.width * 0.24, Y, "Player", 0).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterHeadItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 0).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterBodyItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 4).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterLegsItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 8).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterHandsItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 5).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterFeetItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 6).setOrigin(0.5).setScale(4).setVisible(false);
+        this.SoulGemIcon = this.add.image(this.scale.width * 0.36, Y, "ownmisc", 8).setOrigin(0.5).setScale(2).setVisible(false);
+        this.SoulGemValue = this.add.text(this.SoulGemIcon.getRightCenter().x, this.SoulGemIcon.getRightCenter().y + 20, "Soul Gems:\nx100", { fontSize: 24, align: "left", fontFamily: "Augusta", color: "#000" }).setOrigin(0, 0.5).setVisible(false);
+
+        this.CharacterCreationGroup.addMultiple([
+            this.CharacterSkin,
+            this.CharacterHeadItem,
+            this.CharacterBodyItem,
+            this.CharacterLegsItem,
+            this.CharacterHandsItem,
+            this.CharacterFeetItem,
+            this.SoulGemIcon,
+            this.SoulGemValue
+        ]);
+
+        let CreateNewCharButton = new TextButton(this, this.scale.width * 0.32, this.scale.height * 0.73, "Create", () => {
 
             ErrorText.setVisible(false);
 
@@ -260,8 +300,6 @@ export default class Menu extends Phaser.Scene {
             let Campaign = Campaigns.find( (c) => c.ID == this.campaignSelect.CurrentValue );
 
             this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, this.scalingSelect.CurrentValue, Campaign, Class, Race);
-
-            //this.StartGame(this.CharacterName);
             this.RefreshCharacterList();
 
         }).setVisible(false);
@@ -319,6 +357,12 @@ export default class Menu extends Phaser.Scene {
 
         this.cameras.main.fadeIn(2000);
 
+    }
+
+    UpdateCharacterPreview () {
+        let Race = RaceData.find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
+        this.CharacterSkin.setFrame(Race.Skin);
+        let Class = ClassData.find( (c) => c.Name == this.characterClassSelect.CurrentValue );
     }
 
     CreateCharacter ( Name: string, Difficulty: string, Scaling: string, Campaign: Campaign, Class: ClassData, Race: RaceData ) {
@@ -425,13 +469,18 @@ export default class Menu extends Phaser.Scene {
         }
 
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
+
             if (menuToGroupMap[this.CurrentMenu]) {
+
+                /*menuToGroupMap[this.CurrentMenu].getChildren().forEach( (obj: any) => {
+                    if ( obj.show ) {
+                        obj.show();
+                    }
+                });*/
+
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
-                /*if (this.Data.LastCharacterPlayed != null) {
-                    this.ContinueButton.setVisible(true);
-                } else {
-                    this.ContinueButton.setVisible(false);
-                }*/
+
+
                 if ( this.CurrentMenu !== "main" ) {
                     this.BackButton.setVisible(true);
                 }

@@ -1,6 +1,6 @@
 import Menu from "../scenes/Menu";
 
-export default class MenuInput extends Phaser.GameObjects.Sprite {
+export default class MenuInput extends Phaser.GameObjects.NineSlice {
 
     public scene: Menu;
     public TextObject: Phaser.GameObjects.Text;
@@ -8,25 +8,24 @@ export default class MenuInput extends Phaser.GameObjects.Sprite {
     public Selected: boolean = false;
 
     constructor ( scene: Menu, x: number, y: number, text: string) {
-        super(scene, x, y, "Kenney-UI", "buttonLong_beige_pressed");
+        super(scene, x, y, "Kenney-UI", "buttonLong_blue_pressed", 312, 32, 16, 16, 16, 16);
         this.scene = scene;
 
         // Current value
         this.setOrigin(0.5).setInteractive().on('pointerover', () => {
             this.Selected = true;
-            this.setTint(0xE0BA99);
+            //this.setTint(0xE0BA99);
         }).on('pointerout', () => {
             this.Selected = false;
-            this.setTint(0xdaa475);
+            //this.setTint(0xdaa475);
         }).on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
             if ( pointer.leftButtonDown() ) {
                 this.scene.sound.play('click');
                 console.log(this.CurrentValue);
             }
         }).setVisible(false)
-        .setTint(0xdaa475);
+        //.setTint(0xdaa475);
 
-        this.displayWidth = 300;
         this.scene.add.existing(this);
 
         // Value text

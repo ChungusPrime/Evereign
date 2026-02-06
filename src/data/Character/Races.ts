@@ -23,6 +23,8 @@ const RaceData: RaceData[] = [
 
         Skins: ["1", "2", "3"],
 
+        Skin: 0,
+
         Attributes: {
             Fortitude: 5,
             Versatility: 5,
@@ -32,7 +34,8 @@ const RaceData: RaceData[] = [
             Fortune: 5,
             Grit: 5,
             Arcana: 5
-        }
+        },
+        Available: true
     },
 
     {
@@ -59,6 +62,8 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
+        Skin: 1,
+        Available: false
     },
 
     {
@@ -85,7 +90,9 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
-        Skins: []
+        Skins: [],
+        Skin: 1,
+        Available: false
     },
     
     {
@@ -103,6 +110,8 @@ const RaceData: RaceData[] = [
         - Start with 3 component slots, and gain one additional component slot every level
         - You can interface with ancient machines and devices
         `,
+        Skin: 3,
+        Available: true,
         Traits: ["ultris_grade_unit"],
         Attributes: {},
         Items: {
@@ -114,6 +123,8 @@ const RaceData: RaceData[] = [
     },
 
     {
+        Skin: 4,
+        Available: true,
         Name: "Morvenite",
         Description: `Morvenites are a mysterious and ancient race of beings, known for their connection to the arcane and their mastery of magic. They are often seen as the 
         keepers of ancient knowledge and are highly respected for their wisdom and insight. They have a natural affinity for magical energies, and are often able to sense and manipulate these forces with ease. 
@@ -141,6 +152,7 @@ const RaceData: RaceData[] = [
     },
 
     {
+
         Name: "Gnome",
         Description: `Gnomes are known for their ingenuity and creativity. They are skilled in the use of gadgets and technology, and are often seen as the inventors and engineers of the world.
         They have a natural affinity for machinery, and are often able to understand and manipulate complex devices with ease. Gnomes are also known for their curiosity, often seeking out new knowledge and experiences.
@@ -163,10 +175,14 @@ const RaceData: RaceData[] = [
             Grit: 5,
             Arcana: 5
         },
-        Skins: []
+        Skins: [],
+        Skin: 2,
+        Available: false
     },
 
     {
+        Skin: 5,
+        Available: true,
         Name: "Kirupean",
         Description: `Kirupeans are an enigmatic race, known for their elusive nature and mastery of stealth. They are often seen as spies and assassins, using their agility and cunning to outmaneuver their foes. 
         Kirupeans have a natural affinity for the shadows, allowing them to blend into their surroundings with ease. Kirupeans are also known for their sharp senses, often able to detect danger before it arrives.
@@ -193,6 +209,8 @@ const RaceData: RaceData[] = [
     },
 
     {
+        Skin: 6,
+        Available: true,
         Name: "Thogac",
         Description: `Thogacs are a reptile based lifeform, known for their cunning and adaptability. They are skilled in the use of poisons and toxins, and are often seen as assassins and spies.
         Thogacs have a natural affinity for stealth, allowing them to move silently and avoid detection. Thogacs are also known for their resilience, often able to withstand harsh environments and conditions.
@@ -219,6 +237,8 @@ const RaceData: RaceData[] = [
     },
 
     {
+        Skin: 7,
+        Available: true,
         Name: "Tiseri",
         Description: `Tiseri are descendents of a demonic realm, known for their grace and agility. They are skilled swordsmen, and are often seen as explorers and adventurers.
         Tiseri have a natural affinity for war, allowing them to excel in combat and tactics. Tiseri are also known for their charisma, often able to charm and persuade others to their cause. 
@@ -245,6 +265,8 @@ const RaceData: RaceData[] = [
     },
 
     {
+        Skin: 8,
+        Available: true,
         Name: "Drakonid",
         Description: `Drakonids are a dragon-based lifeform, known for their strength and resilience. They are skilled in the use of heavy weapons and armor, and are often seen as protectors and guardians.
         Drakonids have a natural affinity for elemental magic, allowing them to harness the power of fire, ice, and lightning. Drakonids are also known for their wisdom, often able to provide guidance and counsel to others.

@@ -136,6 +136,7 @@ export const Manifest: AssetManifest = {
         { key: 'characters', path: require('./assets/images/characters.png'), frameWidth: 16, frameHeight: 16 },
         { key: 'Orcs', path: require('./assets/images/own/characters/Orcs.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'Player', path: require('./assets/images/own/characters/Player.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'PlayerEquipment', path: require('./assets/images/own/characters/PlayerEquipment.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'monsters', path: require('./assets/images/monsters.png'), frameWidth: 32, frameHeight: 32 },
         
         // Items/Resources
@@ -221,7 +222,7 @@ export const Manifest: AssetManifest = {
     aseprites: [
         { key: 'Operative', texturePath: require('./assets/images/own/characters/Humans.png'), atlasPath: require('./assets/images/own/characters/Humans.json') },
         { key: 'Journal', texturePath: require('./assets/images/Journal.png'), atlasPath: require('./assets/images/Journal.json') },
-        { key: 'Panel-Borders', texturePath: require('./assets/images/panel-borders.png'), atlasPath: require('./assets/images/panel-borders.json') },
+        { key: 'Panel-Borders', texturePath: require('./assets/images/Panel-Borders-T.png'), atlasPath: require('./assets/images/Panel-Borders-T.json') },
     ],
 };
 

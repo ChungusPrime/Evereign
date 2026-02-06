@@ -1,7 +1,6 @@
 const Lastnames: string[] = [
     'Dinkus',
     'Grinner',
-    'Limond',
     'Farnsworth',
     'Hargrove',
     'Kettle',
@@ -20,6 +19,9 @@ const Lastnames: string[] = [
     'Bramble',
     'Caldwell',
     'Drake',
+    'Eastwood',
+    'Fletcher',
+    'Graves',
     'Everhart',
     'Fairchild',
     'Galloway',

@@ -23,6 +23,32 @@ interface Traits {
 
 const TraitData: Traits = {
 
+    // Armour
+    "cloth_armour_specialist": {
+        Name: "Cloth Armour Specialist",
+        Description: `Allows you to wear Cloth Armour with reduced movement speed penalty.`,
+    },
+
+    "leather_armour_specialist": {
+        Name: "Leather Armour Specialist",
+        Description: `Allows you to wear Leather Armour with reduced movement speed penalty.`,
+    },
+
+    "chainmail_armour_specialist": {
+        Name: "Chainmail Armour Specialist",
+        Description: `Allows you to wear Chainmail Armour with reduced movement speed penalty.`,
+    },
+
+    "plate_armour_specialist": {
+        Name: "Plate Armour Specialist",
+        Description: `Allows you to wear Plate Armour with reduced movement speed penalty.`,
+    },
+
+    "dual_wielding_specialist": {
+        Name: "Dual Wielding Specialist",
+        Description: `Allows you to dual wield one-handed weapons.`,
+    },
+
     // Scatterguns
     "scattergun_novice": {
         Name: "Scattergun Novice",

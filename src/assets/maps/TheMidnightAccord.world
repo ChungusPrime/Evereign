@@ -36,20 +36,6 @@
             "y": -6400
         },
         {
-            "fileName": "SwampWest.json",
-            "height": 6400,
-            "width": 6400,
-            "x": -12800,
-            "y": -6400
-        },
-        {
-            "fileName": "SwampNorth.json",
-            "height": 6400,
-            "width": 6400,
-            "x": -6400,
-            "y": -12800
-        },
-        {
             "fileName": "WillowvaleNorthEast.json",
             "height": 6400,
             "width": 6400,
@@ -60,7 +46,7 @@
             "fileName": "SwampNorthWest.json",
             "height": 6400,
             "width": 6400,
-            "x": -12800,
+            "x": -6400,
             "y": -12800
         },
         {
