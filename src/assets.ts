@@ -136,7 +136,12 @@ export const Manifest: AssetManifest = {
         { key: 'characters', path: require('./assets/images/characters.png'), frameWidth: 16, frameHeight: 16 },
         { key: 'Orcs', path: require('./assets/images/own/characters/Orcs.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'Player', path: require('./assets/images/own/characters/Player.png'), frameWidth: 32, frameHeight: 32 },
-        { key: 'PlayerEquipment', path: require('./assets/images/own/characters/PlayerEquipment.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'PlayerHead', path: require('./assets/images/own/characters/PlayerHead.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'PlayerBody', path: require('./assets/images/own/characters/PlayerBody.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'PlayerHands', path: require('./assets/images/own/characters/PlayerHands.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'PlayerLegs', path: require('./assets/images/own/characters/PlayerLegs.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'PlayerFeet', path: require('./assets/images/own/characters/PlayerFeet.png'), frameWidth: 32, frameHeight: 32 },
+
         { key: 'monsters', path: require('./assets/images/monsters.png'), frameWidth: 32, frameHeight: 32 },
         
         // Items/Resources

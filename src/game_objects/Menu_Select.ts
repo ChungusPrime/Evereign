@@ -78,6 +78,7 @@ export default class MenuSelect extends Phaser.GameObjects.NineSlice {
                 }
                 this.CurrentValue = this.Options[this.ValueIndex];
                 this.TextObject.setText(this.CurrentValue);
+                this.scene.UpdateCharacterPreview();
             }
         })
         .setVisible(false);
@@ -105,6 +106,7 @@ export default class MenuSelect extends Phaser.GameObjects.NineSlice {
                 }
                 this.CurrentValue = this.Options[this.ValueIndex];
                 this.TextObject.setText(this.CurrentValue);
+                this.scene.UpdateCharacterPreview();
             }
         })
         .setVisible(false);

@@ -33,7 +33,7 @@ const Help: HelpText = {
     "The Defence of Emberfall Island": Campaigns[1].Description,
 
     // Classes
-    Operative: ClassData[0].Description,
+    Agent: ClassData[0].Description,
     Evoker: ClassData[1].Description,
     Godsworn: ClassData[2].Description,
 

@@ -67,14 +67,16 @@ export default class Menu extends Phaser.Scene {
     TutorialButton: TextButton;
     ReincarnationButton: TextButton;
     CloudButton: TextButton;
-    CharacterSkin: any;
-    CharacterHeadItem: any;
-    CharacterBodyItem: any;
-    CharacterLegsItem: any;
-    CharacterHandsItem: any;
-    CharacterFeetItem: any;
-    SoulGemIcon: any;
-    SoulGemValue: any;
+
+    CharacterSkin: Phaser.GameObjects.Sprite;
+    CharacterHeadItem: Phaser.GameObjects.Sprite;
+    CharacterBodyItem: Phaser.GameObjects.Sprite;
+    CharacterLegsItem: Phaser.GameObjects.Sprite;
+    CharacterHandItem: Phaser.GameObjects.Sprite;
+    CharacterFeetItem: Phaser.GameObjects.Sprite;
+
+    SoulGemIcon: Phaser.GameObjects.Sprite;
+    SoulGemValue: Phaser.GameObjects.Text;
 
     constructor () {
         super({ key: "Menu" });
@@ -200,17 +202,6 @@ export default class Menu extends Phaser.Scene {
 
         // Race
         this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", RaceData.filter( c => c.Available ).map( r => r.Name ));
-
-        this.characterRaceSelect.ScrollRight.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            if ( pointer.leftButtonDown() )
-                this.UpdateCharacterPreview();
-        });
-
-        this.characterRaceSelect.ScrollRight.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-            if ( pointer.leftButtonDown() )
-                this.UpdateCharacterPreview();
-        });
-
         this.RaceInfoButton = new TextButton(this, this.characterRaceSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
             this.SetHelpText(this.characterRaceSelect.CurrentValue);
         }, 32).setVisible(false);
@@ -218,7 +209,7 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 40;
 
         // Class
-        this.characterClassSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Class", ClassData.map( c => c.Name ));
+        this.characterClassSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Class", ClassData.filter( c => c.Available ).map( c => c.Name ));
         this.ClassInfoButton = new TextButton(this, this.characterClassSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
             this.SetHelpText(this.characterClassSelect.CurrentValue);
         }, 32).setVisible(false);
@@ -251,12 +242,12 @@ export default class Menu extends Phaser.Scene {
 
         // Character Preview Placeholder
         this.CharacterSkin = this.add.sprite(this.scale.width * 0.24, Y, "Player", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterHeadItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterBodyItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 4).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterLegsItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 8).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterHandsItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 5).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterFeetItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerEquipment", 6).setOrigin(0.5).setScale(4).setVisible(false);
-        this.SoulGemIcon = this.add.image(this.scale.width * 0.36, Y, "ownmisc", 8).setOrigin(0.5).setScale(2).setVisible(false);
+        this.CharacterHeadItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerHead", 0).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterBodyItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerBody", 0).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterLegsItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerLegs", 0).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterHandItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerHands", 0).setOrigin(0.5).setScale(4).setVisible(false);
+        this.CharacterFeetItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerFeet", 0).setOrigin(0.5).setScale(4).setVisible(false);
+        this.SoulGemIcon = this.add.sprite(this.scale.width * 0.36, Y, "ownmisc", 8).setOrigin(0.5).setScale(2).setVisible(false);
         this.SoulGemValue = this.add.text(this.SoulGemIcon.getRightCenter().x, this.SoulGemIcon.getRightCenter().y + 20, "Soul Gems:\nx100", { fontSize: 24, align: "left", fontFamily: "Augusta", color: "#000" }).setOrigin(0, 0.5).setVisible(false);
 
         this.CharacterCreationGroup.addMultiple([
@@ -264,7 +255,7 @@ export default class Menu extends Phaser.Scene {
             this.CharacterHeadItem,
             this.CharacterBodyItem,
             this.CharacterLegsItem,
-            this.CharacterHandsItem,
+            this.CharacterHandItem,
             this.CharacterFeetItem,
             this.SoulGemIcon,
             this.SoulGemValue
@@ -360,9 +351,53 @@ export default class Menu extends Phaser.Scene {
     }
 
     UpdateCharacterPreview () {
-        let Race = RaceData.find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
-        this.CharacterSkin.setFrame(Race.Skin);
-        let Class = ClassData.find( (c) => c.Name == this.characterClassSelect.CurrentValue );
+
+        if ( this.characterRaceSelect.CurrentValue != null ) {
+            let Race = RaceData.find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
+            this.CharacterSkin.setFrame(Race.Skin);
+        }
+
+        if ( this.characterClassSelect.CurrentValue != null ) {
+            let Class = ClassData.find( (c) => c.Name == this.characterClassSelect.CurrentValue );
+
+            console.log(Class);
+
+            if ( Class.Items.Equipment_Head == null ) {
+                this.CharacterHeadItem.setVisible(false);
+            } else {
+                this.CharacterHeadItem.setTexture("PlayerHead", ItemData[Class.Items.Equipment_Head.ID].Texture);
+                this.CharacterHeadItem.setVisible(true);
+            }
+
+            if ( Class.Items.Equipment_Chest == null ) {
+                this.CharacterBodyItem.setVisible(false);
+            } else {
+                this.CharacterBodyItem.setTexture("PlayerBody", ItemData[Class.Items.Equipment_Chest.ID].Texture);
+                this.CharacterBodyItem.setVisible(true);
+            }
+
+            if ( Class.Items.Equipment_Legs == null ) {
+                this.CharacterLegsItem.setVisible(false);
+            } else {
+                this.CharacterLegsItem.setTexture("PlayerLegs", ItemData[Class.Items.Equipment_Legs.ID].Texture);
+                this.CharacterLegsItem.setVisible(true);
+            }
+
+            if ( Class.Items.Equipment_Hands == null ) {
+                this.CharacterHandItem.setVisible(false);
+            } else {
+                this.CharacterHandItem.setTexture("PlayerHands", ItemData[Class.Items.Equipment_Hands.ID].Texture);
+                this.CharacterHandItem.setVisible(true);
+            }
+
+            if ( Class.Items.Equipment_Feet == null ) {
+                this.CharacterFeetItem.setVisible(false);
+            } else {
+                this.CharacterFeetItem.setTexture("PlayerFeet", ItemData[Class.Items.Equipment_Feet.ID].Texture);
+                this.CharacterFeetItem.setVisible(true);
+            }
+        }
+
     }
 
     CreateCharacter ( Name: string, Difficulty: string, Scaling: string, Campaign: Campaign, Class: ClassData, Race: RaceData ) {

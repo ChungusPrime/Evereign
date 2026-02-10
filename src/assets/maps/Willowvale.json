@@ -5590,7 +5590,7 @@
                  "visible":true,
                  "width":192,
                  "x":3136,
-                 "y":1856
+                 "y":1760
                 }, 
                 {
                  "gid":15968,
@@ -5602,7 +5602,7 @@
                  "visible":true,
                  "width":192,
                  "x":3232,
-                 "y":1984
+                 "y":1888
                 }, 
                 {
                  "gid":15968,
@@ -5614,7 +5614,7 @@
                  "visible":true,
                  "width":192,
                  "x":2720,
-                 "y":2016
+                 "y":1920
                 }, 
                 {
                  "gid":15968,
@@ -5626,7 +5626,7 @@
                  "visible":true,
                  "width":192,
                  "x":2880,
-                 "y":1952
+                 "y":1856
                 }, 
                 {
                  "gid":15968,
@@ -5638,7 +5638,7 @@
                  "visible":true,
                  "width":192,
                  "x":2816,
-                 "y":2144
+                 "y":2048
                 }, 
                 {
                  "gid":15968,
@@ -5650,7 +5650,7 @@
                  "visible":true,
                  "width":192,
                  "x":3008,
-                 "y":1984
+                 "y":1888
                 }, 
                 {
                  "gid":15968,
@@ -5662,7 +5662,7 @@
                  "visible":true,
                  "width":192,
                  "x":2912,
-                 "y":1728
+                 "y":1632
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6586,7 +6586,7 @@
                         {
                          "name":"ID",
                          "type":"string",
-                         "value":"WV_Gatehouse_2"
+                         "value":"WV_Gatehouse_Door_2"
                         }],
                  "rotation":0,
                  "type":"Obstacle",
@@ -6604,7 +6604,7 @@
                         {
                          "name":"ID",
                          "type":"string",
-                         "value":"WV_Gatehouse_1"
+                         "value":"WV_Gatehouse_Door_1"
                         }],
                  "rotation":0,
                  "type":"Obstacle",

@@ -23,4 +23,5 @@ interface ItemData {
     CraftingSkill?: string;
     CraftingSkillLevel?: number;
     CraftingSkillXP?: number;
+    Texture?: number;
 }

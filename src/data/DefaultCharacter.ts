@@ -11,7 +11,7 @@ const DefaultCharacter: Character = {
     PlayerTowns: {},
     Name: "Bithmas",
     Race: "Human",
-    Class: "Operative",
+    Class: "Agent",
     Scaling: "Fixed",
     Difficulty: "Standard",
 
