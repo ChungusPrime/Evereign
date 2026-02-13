@@ -22,15 +22,23 @@ declare module "*.mp3" {
 
 declare module 'phaser-navmesh';
 
+interface Proficiency {
+    Abilities: Ability[];
+    Traits: Trait[];
+    Name: string;
+    Description: string;
+    ID: string;
+}
+
 interface Ability {
-    id: string;
-    name: string;
+    ID: string;
+    Name: string;
+    Description: string;
     mana_cost: number;
     sprite: string;
     type: string;
     cooldown?: number;
     charge_time?: number;
-    description: string;
     requires_weapon_equipped?: boolean;
     weapon_type?: string;
     apply_effect?: string;
@@ -39,6 +47,7 @@ interface Ability {
 }
 
 interface Trait {
+    ID: string;
     Name: string;
     Description: string;
     RequiredTraits?: string[];
