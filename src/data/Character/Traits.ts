@@ -4,22 +4,7 @@ They are not active abilities, but rather passive effects that enhance a charact
 abilities or grant them new ones.
 */
 
-interface Traits {
-    [key: string]: {
-        Name: string;
-        Description: string;
-        RequiredTraits?: string[];
-        RequiredAttributes?: {
-            Fortitude?: number;
-            Versatility?: number;
-            Vigor?: number;
-            Expertise?: number;
-            Personality?: number;
-            Fortune?: number;
-            Grit?: number;
-        };
-    };
-}
+
 
 const TraitData: Traits = {
 
@@ -47,68 +32,6 @@ const TraitData: Traits = {
     "dual_wielding_specialist": {
         Name: "Dual Wielding Specialist",
         Description: `Allows you to dual wield one-handed weapons.`,
-    },
-
-    // Scatterguns
-    "scattergun_novice": {
-        Name: "Scattergun Novice",
-        Description: `Basic training on how to use Scatterguns.`,
-        RequiredTraits: [],
-        RequiredAttributes: {
-            Versatility: 5,
-        }
-    },
-
-    "scattergun_apprentice": {
-        Name: "Scattergun Apprentice",
-        Description: `Intermediate training on how to use Scatterguns. 
-        - The number of pellets fired per shot is increased by 2.
-        - Each base damage type of Scatterguns is increased by 2.`,
-        RequiredTraits: [
-            "scattergun_novice",
-        ],
-        RequiredAttributes: {
-            Versatility: 10,
-        }
-    },
-
-    "scattergun_journeyman": {
-        Name: "Scattergun Journeyman",
-        Description: `Advanced training on how to use Scatterguns. 
-        - The number of pellets fired per shot is increased by 2.
-        - Each base damage type of Scatterguns is increased by 2.`,
-        RequiredTraits: [
-            "scattergun_apprentice",
-        ],
-        RequiredAttributes: {
-            Versatility: 15,
-        }
-    },
-
-    "scattergun_expert": {
-        Name: "Scattergun Expert",
-        Description: `Expert training on how to use Scatterguns. 
-        - The number of pellets fired per shot is increased by 2.
-        - Each base damage type of Scatterguns is increased by 2.`,
-        RequiredTraits: [
-            "scattergun_journeyman",
-        ],
-        RequiredAttributes: {
-            Versatility: 20,
-        }
-    },
-
-    "scattergun_master": {
-        Name: "Scattergun Master",
-        Description: `Master training on how to use Scatterguns. 
-        - The number of pellets fired per shot is increased by 2.
-        - Each base damage type of Scatterguns is increased by 2.`,
-        RequiredTraits: [
-            "scattergun_expert",
-        ],
-        RequiredAttributes: {
-            Versatility: 25,
-        }
     },
 
     // Explosives

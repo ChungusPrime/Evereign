@@ -6,11 +6,12 @@ const TheMidnightAccord: Campaign = {
     
     ID: "The Midnight Accord",
     Name: "The Midnight Accord",
-    Description: `In the ancient and verdant realm of Arlamore, peace and prosperity have long been the pillars of the kingdom. Ruled by the wise and noble King Arlamore, 
-    the land has flourished under his just and benevolent reign. However, in the shadows of this thriving kingdom, dark forces have begun to stir.
+    Description: `In the ancient and verdant Briarmourn, peace and prosperity have long been the pillars upheld by the people of this land. 
+    Ruled by the wise and noble King Malrik Tharos, the land has flourished under his just and benevolent reign. 
+    However, in the shadows of this thriving kingdom, dark forces have begun to stir.
 
-    You are a sage and loyal adviser to the king and have served Arlamore with unwavering dedication. One night, a vision, vivid and harrowing, invaded your dreams. 
-    This vision, unlike any he had experienced before, showed a future where Arlamore lay in ruins, its people suffering under the yoke of unending calamity.
+    You are a sage and loyal adviser to the king and have served Briarmourn with unwavering dedication. One night, a vision, vivid and harrowing, invaded your dreams. 
+    This vision, unlike any he had experienced before, showed a future where Briarmourn lay in ruins, its people suffering under the yoke of unending calamity.
     
     The king, though wise, dismissed your vision as a mere nightmare, a product of stress and overwork. Desperate and determined, you took matters into your own hands
     and decided to embark on a perilous journey to gather allies and warn the people of impending doom.`,

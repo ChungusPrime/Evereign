@@ -22,6 +22,54 @@ declare module "*.mp3" {
 
 declare module 'phaser-navmesh';
 
+interface Ability {
+    id: string;
+    name: string;
+    mana_cost: number;
+    sprite: string;
+    type: string;
+    cooldown?: number;
+    charge_time?: number;
+    description: string;
+    requires_weapon_equipped?: boolean;
+    weapon_type?: string;
+    apply_effect?: string;
+    apply_effect_duration?: number;
+    requires_trait?: string;
+}
+
+interface Trait {
+    Name: string;
+    Description: string;
+    RequiredTraits?: string[];
+    RequiredAttributes?: {
+        Fortitude?: number;
+        Versatility?: number;
+        Vigor?: number;
+        Expertise?: number;
+        Personality?: number;
+        Fortune?: number;
+        Grit?: number;
+    };
+}
+
+interface Traits {
+    [key: string]: {
+        Name: string;
+        Description: string;
+        RequiredTraits?: string[];
+        RequiredAttributes?: {
+            Fortitude?: number;
+            Versatility?: number;
+            Vigor?: number;
+            Expertise?: number;
+            Personality?: number;
+            Fortune?: number;
+            Grit?: number;
+        };
+    };
+}
+
 interface SkillData {
     [skillName: string]: {
         Description?: string;

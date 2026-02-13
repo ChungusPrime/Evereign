@@ -1,35 +1,6 @@
-interface Ability {
-    id: string;
-    name: string;
-    mana_cost: number;
-    sprite: string;
-    type: string;
-    cooldown?: number;
-    charge_time?: number;
-    description: string;
-    requires_weapon_equipped?: boolean;
-    weapon_type?: string;
-    apply_effect?: string;
-    apply_effect_duration?: number;
-    requires_trait?: string;
-}
-
 const AbilityData: Record<string, Ability> = {
 
-    "incendiary_shot": {
-        id: "incendiary_shot",
-        name: "Incendiary Shot",
-        mana_cost: 10,
-        sprite: "SkillsB-16",
-        type: "Buff",
-        cooldown: 10000,
-        description: "Load your Scattergun with incendiary rounds, causing pellets to deal fire damage each second for 5 seconds.",
-        requires_weapon_equipped: true,
-        weapon_type: "Scattergun",
-        apply_effect: "incendiary_shot",
-        apply_effect_duration: 5000,
-        requires_trait: "scattergun_novice",
-    },
+
 
     "shrap_charge": {
         id: "shrap_charge",
