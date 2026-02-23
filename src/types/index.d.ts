@@ -79,14 +79,13 @@ interface Traits {
     };
 }
 
-interface SkillData {
-    [skillName: string]: {
-        Description?: string;
-        Levels?: {
-            [level: number]: {
-                Unlock?: string | string[] | boolean;
-            };
-        }
+interface Skill {
+    Name: string;
+    Description?: string;
+    Levels?: {
+        [level: number]: {
+            Unlock?: string | string[] | boolean;
+        };
     }
 }
 
@@ -165,7 +164,7 @@ interface AbilityDamageArray {
     }[]
 }
 
-interface RaceData {
+interface Race {
     Name: string;
     Skin: number;
     Description: string;
@@ -192,38 +191,20 @@ interface LoreEntry {
     Text: string; // Main content of the lore entry
 }
 
-interface ClassData {
-
-    // Name of the class
+interface Class {
     Name: string; 
-
-    // Description of the class
     Description: string; 
-
-    // Starting passive traits
-    Traits: string[]; 
-
-    // Starting active abilities
-    Abilities: string[]; 
-
-    // Starting attribute bonuses
+    Proficiencies: string[]; 
     AttributeBonuses?: { [attribute: string]: number }; 
-
-    // Starting items
     Items: {[slot: string]: { 
         ID: string;
         Quantity: number
     }};
-
     Hotbar: {[slot: string]: { 
         Type: string;
         ID: string;
     }};
-
-    // Unique building associated with the class
     UniqueBuilding: string;
-
-    // Whether the class is available during character creation or not
     Available?: boolean; 
 }
 
@@ -435,21 +416,16 @@ interface CurrencyData {
     Sprite: string,
 }
 
+interface Tag {
+    [key: number]: string;
+}
+
 interface EquipmentSlot {
     [key: string]: number | null;
 }
 
 interface HelpText {
     [section: string]: string;
-}
-
-interface Skill {
-    Level: number;
-    XP: number;
-}
-
-interface Skills {
-    [key: string]: number;
 }
 
 interface MapData {

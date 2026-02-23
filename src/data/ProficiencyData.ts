@@ -1,10 +1,10 @@
 const ProficiencyData: { [key: string]: Proficiency } = {};
 
-import Demolitionist from "./Proficiencies/Demolitionist";
-import Scattergunner from "./Proficiencies/Scattergunner";
-import Pyromancer from "./Proficiencies/Pyromancer";
-import Cryomancer from "./Proficiencies/Cryomancer";
-import Gadgeteer from "./Proficiencies/Gadgeteer";
+import Explosives from "./Proficiencies/Explosives";
+import Scatterguns from "./Proficiencies/Scatterguns";
+import Pyromancy from "./Proficiencies/Pyromancy";
+import Cryomancy from "./Proficiencies/Cryomancy";
+import Gadgets from "./Proficiencies/Gadgets";
 
 // Helper function to add abilities from an object to AbilityData
 function AddProficiency(proficiency: Proficiency) {
@@ -12,10 +12,12 @@ function AddProficiency(proficiency: Proficiency) {
 }
 
 // Add all abilities
-AddProficiency(Demolitionist);
-AddProficiency(Scattergunner);
-AddProficiency(Pyromancer);
-AddProficiency(Cryomancer);
-AddProficiency(Gadgeteer);
+AddProficiency(Explosives);
+AddProficiency(Scatterguns);
+AddProficiency(Pyromancy);
+AddProficiency(Cryomancy);
+AddProficiency(Gadgets);
+
+
 
 export default ProficiencyData;

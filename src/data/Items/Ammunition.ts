@@ -10,44 +10,89 @@ const Ammunition: ItemData[] = [
         Type: "Scattergun",
         Properties: {
             DamageMod: [
-                { Type: "Pierce", Min: 2, Max: 4 },
                 { Type: "Impact", Min: 3, Max: 5 }
             ],
             Pellets: 5,
         },
         InitialValue: { ID: "stone_shot", Quantity: 1 },
         Craftable: true,
+
+        Crafting: {
+            Skill: "Blacksmithing",
+            SkillXP: 10,
+            Materials: [
+                { ID: "stone_rough", Amount: 1 },
+            ],
+            Time: 10,
+            Output: { ID: "stone_shot", Quantity: 20 },
+        },
+
         Moddable: false,
-        Materials: [
-            { ID: "stone_rough", Amount: 1 },
-        ],
-        CraftingTime: 10,
-        CraftingOutput: { ID: "stone_shot", Quantity: 20 },
+        Tags: [18, 29],
     },
 
     {
-        ID: "lead_shot",
-        Name: "Lead Shot",
+        ID: "iron_shot",
+        Name: "Iron Shot",
         Sprite: "general-15",
-        Desc: "A handful of lead shot, used in Scatterguns.",
+        Desc: "A handful of iron shot, used in Scatterguns.",
         Stackable: true,
         StackSize: 200,
         Type: "Scattergun",
         Properties: {
             DamageMod: [
-                { Type: "Piercing", Value: 1 },
-                { Type: "Force", Value: 1 },
+                { Type: "Impact", Value: 2 },
+                { Type: "Bleed", Value: 1 },
             ],
+            Pellets: 7,
         },
-        InitialValue: { ID: "lead_shot", Quantity: 1 },
+        InitialValue: { ID: "iron_shot", Quantity: 1 },
+        
+        Moddable: false,
+
+        Craftable: true,
+        Crafting: {
+            Skill: "Blacksmithing",
+            SkillXP: 10,
+            Materials: [
+                { ID: "iron_ingot", Amount: 1 },
+            ],
+            Time: 10,
+            Output: { ID: "iron_shot", Quantity: 20 },
+        },
+
+        Tags: [18, 29],
+    },
+
+    {
+        ID: "razor_shot",
+        Name: "Razor Shot",
+        Sprite: "general-15",
+        Desc: "A handful of razor shot, used in Scatterguns.",
+        Stackable: true,
+        StackSize: 200,
+        Type: "Scattergun",
+        Properties: {
+            DamageMod: [
+                { Type: "Bleed", Value: 2 },
+                { Type: "Slash", Value: 2 },
+            ],
+            Pellets: 12,
+        },
+        InitialValue: { ID: "razor_shot", Quantity: 1 },
         Craftable: true,
         Moddable: false,
-        Materials: [
-            { ID: "iron_ore", Amount: 1 },
-        ],
-        CraftingTime: 10,
-        CraftingOutput: { ID: "lead_shot", Quantity: 20 },
-    },
+        Crafting: {
+            Skill: "Blacksmithing",
+            SkillXP: 10,
+            Materials: [
+                { ID: "steel_ingot", Amount: 1 },
+            ],
+            Time: 10,
+            Output: { ID: "razor_shot", Quantity: 20 },
+        },
+        Tags: [18, 29],
+    }
 
 ];
 

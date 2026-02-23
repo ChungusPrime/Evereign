@@ -1,13 +1,13 @@
-// Reincarnation perks, are perks that a player can unlock after completing a campaign, with their earned soulgems.
+// Bloodline perks, are perks that a player can unlock after completing a campaign, with their earned soulgems.
 // These perks provide various benefits that enhance the player's abilities in subsequent playthroughs.
-export interface ReincarnationPerk {
+export interface BloodlinePerk {
     name: string;
     description: string;
     effect: string;
     soulgemCost?: number;
 }
 
-export const ReincarnationPerks: ReincarnationPerk[] = [
+export const BloodlinePerks: BloodlinePerk[] = [
     {
         name: "Eternal Wisdom",
         description: "Gain increased experience points from all activities.",
@@ -16,7 +16,7 @@ export const ReincarnationPerks: ReincarnationPerk[] = [
     },
     {
         name: "Wealth of Ages",
-        description: "Start with additional gold at the beginning of each reincarnation.",
+        description: "Start with additional gold at the beginning of each campaign.",
         effect: "Starting gold +500",
         soulgemCost: 3
     },

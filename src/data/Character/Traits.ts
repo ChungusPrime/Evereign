@@ -3,9 +3,6 @@ Feats are passive abilities that grant bonuses to characters.
 They are not active abilities, but rather passive effects that enhance a character's 
 abilities or grant them new ones.
 */
-
-
-
 const TraitData: Traits = {
 
     // Armour

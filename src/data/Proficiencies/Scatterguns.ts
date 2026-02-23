@@ -1,10 +1,23 @@
-const Scattergunner: Proficiency = {
+const Scatterguns: Proficiency = {
 
-    ID: "scattergunner",
-    Name: "Scattergunner",
-    Description: "The Scattergunner is a master of the Scattergun, using its unique mechanics to deal damage and control the battlefield. They can specialize in different types of ammunition, such as incendiary or piercing rounds, to suit their playstyle.",
+    ID: "scatterguns",
+    Name: "Scatterguns",
+
+    Description: `Scatterguns are a type of gun that fire multiple pellets in a wide spread, known as "Shot", making them effective at close range. 
+    They are often used for crowd control and can deal significant damage to multiple enemies at once. In addition to firing pellets, 
+    Scatterguns can also be loaded with more specialised ammo types including slugs, which fire a single, high-damage projectile.`,
 
     Abilities: [
+
+        {
+            ID: "voltaic_net",
+            Name: "Voltaic Net",
+            mana_cost: 5,
+            sprite: "SkillsB-13",
+            type: "Buff",
+            cooldown: 8000,
+            Description: "Load your Scattergun with a slug containing an electrically charged net. If it hits an enemy, that enemy is pinned and will periodically release a burst of electricity that damages nearby enemies.",
+        },
 
         {
             ID: "splinter_shells",
@@ -647,7 +660,7 @@ const Scattergunner: Proficiency = {
         {
             ID: "shoot-n-scoot",
             Name: "Shoot-n-Scoot",
-            Description: `After firing a Scattergun, gain a burst of movement speed for 2 seconds. This effect has a cooldown of 5 seconds.`,
+            Description: `After emptying your Scattergun, gain a 20% movement speed boost for 3 seconds.`,
         },
 
         {
@@ -732,4 +745,4 @@ const Scattergunner: Proficiency = {
 
 }
 
-export default Scattergunner;
+export default Scatterguns;

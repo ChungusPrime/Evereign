@@ -3,7 +3,7 @@ interface ItemData {
     Name: string,
     Sprite: string,
     Desc: string,
-    Craftable?: boolean;
+    
     Components?: any;
     Slot?: string;
     Properties?: { [key: string]: any };
@@ -18,10 +18,15 @@ interface ItemData {
     DamageModifier?: number;
     Materials?: { ID: string, Amount: number }[];
     InitialValue?: any;
-    CraftingOutput?: { ID: string, Quantity: number };
-    CraftingTime?: number;
-    CraftingSkill?: string;
-    CraftingSkillLevel?: number;
-    CraftingSkillXP?: number;
     Texture?: number;
+    Tags?: number[];
+    Craftable?: boolean;
+    Crafting?: {
+        Skill: string;
+        SkillXP: number;
+        Materials: { ID: string, Amount: number }[];
+        Time: number;
+        Output: { ID: string, Quantity: number };
+    }
+
 }
