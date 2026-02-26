@@ -2,7 +2,7 @@ import Game from '../scenes/Game';
 import Building from './Building';
 import Enemy from './Character';
 import { GD } from "../scenes/Game";
-import AbilityData from '../data/Character/Abilities';
+import Proficiencies from '../data/Proficiencies';
 
 export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
@@ -181,23 +181,23 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     UseAbility ( abilityId: string ) {
         // TODO: Implement data-driven ability system using AbilityData
         // Will check ability type and execute based on properties
-        const ability = AbilityData[abilityId];
-        if (!ability) return;
+        //const ability = AbilityData[abilityId];
+        //if (!ability) return;
         
         // Common checks
-        if (ability.mana_cost > GD.Stats.CurrentMana) 
-            return this.scene.UI.EventLog.NewEvent("Not enough mana!");
+        //if (ability.mana_cost > GD.Stats.CurrentMana) 
+            //return this.scene.UI.EventLog.NewEvent("Not enough mana!");
         
         // Check cooldown from GD.Abilities
         // Check required weapon/trait
         
         // Execute based on type
-        switch (ability.type) {
+        //switch (ability.type) {
             //case "Buff": this.applyBuff(ability); break;
             //case "Projectile": this.fireProjectile(ability); break;
             //case "MultiAreaOfEffect": this.castAoE(ability); break;
             //case "Spawn": this.spawnEntity(ability); break;
-        }
+        //}
     }
 
     // Some abilities require a charge up time, this function is called when the player is ready to use the ability

@@ -194,7 +194,9 @@ interface LoreEntry {
 interface Class {
     Name: string; 
     Description: string; 
-    Proficiencies: string[]; 
+    Proficiencies: string[];
+    Abilities: string[];
+    Traits: string[];
     AttributeBonuses?: { [attribute: string]: number }; 
     Items: {[slot: string]: { 
         ID: string;

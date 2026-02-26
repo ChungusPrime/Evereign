@@ -1,4 +1,4 @@
-const RaceData: { [key: string]: Race } = {};
+const Races: { [key: string]: Race } = {};
 
 import Drakonid from "./Races/Drakonid";
 import Dwarf from "./Races/Dwarf";
@@ -11,21 +11,21 @@ import Protostruct from "./Races/Protostruct";
 import Thogac from "./Races/Thogac";
 import Tiseri from "./Races/Tiseri";
 
-// Helper function to add classes from an object to ClassData
+// Helper function to add races from an object to Races
 function AddRace(race: Race) {
-    RaceData[race.Name] = race;
+    Races[race.Name] = race;
 }
 
-// Add all classes
+// Add all races
+AddRace(Human);
 AddRace(Drakonid);
 AddRace(Dwarf);
 AddRace(Elf);
 AddRace(Gnome);
-AddRace(Human);
 AddRace(Kirupean);
 AddRace(Morvenite);
 AddRace(Protostruct);
 AddRace(Thogac);
 AddRace(Tiseri);
 
-export default RaceData;
+export default Races;

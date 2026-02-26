@@ -1,5 +1,5 @@
-import RaceData from "./Character/Races";
-import ClassData from "./Character/Classes";
+import Races from "./Races";
+import Classes from "./Classes";
 import Campaigns from "./Campaigns";
 import Scatterguns from "./Items/Scatterguns";
 
@@ -33,21 +33,21 @@ const Help: HelpText = {
     "The Defence of Emberfall Island": Campaigns[1].Description,
 
     // Classes
-    Agent: ClassData[0].Description,
-    Evoker: ClassData[1].Description,
-    Godsworn: ClassData[2].Description,
+    Agent: Classes[0].Description,
+    Evoker: Classes[1].Description,
+    Godsworn: Classes[2].Description,
 
     // Races
-    Human: RaceData[0].Description,
-    Elf: RaceData[1].Description,
-    Dwarf: RaceData[2].Description,
-    "Proto-Struct": RaceData[3].Description,
-    Morvenite: RaceData[4].Description,
-    Gnome: RaceData[5].Description,
-    Kirupean: RaceData[6].Description,
-    Thogac: RaceData[7].Description,
-    Tiseri: RaceData[8].Description,
-    Drakonid: RaceData[9].Description,
+    Human: Races[0].Description,
+    Elf: Races[1].Description,
+    Dwarf: Races[2].Description,
+    Protostruct: Races[3].Description,
+    Morvenite: Races[4].Description,
+    Gnome: Races[5].Description,
+    Kirupean: Races[6].Description,
+    Thogac: Races[7].Description,
+    Tiseri: Races[8].Description,
+    Drakonid: Races[9].Description,
 
     Race: `Your character's Race determines their starting attributes. All Races grant at least one unique trait to your character
     and can affect your gameplay experience.\n

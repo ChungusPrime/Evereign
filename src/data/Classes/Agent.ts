@@ -1,6 +1,7 @@
 const Agent: Class = {
 
     Name: "Agent",
+    
     Description: `Agents fill many roles within the kingdom. Usually working alone as scouts, spies, or assassins, they often work in the shadows to gather information and 
     eliminate threats before they have a chance to act, but are also capable enforcers of the law, protecting the kingdom from those who would do it harm.
     Agents are skilled in the use of scatterguns, explosives, and have some knowledge of Gadgetry, making them versatile combatants.`,
@@ -10,6 +11,18 @@ const Agent: Class = {
         "Scatterguns",
         "Explosives",
         "Gadgets"
+    ],
+
+    Abilities: [
+        "incendiary_shot",
+        "shrap_charge",
+        "observer_struct"
+    ],
+
+    Traits: [
+        "keen_eye",
+        "demolition_expert",
+        "tactical_insight"
     ],
 
     AttributeBonuses: {

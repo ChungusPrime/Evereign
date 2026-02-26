@@ -1,5 +1,6 @@
 const Human: Race = {
     Name: "Human",
+    
     Description: `Humans are most known for their adaptability and versatility. They are capable of excelling in any role, and can learn new skills quickly.
         They are also known for their resilience and determination, often overcoming great odds to achieve their goals. They have a natural affinity for 
         exploration and discovery, often seeking out new lands and experiences.

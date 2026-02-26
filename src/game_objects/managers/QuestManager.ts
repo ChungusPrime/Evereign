@@ -1,6 +1,6 @@
 import Game, { GD } from "../../scenes/Game";
 import UI from "../../scenes/UI";
-import QuestData from "../../data/QuestData";
+import QuestData from "../../data/Quests";
 
 export default class QuestManager {
 

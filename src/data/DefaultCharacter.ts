@@ -26,6 +26,27 @@ const DefaultCharacter: Character = {
     Eyes: 1,
     Mouth: 1,
 
+    Proficiencies: {},
+
+    Skills: {
+        Fishing: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Forestry: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Mining: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Botany: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Alchemy: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Cooking: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Security: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Smithing: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Tailoring: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Engineering: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Enchanting: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Carpentry: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Trading: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Diplomacy: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Stealth: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+        Survival: { Level: 1, Experience: 0, NextLevelExperience: 100 },
+    },
+
     Traits: [],
     Abilities: [],
     
@@ -108,25 +129,6 @@ const DefaultCharacter: Character = {
     DaytimeHour: 0,
     DaytimeMinute: 0,
     DaytimeDelta: 0,
-
-    Skills: {
-        Fishing: 0,
-        Forestry: 0,
-        Mining: 0,
-        Botany: 0,
-        Alchemy: 0,
-        Cooking: 0,
-        Security: 0,
-        Smithing: 0,
-        Tailoring: 0,
-        Engineering: 0,
-        Enchanting: 0,
-        Carpentry: 0,
-        Trading: 0,
-        Diplomacy: 0,
-        Stealth: 0,
-        Survival: 0,
-    },
 
     Bestiary: [
         { ID: "gobbo_slinger", Progress: 0 },

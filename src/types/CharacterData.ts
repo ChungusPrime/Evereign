@@ -17,8 +17,12 @@ interface Character {
     AttributePoints: number;
     CurrentMap: string;
     BackpackTier: number;
+
     Abilities: { ID: string; Tier: number, Cooldown: number }[];
     Traits: { ID: string; Tier: number }[];
+    Proficiencies: { [key: string]: { Level: number; Experience: number; NextLevelExperience: number } };
+    Skills: { [key: string]: { Level: number; Experience: number; NextLevelExperience: number } };
+
     MetNPCs: string[];
     UnlockedBuildings: string[];
     ProgressFlags: number[];
@@ -97,7 +101,6 @@ interface Character {
     FoundLoreEntries: string[];
     DialogueFlags: string[];
     CompletedMilestones: number[];
-    Skills: Skills;
     WorldData: {[key: string]: WorldData};
 }
 

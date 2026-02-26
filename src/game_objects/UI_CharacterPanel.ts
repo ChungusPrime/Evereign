@@ -1,7 +1,7 @@
 import UI from "../scenes/UI";
 import { GD, Inv } from "../scenes/Game";
 import ItemData from "../data/ItemData";
-import AbilityData from "../data/Character/Abilities";
+import Proficiencies from "../data/Proficiencies";
 
 class HotbarSlot extends Phaser.GameObjects.NineSlice {
 
@@ -136,8 +136,8 @@ export default class CharacterPanel {
             }
 
             if ( slot[1].Type == "Ability" ) {
-                const BaseAbilityData = AbilityData[slot[1].ID];
-                sprite.setTexture(BaseAbilityData.sprite.split("-")[0], BaseAbilityData.sprite.split("-")[1]).setVisible(true);
+                //const BaseAbilityData = AbilityData[slot[1].ID];
+                //sprite.setTexture(BaseAbilityData.sprite.split("-")[0], BaseAbilityData.sprite.split("-")[1]).setVisible(true);
             }
 
             sprite.setInteractive();

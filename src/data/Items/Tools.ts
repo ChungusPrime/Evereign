@@ -8,7 +8,6 @@ const Tools: ItemData[] = [
         Type: "Pickaxe",
         Stackable: false
     },
-    
     {
         ID: "bronze_felling_axe",
         Name: "Bronze Felling Axe",

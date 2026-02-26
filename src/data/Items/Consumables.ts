@@ -9,14 +9,6 @@ const Consumables: ItemData[] = [
         StackSize: 5,
         InitialValue: { ID: "marigold_brew", Quantity: 1 },
         Craftable: true,
-        Materials: [
-            { ID: "marigold", Amount: 1 },
-        ],
-        CraftingTime: 10,
-        CraftingOutput: { ID: "marigold_brew", Quantity: 1 },
-        CraftingSkill: "Alchemy",
-        CraftingSkillLevel: 1,
-        CraftingSkillXP: 10,
     },
 
     {
@@ -28,14 +20,6 @@ const Consumables: ItemData[] = [
         StackSize: 5,
         InitialValue: { ID: "bloomberry_decoction", Quantity: 1 },
         Craftable: true,
-        Materials: [
-            { ID: "bloomberry", Amount: 1 },
-        ],
-        CraftingTime: 10,
-        CraftingOutput: { ID: "bloomberry_decoction", Quantity: 1 },
-        CraftingSkill: "Alchemy",
-        CraftingSkillLevel: 1,
-        CraftingSkillXP: 10,
     },
     
     {

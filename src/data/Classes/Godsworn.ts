@@ -12,6 +12,18 @@ const Godsworn: Class = {
         "Blessings"
     ],
 
+    Abilities: [
+        "smite",
+        "divine_shield",
+        "blessing_of_strength"
+    ],
+
+    Traits: [
+        "divine_fortitude",
+        "holy_aura",
+        "unshakable_faith"
+    ],
+
     AttributeBonuses: {
         Fortitude: 3,
         Versatility: 2,

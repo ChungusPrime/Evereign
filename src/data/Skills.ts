@@ -1,4 +1,4 @@
-const SkillData: { [key: string]: Skill } = {};
+const Skills: { [key: string]: Skill } = {};
 
 import Alchemy from "./Skills/Alchemy";
 import Botany from "./Skills/Botany";
@@ -9,7 +9,7 @@ import Mining from "./Skills/Mining";
 import Security from "./Skills/Security";
 
 function AddSkill(skill: Skill) {
-    SkillData[skill.Name] = skill;
+    Skills[skill.Name] = skill;
 }
 
 AddSkill(Alchemy);
@@ -20,4 +20,4 @@ AddSkill(Forestry);
 AddSkill(Mining);
 AddSkill(Security);
 
-export default SkillData;
+export default Skills;

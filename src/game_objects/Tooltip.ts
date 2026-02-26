@@ -1,4 +1,4 @@
-import AbilityData from "../data/Character/Abilities";
+import Proficiencies from "../data/Proficiencies";
 import ItemData from "../data/ItemData";
 import UI from "../scenes/UI";
 import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
@@ -72,9 +72,9 @@ export default class Tooltip extends Phaser.GameObjects.Rectangle {
         }
 
         if ( Type == "Ability" ) {
-            const BaseAbilityData = AbilityData[ID];
-            this.Header.setText(BaseAbilityData.name);
-            this.Text.setText(BaseAbilityData.description);
+            //const BaseAbilityData = Proficiencies[ID];
+            //this.Header.setText(BaseAbilityData.name);
+            //this.Text.setText(BaseAbilityData.description);
         }
 
         this.Header.setPosition(this.getTopLeft().x + 5, this.getTopLeft().y + 5);

@@ -12,6 +12,18 @@ const Evoker: Class = {
         "Cryomancy",
     ],
 
+    Abilities: [
+        "pyro_burst",
+        "frost_field",
+        "electro_jab"
+    ],
+
+    Traits: [
+        "elemental_affinity",
+        "arcane_surge",
+        "mana_shield"
+    ],
+
     AttributeBonuses: {
         Fortitude: 0,
         Versatility: 0,

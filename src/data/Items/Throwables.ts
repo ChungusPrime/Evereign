@@ -17,14 +17,7 @@ const Throwables: ItemData[] = [
         },
         InitialValue: { ID: "grenade_mk1", Quantity: 1 },
         Craftable: true,
-        Moddable: false,
-        Materials: [
-            { ID: "stone_rough", Amount: 1 },
-            { ID: "gunpowder", Amount: 1 },
-            { ID: "ore_iron", Amount: 1 }
-        ],
-        CraftingTime: 10,
-        CraftingOutput: { ID: "grenade_mk1", Quantity: 1 },
+        Moddable: false
     },
 
 ];

@@ -12,6 +12,18 @@ const Captain: Class = {
         "Shouts"
     ],
 
+    Abilities: [
+        "rallying_shout",
+        "shield_bash",
+        "sweeping_strike"
+    ],
+
+    Traits: [
+        "steadfast",
+        "inspiring_presence",
+        "battle_hardened"
+    ],
+
     AttributeBonuses: {
         Fortitude: 0,
         Versatility: 5,

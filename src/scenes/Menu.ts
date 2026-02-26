@@ -3,13 +3,12 @@ import TextButton from '../game_objects/UI_TextButton';
 import MenuSelect from '../game_objects/Menu_Select';
 import GameData from '../data/DefaultGameData';
 import DefaultCharacterData from '../data/DefaultCharacter';
-import RaceData from '../data/Character/Races';
-import ClassData from '../data/Character/Classes';
+import Races from '../data/Races';
+import Classes from '../data/Classes';
 import ItemData from '../data/ItemData';
 import Campaigns from '../data/Campaigns';
 import Help from '../data/HelpText';
 import MenuInput from '../game_objects/Menu_Input';
-import { extractInitialWorldData } from '../utils/WorldDataUtils';
 
 export default class Menu extends Phaser.Scene {
 
@@ -95,7 +94,7 @@ export default class Menu extends Phaser.Scene {
     create (): void {
 
         if ( this.Data.Characters['Bithmas'] == undefined ) {
-            this.CreateCharacter("Bithmas", "Standard", "Fixed", Campaigns[0], ClassData[0], RaceData[0]);
+            this.CreateCharacter("Bithmas", "Standard", "Fixed", Campaigns[0], Classes[0], Races[0]);
         }
 
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
@@ -121,7 +120,7 @@ export default class Menu extends Phaser.Scene {
         this.TutorialButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.55, "Tutorial", () => { this.StartGame("Bithmas") });
         this.CloudButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.65, "Cloud Saves", () => { this.ChangeMenu("cloud") });
 
-        this.ReincarnationButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "Reincarnation", () => { this.ChangeMenu("reincarnation") });
+        this.ReincarnationButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "Bloodline", () => { this.ChangeMenu("reincarnation") });
         this.ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, "Controls", () => { this.ChangeMenu("controls") });
         this.OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Options", () => { this.ChangeMenu("options") });
         this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.55, "Credits", () => { console.log("credits") });
@@ -144,6 +143,7 @@ export default class Menu extends Phaser.Scene {
         this.ControlsGroup = this.add.group().setVisible(false);
         let Y = this.scale.height * 0.18;
         let X = this.scale.width * 0.32;
+        
         Object.entries(this.Data.Controls).forEach(control => {
 
             let label = control[1];
@@ -201,7 +201,7 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 40;
 
         // Race
-        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", RaceData.filter( c => c.Available ).map( r => r.Name ));
+        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", Object.values(Races).filter( race => race.Available ).map( r => r.Name ));
         this.RaceInfoButton = new TextButton(this, this.characterRaceSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
             this.SetHelpText(this.characterRaceSelect.CurrentValue);
         }, 32).setVisible(false);
@@ -209,7 +209,7 @@ export default class Menu extends Phaser.Scene {
         Y = Y + 40;
 
         // Class
-        this.characterClassSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Class", ClassData.filter( c => c.Available ).map( c => c.Name ));
+        this.characterClassSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Class", Object.values(Classes).filter( c => c.Available ).map( c => c.Name ));
         this.ClassInfoButton = new TextButton(this, this.characterClassSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
             this.SetHelpText(this.characterClassSelect.CurrentValue);
         }, 32).setVisible(false);
@@ -286,8 +286,8 @@ export default class Menu extends Phaser.Scene {
             if ( this.difficultySelect.CurrentValue == "" || this.difficultySelect.CurrentValue == null )
                 return ErrorText.setText("Choose a difficulty").setVisible(true);
 
-            let Class = ClassData.find( (c) => c.Name == this.characterClassSelect.CurrentValue );
-            let Race = RaceData.find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
+            let Class = Object.values(Classes).find( (c) => c.Name == this.characterClassSelect.CurrentValue );
+            let Race = Object.values(Races).find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
             let Campaign = Campaigns.find( (c) => c.ID == this.campaignSelect.CurrentValue );
 
             this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, this.scalingSelect.CurrentValue, Campaign, Class, Race);
@@ -353,12 +353,12 @@ export default class Menu extends Phaser.Scene {
     UpdateCharacterPreview () {
 
         if ( this.characterRaceSelect.CurrentValue != null ) {
-            let Race = RaceData.find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
+            let Race = Object.values(Races).find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
             this.CharacterSkin.setFrame(Race.Skin);
         }
 
         if ( this.characterClassSelect.CurrentValue != null ) {
-            let Class = ClassData.find( (c) => c.Name == this.characterClassSelect.CurrentValue );
+            let Class = Object.values(Classes).find( (c) => c.Name == this.characterClassSelect.CurrentValue );
 
             console.log(Class);
 
@@ -400,11 +400,14 @@ export default class Menu extends Phaser.Scene {
 
     }
 
-    CreateCharacter ( Name: string, Difficulty: string, Scaling: string, Campaign: Campaign, Class: ClassData, Race: RaceData ) {
+    CreateCharacter ( Name: string, Difficulty: string, Scaling: string, Campaign: Campaign, Class: Class, Race: Race ) {
 
             // Create new character data
             this.Data.Characters[Name] = DefaultCharacterData;
             let Character = this.Data.Characters[Name];
+
+            Character.CreatedAtTimestamp = Date.now().toString();
+            Character.LastSaveTimestamp = null;
 
             // Set character properties
             Character.Name = Name;
@@ -414,7 +417,6 @@ export default class Menu extends Phaser.Scene {
             Character.Scaling = Scaling;
             Character.Difficulty = Difficulty;
             Character.Reincarnation = 1;
-
             Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
             Character.Stats.Versatility = Race.Attributes.Versatility + Class.AttributeBonuses.Versatility;
             Character.Stats.Vigor = Race.Attributes.Vigor + Class.AttributeBonuses.Vigor;
@@ -423,7 +425,6 @@ export default class Menu extends Phaser.Scene {
             Character.Stats.Fortune = Race.Attributes.Fortune + Class.AttributeBonuses.Fortune;
             Character.Stats.Grit = Race.Attributes.Grit + Class.AttributeBonuses.Grit;
             Character.Stats.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
-
             Character.Stats.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
             Character.Stats.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
             Character.Stats.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
@@ -431,19 +432,22 @@ export default class Menu extends Phaser.Scene {
             Character.Stats.MaxMana = Character.Stats.CurrentMana;
             Character.Level = 1;
             Character.AttributePoints = 0;
-
-            Character.CreatedAtTimestamp = Date.now().toString();
-            Character.LastSaveTimestamp = Date.now().toString();
-
             Character.CurrentMap = Campaign.StartingMap;
             Character.X = Campaign.StartingX;
             Character.Y = Campaign.StartingY;
 
-            const CampaignData = Campaigns.find( c => c.Name == Character.Campaign );
+            const CampaignData = Campaigns.find( campaign => campaign.Name == Character.Campaign );
 
             // Copy only the dynamic InitialData to character save data
             // Static data (Type, Name, Level, etc.) stays in Campaign and is looked up at runtime
-            Character.WorldData = CampaignData ? extractInitialWorldData(CampaignData.WorldData) : {};
+            Character.WorldData = {};
+            for (const region of Object.keys(CampaignData.WorldData)) {
+                Character.WorldData[region] = {};
+                for (const objectId of Object.keys(CampaignData.WorldData[region])) {
+                    const objectDef = CampaignData.WorldData[region][objectId];
+                    Character.WorldData[region][objectId] = objectDef.InitialData ? { ...objectDef.InitialData } : {};
+                }
+            }
             
             // Add starting items from chosen class to character inventory
             Object.entries(Class.Items).forEach( (item) => {
@@ -459,6 +463,8 @@ export default class Menu extends Phaser.Scene {
                 const [slot, info] = hotbar;
                 Character.Hotbar[slot] = info;
             });
+
+            Class.Proficiencies.forEach( (proficiency) => Character.Proficiencies[proficiency] = { Level: 1, Experience: 0, NextLevelExperience: 100 } );
 
             // Add starting abilities from chosen class to character abilities
             Class.Abilities.forEach( (ability) => Character.Abilities.push({ ID: ability, Tier: 1, Cooldown: 0 }));
@@ -504,24 +510,12 @@ export default class Menu extends Phaser.Scene {
         }
 
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
-
             if (menuToGroupMap[this.CurrentMenu]) {
-
-                /*menuToGroupMap[this.CurrentMenu].getChildren().forEach( (obj: any) => {
-                    if ( obj.show ) {
-                        obj.show();
-                    }
-                });*/
-
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
-
-
-                if ( this.CurrentMenu !== "main" ) {
+                if ( this.CurrentMenu !== "main" )
                     this.BackButton.setVisible(true);
-                }
-                if ( this.CurrentMenu == "create" ) {
+                if ( this.CurrentMenu == "create" )
                     this.InfoCamera.setVisible(true);
-                }
             } else {
                 this.TitleScreen.setVisible(true);
                 this.BookOpen = false;

@@ -4,12 +4,12 @@ import { Base64 } from 'js-base64';
 
 // Static Data
 import FlagData from '../../data/FlagData';
-import ClassData from '../../data/Character/Classes';
+import ClassData from '../../data/Classes';
 import BuildingData from '../../data/BuildingData';
 import FirstNames from "../../data/Character/FirstNames";
 import Lastnames from "../../data/Character/LastNames";
 import ItemData from "../../data/ItemData";
-import QuestData from "../../data/QuestData";
+import QuestData from "../../data/Quests";
 import CampaignData from "../../data/Campaigns";
 
 // Dynamic Data

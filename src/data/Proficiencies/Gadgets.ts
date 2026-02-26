@@ -12,10 +12,22 @@ const Gadgeteer: Proficiency = {
             sprite: "SkillsB-127",
             type: "Spawn",
             cooldown: 15000,
-            Description: `Deploy a controllable, invisible observation drone. Activate the ability again to destroy the drone, marking targets in an area around it, causing them to take extra damage from the next attack.`,
+            Description: `Deploy a controllable, invisible observation drone. The struct passively marks targets in an area around it, causing them to take extra damage from the next attack.`,
             requires_weapon_equipped: false,
             requires_trait: "arco_tech_novice",
-        }
+        },
+
+        {
+            ID: "guardian_struct",
+            Name: "Deploy Guardian Struct",
+            mana_cost: 20,
+            sprite: "SkillsB-128",
+            type: "Spawn",
+            cooldown: 20000,
+            Description: `Deploy an armed struct that orbits around you, firing at nearby enemies. Activate the ability again to detonate the struct, dealing damage to nearby enemies and granting you a shield.`,
+            requires_weapon_equipped: false,
+            requires_trait: "gadgeteer_novice",
+        },
     ],
 
     Traits: [

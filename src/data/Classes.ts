@@ -1,12 +1,12 @@
-const ClassData: { [key: string]: Class } = {};
+const Classes: { [key: string]: Class } = {};
 
 import Agent from "./Classes/Agent";
 import Godsworn from "./Classes/Godsworn";
 import Evoker from "./Classes/Evoker";
 
-// Helper function to add classes from an object to ClassData
+// Helper function to add classes from an object to Classes
 function AddClass(characterClass: Class) {
-    ClassData[characterClass.Name] = characterClass;
+    Classes[characterClass.Name] = characterClass;
 }
 
 // Add all classes
@@ -17,4 +17,4 @@ AddClass(Evoker);
 //AddClass(Captain);
 //AddClass(Demonologist);
 
-export default ClassData;
+export default Classes;
