@@ -33,6 +33,7 @@ export let EM: EnemyManager;
 import QuestManager from '../game_objects/managers/QuestManager';
 
 import ActionManager from '../systems/ActionManager';
+import InputManager from '../systems/InputManager';
 import Projectile from '../game_objects/Projectile';
 import GoblinSlinger from '../game_objects/characters/GoblinSlinger';
 import Grenade from '../game_objects/Grenade';
@@ -77,6 +78,7 @@ export default class Game extends Phaser.Scene {
     public DataManager!: DataManager;
     public Inventory!: Inventory | null;
     public ActionManager!: ActionManager | null;
+    public InputManager!: InputManager;
     public BuildingHelper!: BuildingHelper;
     public EnemyManager!: EnemyManager;
 
@@ -162,72 +164,8 @@ export default class Game extends Phaser.Scene {
 
         this.cameras.main.startFollow(this.PlayerCharacter, true);
 
-        const ControlMapping: {[key: string]: string | number } = JSON.parse(localStorage.getItem("EvereignData")).Controls;
-
-        const keyCodeMap: {[key: string]: number} = {
-            "1": Phaser.Input.Keyboard.KeyCodes.ONE,
-            "2": Phaser.Input.Keyboard.KeyCodes.TWO,
-            "3": Phaser.Input.Keyboard.KeyCodes.THREE,
-            "4": Phaser.Input.Keyboard.KeyCodes.FOUR,
-            "5": Phaser.Input.Keyboard.KeyCodes.FIVE,
-            "6": Phaser.Input.Keyboard.KeyCodes.SIX,
-            "7": Phaser.Input.Keyboard.KeyCodes.SEVEN,
-            "8": Phaser.Input.Keyboard.KeyCodes.EIGHT,
-            "9": Phaser.Input.Keyboard.KeyCodes.NINE,
-            "0": Phaser.Input.Keyboard.KeyCodes.ZERO
-        };
-        
-        for (const [key, value] of Object.entries(ControlMapping)) {
-            if ( typeof value === 'string' ) {
-                if ( value.includes("mouse") ) {
-                    this.input.on('pointerdown', (event: any) => {
-                        if ( value == `mouse-${event.button}`) {
-                            if ( key == "Weapon_Attack" ) 
-                                this.UseMainhandItem();
-                        }
-                    });
-                } else {
-
-                    let KeyObject;
-
-                    if ( keyCodeMap[value] ) {
-                        KeyObject = this.input.keyboard.addKey(keyCodeMap[value], true, true);
-                    } else {
-                        KeyObject = this.input.keyboard.addKey(value, true, true);
-                    }
-
-                    this.Controls.push(KeyObject);
-                    KeyObject.on('down', (event: any) => {
-                        if ( key == "Move_Left" ) this.PlayerCharacter.LeftKeyDown = true;
-                        if ( key == "Move_Right" ) this.PlayerCharacter.RightKeyDown = true;
-                        if ( key == "Move_Up" ) this.PlayerCharacter.UpKeyDown = true;
-                        if ( key == "Move_Down" ) this.PlayerCharacter.DownKeyDown = true;
-                        if ( key == "Toggle_Light" ) this.PlayerCharacter.ToggleLight();
-                        if ( key == "Interact" ) this.ActionManager.StartActivity(this.SelectedObject);
-                        if ( key == "Use_Hotbar_1" ) this.UseHotbarSlot("1");
-                        if ( key == "Use_Hotbar_2" ) this.UseHotbarSlot("2");
-                        if ( key == "Use_Hotbar_3" ) this.UseHotbarSlot("3");
-                        if ( key == "Use_Hotbar_4" ) this.UseHotbarSlot("4");
-                        if ( key == "Use_Hotbar_5" ) this.UseHotbarSlot("5");
-                        if ( key == "Use_Hotbar_6" ) this.UseHotbarSlot("6");
-                        if ( key == "Use_Hotbar_7" ) this.UseHotbarSlot("7");
-                        if ( key == "Use_Hotbar_8" ) this.UseHotbarSlot("8");
-                        if ( key == "Use_Hotbar_9" ) this.UseHotbarSlot("9");
-                        if ( key == "Use_Hotbar_10" ) this.UseHotbarSlot("10");
-                    });
-                    KeyObject.on('up', (event: any) => {
-                        if ( key == "Move_Left" ) this.PlayerCharacter.LeftKeyDown = false;
-                        if ( key == "Move_Right" ) this.PlayerCharacter.RightKeyDown = false;
-                        if ( key == "Move_Up" ) this.PlayerCharacter.UpKeyDown = false;
-                        if ( key == "Move_Down" ) this.PlayerCharacter.DownKeyDown = false;
-                    });
-                }
-            }
-        }
-
-        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).on('down', () => console.log(GD));
-        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => console.log(this.Inventory.Items));
-        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N).on('down', () => this.UI.RestMenu.showMenu());
+        // Initialize input handling
+        this.InputManager = new InputManager(this);
 
         this.input.on( "pointermove", ( pointer: Phaser.Input.Pointer ) => {
             this.mouseX = pointer.worldX;
@@ -315,6 +253,11 @@ export default class Game extends Phaser.Scene {
                 }
 
             });
+        }
+
+        if ( this.input.activePointer.leftButtonDown ) {
+            console.log("Left mouse button is being held down");
+            this.UseMainhandItem();
         }
 
     }
@@ -708,6 +651,10 @@ export default class Game extends Phaser.Scene {
                 this.ThrowItem(BaseItemData.ID);
             }
 
+            if ( BaseItemData.Category == "Consumable" ) {
+                this.UseConsumable(BaseItemData.ID);
+            }
+
         }
     }
 
@@ -729,6 +676,21 @@ export default class Game extends Phaser.Scene {
         Proj.rotation = Phaser.Math.Angle.Between( this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY );
         Proj.setVelocity( Math.cos(Proj.rotation) * 160, Math.sin(Proj.rotation) * 360 );
         this.Projectiles.add(Proj);
+    }
+
+    UseConsumable (itemId: string) {
+        console.log("Using consumable");
+        console.log(itemId);
+
+        let data = ItemData[itemId];
+        if ( !Inv.HasRequiredQuantity(itemId, 1)  )
+            return console.log("You have no more of this item left");
+        Inv.RemoveItem(itemId, 1);
+
+        if ( itemId == "health_potion" ) {
+            this.PlayerCharacter.Heal(50);
+        }
+
     }
 
     GetNavMeshPath (x: number, y: number, targetX: number, targetY: number) {

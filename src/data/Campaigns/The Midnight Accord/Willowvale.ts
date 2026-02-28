@@ -139,7 +139,6 @@ export const Willowvale: WorldData = {
         }
     },
 
-
     "WV_World_Orc_1": {
         Type: "Orc Slinger",
         Level: 1,

@@ -42,10 +42,14 @@ const Scatterguns: ItemData[] = [
         Moddable: true,
         Craftable: true,
         ModdableParts: ["Barrel"],
-        Materials: [
-            { ID: "bronze_ingot", Amount: 4 },
-            { ID: "oak_plank", Amount: 3 }
-        ],
+        Crafting: {
+            Skill: "Smithing",
+            SkillXP: 50,
+            Materials: [
+                { ID: "iron_ingot", Amount: 5 },
+                { ID: "oak_plank", Amount: 2 }
+            ],
+        },
         InitialValue: { ID: "scattergun_farmhand", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null }
     },
 
@@ -71,10 +75,14 @@ const Scatterguns: ItemData[] = [
         Moddable: true,
         Craftable: true,
         ModdableParts: ["Barrel"],
-        Materials: [
-            { ID: "bronze_ingot", Amount: 5 },
-            { ID: "oak_plank", Amount: 2 }
-        ],
+        Crafting: {
+            Skill: "Smithing",
+            SkillXP: 50,
+            Materials: [
+                { ID: "iron_ingot", Amount: 5 },
+                { ID: "oak_plank", Amount: 2 }
+            ],
+        },
         InitialValue: { ID: "Scattergun_bronze", Quantity: 1, CurrentMagazine: 6, Mods: { "Barrel": null, "Stock": null }, Ammo: null }
     },
 
@@ -100,10 +108,16 @@ const Scatterguns: ItemData[] = [
         Moddable: true,
         Craftable: true,
         ModdableParts: ["Barrel", "Stock"],
-        Materials: [
-            { ID: "iron_ingot", Amount: 5 },
-            { ID: "oak_plank", Amount: 2 }
-        ],
+
+        Crafting: {
+            Skill: "Smithing",
+            SkillXP: 50,
+            Materials: [
+                { ID: "iron_ingot", Amount: 5 },
+                { ID: "oak_plank", Amount: 2 }
+            ],
+        },
+
         InitialValue: { ID: "Scattergun_iron", Quantity: 1, CurrentMagazine: 6, Mods: { "Barrel": null, "Stock": null }, Ammo: null }
     },
 
@@ -129,10 +143,14 @@ const Scatterguns: ItemData[] = [
         Moddable: true,
         Craftable: true,
         ModdableParts: ["Barrel", "Stock"],
-        Materials: [
-            { ID: "steel_ingot", Amount: 6 },
-            { ID: "oak_plank", Amount: 3 }
-        ],
+        Crafting: {
+            Skill: "Smithing",
+            SkillXP: 50,
+            Materials: [
+                { ID: "iron_ingot", Amount: 5 },
+                { ID: "oak_plank", Amount: 2 }
+            ],
+        },
         InitialValue: { ID: "Scattergun_steel", Quantity: 1, CurrentMagazine: 8, Mods: { "Barrel": null, "Stock": null, "Muzzle": null }, Ammo: null }
     },
 
