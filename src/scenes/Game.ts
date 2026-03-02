@@ -495,27 +495,28 @@ export default class Game extends Phaser.Scene {
     }
 
     UseScattergun (Data: any) {
+
         if (GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0) {
             this.UI.EventLog.NewEvent("Item is out of ammo!");
             return;
         }
         
-        let AmmoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
+        const ammoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
+        const baseAngle = Phaser.Math.Angle.Between(this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY);
+        const spreadDegrees = 15;
+        const velocity = Data.Properties.Velocity;
+        
         this.sound.play("ShotgunFire");
         
-        for ( let i = 0; i < AmmoData.Properties.Pellets; i++ ) {
-            let Proj = new Projectile(this, this.PlayerCharacter.x, this.PlayerCharacter.y, Data.Properties.Velocity, AmmoData.Properties.DamageMod, "ScattergunPellet");
-            const baseAngle = Phaser.Math.Angle.Between( this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY );
-            const halfSpread = 15 / 2;
-            const randomSpread = Phaser.Math.FloatBetween(-halfSpread, halfSpread);
-            const spreadRadians = Phaser.Math.DegToRad(randomSpread);
-            let angle = baseAngle + spreadRadians;
-            Proj.setVelocity( Math.cos(angle) * 400, Math.sin(angle) * 400 );
-            this.Projectiles.add(Proj);
+        for (let i = 0; i < ammoData.Properties.Pellets; i++) {
+            const spreadAngle = Phaser.Math.DegToRad(Phaser.Math.FloatBetween(-spreadDegrees / 2, spreadDegrees / 2));
+            const angle = baseAngle + spreadAngle;
+            const proj = new Projectile(this, this.PlayerCharacter.x, this.PlayerCharacter.y, velocity, ammoData.Properties.DamageMod, "ScattergunPellet");
+            proj.setVelocity(Math.cos(angle) * velocity, Math.sin(angle) * velocity);
+            this.Projectiles.add(proj);
         }
 
         GD.Inventory.Equipment_MainHand.CurrentMagazine -= 1;
-        console.table(GD.Inventory.Equipment_MainHand);
     }
 
     UseSword (Data: any) {

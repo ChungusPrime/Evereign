@@ -60,12 +60,13 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     update ( time: number, delta: number ) {
         this.Lifetime -= delta;
         if ( this.light ) this.light.setPosition(this.x, this.y);
-        if ( this.Lifetime <= 0 ) 
+        if ( this.Lifetime <= 0 )
             this.delete();
     }
 
     delete () {
-        if ( this.light ) this.scene.lights.removeLight(this.light);
+        if ( this.light ) 
+            this.scene.lights.removeLight(this.light);
         this.scene.Projectiles.remove(this, true, true);
     }
 
