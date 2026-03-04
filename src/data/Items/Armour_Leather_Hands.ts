@@ -1,4 +1,4 @@
-const HandArmour: ItemData[] = [
+const Armour_Leather_Hands: ItemData[] = [
 
     {
         ID: "leather_gloves",
@@ -40,8 +40,9 @@ const HandArmour: ItemData[] = [
 
 ];
 
-HandArmour.forEach((item) => {
+Armour_Leather_Hands.forEach((item) => {
+    item.Tags = [14, 11];
     item.Category = "Hands";
 });
 
-export default HandArmour;
+export default Armour_Leather_Hands;

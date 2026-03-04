@@ -51,20 +51,14 @@ export default class InputManager {
      */
     private buildActionConfig(): ActionConfig {
         const player = this.scene.PlayerCharacter;
-        
         return {
-            // Movement (held)
             Move_Up:    { onDown: () => player.UpKeyDown = true,    onUp: () => player.UpKeyDown = false },
             Move_Down:  { onDown: () => player.DownKeyDown = true,  onUp: () => player.DownKeyDown = false },
             Move_Left:  { onDown: () => player.LeftKeyDown = true,  onUp: () => player.LeftKeyDown = false },
             Move_Right: { onDown: () => player.RightKeyDown = true, onUp: () => player.RightKeyDown = false },
-
-            // Actions (press once)
             Interact:      { onDown: () => this.scene.ActionManager.StartActivity(this.scene.SelectedObject) },
             Toggle_Light:  { onDown: () => player.ToggleLight() },
-            Weapon_Attack: { onDown: () => this.scene.UseMainhandItem() },
-
-            // Hotbar slots
+            Weapon_Attack: { onDown: () => player.MainHandKeyDown = true, onUp: () => player.MainHandKeyDown = false },
             Use_Hotbar_1:  { onDown: () => this.scene.UseHotbarSlot("1") },
             Use_Hotbar_2:  { onDown: () => this.scene.UseHotbarSlot("2") },
             Use_Hotbar_3:  { onDown: () => this.scene.UseHotbarSlot("3") },

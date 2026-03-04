@@ -1,4 +1,4 @@
-const LegArmour: ItemData[] = [
+const Armour_Leather_Legs: ItemData[] = [
 
     {
         ID: "agent_legguards",
@@ -40,8 +40,9 @@ const LegArmour: ItemData[] = [
 
 ];
 
-LegArmour.forEach((item) => {
+Armour_Leather_Legs.forEach((item) => {
+    item.Tags = [14, 9];
     item.Category = "Legs";
 });
 
-export default LegArmour;
+export default Armour_Leather_Legs;

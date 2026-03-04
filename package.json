@@ -1,6 +1,6 @@
 {
     "name": "evereign",
-    "version": "0.0.6.5",
+    "version": "0.0.6.6",
     "description": "A fantasy MMORPG built with Phaser and Electron.",
     "main": "main.js",
     "scripts": {

@@ -1,4 +1,4 @@
-const FeetArmour: ItemData[] = [
+const Armour_Leather_Feet: ItemData[] = [
 
     {
         ID: "leather_shoes",
@@ -59,8 +59,9 @@ const FeetArmour: ItemData[] = [
 
 ];
 
-FeetArmour.forEach((item) => {
+Armour_Leather_Feet.forEach((item) => {
+    item.Tags = [14, 10];
     item.Category = "Feet";
 });
 
-export default FeetArmour;
+export default Armour_Leather_Feet;

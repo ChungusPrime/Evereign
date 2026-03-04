@@ -9,16 +9,24 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     public scene: Game;
     public light: Phaser.GameObjects.Light;
     public walkAnimation: string = "OperativeWalk";
+
+    // Time intervals
     public footstepSoundInterval: number = 0;
+    public CombatDelta: number = 0;
+
+    // State flags
     public PlayerHasControl: boolean = false;
     public PlayerIsDead: boolean = false;
     public PlayerInCombat: boolean = false;
-    public CombatDelta: number = 0;
+
+    // Input state
     public UpKeyDown: boolean = false;
     public DownKeyDown: boolean = false;
     public LeftKeyDown: boolean = false;
     public RightKeyDown: boolean = false;
+    public MainHandKeyDown: boolean = false;
 
+    // Sprites for equipped items
     public HelmetArmourSprite: Phaser.GameObjects.Sprite;
     public ChestArmourSprite: Phaser.GameObjects.Sprite
     public LegArmourSprite: Phaser.GameObjects.Sprite;
@@ -105,6 +113,9 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     }
 
     update ( delta: number ): void {
+
+        if ( this.MainHandKeyDown )
+            this.scene.UseMainhandItem();
 
         if ( this.CombatDelta > 0 ) {
             this.CombatDelta -= delta;

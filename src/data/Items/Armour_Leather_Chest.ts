@@ -1,23 +1,4 @@
-const ChestArmour: ItemData[] = [
-
-    {
-        ID: "evokers_robe",
-        Name: "Evoker's Robe",
-        Sprite: "leather_dark-33",
-        Desc: "A set of lightweight robe designed for evokers, providing protection without sacrificing mobility.",
-        Stackable: false,
-        InitialValue: { ID: "evokers_robe", Quantity: 1 },
-        Type: "Armour",
-        Rarity: "Common",
-        Properties: {
-            Defence_Pierce: 2,
-            Defence_Impact: 1,
-            Defence_Slash: 1
-        },
-        Moddable: false,
-        Craftable: false,
-        Texture: 3
-    },
+const Armour_Leather_Chest: ItemData[] = [
 
     {
         ID: "agent_coat",
@@ -78,8 +59,9 @@ const ChestArmour: ItemData[] = [
 
 ];
 
-ChestArmour.forEach((item) => {
+Armour_Leather_Chest.forEach((item) => {
+    item.Tags = [14, 7];
     item.Category = "Chest";
 });
 
-export default ChestArmour;
+export default Armour_Leather_Chest;
