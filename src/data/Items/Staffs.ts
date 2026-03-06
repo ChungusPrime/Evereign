@@ -1,7 +1,7 @@
 const Staffs: ItemData[] = [
 
     {
-        ID: "staff_ej_1",
+        ID: "staff_evoker_1",
         Name: "Novice Mage's Staff of Electro Jab",
         Sprite: "librarium-45",
         Desc: "A wooden staff with a Novice-level enchantment that fires a bolt of lightning towards the target, causing Lightning damage to the target, and jumping to one other target within a small range.",
@@ -19,7 +19,7 @@ const Staffs: ItemData[] = [
         Stackable: false,
         Craftable: false,
         Moddable: false,
-        InitialValue: { ID: "staff_ej_1", Quantity: 1 }
+        InitialValue: { ID: "staff_evoker_1", Quantity: 1 }
     },
 
     {

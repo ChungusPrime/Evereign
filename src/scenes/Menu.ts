@@ -94,7 +94,7 @@ export default class Menu extends Phaser.Scene {
     create (): void {
 
         if ( this.Data.Characters['Bithmas'] == undefined ) {
-            this.CreateCharacter("Bithmas", "Standard", "Fixed", Campaigns[0], Classes[0], Races[0]);
+            this.CreateCharacter("Bithmas", "Standard", "Fixed", Campaigns[0], Classes.Agent, Races.Human);
         }
 
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
@@ -406,6 +406,8 @@ export default class Menu extends Phaser.Scene {
             this.Data.Characters[Name] = DefaultCharacterData;
             let Character = this.Data.Characters[Name];
 
+            console.log(Class);
+
             Character.CreatedAtTimestamp = Date.now().toString();
             Character.LastSaveTimestamp = null;
 
@@ -451,8 +453,11 @@ export default class Menu extends Phaser.Scene {
             
             // Add starting items from chosen class to character inventory
             Object.entries(Class.Items).forEach( (item) => {
+                if ( item[1] == null ) return;
                 const [slot, info] = item;
+                console.log(slot, info);
                 const Data = ItemData[info.ID];
+                console.log(Data);
                 if ( info.Quantity > 1 )
                     Data.InitialValue.Quantity = info.Quantity;
                 Character.Inventory[slot] = Data.InitialValue;
@@ -571,19 +576,64 @@ export default class Menu extends Phaser.Scene {
 
     RefreshCharacterList() {
         this.CharacterList.clear(true, true);
-        let Y = this.scale.height * 0.2;
+        let Y = this.scale.height * 0.15;
         this.CharacterList = this.add.group().setVisible(false);
         let header = this.add.text(this.scale.width * 0.32, Y, "Characters", { fontSize: 40, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false);
         this.CharacterList.add(header);
         let CharacterListY = this.scale.height * 0.28;
+
+
         Object.keys(this.Data.Characters).forEach(element => {
             let Character = this.Data.Characters[element];
-            let CharacterButton = new TextButton(this, this.scale.width * 0.32, CharacterListY, `${Character.Name}\nLevel ${Character.Level} ${Character.Class}`, () => {
+            let Background = this.add.nineslice(this.scale.width * 0.31, CharacterListY, "Kenney-UI", "panel_blue", 400, 120, 10, 10, 10, 10).setOrigin(0.5).setVisible(false);
+            let CharacterSprite = this.add.sprite(Background.getLeftCenter().x + 30, Background.getCenter().y, "Player", Races[Character.Race].Skin).setOrigin(0.5).setScale(2).setVisible(false);
+            
+
+            let CharacterHead = this.add.sprite(0, 0, "PlayerHead", 0).setOrigin(0.5).setScale(2).setVisible(false);
+            if ( Character.Inventory.Equipment_Head !== null ) {
+                CharacterHead.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerHead", ItemData[Character.Inventory.Equipment_Head.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
+            }
+
+            let CharacterBody = this.add.sprite(0, 0, "PlayerBody", 0).setOrigin(0.5).setScale(2).setVisible(false);
+
+            if ( Character.Inventory.Equipment_Chest !== null ) {
+                CharacterBody.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerBody", ItemData[Character.Inventory.Equipment_Chest.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
+            }
+
+            let CharacterLegs = this.add.sprite(0, 0, "PlayerLegs", 0).setOrigin(0.5).setScale(2).setVisible(false);
+            if ( Character.Inventory.Equipment_Legs !== null ) {
+                CharacterLegs.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerLegs", ItemData[Character.Inventory.Equipment_Legs.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
+            }
+
+            let CharacterHands = this.add.sprite(0, 0, "PlayerHands", 0).setOrigin(0.5).setScale(2).setVisible(false);
+            if ( Character.Inventory.Equipment_Hands !== null ) {
+                CharacterHands.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerHands", ItemData[Character.Inventory.Equipment_Hands.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
+            }
+
+            let CharacterFeet = this.add.sprite(0, 0, "PlayerFeet", 0).setOrigin(0.5).setScale(2).setVisible(false);
+            if ( Character.Inventory.Equipment_Feet !== null ) {
+                CharacterFeet.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerFeet", ItemData[Character.Inventory.Equipment_Feet.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
+            }
+            
+            let CharacterButton = new TextButton(this, this.scale.width * 0.32, CharacterListY, `${Character.Name}\nLevel ${Character.Level} ${Character.Class}\n${Character.CurrentMap}`, () => {
                 this.StartGame(Character.Name);
             }, 32).setVisible(false);
-            this.CharacterList.add(CharacterButton);
-            CharacterListY += CharacterButton.height + 16;
+
+            this.CharacterList.addMultiple([
+                Background,
+                CharacterButton,
+                CharacterSprite,
+                CharacterHead,
+                CharacterBody,
+                CharacterLegs,
+                CharacterHands,
+                CharacterFeet
+            ]);
+
+            CharacterListY += Background.height + 8;
         });
+
+
     }
 
     StartGame ( character: string ) {

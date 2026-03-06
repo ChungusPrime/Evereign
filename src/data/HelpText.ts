@@ -3,6 +3,8 @@ import Classes from "./Classes";
 import Campaigns from "./Campaigns";
 import Scatterguns from "./Items/Scatterguns";
 
+console.log(Classes);
+
 const Help: HelpText = {
 
     // Difficulties
@@ -33,21 +35,21 @@ const Help: HelpText = {
     "The Defence of Emberfall Island": Campaigns[1].Description,
 
     // Classes
-    Agent: Classes[0].Description,
-    Evoker: Classes[1].Description,
-    Godsworn: Classes[2].Description,
+    Agent: Classes.Agent.Description,
+    Evoker: Classes.Evoker.Description,
+    Godsworn: Classes.Godsworn.Description,
 
     // Races
-    Human: Races[0].Description,
-    Elf: Races[1].Description,
-    Dwarf: Races[2].Description,
-    Protostruct: Races[3].Description,
-    Morvenite: Races[4].Description,
-    Gnome: Races[5].Description,
-    Kirupean: Races[6].Description,
-    Thogac: Races[7].Description,
-    Tiseri: Races[8].Description,
-    Drakonid: Races[9].Description,
+    Human: Races.Human.Description,
+    Elf: Races.Elf.Description,
+    Dwarf: Races.Dwarf.Description,
+    Protostruct: Races.Protostruct.Description,
+    Morvenite: Races.Morvenite.Description,
+    Gnome: Races.Gnome.Description,
+    Kirupean: Races.Kirupean.Description,
+    Thogac: Races.Thogac.Description,
+    Tiseri: Races.Tiseri.Description,
+    Drakonid: Races.Drakonid.Description,
 
     Race: `Your character's Race determines their starting attributes. All Races grant at least one unique trait to your character
     and can affect your gameplay experience.\n

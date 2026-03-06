@@ -1,7 +1,7 @@
 const Scatterguns: ItemData[] = [
 
     {
-        ID: "grandpa_Scattergun",
+        ID: "grandpa_scattergun",
         Name: "Grandpa's ol' Service Scattergun",
         Sprite: "weapons-293",
         Desc: "Rusty old Scattergun that has seen better days. Still packs a punch, but needs some love.",
@@ -17,7 +17,7 @@ const Scatterguns: ItemData[] = [
         },
         Sound: "Scattergun_fire",
         Moddable: false,
-        InitialValue: { ID: "grandpa_Scattergun", Quantity: 1, CurrentMagazine: 2, Ammo: "stone_shot", Cooldown: 0, Mods: {} }
+        InitialValue: { ID: "grandpa_scattergun", Quantity: 1, CurrentMagazine: 2, Ammo: "stone_shot", Cooldown: 0, Mods: {} }
     },
 
     {

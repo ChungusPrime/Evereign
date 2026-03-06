@@ -31,15 +31,15 @@ import EnemyManager from '../game_objects/managers/EnemyManager';
 export let EM: EnemyManager;
 
 import QuestManager from '../game_objects/managers/QuestManager';
+export let QM: QuestManager;
 
 import ActionManager from '../systems/ActionManager';
 import InputManager from '../systems/InputManager';
 import Projectile from '../game_objects/Projectile';
-import GoblinSlinger from '../game_objects/characters/GoblinSlinger';
 import Grenade from '../game_objects/Grenade';
 import GameObjectsMap from '../data/GameObjects';
 
-export let QM: QuestManager;
+
 
 export default class Game extends Phaser.Scene {
 

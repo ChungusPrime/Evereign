@@ -7,10 +7,12 @@ const ScattergunMods: ItemData[] = [
         Desc: "A simple yet effective barrel upgrade that increases the Scattergun's damage and pellet count.",
         Stackable: false,
         Craftable: true,
-        Materials: [
-            { ID: "iron_ingot", Amount: 2 },
-            { ID: "wood_plank", Amount: 2 }
-        ],
+        Crafting: {
+            Materials: [
+                { ID: "iron_ingot", Amount: 2 },
+                { ID: "wood_plank", Amount: 2 }
+            ],
+        },
         Properties: {
             Damage: [
                 { Type: "Force", Amount: 2 }
@@ -27,10 +29,12 @@ const ScattergunMods: ItemData[] = [
         Desc: "An extended barrel that increases the Scattergun's range and damage, allowing for more effective long-range shots.",
         Stackable: false,
         Craftable: true,
-        Materials: [
-            { ID: "steel_ingot", Amount: 3 },
-            { ID: "wood_plank", Amount: 2 }
-        ],
+        Crafting: {
+            Materials: [
+                { ID: "steel_ingot", Amount: 3 },
+                { ID: "wood_plank", Amount: 2 }
+            ],
+        },
         Properties: {
             Range: 100,
             Damage: [
@@ -47,10 +51,12 @@ const ScattergunMods: ItemData[] = [
         Desc: "A precision-engineered barrel that improves accuracy and reduces recoil, making it easier to hit targets at range.",
         Stackable: false,
         Craftable: true,
-        Materials: [
-            { ID: "aluminum_ingot", Amount: 2 },
-            { ID: "wood_plank", Amount: 2 }
-        ],
+        Crafting: {
+            Materials: [
+                { ID: "aluminum_ingot", Amount: 2 },
+                { ID: "wood_plank", Amount: 2 }
+            ],
+        },
         Properties: {
             Accuracy: 0.1,
             RecoilReduction: 0.2,
