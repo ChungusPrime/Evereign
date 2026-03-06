@@ -255,11 +255,6 @@ export default class Game extends Phaser.Scene {
             });
         }
 
-        if ( this.input.activePointer.leftButtonDown ) {
-            console.log("Left mouse button is being held down");
-            this.UseMainhandItem();
-        }
-
     }
 
     UnloadCurrentMap () {

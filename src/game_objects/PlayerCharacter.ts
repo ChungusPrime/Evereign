@@ -114,9 +114,10 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
     update ( delta: number ): void {
 
-        if ( this.MainHandKeyDown )
+        if ( this.MainHandKeyDown == true ) {
             this.scene.UseMainhandItem();
-
+        }
+            
         if ( this.CombatDelta > 0 ) {
             this.CombatDelta -= delta;
         }
