@@ -4,7 +4,13 @@ const Scatterguns: Proficiency = {
     Name: "Scatterguns",
 
     Description: `Scatterguns are ranged weapons that are characterized by their slow rate of fire and heavy recoil, but 
-    they make up for this with high damage output and the ability to hit multiple targets at once.`,
+    they make up for this with high damage output and the ability to hit multiple targets at once.
+    
+    Scatterguns are a type of ranged weapon that fire multiple projectiles in a spread pattern.
+    They are most effective at close range, and can deal significant damage to multiple enemies at once.
+    A scatterguns effectiveness is determined by the type of ammunition currently loaded, as well as the character's Versatility attribute.
+    Different ammo types can be used to modify the spread, damage, rate of fire or other effects of the scattergun.
+    All Scatterguns, as a base, inflict Pierce and Impact damage.`,
 
     Abilities: [
 

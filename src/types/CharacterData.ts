@@ -4,7 +4,6 @@ interface Character {
     // Character creation choices    
     Name: string;
     Race: string;
-    Scaling: string;
     Difficulty: string;
     Class: string;
     Campaign: string;

@@ -31,7 +31,6 @@ export default class Menu extends Phaser.Scene {
     public characterRaceSelect!: MenuSelect;
     public characterClassSelect!: MenuSelect;
     public campaignSelect!: MenuSelect;
-    public scalingSelect!: MenuSelect;
     public difficultySelect!: MenuSelect;
 
     public ControlObjects: TextButton[] = [];
@@ -52,7 +51,6 @@ export default class Menu extends Phaser.Scene {
     RaceInfoButton: TextButton;
     ClassInfoButton: TextButton;
     CampaignInfoButton: TextButton;
-    ScalingInfoButton: TextButton;
     DifficultyInfoButton: TextButton;
 
     // Menu Buttons
@@ -76,6 +74,8 @@ export default class Menu extends Phaser.Scene {
 
     SoulGemIcon: Phaser.GameObjects.Sprite;
     SoulGemValue: Phaser.GameObjects.Text;
+    InfoBackgroundScollbarTrack: Phaser.GameObjects.Rectangle;
+    InfoBackgroundScrollbarThumb: Phaser.GameObjects.Rectangle;
 
     constructor () {
         super({ key: "Menu" });
@@ -94,7 +94,7 @@ export default class Menu extends Phaser.Scene {
     create (): void {
 
         if ( this.Data.Characters['Bithmas'] == undefined ) {
-            this.CreateCharacter("Bithmas", "Standard", "Fixed", Campaigns[0], Classes.Agent, Races.Human);
+            this.CreateCharacter("Bithmas", "Standard", Campaigns[0], Classes.Agent, Races.Human);
         }
 
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
@@ -224,14 +224,6 @@ export default class Menu extends Phaser.Scene {
         this.CharacterCreationGroup.add(this.CampaignInfoButton);
         Y = Y + 40;
 
-        // Scaling
-        this.scalingSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Scaling", ["Fixed", "Adaptive"]);
-        this.ScalingInfoButton = new TextButton(this, this.scalingSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
-            this.SetHelpText(this.scalingSelect.CurrentValue);
-        }, 32).setVisible(false);
-        this.CharacterCreationGroup.add(this.ScalingInfoButton);
-        Y = Y + 40;
-
         // Difficulty
         this.difficultySelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Difficulty", ["Standard", "Story", "Ultra"]);
         this.DifficultyInfoButton = new TextButton(this, this.difficultySelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
@@ -280,9 +272,6 @@ export default class Menu extends Phaser.Scene {
             if ( this.campaignSelect.CurrentValue == "" || this.campaignSelect.CurrentValue == null )
                 return ErrorText.setText("Choose a Campaign").setVisible(true);
 
-            if ( this.scalingSelect.CurrentValue == "" || this.scalingSelect.CurrentValue == null )
-                return ErrorText.setText("Choose a scaling type").setVisible(true);
-
             if ( this.difficultySelect.CurrentValue == "" || this.difficultySelect.CurrentValue == null )
                 return ErrorText.setText("Choose a difficulty").setVisible(true);
 
@@ -290,7 +279,7 @@ export default class Menu extends Phaser.Scene {
             let Race = Object.values(Races).find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
             let Campaign = Campaigns.find( (c) => c.ID == this.campaignSelect.CurrentValue );
 
-            this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, this.scalingSelect.CurrentValue, Campaign, Class, Race);
+            this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, Campaign, Class, Race);
             this.RefreshCharacterList();
 
         }).setVisible(false);
@@ -308,13 +297,18 @@ export default class Menu extends Phaser.Scene {
         .setAlpha(0);
         this.CharacterCreationGroup.add(this.InfoBackground);
 
+        this.InfoBackgroundScollbarTrack = this.add.rectangle(this.InfoBackground.getRightCenter().x + 1, this.InfoBackground.getTopCenter().y, 20, this.InfoBackground.height, 0x000000).setOrigin(0, 0).setVisible(false);
+        this.InfoBackgroundScrollbarThumb = this.add.rectangle(this.InfoBackgroundScollbarTrack.x + 1, this.InfoBackgroundScollbarTrack.y + 1, 18, 20, 0xffffff).setOrigin(0, 0).setVisible(false);
+
+        this.CharacterCreationGroup.addMultiple([this.InfoBackgroundScollbarTrack, this.InfoBackgroundScrollbarThumb]);
+
         this.InfoText = this.add.text(this.InfoBackground.getCenter().x, this.InfoBackground.getCenter().y, "Click ? for more information", { 
             fontSize: 24,
-            align: "center",
+            align: "justify",
             fontFamily: "Augusta",
             color: "#000",
             wordWrap: { 
-                width: this.InfoBackground.width - 10,
+                width: this.InfoBackground.width,
                 useAdvancedWrap: true 
             }
         })
@@ -324,8 +318,10 @@ export default class Menu extends Phaser.Scene {
         .on("wheel", ( pointer: Phaser.Input.Pointer ) => {
             if ( pointer.deltaY > 0 ) {
                 this.InfoCamera.scrollY += 10;
+                this.UpdateScrollbar();
             } else {
                 this.InfoCamera.scrollY -= 10;
+                this.UpdateScrollbar();
             }
         });
 
@@ -342,7 +338,7 @@ export default class Menu extends Phaser.Scene {
         this.InfoCamera = this.cameras.add(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height, false, "InfoCamera")
         .setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height)
         .setOrigin(0, 0)
-        .setScroll(0, 0)
+        .setScroll(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y)
         .setVisible(false)
         .ignore([this.BackButton, this.Book, this.Background, this.InfoBackground]);
 
@@ -400,7 +396,7 @@ export default class Menu extends Phaser.Scene {
 
     }
 
-    CreateCharacter ( Name: string, Difficulty: string, Scaling: string, Campaign: Campaign, Class: Class, Race: Race ) {
+    CreateCharacter ( Name: string, Difficulty: string, Campaign: Campaign, Class: Class, Race: Race ) {
 
             // Create new character data
             this.Data.Characters[Name] = DefaultCharacterData;
@@ -416,7 +412,6 @@ export default class Menu extends Phaser.Scene {
             Character.Class = Class.Name;
             Character.Race = Race.Name;
             Character.Campaign = Campaign.Name;
-            Character.Scaling = Scaling;
             Character.Difficulty = Difficulty;
             Character.Reincarnation = 1;
             Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
@@ -587,8 +582,9 @@ export default class Menu extends Phaser.Scene {
             let Character = this.Data.Characters[element];
             let Background = this.add.nineslice(this.scale.width * 0.31, CharacterListY, "Kenney-UI", "panel_blue", 400, 120, 10, 10, 10, 10).setOrigin(0.5).setVisible(false);
             let CharacterSprite = this.add.sprite(Background.getLeftCenter().x + 30, Background.getCenter().y, "Player", Races[Character.Race].Skin).setOrigin(0.5).setScale(2).setVisible(false);
-            
 
+            console.log(Character);
+            
             let CharacterHead = this.add.sprite(0, 0, "PlayerHead", 0).setOrigin(0.5).setScale(2).setVisible(false);
             if ( Character.Inventory.Equipment_Head !== null ) {
                 CharacterHead.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerHead", ItemData[Character.Inventory.Equipment_Head.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
@@ -656,7 +652,40 @@ export default class Menu extends Phaser.Scene {
         }
 
         this.InfoCamera.setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoText.height);
-        this.InfoCamera.setScroll(0, 0);
+        this.InfoCamera.setScroll(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y);
+
+        this.UpdateScrollbar();
+
     }
+
+UpdateScrollbar() {
+
+    // Check if content actually overflows
+    if ( this.InfoText.height <= this.InfoCamera.height ) {
+        this.InfoBackgroundScrollbarThumb.setVisible(false);
+        this.InfoBackgroundScollbarTrack.setVisible(false);
+        return;
+    } else {
+        this.InfoBackgroundScrollbarThumb.setVisible(true);
+        this.InfoBackgroundScollbarTrack.setVisible(true);
+    }
+
+    let visibleRatio = this.InfoCamera.height / this.InfoText.height;
+    this.InfoBackgroundScrollbarThumb.setDisplaySize(this.InfoBackgroundScrollbarThumb.width, this.InfoBackgroundScollbarTrack.height * visibleRatio);
+
+    // Calculate scroll percentage relative to the bounds' starting position
+    let minScrollY = this.InfoBackground.getTopLeft().y;
+    let maxScrollY = minScrollY + this.InfoText.height - this.InfoCamera.height;
+    let scrollPercent = (this.InfoCamera.scrollY - minScrollY) / (maxScrollY - minScrollY);
+
+    console.log(this.InfoCamera.scrollY, minScrollY, maxScrollY, scrollPercent);
+
+    // Position the thumb
+
+    if ( scrollPercent < 0 ) scrollPercent = 0;
+    if ( scrollPercent > 1 ) scrollPercent = 1;
+
+    this.InfoBackgroundScrollbarThumb.setY(this.InfoBackgroundScollbarTrack.y + scrollPercent * (this.InfoBackgroundScollbarTrack.height - this.InfoBackgroundScrollbarThumb.displayHeight));
+}
 
 }

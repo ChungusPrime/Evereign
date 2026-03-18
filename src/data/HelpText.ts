@@ -1,9 +1,9 @@
 import Races from "./Races";
 import Classes from "./Classes";
 import Campaigns from "./Campaigns";
-import Scatterguns from "./Items/Scatterguns";
+import Proficiencies from "./Proficiencies";
 
-console.log(Classes);
+console.log(Proficiencies);
 
 const Help: HelpText = {
 
@@ -17,17 +17,8 @@ const Help: HelpText = {
     This mode is the recommended difficulty, especially for your first playthrough.
     `,
 
-    Ultra: `The Ultra difficulty is designed for players who want a challenge.
-    In this mode, enemies will be significantly stronger than your character, and you will need to use all of your skills and abilities to defeat them.
-    This mode is recommended for experienced players who want a more challenging experience.
-    `,
-
-    // Scaling
-    Adaptive: `Adaptive Scaling keeps enemy levels in line with your character's level, but does not scale the difficulty of the game.
-    This means that enemies will be of a similar strength to your character, but the game will not become more difficult as your characters level increases.`,
-
-    Fixed: `Fixed Scaling keeps enemy levels at a fixed value, regardless of your character's level.
-    This means that you may encounter enemies that are higher or lower than your current characters level, and you can use this to your advantage, or disadvantage.
+    Ultra: `The ULTRA difficulty is designed for players who want a challenge. You will face hunger and thirst, fatigue, stress and weather conditions that will require you to manage your character's needs 
+    in addition to devastating enemies. In this mode, you will need to use all of your skills and resources just to stay alive. Every step could be your last.
     `,
 
     // Campaigns
@@ -51,42 +42,37 @@ const Help: HelpText = {
     Tiseri: Races.Tiseri.Description,
     Drakonid: Races.Drakonid.Description,
 
+    // Proficiencies
+    Scatterguns: Proficiencies.Scatterguns.Description,
+    Crossbows: Proficiencies.Crossbows.Description,
+    Swords: Proficiencies.Swords.Description,
+    Hammers: Proficiencies.Hammers.Description,
+
     Race: `Your character's Race determines their starting attributes. All Races grant at least one unique trait to your character
     and can affect your gameplay experience.\n
     Each race starts with different base attribute values, and each races attributes increase at different rates per level up.\n`,
 
-    Class: `Your character's Class provides some starting abilities and traits, as well as provide a small boost to specific attributes.\n
-    A characters class does not determine their playstyle, as any character learn any ability or trait in the game, they simply provide a template for a specific archetype.\n
-    However, each class has a unique building that can be constructed in your township, providing a unique benefit.\n
+    Class: `Your character's Class provides some starting some starting equipment, as well as provide a small boost to specific attributes.
+    Each class comes with a set of starting proficiencies, though these are not restrictions, as your character can learn any proficiency, ability or trait and swap them around freely,
+    classes simply provide a template for a specific character archetype.
     `,
 
-    Attributes: `Attributes are the core stats of your character, determining their abilities and effectiveness in combat.\n
-    In addition to the attribute increases provided by your character's race on level up, you will recieve a number of attribute points that you can freely spend to increase your character's attributes.\n
-    Each attribute has a specific effect on your character's performance, such as increasing damage dealt, reducing damage taken, or improving healing.\n
-    Attributes can be increased by leveling up, acquiring traits, or using abilities.\n
-    The attributes are:\n
-    - Fortitude: Increases damage dealt with melee weapons and increases carrying capacity.\n
-    - Versatility: Increases accuracy with ranged weapons and reduces damage taken from ranged attacks.\n
-    - Vigor: Increases maximum health and reduces damage taken from all sources.\n
-    - Expertise: Increases the effectiveness of abilities and reduces cooldown times.\n
-    - Arcana: Increases the effectiveness of magical abilities and reduces mana costs.\n
-    - Personality: Increases the effectiveness of healing and support abilities, as well as improving interactions with NPCs.\n
-    - Fortune: Increases the chance of critical hits and reduces the chance of negative effects.\n
-    - Grit: Increases resistance to negative effects and improves the effectiveness of certain abilities.\n
+    Attributes: `Attributes are the core stats of your character, determining their abilities and effectiveness in combat.
+    In addition to the attribute increases provided by your character's race on level up, you will recieve a number of attribute points that you can freely spend to increase your character's attributes.
+    Each attribute has a specific effect on your character's performance, such as increasing damage dealt, reducing damage taken, or improving healing.
+    Attributes can be increased by leveling up, acquiring traits, or using abilities.
+    The attributes are:
+    - Fortitude: Increases damage dealt with melee weapons and increases carrying capacity.
+    - Versatility: Increases accuracy with ranged weapons and reduces damage taken from ranged attacks.
+    - Vigor: Increases maximum health and reduces damage taken from all sources.
+    - Expertise: Increases the effectiveness of abilities and reduces cooldown times.
+    - Arcana: Increases the effectiveness of magical abilities and reduces mana costs.
+    - Personality: Increases the effectiveness of healing and support abilities, as well as improving interactions with NPCs.
+    - Fortune: Increases the chance of critical hits and reduces the chance of negative effects.
+    - Grit: Increases resistance to negative effects and improves the effectiveness of certain abilities.
     `,
 
-    Scatterguns: `Scatterguns are a type of ranged weapon that fire multiple projectiles in a spread pattern.\n
-    They are most effective at close range, and can deal significant damage to multiple enemies at once.\n
-    A scatterguns effectiveness is determined by the type of ammunition currently loaded, as well as the character's Versatility attribute.\n
-    Different ammo types can be used to modify the spread, damage, rate of fire or other effects of the scattergun.\n
-    All Scatterguns, as a base, inflict Pierce and Impact damage.\n`,
 
-    Guns: `Guns are a type of ranged weapon that use bullets to deal damage to enemies.\n
-    They are powerful and accurate, but require ammunition to use.\n
-    Guns can be found in the world, purchased from vendors, or crafted using resources.\n
-    A guns effectivness is determined by the ammunition currently loaded, as well as the character's Versatility attribute.\n
-    Different ammo types can be used to deal different types of damage, such as piercing, explosive, or shock.\n
-    Ammo types may also modify the guns accuracy, projectile count, rate of fire or other effects.\n`,
 
     Abilities: `Abilities are special skills that your character can use to perform various actions in the game.\n
     All abilities are Active, meaning they must be used manually by the player.\n

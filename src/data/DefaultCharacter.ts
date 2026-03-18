@@ -12,7 +12,6 @@ const DefaultCharacter: Character = {
     Name: "Bithmas",
     Race: "Human",
     Class: "Agent",
-    Scaling: "Fixed",
     Difficulty: "Standard",
 
     Level: 1,
