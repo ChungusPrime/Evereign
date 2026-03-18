@@ -148,6 +148,8 @@ export default class BuildingHelper {
             return;
         }*/
 
+        console.log(this.scene.TownCentre);
+
         if ( Building == "Town Centre" && this.scene.TownCentre !== null ) {
             this.scene.TownCentre.BuildZone.setVisible(false);
             this.DeactivateBuildingMode();

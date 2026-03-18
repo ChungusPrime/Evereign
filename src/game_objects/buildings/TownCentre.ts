@@ -25,6 +25,7 @@ export default class TownCentre extends Building {
             this.scene.physics.world.enable(BuildZone);
             this.BuildZone = BuildZone;
             this.scene.TownCentre = this;
+            console.log("Player Town Centre created at " + this.x + ", " + this.y);
         }
 
         return this;

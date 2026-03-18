@@ -512,6 +512,9 @@ export default class Menu extends Phaser.Scene {
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
             if (menuToGroupMap[this.CurrentMenu]) {
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
+                if ( this.CurrentMenu == "create" ) {
+                    this.UpdateScrollbar();
+                }
                 if ( this.CurrentMenu !== "main" )
                     this.BackButton.setVisible(true);
                 if ( this.CurrentMenu == "create" )
@@ -677,10 +680,6 @@ UpdateScrollbar() {
     let minScrollY = this.InfoBackground.getTopLeft().y;
     let maxScrollY = minScrollY + this.InfoText.height - this.InfoCamera.height;
     let scrollPercent = (this.InfoCamera.scrollY - minScrollY) / (maxScrollY - minScrollY);
-
-    console.log(this.InfoCamera.scrollY, minScrollY, maxScrollY, scrollPercent);
-
-    // Position the thumb
 
     if ( scrollPercent < 0 ) scrollPercent = 0;
     if ( scrollPercent > 1 ) scrollPercent = 1;

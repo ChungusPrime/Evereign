@@ -142,6 +142,7 @@ export default class MapBuilder {
         });
         
         if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {
+            console.log("Loading player buildings for " + GD.CurrentMap);
             GD.PlayerTowns[GD.CurrentMap].Buildings.forEach((building: { type: string, x: number, y: number, area: string, level: number }) => {
                 this.scene.BuildingHelper.CreateSavedPlayerBuilding(this.scene, building);
             });

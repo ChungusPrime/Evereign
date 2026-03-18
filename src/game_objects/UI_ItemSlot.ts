@@ -47,6 +47,8 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
             .setVisible(false);
 
         this.updateQuantityDisplay();
+
+        this.Hide();
     }
 
     private setupSlotEvents(): void {
@@ -131,6 +133,7 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
     private updateQuantityDisplay(): void {
         const quantity = this.DataInventorySlot?.Quantity ?? 0;
         if (quantity > 1) {
+
             this.QuantityText.setText(`x${quantity}`).setVisible(true);
         } else {
             this.QuantityText.setVisible(false);
@@ -139,6 +142,13 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
 
     public Refresh(): void {
         this.DataInventorySlot = GD.Inventory[this.InventoryIndex] ?? null;
+        
+        // Recreate the item sprite if it was destroyed (e.g., when moved to another slot)
+        if (!this.Item.scene) {
+            this.createItemSprite();
+            this.setupItemEvents();
+        }
+        
         this.updateQuantityDisplay();
         this.updateItemTexture();
     }

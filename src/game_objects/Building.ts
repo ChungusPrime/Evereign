@@ -42,6 +42,8 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
+
+        console.log(object);
         
         if ( 'properties' in object && object.properties ) {
             // If the object is from Tiled, take the ID from the first index of properties
