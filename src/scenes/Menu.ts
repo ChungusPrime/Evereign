@@ -1,14 +1,15 @@
 import Cursor from '../assets/images/click_cursor.png';
 import TextButton from '../game_objects/UI_TextButton';
-import MenuSelect from '../game_objects/Menu_Select';
 import GameData from '../data/DefaultGameData';
-import DefaultCharacterData from '../data/DefaultCharacter';
 import Races from '../data/Races';
 import Classes from '../data/Classes';
-import ItemData from '../data/ItemData';
 import Campaigns from '../data/Campaigns';
-import Help from '../data/HelpText';
-import MenuInput from '../game_objects/Menu_Input';
+import Title from '../game_objects/menu/Title';
+import MainMenu from '../game_objects/menu/MainMenu';
+import Controls from '../game_objects/menu/Controls';
+import Options from '../game_objects/menu/Options';
+import CharacterCreation from '../game_objects/menu/CharacterCreation';
+import CharacterList from '../game_objects/menu/CharacterList';
 
 export default class Menu extends Phaser.Scene {
 
@@ -19,63 +20,22 @@ export default class Menu extends Phaser.Scene {
     public BookOpen: boolean = false;
 
     // Menus
-    public TitleScreen!: Phaser.GameObjects.Group;
-    public MainMenuGroup!: Phaser.GameObjects.Group;
-    public ControlsGroup!: Phaser.GameObjects.Group;
-    public OptionsGroup!: Phaser.GameObjects.Group;
-    public CharacterCreationGroup: Phaser.GameObjects.Group;
-    public CharacterList!: Phaser.GameObjects.Group;
+    public TitleScreen!: Title;
+    public MainMenuGroup!: MainMenu;
+    public ControlsGroup!: Controls;
+    public OptionsGroup!: Options;
+    public CharacterCreationGroup!: CharacterCreation;
+    public CharacterListGroup!: CharacterList;
 
-    // Inputs
-    public characterNameInput!: MenuInput;
-    public characterRaceSelect!: MenuSelect;
-    public characterClassSelect!: MenuSelect;
-    public campaignSelect!: MenuSelect;
-    public difficultySelect!: MenuSelect;
-
-    public ControlObjects: TextButton[] = [];
     public CurrentMenu: string = "";
     public BackButton!: TextButton;
     public RebindInProgress: boolean = false;
-
-    public InfoCamera: Phaser.Cameras.Scene2D.Camera;
-    public InfoText: Phaser.GameObjects.Text;
-    public InfoBackground: Phaser.GameObjects.NineSlice;
 
     public MouseButtonMap: { [key: string]: string } = {
         "mouse-0": "Left Mouse",
         "mouse-1": "Middle Mouse",
         "mouse-2": "Right Mouse"
     };
-
-    RaceInfoButton: TextButton;
-    ClassInfoButton: TextButton;
-    CampaignInfoButton: TextButton;
-    DifficultyInfoButton: TextButton;
-
-    // Menu Buttons
-    ContinueButton: TextButton;
-    CreateButton: TextButton;
-    LoadButton: TextButton;
-    ControlsButton: TextButton;
-    OptionsButton: TextButton;
-    CreditsButton: TextButton;
-    QuitGameButton: TextButton;
-    TutorialButton: TextButton;
-    ReincarnationButton: TextButton;
-    CloudButton: TextButton;
-
-    CharacterSkin: Phaser.GameObjects.Sprite;
-    CharacterHeadItem: Phaser.GameObjects.Sprite;
-    CharacterBodyItem: Phaser.GameObjects.Sprite;
-    CharacterLegsItem: Phaser.GameObjects.Sprite;
-    CharacterHandItem: Phaser.GameObjects.Sprite;
-    CharacterFeetItem: Phaser.GameObjects.Sprite;
-
-    SoulGemIcon: Phaser.GameObjects.Sprite;
-    SoulGemValue: Phaser.GameObjects.Text;
-    InfoBackgroundScollbarTrack: Phaser.GameObjects.Rectangle;
-    InfoBackgroundScrollbarThumb: Phaser.GameObjects.Rectangle;
 
     constructor () {
         super({ key: "Menu" });
@@ -93,10 +53,6 @@ export default class Menu extends Phaser.Scene {
 
     create (): void {
 
-        if ( this.Data.Characters['Bithmas'] == undefined ) {
-            this.CreateCharacter("Bithmas", "Standard", Campaigns[0], Classes.Agent, Races.Human);
-        }
-
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
         this.sound.play("track1", { loop: true });
 
@@ -106,378 +62,25 @@ export default class Menu extends Phaser.Scene {
 
         this.add.text(1, 1, this.game.config.gameVersion).setShadow(2, 2, "#000", 1).setOrigin(0).setFontSize(12);
 
-        // Title Screen
-        this.TitleScreen = this.add.group([]);
-        let Logo = this.add.image(this.Book.getCenter().x, this.Book.getCenter().y, "logo").setOrigin(0.5, 0.5).setDisplaySize(this.scale.width * 0.2, this.scale.height * 0.45);
-        let TitleText = this.add.text(Logo.getTopCenter().x, Logo.getTopCenter().y - 35, "EVEREIGN", { fontSize: 72, align: "center", fontFamily: "Augusta" }).setOrigin(0.5);
-        let StartButton = new TextButton(this, Logo.getBottomCenter().x, Logo.getBottomCenter().y + 35, "Click To Start", () => { this.ChangeMenu("main") }, 48, "#FFFFFF");
-        this.TitleScreen.addMultiple([Logo, TitleText, StartButton]);
+        // Initialize Menus
+        this.TitleScreen = new Title(this);
+        this.MainMenuGroup = new MainMenu(this);
+        this.ControlsGroup = new Controls(this);
+        this.OptionsGroup = new Options(this);
+        this.CharacterCreationGroup = new CharacterCreation(this);
+        this.CharacterListGroup = new CharacterList(this);
 
-        // Main Menu Buttons
-        this.ContinueButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.25, `Load Last Played`, () => { this.StartGame(this.Data.LastCharacterPlayed) });
-        this.CreateButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.35, "New Game", () => { this.ChangeMenu("create") });
-        this.LoadButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.45, "Load Game", () => { this.ChangeMenu("load") });
-        this.TutorialButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.55, "Tutorial", () => { this.StartGame("Bithmas") });
-        this.CloudButton = new TextButton(this, this.scale.width * 0.31, this.scale.height * 0.65, "Cloud Saves", () => { this.ChangeMenu("cloud") });
-
-        this.ReincarnationButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.25, "Bloodline", () => { this.ChangeMenu("reincarnation") });
-        this.ControlsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.35, "Controls", () => { this.ChangeMenu("controls") });
-        this.OptionsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.45, "Options", () => { this.ChangeMenu("options") });
-        this.CreditsButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.55, "Credits", () => { console.log("credits") });
-        this.QuitGameButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.65, "Quit", () => { window.close() });
-
-        this.MainMenuGroup = this.add.group([
-            this.CreateButton,
-            this.LoadButton,
-            this.TutorialButton,
-            this.ControlsButton,
-            this.OptionsButton,
-            this.CloudButton,
-            this.ReincarnationButton,
-            this.CreditsButton,
-            this.QuitGameButton,
-            this.ContinueButton
-        ]).setVisible(false);
-
-        // Controls Menu
-        this.ControlsGroup = this.add.group().setVisible(false);
-        let Y = this.scale.height * 0.18;
-        let X = this.scale.width * 0.32;
-        
-        Object.entries(this.Data.Controls).forEach(control => {
-
-            let label = control[1];
-            if (this.MouseButtonMap[control[1]])
-                label = this.MouseButtonMap[control[1]];
-
-            let ControlBind = new TextButton(this, X, Y, `${control[0]}: ${label}`, () => {
-                this.StartRebind(control[0], ControlBind);
-            }, 32).setVisible(false);
-
-            this.ControlsGroup.add(ControlBind);
-
-            Y += ControlBind.height + 10;
-
-            if ( Y > this.scale.height * 0.7 ) {
-                X = this.scale.width * 0.69;
-                Y = this.scale.height * 0.18;
-            }
-
-            this.ControlObjects.push(ControlBind);
-        });
-
-        let ResetControlsButton = new TextButton(this, this.scale.width * 0.32, this.scale.height * 0.8, "Reset to default", () => {
-            this.Data.Controls = JSON.parse(JSON.stringify(GameData.Controls));
-            localStorage.setItem("EvereignData", JSON.stringify(this.Data));
-            this.ControlObjects.forEach(control => {
-                control.setText(`${control.text.split(':')[0]}: ${this.Data.Controls[control.text.split(':')[0]]}`);
-            });
-        }).setVisible(false);
-        this.ControlsGroup.add(ResetControlsButton);
-
-        // Options Menu
-        this.OptionsGroup = this.add.group().setVisible(false);
-        X = this.scale.width * 0.32;
-        Y = this.scale.height * 0.17;
-        Object.entries(this.Data.Options).forEach(option => {
-            let label = option[1].toLocaleString();
-            let OptionButton = new TextButton(this, X, Y, `${option[0]}: ${label}`, () => {}, 32).setVisible(false);
-            this.OptionsGroup.add(OptionButton);
-            Y += OptionButton.height + 15;
-        });
-
-        // Character Creation
-        Y = this.scale.height * 0.15;
-        this.CharacterCreationGroup = this.add.group().setVisible(false);
-        
-        this.CharacterCreationGroup.add(
-            this.add.text(this.scale.width * 0.32, Y, "New Character", { fontSize: 36, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false)
-        );
-
-        Y = Y + 50;
-
-        // Name
-        this.characterNameInput = new MenuInput(this, this.scale.width * 0.32, Y, "Character Name");
-        Y = Y + 40;
-
-        // Race
-        this.characterRaceSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Race", Object.values(Races).filter( race => race.Available ).map( r => r.Name ));
-        this.RaceInfoButton = new TextButton(this, this.characterRaceSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
-            this.SetHelpText(this.characterRaceSelect.CurrentValue);
-        }, 32).setVisible(false);
-        this.CharacterCreationGroup.add(this.RaceInfoButton);
-        Y = Y + 40;
-
-        // Class
-        this.characterClassSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Class", Object.values(Classes).filter( c => c.Available ).map( c => c.Name ));
-        this.ClassInfoButton = new TextButton(this, this.characterClassSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
-            this.SetHelpText(this.characterClassSelect.CurrentValue);
-        }, 32).setVisible(false);
-        this.CharacterCreationGroup.add(this.ClassInfoButton);
-        Y = Y + 40;
-
-        // Campaign
-        this.campaignSelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Campaign", Campaigns.filter( c => c.Available ).map( c => c.Name ));
-        this.CampaignInfoButton = new TextButton(this, this.campaignSelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
-            this.SetHelpText(this.campaignSelect.CurrentValue);
-        }, 32).setVisible(false);
-        this.CharacterCreationGroup.add(this.CampaignInfoButton);
-        Y = Y + 40;
-
-        // Difficulty
-        this.difficultySelect = new MenuSelect(this, this.scale.width * 0.32, Y, "Select Difficulty", ["Standard", "Story", "Ultra"]);
-        this.DifficultyInfoButton = new TextButton(this, this.difficultySelect.ScrollRight.getRightCenter().x + 15, Y, "?", () => {
-            this.SetHelpText(this.difficultySelect.CurrentValue);
-        }, 32).setVisible(false);
-        this.CharacterCreationGroup.add(this.DifficultyInfoButton);
-        Y = Y + 80;
-
-        // Character Preview Placeholder
-        this.CharacterSkin = this.add.sprite(this.scale.width * 0.24, Y, "Player", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterHeadItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerHead", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterBodyItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerBody", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterLegsItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerLegs", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterHandItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerHands", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.CharacterFeetItem = this.add.sprite(this.CharacterSkin.x, this.CharacterSkin.y, "PlayerFeet", 0).setOrigin(0.5).setScale(4).setVisible(false);
-        this.SoulGemIcon = this.add.sprite(this.scale.width * 0.36, Y, "ownmisc", 8).setOrigin(0.5).setScale(2).setVisible(false);
-        this.SoulGemValue = this.add.text(this.SoulGemIcon.getRightCenter().x, this.SoulGemIcon.getRightCenter().y + 20, "Soul Gems:\nx100", { fontSize: 24, align: "left", fontFamily: "Augusta", color: "#000" }).setOrigin(0, 0.5).setVisible(false);
-
-        this.CharacterCreationGroup.addMultiple([
-            this.CharacterSkin,
-            this.CharacterHeadItem,
-            this.CharacterBodyItem,
-            this.CharacterLegsItem,
-            this.CharacterHandItem,
-            this.CharacterFeetItem,
-            this.SoulGemIcon,
-            this.SoulGemValue
-        ]);
-
-        let CreateNewCharButton = new TextButton(this, this.scale.width * 0.32, this.scale.height * 0.73, "Create", () => {
-
-            ErrorText.setVisible(false);
-
-            if ( this.characterNameInput.CurrentValue == "" )
-                return ErrorText.setText("Enter a character name").setVisible(true);
-
-            if ( this.Data.Characters[this.characterNameInput.CurrentValue] )
-                return ErrorText.setText("Character name already exists").setVisible(true);
-
-            if ( this.characterRaceSelect.CurrentValue == "" || this.characterRaceSelect.CurrentValue == null )
-                return ErrorText.setText("Choose a Race").setVisible(true);
-
-            if ( this.characterClassSelect.CurrentValue == "" || this.characterClassSelect.CurrentValue == null )
-                return ErrorText.setText("Choose a Class").setVisible(true);
-
-            if ( this.campaignSelect.CurrentValue == "" || this.campaignSelect.CurrentValue == null )
-                return ErrorText.setText("Choose a Campaign").setVisible(true);
-
-            if ( this.difficultySelect.CurrentValue == "" || this.difficultySelect.CurrentValue == null )
-                return ErrorText.setText("Choose a difficulty").setVisible(true);
-
-            let Class = Object.values(Classes).find( (c) => c.Name == this.characterClassSelect.CurrentValue );
-            let Race = Object.values(Races).find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
-            let Campaign = Campaigns.find( (c) => c.ID == this.campaignSelect.CurrentValue );
-
-            this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, Campaign, Class, Race);
-            this.RefreshCharacterList();
-
-        }).setVisible(false);
-
-        this.CharacterCreationGroup.add(CreateNewCharButton);
-
-        // Character Validation Errors Text
-        let ErrorText = this.add.text(this.scale.width * 0.32, this.scale.height * 0.79, "", { fontSize: 32, align: "center", fontFamily: "Augusta", color: "#cf200c" }).setOrigin(0.5).setVisible(false);
-        this.CharacterCreationGroup.add(ErrorText);
-
-        // Info panel background
-        this.InfoBackground = this.add.nineslice(this.scale.width * 0.7, this.scale.height * 0.45, "Kenney-UI", "panel_beigeLight", this.scale.width * 0.29, this.scale.height * 0.65, 25, 25, 25, 25)
-        .setOrigin(0.5)
-        .setVisible(false)
-        .setAlpha(0);
-        this.CharacterCreationGroup.add(this.InfoBackground);
-
-        this.InfoBackgroundScollbarTrack = this.add.rectangle(this.InfoBackground.getRightCenter().x + 1, this.InfoBackground.getTopCenter().y, 20, this.InfoBackground.height, 0x000000).setOrigin(0, 0).setVisible(false);
-        this.InfoBackgroundScrollbarThumb = this.add.rectangle(this.InfoBackgroundScollbarTrack.x + 1, this.InfoBackgroundScollbarTrack.y + 1, 18, 20, 0xffffff).setOrigin(0, 0).setVisible(false);
-
-        this.CharacterCreationGroup.addMultiple([this.InfoBackgroundScollbarTrack, this.InfoBackgroundScrollbarThumb]);
-
-        this.InfoText = this.add.text(this.InfoBackground.getCenter().x, this.InfoBackground.getCenter().y, "Click ? for more information", { 
-            fontSize: 24,
-            align: "justify",
-            fontFamily: "Augusta",
-            color: "#000",
-            wordWrap: { 
-                width: this.InfoBackground.width,
-                useAdvancedWrap: true 
-            }
-        })
-        .setOrigin(0.5)
-        .setVisible(true)
-        .setInteractive()
-        .on("wheel", ( pointer: Phaser.Input.Pointer ) => {
-            if ( pointer.deltaY > 0 ) {
-                this.InfoCamera.scrollY += 10;
-                this.UpdateScrollbar();
-            } else {
-                this.InfoCamera.scrollY -= 10;
-                this.UpdateScrollbar();
-            }
-        });
-
-        this.CharacterCreationGroup.add(this.InfoText);
-        this.cameras.main.ignore(this.InfoText);
-        
-        this.CharacterList = this.add.group().setVisible(false);
-        this.RefreshCharacterList();
+        if ( this.Data.Characters['Bithmas'] == undefined )
+            this.CharacterCreationGroup.CreateCharacter("Bithmas", "Standard", Campaigns[0], Classes.Agent, Races.Human);
 
         this.BackButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.8, "Back", () => {
             this.ChangeMenu("main");
         }).setVisible(false);
 
-        this.InfoCamera = this.cameras.add(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height, false, "InfoCamera")
-        .setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoBackground.height)
-        .setOrigin(0, 0)
-        .setScroll(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y)
-        .setVisible(false)
-        .ignore([this.BackButton, this.Book, this.Background, this.InfoBackground]);
+        // Make sure InfoCamera ignores the back button
+        this.CharacterCreationGroup.InfoCamera.ignore(this.BackButton);
 
         this.cameras.main.fadeIn(2000);
-
-    }
-
-    UpdateCharacterPreview () {
-
-        if ( this.characterRaceSelect.CurrentValue != null ) {
-            let Race = Object.values(Races).find( (r) => r.Name == this.characterRaceSelect.CurrentValue );
-            this.CharacterSkin.setFrame(Race.Skin);
-        }
-
-        if ( this.characterClassSelect.CurrentValue != null ) {
-            let Class = Object.values(Classes).find( (c) => c.Name == this.characterClassSelect.CurrentValue );
-
-            console.log(Class);
-
-            if ( Class.Items.Equipment_Head == null ) {
-                this.CharacterHeadItem.setVisible(false);
-            } else {
-                this.CharacterHeadItem.setTexture("PlayerHead", ItemData[Class.Items.Equipment_Head.ID].Texture);
-                this.CharacterHeadItem.setVisible(true);
-            }
-
-            if ( Class.Items.Equipment_Chest == null ) {
-                this.CharacterBodyItem.setVisible(false);
-            } else {
-                this.CharacterBodyItem.setTexture("PlayerBody", ItemData[Class.Items.Equipment_Chest.ID].Texture);
-                this.CharacterBodyItem.setVisible(true);
-            }
-
-            if ( Class.Items.Equipment_Legs == null ) {
-                this.CharacterLegsItem.setVisible(false);
-            } else {
-                this.CharacterLegsItem.setTexture("PlayerLegs", ItemData[Class.Items.Equipment_Legs.ID].Texture);
-                this.CharacterLegsItem.setVisible(true);
-            }
-
-            if ( Class.Items.Equipment_Hands == null ) {
-                this.CharacterHandItem.setVisible(false);
-            } else {
-                this.CharacterHandItem.setTexture("PlayerHands", ItemData[Class.Items.Equipment_Hands.ID].Texture);
-                this.CharacterHandItem.setVisible(true);
-            }
-
-            if ( Class.Items.Equipment_Feet == null ) {
-                this.CharacterFeetItem.setVisible(false);
-            } else {
-                this.CharacterFeetItem.setTexture("PlayerFeet", ItemData[Class.Items.Equipment_Feet.ID].Texture);
-                this.CharacterFeetItem.setVisible(true);
-            }
-        }
-
-    }
-
-    CreateCharacter ( Name: string, Difficulty: string, Campaign: Campaign, Class: Class, Race: Race ) {
-
-            // Create new character data
-            this.Data.Characters[Name] = DefaultCharacterData;
-            let Character = this.Data.Characters[Name];
-
-            console.log(Class);
-
-            Character.CreatedAtTimestamp = Date.now().toString();
-            Character.LastSaveTimestamp = null;
-
-            // Set character properties
-            Character.Name = Name;
-            Character.Class = Class.Name;
-            Character.Race = Race.Name;
-            Character.Campaign = Campaign.Name;
-            Character.Difficulty = Difficulty;
-            Character.Reincarnation = 1;
-            Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
-            Character.Stats.Versatility = Race.Attributes.Versatility + Class.AttributeBonuses.Versatility;
-            Character.Stats.Vigor = Race.Attributes.Vigor + Class.AttributeBonuses.Vigor;
-            Character.Stats.Expertise = Race.Attributes.Expertise + Class.AttributeBonuses.Expertise;
-            Character.Stats.Personality = Race.Attributes.Personality + Class.AttributeBonuses.Personality;
-            Character.Stats.Fortune = Race.Attributes.Fortune + Class.AttributeBonuses.Fortune;
-            Character.Stats.Grit = Race.Attributes.Grit + Class.AttributeBonuses.Grit;
-            Character.Stats.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
-            Character.Stats.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
-            Character.Stats.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
-            Character.Stats.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
-            Character.Stats.MaxHealth = Character.Stats.CurrentHealth;
-            Character.Stats.MaxMana = Character.Stats.CurrentMana;
-            Character.Level = 1;
-            Character.AttributePoints = 0;
-            Character.CurrentMap = Campaign.StartingMap;
-            Character.X = Campaign.StartingX;
-            Character.Y = Campaign.StartingY;
-
-            const CampaignData = Campaigns.find( campaign => campaign.Name == Character.Campaign );
-
-            // Copy only the dynamic InitialData to character save data
-            // Static data (Type, Name, Level, etc.) stays in Campaign and is looked up at runtime
-            Character.WorldData = {};
-            for (const region of Object.keys(CampaignData.WorldData)) {
-                Character.WorldData[region] = {};
-                for (const objectId of Object.keys(CampaignData.WorldData[region])) {
-                    const objectDef = CampaignData.WorldData[region][objectId];
-                    Character.WorldData[region][objectId] = objectDef.InitialData ? { ...objectDef.InitialData } : {};
-                }
-            }
-            
-            // Add starting items from chosen class to character inventory
-            Object.entries(Class.Items).forEach( (item) => {
-                if ( item[1] == null ) return;
-                const [slot, info] = item;
-                console.log(slot, info);
-                const Data = ItemData[info.ID];
-                console.log(Data);
-                if ( info.Quantity > 1 )
-                    Data.InitialValue.Quantity = info.Quantity;
-                Character.Inventory[slot] = Data.InitialValue;
-            });
-
-            // Set up default hotbar for the character
-            Object.entries(Class.Hotbar).forEach( (hotbar) => {
-                const [slot, info] = hotbar;
-                Character.Hotbar[slot] = info;
-            });
-
-            Class.Proficiencies.forEach( (proficiency) => Character.Proficiencies[proficiency] = { Level: 1, Experience: 0, NextLevelExperience: 100 } );
-
-            // Add starting abilities from chosen class to character abilities
-            Class.Abilities.forEach( (ability) => Character.Abilities.push({ ID: ability, Tier: 1, Cooldown: 0 }));
-
-            // Add starting traits from chosen class to character traits
-            Class.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
-
-            // Add racial traits to character traits
-            Race.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
-
-            localStorage.setItem("EvereignData", JSON.stringify(this.Data));
-
-            this.Data = JSON.parse(localStorage.getItem("EvereignData"));
 
     }
 
@@ -489,8 +92,8 @@ export default class Menu extends Phaser.Scene {
         this.ControlsGroup.setVisible(false);
         this.OptionsGroup.setVisible(false);
         this.CharacterCreationGroup.setVisible(false);
-        this.InfoCamera.setVisible(false);
-        this.CharacterList.setVisible(false);
+        this.CharacterCreationGroup.InfoCamera.setVisible(false);
+        this.CharacterListGroup.setVisible(false);
         this.BackButton.setVisible(false);
 
         // Show relevant group based on string
@@ -499,7 +102,9 @@ export default class Menu extends Phaser.Scene {
             "controls": this.ControlsGroup,
             "options": this.OptionsGroup,
             "create": this.CharacterCreationGroup,
-            "load": this.CharacterList
+            "load": this.CharacterListGroup,
+            "cloud": this.MainMenuGroup,
+            "bloodline": this.MainMenuGroup
         };
 
         let Animation = 'Style 1 Page Flip Right';
@@ -513,12 +118,12 @@ export default class Menu extends Phaser.Scene {
             if (menuToGroupMap[this.CurrentMenu]) {
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
                 if ( this.CurrentMenu == "create" ) {
-                    this.UpdateScrollbar();
+                    this.CharacterCreationGroup.UpdateScrollbar();
                 }
                 if ( this.CurrentMenu !== "main" )
                     this.BackButton.setVisible(true);
                 if ( this.CurrentMenu == "create" )
-                    this.InfoCamera.setVisible(true);
+                    this.CharacterCreationGroup.InfoCamera.setVisible(true);
             } else {
                 this.TitleScreen.setVisible(true);
                 this.BookOpen = false;
@@ -567,72 +172,12 @@ export default class Menu extends Phaser.Scene {
     }
 
     RebindKey(key: string, value: string) {
-        console.log(`Rebinding ${key} to ${value}`);
         this.Data.Controls[key] = value;
         localStorage.setItem("EvereignData", JSON.stringify(this.Data));
     }
 
     RefreshCharacterList() {
-        this.CharacterList.clear(true, true);
-        let Y = this.scale.height * 0.15;
-        this.CharacterList = this.add.group().setVisible(false);
-        let header = this.add.text(this.scale.width * 0.32, Y, "Characters", { fontSize: 40, align: "center", fontFamily: "Augusta", color: "#000" }).setOrigin(0.5).setVisible(false);
-        this.CharacterList.add(header);
-        let CharacterListY = this.scale.height * 0.28;
-
-
-        Object.keys(this.Data.Characters).forEach(element => {
-            let Character = this.Data.Characters[element];
-            let Background = this.add.nineslice(this.scale.width * 0.31, CharacterListY, "Kenney-UI", "panel_blue", 400, 120, 10, 10, 10, 10).setOrigin(0.5).setVisible(false);
-            let CharacterSprite = this.add.sprite(Background.getLeftCenter().x + 30, Background.getCenter().y, "Player", Races[Character.Race].Skin).setOrigin(0.5).setScale(2).setVisible(false);
-
-            console.log(Character);
-            
-            let CharacterHead = this.add.sprite(0, 0, "PlayerHead", 0).setOrigin(0.5).setScale(2).setVisible(false);
-            if ( Character.Inventory.Equipment_Head !== null ) {
-                CharacterHead.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerHead", ItemData[Character.Inventory.Equipment_Head.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
-            }
-
-            let CharacterBody = this.add.sprite(0, 0, "PlayerBody", 0).setOrigin(0.5).setScale(2).setVisible(false);
-
-            if ( Character.Inventory.Equipment_Chest !== null ) {
-                CharacterBody.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerBody", ItemData[Character.Inventory.Equipment_Chest.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
-            }
-
-            let CharacterLegs = this.add.sprite(0, 0, "PlayerLegs", 0).setOrigin(0.5).setScale(2).setVisible(false);
-            if ( Character.Inventory.Equipment_Legs !== null ) {
-                CharacterLegs.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerLegs", ItemData[Character.Inventory.Equipment_Legs.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
-            }
-
-            let CharacterHands = this.add.sprite(0, 0, "PlayerHands", 0).setOrigin(0.5).setScale(2).setVisible(false);
-            if ( Character.Inventory.Equipment_Hands !== null ) {
-                CharacterHands.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerHands", ItemData[Character.Inventory.Equipment_Hands.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
-            }
-
-            let CharacterFeet = this.add.sprite(0, 0, "PlayerFeet", 0).setOrigin(0.5).setScale(2).setVisible(false);
-            if ( Character.Inventory.Equipment_Feet !== null ) {
-                CharacterFeet.setPosition(CharacterSprite.x, CharacterSprite.y).setTexture("PlayerFeet", ItemData[Character.Inventory.Equipment_Feet.ID].Texture).setOrigin(0.5).setScale(2).setVisible(false);
-            }
-            
-            let CharacterButton = new TextButton(this, this.scale.width * 0.32, CharacterListY, `${Character.Name}\nLevel ${Character.Level} ${Character.Class}\n${Character.CurrentMap}`, () => {
-                this.StartGame(Character.Name);
-            }, 32).setVisible(false);
-
-            this.CharacterList.addMultiple([
-                Background,
-                CharacterButton,
-                CharacterSprite,
-                CharacterHead,
-                CharacterBody,
-                CharacterLegs,
-                CharacterHands,
-                CharacterFeet
-            ]);
-
-            CharacterListY += Background.height + 8;
-        });
-
-
+        this.CharacterListGroup.refresh();
     }
 
     StartGame ( character: string ) {
@@ -641,50 +186,5 @@ export default class Menu extends Phaser.Scene {
         localStorage.setItem("EvereignData", JSON.stringify(this.Data));
         this.scene.start("Game", { character: character });
     }
-    
-    SetHelpText ( key: string ) {
-
-        this.InfoText.setText(Help[key] ?? "No help text available for this option.");
-
-        if ( this.InfoText.height >= this.InfoBackground.height ) {
-            this.InfoText.setPosition(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y);
-            this.InfoText.setOrigin(0, 0);
-        } else {
-            this.InfoText.setPosition(this.InfoBackground.getCenter().x, this.InfoBackground.getCenter().y);
-            this.InfoText.setOrigin(0.5);
-        }
-
-        this.InfoCamera.setBounds(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y, this.InfoBackground.width, this.InfoText.height);
-        this.InfoCamera.setScroll(this.InfoBackground.getTopLeft().x, this.InfoBackground.getTopLeft().y);
-
-        this.UpdateScrollbar();
-
-    }
-
-UpdateScrollbar() {
-
-    // Check if content actually overflows
-    if ( this.InfoText.height <= this.InfoCamera.height ) {
-        this.InfoBackgroundScrollbarThumb.setVisible(false);
-        this.InfoBackgroundScollbarTrack.setVisible(false);
-        return;
-    } else {
-        this.InfoBackgroundScrollbarThumb.setVisible(true);
-        this.InfoBackgroundScollbarTrack.setVisible(true);
-    }
-
-    let visibleRatio = this.InfoCamera.height / this.InfoText.height;
-    this.InfoBackgroundScrollbarThumb.setDisplaySize(this.InfoBackgroundScrollbarThumb.width, this.InfoBackgroundScollbarTrack.height * visibleRatio);
-
-    // Calculate scroll percentage relative to the bounds' starting position
-    let minScrollY = this.InfoBackground.getTopLeft().y;
-    let maxScrollY = minScrollY + this.InfoText.height - this.InfoCamera.height;
-    let scrollPercent = (this.InfoCamera.scrollY - minScrollY) / (maxScrollY - minScrollY);
-
-    if ( scrollPercent < 0 ) scrollPercent = 0;
-    if ( scrollPercent > 1 ) scrollPercent = 1;
-
-    this.InfoBackgroundScrollbarThumb.setY(this.InfoBackgroundScollbarTrack.y + scrollPercent * (this.InfoBackgroundScollbarTrack.height - this.InfoBackgroundScrollbarThumb.displayHeight));
-}
 
 }

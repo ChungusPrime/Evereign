@@ -41,11 +41,6 @@ export default class MenuInput extends Phaser.GameObjects.NineSlice {
         .setOrigin(0.5, 0.5)
         .setVisible(false);
 
-        this.scene.CharacterCreationGroup.addMultiple([
-            this,
-            this.TextObject,
-        ]);
-
         scene.input.keyboard.on('keydown', (event: any) => {
 
             if (this.Selected) {

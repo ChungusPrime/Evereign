@@ -4,6 +4,7 @@ import ItemSlot from "../game_objects/UI_ItemSlot";
 import { GD } from "../scenes/Game";
 import DamageTypes from "../data/DamageTypes";
 import TextButton from "../game_objects/UI_TextButton";
+import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
 
 export default class Inventory {
 
@@ -245,6 +246,7 @@ export default class Inventory {
         this.RadiantText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 250, `Radiant: ${GD.ComputedStats.Defence_Radiant}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Radiant'] }).setOrigin(0, 0.5).setVisible(false);
         this.CorruptionText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 10, this.CharacterPanelBackground.getTopLeft().y + 300, `Corruption: ${GD.ComputedStats.Defence_Corruption}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Corruption'] }).setOrigin(0, 0.5).setVisible(false);
         this.SonicText = this.UI.add.text( this.CharacterPanelBackground.getTopLeft().x + 140, this.CharacterPanelBackground.getTopLeft().y + 300, `Sonic: ${GD.ComputedStats.Defence_Sonic}`, { fontFamily: "Augusta", fontSize: 24, color: DamageTypes['Sonic'] }).setOrigin(0, 0.5).setVisible(false);
+        
         this.DefencesTexts = this.UI.add.group().setVisible(false).addMultiple([
             this.PierceText,
             this.ImpactText,

@@ -10,10 +10,10 @@ export default class MenuSelect extends Phaser.GameObjects.NineSlice {
     public TextObject: Phaser.GameObjects.Text;
     public CurrentValue: string | null = null;
     public Options: string[] = [];
-    public ValueIndex: number = null;
+    public ValueIndex: number = 0;
     public InformationButton: TextButton;
 
-    constructor ( scene: Menu, x: number, y: number, text: string, options: string[] ) {
+    constructor ( scene: Menu, x: number, y: number, text: string, options: string[], callback: () => void, leftCallback: () => void = null, rightCallback: () => void = null ) {
 
         super(scene, x, y, "Kenney-UI", "buttonLong_blue_pressed", 312, 32, 16, 16, 16, 16);
 
@@ -30,8 +30,7 @@ export default class MenuSelect extends Phaser.GameObjects.NineSlice {
         }).on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
             if ( pointer.leftButtonDown() ) {
                 this.scene.sound.play('click');
-                console.log(this.CurrentValue);
-                this.scene.SetHelpText(this.CurrentValue ? this.CurrentValue : "No information available for this option.");
+                callback();
             }
         })
         .setVisible(false);
@@ -41,8 +40,10 @@ export default class MenuSelect extends Phaser.GameObjects.NineSlice {
 
         this.scene.add.existing(this);
 
+        this.CurrentValue = this.Options[0];
+
         // Value text
-        this.TextObject = this.scene.add.text(this.getCenter().x, this.getCenter().y, text, {
+        this.TextObject = this.scene.add.text(this.getCenter().x, this.getCenter().y, this.Options[0], {
             fontSize: 24,
             align: "center",
             fontFamily: "Augusta",
@@ -78,7 +79,7 @@ export default class MenuSelect extends Phaser.GameObjects.NineSlice {
                 }
                 this.CurrentValue = this.Options[this.ValueIndex];
                 this.TextObject.setText(this.CurrentValue);
-                this.scene.UpdateCharacterPreview();
+                leftCallback?.();
             }
         })
         .setVisible(false);
@@ -106,18 +107,10 @@ export default class MenuSelect extends Phaser.GameObjects.NineSlice {
                 }
                 this.CurrentValue = this.Options[this.ValueIndex];
                 this.TextObject.setText(this.CurrentValue);
-                this.scene.UpdateCharacterPreview();
+                rightCallback?.();
             }
         })
         .setVisible(false);
-
-        this.scene.CharacterCreationGroup.addMultiple([
-            this,
-            this.ScrollLeft,
-            this.ScrollRight,
-            this.TextObject,
-            //this.InformationButton
-        ]);
 
     }
 }
