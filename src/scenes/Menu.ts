@@ -1,54 +1,44 @@
 import Cursor from '../assets/images/click_cursor.png';
 import TextButton from '../game_objects/UI_TextButton';
-import GameData from '../data/DefaultGameData';
-import Races from '../data/Races';
-import Classes from '../data/Classes';
-import Campaigns from '../data/Campaigns';
 import Title from '../game_objects/menu/Title';
 import MainMenu from '../game_objects/menu/MainMenu';
 import Controls from '../game_objects/menu/Controls';
 import Options from '../game_objects/menu/Options';
 import CharacterCreation from '../game_objects/menu/CharacterCreation';
 import CharacterList from '../game_objects/menu/CharacterList';
+import Bloodline from '../game_objects/menu/Bloodline';
+import DataManager from '../systems/DataManager';
+import Campaigns from '../data/Campaigns';
+import Races from '../data/Races';
+import Classes from '../data/Classes';
 
 export default class Menu extends Phaser.Scene {
-
-    public Data: GameData = null;
 
     public Background: Phaser.GameObjects.NineSlice;
     public Book!: Phaser.GameObjects.Sprite;
     public BookOpen: boolean = false;
 
-    // Menus
-    public TitleScreen!: Title;
+    // Sub menus
     public MainMenuGroup!: MainMenu;
+    public TitleScreen!: Title;
     public ControlsGroup!: Controls;
     public OptionsGroup!: Options;
     public CharacterCreationGroup!: CharacterCreation;
     public CharacterListGroup!: CharacterList;
+    public BloodlineGroup!: Bloodline;
 
     public CurrentMenu: string = "";
     public BackButton!: TextButton;
-    public RebindInProgress: boolean = false;
 
-    public MouseButtonMap: { [key: string]: string } = {
-        "mouse-0": "Left Mouse",
-        "mouse-1": "Middle Mouse",
-        "mouse-2": "Right Mouse"
-    };
+    public Data: GameData = null;
+    public DataManager: DataManager = new DataManager();
 
     constructor () {
         super({ key: "Menu" });
     }
 
     preload (): void {
-        const ExistingData: string | null = localStorage.getItem("EvereignData");
-        if ( !(ExistingData) ) {
-            const Encoded = JSON.stringify(GameData);
-            localStorage.setItem("EvereignData", Encoded);
-            return this.Data = JSON.parse(Encoded);
-        }
-        this.Data = JSON.parse(ExistingData);
+        this.Data = this.DataManager.GetLocalStorageData();
     }
 
     create (): void {
@@ -57,9 +47,7 @@ export default class Menu extends Phaser.Scene {
         this.sound.play("track1", { loop: true });
 
         this.Background = this.add.nineslice(this.cameras.main.width / 2, this.cameras.main.height / 2, "BookBG", 0, 1280, 720, 16, 16, 16, 16).setOrigin(0.5);
-
         this.Book = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Journal', '0').setScale(1.5).setOrigin(0.5, 0.55).setVisible(true);
-
         this.add.text(1, 1, this.game.config.gameVersion).setShadow(2, 2, "#000", 1).setOrigin(0).setFontSize(12);
 
         // Initialize Menus
@@ -69,13 +57,15 @@ export default class Menu extends Phaser.Scene {
         this.OptionsGroup = new Options(this);
         this.CharacterCreationGroup = new CharacterCreation(this);
         this.CharacterListGroup = new CharacterList(this);
+        this.BloodlineGroup = new Bloodline(this);
 
-        if ( this.Data.Characters['Bithmas'] == undefined )
+        if ( this.Data.Characters['Bithmas'] == undefined ) {
             this.CharacterCreationGroup.CreateCharacter("Bithmas", "Standard", Campaigns[0], Classes.Agent, Races.Human);
+        }
 
-        this.BackButton = new TextButton(this, this.scale.width * 0.69, this.scale.height * 0.8, "Back", () => {
+        this.BackButton = new TextButton(this, this.scale.width * 0.06, this.scale.height * 0.5, "Back", () => {
             this.ChangeMenu("main");
-        }).setVisible(false);
+        }, 48, "white", "yellow").setVisible(false);
 
         // Make sure InfoCamera ignores the back button
         this.CharacterCreationGroup.InfoCamera.ignore(this.BackButton);
@@ -94,6 +84,7 @@ export default class Menu extends Phaser.Scene {
         this.CharacterCreationGroup.setVisible(false);
         this.CharacterCreationGroup.InfoCamera.setVisible(false);
         this.CharacterListGroup.setVisible(false);
+        this.BloodlineGroup.setVisible(false);
         this.BackButton.setVisible(false);
 
         // Show relevant group based on string
@@ -104,7 +95,7 @@ export default class Menu extends Phaser.Scene {
             "create": this.CharacterCreationGroup,
             "load": this.CharacterListGroup,
             "cloud": this.MainMenuGroup,
-            "bloodline": this.MainMenuGroup
+            "bloodline": this.BloodlineGroup
         };
 
         let Animation = 'Style 1 Page Flip Right';
@@ -115,15 +106,30 @@ export default class Menu extends Phaser.Scene {
         }
 
         this.Book.play({ key: Animation, frameRate: 16 }).on('animationcomplete', () => {
+
             if (menuToGroupMap[this.CurrentMenu]) {
+        
                 menuToGroupMap[this.CurrentMenu].setVisible(true);
+
                 if ( this.CurrentMenu == "create" ) {
                     this.CharacterCreationGroup.UpdateScrollbar();
                 }
-                if ( this.CurrentMenu !== "main" )
+
+                if ( this.CurrentMenu !== "main" ) {
                     this.BackButton.setVisible(true);
-                if ( this.CurrentMenu == "create" )
+                }
+                    
+                if ( this.CurrentMenu == "create" ) {
                     this.CharacterCreationGroup.InfoCamera.setVisible(true);
+                    this.CharacterCreationGroup.UpdateCharacterPreview();
+                }
+
+                if ( this.CurrentMenu == "options" ) {
+                    this.OptionsGroup.checkboxes.forEach(checkbox => {
+                        checkbox.show();
+                    });
+                }
+
             } else {
                 this.TitleScreen.setVisible(true);
                 this.BookOpen = false;
@@ -132,59 +138,15 @@ export default class Menu extends Phaser.Scene {
         });
     }
 
-    StartRebind(key: string, button: TextButton) {
-        this.RebindInProgress = true;
-        this.time.delayedCall(100, () => {
-            button.setText(`${key}: waiting for input...`);
-            if ( this.RebindInProgress ) {
-
-                let code = null;
-
-                // Keyboard
-                let keyboardlisten = this.input.keyboard.once('keydown', (event: any) => {
-                    code = event.key;
-                    if ( event.code )
-                        code = event.code;
-                    keyboardlisten.removeAllListeners();
-                    mouselisten.removeAllListeners();
-                    button.setText(`${key}: ${code}`);
-                    this.RebindKey(key, code);
-                    this.RebindInProgress = false;
-                });
-
-                // Mouse
-                let mouselisten = this.input.on('pointerdown', (event: any) => {
-                    code = `mouse-${event.button}`;
-                    keyboardlisten.removeAllListeners();
-                    mouselisten.removeAllListeners();
-                    let label = code;
-                    if (this.MouseButtonMap[code])
-                        label = this.MouseButtonMap[code];
-                    button.setText(`${key}: ${label}`);
-                    this.RebindKey(key, code);
-                    this.RebindInProgress = false;
-                });
-
-                return;
-            }
-
-        }, [], this);
-    }
-
-    RebindKey(key: string, value: string) {
-        this.Data.Controls[key] = value;
-        localStorage.setItem("EvereignData", JSON.stringify(this.Data));
-    }
-
     RefreshCharacterList() {
         this.CharacterListGroup.refresh();
     }
 
-    StartGame ( character: string ) {
+    StartGame ( character: string, mode: string ) {
         this.sound.stopByKey('track1');
         this.Data.LastCharacterPlayed = character;
-        localStorage.setItem("EvereignData", JSON.stringify(this.Data));
-        this.scene.start("Game", { character: character });
+        this.DataManager.SaveLocalStorageData(this.Data);
+        this.scene.start("Game", { character: character, mode: mode });
     }
 
 }

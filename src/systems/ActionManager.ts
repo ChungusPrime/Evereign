@@ -4,6 +4,19 @@ import FloatingText from "../game_objects/FloatingText";
 import { GD } from "../scenes/Game";
 import ItemData from "../data/ItemData";
 
+/*
+    The ActionManager system is responsible for handling player actions such as mining, woodcutting, harvesting, and other activities that require a progress bar and time to complete. 
+    It manages the current activity the player is performing, updates the progress bar, and grants rewards upon completion of the activity.
+
+    - Harvesting nodes (Trees, deposits, plants)
+    - Reloading weapons
+    - Drinking Potions
+    - Eating Food
+    - Channeled abilities (abilities that require the player to stand still and channel for a duration)
+*/
+
+
+
 export default class ActionManager {
 
     public scene: Game;

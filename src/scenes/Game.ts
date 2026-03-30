@@ -3,15 +3,18 @@ import Building from '../game_objects/Building';
 import Enemy from '../game_objects/Character';
 import Cursor from '../assets/images/click_cursor.png';
 import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
+import { getObjectsInArc, getObjectsInCircle, createHammerSlam, ArcWidths } from '../utils/geometry';
 import PlayerCharacter from '../game_objects/PlayerCharacter';
 import MapBuilder from '../systems/MapBuilder';
 import { PlayerRect, EnemyRect } from '../game_objects/QuadTree_Rects';
 import Campaigns from '../data/Campaigns';
+import MapData from '../data/MapData';
 import ItemData from '../data/ItemData';
 
 // Global copy of the current character data
-export let GD: Character;
-export let CD: Campaign;
+export let GD: Character = null;
+export let CD: Campaign = null;
+export let MD: WorldData = null;
 export let Options: GameData['Options'];
 
 // Export systems for use globally;
@@ -39,16 +42,16 @@ import Projectile from '../game_objects/Projectile';
 import Grenade from '../game_objects/Grenade';
 import GameObjectsMap from '../data/GameObjects';
 
-
-
 export default class Game extends Phaser.Scene {
 
     public CharacterName: string;
+    public GameMode: string;
+
     public UI: UI;
     public CurrentSaveSlot!: string;
     public mouseX!: number;
     public mouseY!: number;
-    //public AimIndicator: Phaser.GameObjects.Rope;
+    public AimIndicator: Phaser.GameObjects.Line;
     public graphics: Phaser.GameObjects.Graphics;
     public TownCentre: Building = null;
     public Quadtree!: Quadtree<Rectangle | Circle | Line>;
@@ -101,16 +104,38 @@ export default class Game extends Phaser.Scene {
         super({ key: "Game" });
     }
 
-    init ( data: { character: string } ): void {
+    init ( data: { character: string, mode: string } ): void {
         this.CharacterName = data.character;
-        this.DataManager = new DataManager(this);
-        const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
-        Options = SavedData.Options;
-        GD = SavedData.Characters[data.character];
-        CD = Campaigns.find(c => c.Name == GD.Campaign);
+        this.GameMode = data.mode;
     }
 
     async create () {
+
+        console.log(`Starting game with character: ${this.CharacterName} in mode: ${this.GameMode}`);
+
+        this.DataManager = new DataManager(this);
+        const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
+
+        Options = SavedData.Options;
+
+        GD = SavedData.Characters[this.CharacterName];
+
+        if ( this.GameMode == "Arena" ) {
+            GD.X = 1600;
+            GD.Y = 1600;
+            GD.CurrentMap = "Arena";
+            GD.DaytimeDelta = 0;
+            GD.DaytimeHour = 12;
+            GD.DaytimeMinute = 0;
+            CD = MapData["Arena"] ?? null;
+        } else if ( this.GameMode == "Adventure" ) {
+            CD = Campaigns.find(c => c.Name == GD.Campaign) ?? null;
+            console.log(`Loaded campaign data for ${GD.Campaign}:`, CD);
+        }
+
+        console.log(CD);
+
+        console.log(`Loaded character data for ${this.CharacterName}:`, GD);
 
         // Launch the UI
         this.scene.launch("UI", this);
@@ -121,8 +146,12 @@ export default class Game extends Phaser.Scene {
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
 
         // Play the specified music for this map
-        this.sound.play(CD.WorldMapInformation[GD.CurrentMap].Music, { loop: true });
-
+        if ( this.GameMode == "Arena" ) {
+            this.sound.play("theme", { loop: true });
+        } else {
+            this.sound.play(CD.WorldMapInformation[GD.CurrentMap].Music, { loop: true });
+        }
+        
         this.lights.enable();
         this.Buildings = this.add.group([], { runChildUpdate: true });
         this.Projectiles = this.add.group([], { runChildUpdate: true });
@@ -140,7 +169,7 @@ export default class Game extends Phaser.Scene {
         this.Switches = this.add.group([]);
 
         // Systems
-        this.DaytimeCycleManager = new DayNightCycle(this, this.UI);
+        this.DaytimeCycleManager = new DayNightCycle(this, this.UI, GD.DaytimeHour, GD.DaytimeMinute, GD.DaytimeDelta);
         this.MapBuilder = new MapBuilder(this);
         this.ActionManager = new ActionManager(this, this.UI);
         this.EnemyManager = new EnemyManager(this);
@@ -203,7 +232,7 @@ export default class Game extends Phaser.Scene {
 
         });
 
-        this.LoadMap();
+        this.LoadMap(GD.CurrentMap);
 
         //this.MapBuilder.CreateMap(this);
         //this.CreateNavMesh();
@@ -285,7 +314,7 @@ export default class Game extends Phaser.Scene {
 
     }
 
-    LoadMap () {
+    LoadMap ( key: string ) {
         
         // Pause the scene while we load the new map
         this.physics.pause();
@@ -298,7 +327,7 @@ export default class Game extends Phaser.Scene {
         this.UnloadCurrentMap();
         
         // Start building new map
-        this.Map = this.make.tilemap({ key: GD.CurrentMap });
+        this.Map = this.make.tilemap({ key: key });
         
         // Load Tilesets
         let Tilesets: Phaser.Tilemaps.Tileset[] = [];
@@ -322,9 +351,6 @@ export default class Game extends Phaser.Scene {
             Layers.push(Layer);
         });
 
-        // Get default campaign data
-        const Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
-
         // Spawn World Objects
         try {
             this.Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
@@ -332,7 +358,14 @@ export default class Game extends Phaser.Scene {
                     let objectInstance = GameObjectsMap[object.type];
                     if (objectInstance) {
                         new objectInstance(this, object) as Phaser.GameObjects.GameObject;
-                    } else {
+                    } 
+                    else if ( object.type == "Boat_1") {
+                        let boat = this.add.sprite(object.x, object.y, "boats", 0).setOrigin(0, 1).setPipeline("Light2D");
+                        if ( object.flippedHorizontal ) {
+                            boat.setFlipX(true);
+                        }
+                    }
+                    else {
                         console.warn(`No class found for object type: ${object.type}`);
                     }
                 });
@@ -342,8 +375,8 @@ export default class Game extends Phaser.Scene {
         }
 
         // Spawn Player Buildings
-        if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {
-            GD.PlayerTowns[GD.CurrentMap].Buildings.forEach((building) => {
+        if ( GD.PlayerTowns[key] !== undefined ) {
+            GD.PlayerTowns[key].Buildings.forEach((building) => {
                 let objectInstance = GameObjectsMap[building.type];
                 if (objectInstance) {
                     new objectInstance(this, building) as Phaser.GameObjects.GameObject;
@@ -405,18 +438,6 @@ export default class Game extends Phaser.Scene {
             });
         });
         
-        // Set up aggro zones for each building
-        this.Buildings.getChildren().forEach( (Building: Building) => {
-            if ( !Building.AggroZone ) return;
-            let AggroZone = this.physics.add.sprite(Building.getCenter().x - Building.width * 2, Building.getCenter().y - Building.height * 2, "character", 0).setCircle(300);
-            Building.AggroCollider = AggroZone;
-            this.physics.add.overlap(AggroZone, this.PlayerCharacter, (building: Building, PlayerCharacter: PlayerCharacter) => {
-                if ( Building.OnAlert == false ) {
-                    Building.OnAlert = true;
-                }
-            });
-        });
-        
         this.Quadtree = new Quadtree({
             width: this.Map.widthInPixels,
             height: this.Map.heightInPixels,
@@ -427,12 +448,18 @@ export default class Game extends Phaser.Scene {
         });
         
         this.DaytimeCycleManager.SetPhase();
-        
-        let MapType = Campaign.WorldMapInformation[GD.CurrentMap].Type;
-        if ( MapType == "Exterior" ) {
-            this.DaytimeCycleManager.StartRaining();
-        } else {
+
+        if ( this.GameMode == "Arena" ) {
             this.DaytimeCycleManager.StopRaining();
+        } else {
+            // Get default campaign data
+            const Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
+            let MapType = Campaign.WorldMapInformation[key].Type;
+            if ( MapType == "Exterior" ) {
+                this.DaytimeCycleManager.StartRaining();
+            } else {
+                this.DaytimeCycleManager.StopRaining();
+            }
         }
         
         // Camera
@@ -458,6 +485,7 @@ export default class Game extends Phaser.Scene {
         "Scattergun": (data) => this.UseScattergun(data),
         "Sword": (data) => this.UseSword(data),
         "Hammer": (data) => this.UseHammer(data),
+        "Crossbow": (data) => this.UseCrossbow(data)
     };
 
     UseMainhandItem () {
@@ -472,8 +500,10 @@ export default class Game extends Phaser.Scene {
         if (!Item)
             return this.UI.EventLog.NewEvent("No mainhand item equipped!");
 
-        if ( Item.Cooldown && Item.Cooldown > 0 )
-            return this.UI.EventLog.NewEvent("Item is on cooldown!");
+        if ( Item.Cooldown && Item.Cooldown > 0 ) {
+            //return this.UI.EventLog.NewEvent("Item is on cooldown!");
+            return;
+        }
 
         let Data = ItemData[GD.Inventory.Equipment_MainHand.ID];
 
@@ -489,20 +519,28 @@ export default class Game extends Phaser.Scene {
 
     }
 
-    UseScattergun (Data: any) {
+    UseCrossbow (Data: any) {
+        if (GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0) return;
+        const ammoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
+        const baseAngle = Phaser.Math.Angle.Between(this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY);
+        const spreadDegrees = 3;  // Small spread for slight inaccuracy
+        const spreadAngle = Phaser.Math.DegToRad(Phaser.Math.FloatBetween(-spreadDegrees / 2, spreadDegrees / 2));
+        const angle = baseAngle + spreadAngle;
+        const velocity = Data.Properties.Velocity;
+        this.sound.play("ShotgunFire");
+        const proj = new Projectile(this, this.PlayerCharacter.x, this.PlayerCharacter.y, velocity, ammoData.Properties.DamageMod, "CrossbowBolt");
+        proj.setVelocity(Math.cos(angle) * velocity, Math.sin(angle) * velocity);
+        this.Projectiles.add(proj);
+        GD.Inventory.Equipment_MainHand.CurrentMagazine -= 1;
+    }
 
-        if (GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0) {
-            this.UI.EventLog.NewEvent("Item is out of ammo!");
-            return;
-        }
-        
+    UseScattergun (Data: any) {
+        if ( GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0 ) return;
         const ammoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
         const baseAngle = Phaser.Math.Angle.Between(this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY);
         const spreadDegrees = 15;
         const velocity = Data.Properties.Velocity;
-        
         this.sound.play("ShotgunFire");
-        
         for (let i = 0; i < ammoData.Properties.Pellets; i++) {
             const spreadAngle = Phaser.Math.DegToRad(Phaser.Math.FloatBetween(-spreadDegrees / 2, spreadDegrees / 2));
             const angle = baseAngle + spreadAngle;
@@ -510,7 +548,6 @@ export default class Game extends Phaser.Scene {
             proj.setVelocity(Math.cos(angle) * velocity, Math.sin(angle) * velocity);
             this.Projectiles.add(proj);
         }
-
         GD.Inventory.Equipment_MainHand.CurrentMagazine -= 1;
     }
 
@@ -518,87 +555,75 @@ export default class Game extends Phaser.Scene {
         console.log("Using sword");
 
         const pc = this.PlayerCharacter.getCenter();
-        const angle = Phaser.Math.Angle.Between(pc.x, pc.y, this.mouseX, this.mouseY);
-        
-        const reach = 32;      // How far the swing extends
-        const width = 40;      // Total width of the swing line
-        
-        // Calculate swing line center (in front of player)
-        const centerX = pc.x + Math.cos(angle) * reach * 0.6;
-        const centerY = pc.y + Math.sin(angle) * reach * 0.6;
-        
-        // Perpendicular offset (rotate angle 90°)
-        const perpX = -Math.sin(angle) * (width / 2);
-        const perpY = Math.cos(angle) * (width / 2);
-        
-        // Line endpoints
-        const p1 = { x: centerX + perpX, y: centerY + perpY };
-        const p2 = { x: centerX - perpX, y: centerY - perpY };
+        const direction = Phaser.Math.Angle.Between(pc.x, pc.y, this.mouseX, this.mouseY);
+        const reach = 48;
 
-        // Draw swing line
+        // Get enemies in a 90° arc (wide cone attack)
+        const hits = getObjectsInArc<Enemy>(
+            new Phaser.Math.Vector2(pc.x, pc.y),
+            direction,
+            ArcWidths.WIDE,  // 90° cone
+            reach,
+            this.Enemies,
+            true  // sort by distance
+        );
+
+        // Visual feedback - draw arc
         this.graphics.clear();
-        this.graphics.lineStyle(6, 0x00ff00, 0.5);
-        this.graphics.lineBetween(p1.x, p1.y, p2.x, p2.y);
+        this.graphics.lineStyle(2, 0x00ff00, 0.5);
+        this.graphics.beginPath();
+        this.graphics.arc(pc.x, pc.y, reach, direction - ArcWidths.WIDE / 2, direction + ArcWidths.WIDE / 2);
+        this.graphics.strokePath();
 
-        // Query quadtree for nearby enemies and check collision
-        const line = new Phaser.Geom.Line(p1.x, p1.y, p2.x, p2.y);
-        const queryRect = new Rectangle({ 
-            x: Math.min(p1.x, p2.x) - 20, 
-            y: Math.min(p1.y, p2.y) - 20, 
-            width: width + 40, 
-            height: width + 40 
+        // Draw arc edges
+        this.graphics.lineBetween(
+            pc.x, pc.y,
+            pc.x + Math.cos(direction - ArcWidths.WIDE / 2) * reach,
+            pc.y + Math.sin(direction - ArcWidths.WIDE / 2) * reach
+        );
+
+        this.graphics.lineBetween(
+            pc.x, pc.y,
+            pc.x + Math.cos(direction + ArcWidths.WIDE / 2) * reach,
+            pc.y + Math.sin(direction + ArcWidths.WIDE / 2) * reach
+        );
+
+        // Apply damage to hit enemies
+        hits.forEach(hit => {
+            hit.object.TakeDamage(Data.Properties.Damage || 10);
         });
-        
-        const hitEnemies = this.Quadtree.retrieve(queryRect)
-            .filter((el): el is EnemyRect => el instanceof EnemyRect)
-            .filter(el => Phaser.Geom.Intersects.LineToRectangle(line, el.enemy.getBounds()))
-            .map(el => el.enemy);
 
-        console.log(hitEnemies.length > 0 ? "Hit enemies:" : "No enemies hit", hitEnemies);
+        console.log(hits.length > 0 ? "Hit enemies:" : "No enemies hit", hits.map(h => h.object));
     }
 
     UseHammer (Data: any) {
         const pc = this.PlayerCharacter.getCenter();
-        const baseAngle = Phaser.Math.Angle.Between(pc.x, pc.y, this.mouseX, this.mouseY);
+        const direction = Phaser.Math.Angle.Between(pc.x, pc.y, this.mouseX, this.mouseY);
 
-        const length = 32;
-        const impactPoint = new Phaser.Math.Vector2(
-            pc.x + Math.cos(baseAngle) * length,
-            pc.y + Math.sin(baseAngle) * length
+        // Create hammer slam at impact point
+        const slam = createHammerSlam(
+            { origin: new Phaser.Math.Vector2(pc.x, pc.y), direction, reach: 32 },
+            24  // radius
         );
 
+        // Visual feedback - draw circle
         this.graphics.clear();
         this.graphics.fillStyle(0x0000ff, 0.5);
-        this.graphics.fillCircle(impactPoint.x, impactPoint.y, 24);
-        
-        // Check for enemy collisions using quadtree spatial query
-        const hitEnemies: Enemy[] = [];
-        const circle = new Phaser.Geom.Circle(impactPoint.x, impactPoint.y, 24);
-        
-        // Query quadtree with circle-bounding rectangle
-        const queryRect = new Rectangle({ 
-            x: impactPoint.x - 24, 
-            y: impactPoint.y - 24, 
-            width: 48, 
-            height: 48 
-        });
-        
-        // Query quadtree for nearby enemies only
-        const nearbyCandidates = this.Quadtree.retrieve(queryRect);
-        nearbyCandidates.forEach((element) => {
-            if ( element instanceof EnemyRect ) {
-                const enemyRect = element.enemy.getBounds();
-                if ( Phaser.Geom.Intersects.CircleToRectangle(circle, enemyRect) ) {
-                    hitEnemies.push(element.enemy);
-                }
-            }
+        this.graphics.fillCircle(slam.center.x, slam.center.y, slam.radius);
+
+        // Get enemies in the impact area
+        const hits = getObjectsInCircle<Enemy>(
+            slam.center.x, slam.center.y,
+            slam.radius,
+            this.Enemies
+        );
+
+        // Apply damage to hit enemies
+        hits.forEach(hit => {
+            hit.object.TakeDamage(Data.Properties.Damage || 15);
         });
 
-        if ( hitEnemies.length > 0 ) {
-            console.log("Hit enemies:", hitEnemies);
-        } else {
-            console.log("No enemies hit");
-        }
+        console.log(hits.length > 0 ? "Hit enemies:" : "No enemies hit", hits.map(h => h.object));
     }
 
     CreateNavMesh () {

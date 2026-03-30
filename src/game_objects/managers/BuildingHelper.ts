@@ -74,7 +74,7 @@ export default class BuildingHelper {
         let Building = this.CreateBuilding(scene, type, x, y);
         if ( Building == null ) return;
 
-        if ( StaticBuildingData != null ) {
+        /*if ( StaticBuildingData != null ) {
             Building.ID = StaticBuildingData.ID;
             Building.StaticData = StaticBuildingData;
             if ( StaticBuildingData.hasOwnProperty("Level") ) {
@@ -87,7 +87,7 @@ export default class BuildingHelper {
         if ( VariableBuildingData != null ) {
             Building.VariableData = VariableBuildingData;
             Building.Units = VariableBuildingData.Units;
-        }
+        }*/
         
         this.scene.Buildings.add(Building);
         return Building;

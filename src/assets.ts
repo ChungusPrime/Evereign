@@ -122,6 +122,7 @@ export const Manifest: AssetManifest = {
         { key: 'Kinetic Bolt', path: require('./assets/images/ArcaneDart.png'), frameWidth: 16, frameHeight: 16 },
         { key: 'Dart Volley', path: require('./assets/images/DartVolley.png'), frameWidth: 16, frameHeight: 16 },
         { key: 'Goblin-Arrow', path: require('./assets/images/GoblinArrow.png'), frameWidth: 16, frameHeight: 8 },
+        { key: 'CrossbowBolt', path: require('./assets/images/GoblinArrow.png'), frameWidth: 16, frameHeight: 8 },
         
         // Portraits
         { key: 'Head', path: require('./assets/images/portraits/Head.png'), frameWidth: 162, frameHeight: 162 },
@@ -149,6 +150,7 @@ export const Manifest: AssetManifest = {
         { key: 'ownmisc', path: require('./assets/images/own/miscitems.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'items', path: require('./assets/images/items.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'tiles', path: require('./assets/images/background.png'), frameWidth: 32, frameHeight: 32 },
+        { key: 'boats', path: require('./assets/images/own/boats.png'), frameWidth: 176, frameHeight: 160 },
         
         // Admurin Asset Pack
         { key: 'general', path: require('./assets/images/admurin/ItemsGeneral.png'), frameWidth: 32, frameHeight: 32 },
@@ -185,6 +187,7 @@ export const Manifest: AssetManifest = {
         { key: 'RA_Cavern_Full', path: require('./assets/images/rogue-adventure/RA_Cavern_Full.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'RA_Ship', path: require('./assets/images/rogue-adventure/RA_Ship.png'), frameWidth: 32, frameHeight: 32 },
         { key: 'RA_Village_Animation03', path: require('./assets/images/rogue-adventure/RA_Village_Animation03.png'), frameWidth: 64, frameHeight: 64 },
+        { key: 'RA_Overworld_Ground', path: require('./assets/images/rogue-adventure/RA_Overworld_Ground.png'), frameWidth: 32, frameHeight: 32 },
 
         { key: 'WillowTree', path: require('./assets/images/own/WillowTree.png'), frameWidth: 192, frameHeight: 192 },
 
@@ -206,7 +209,7 @@ export const Manifest: AssetManifest = {
     // Tilemaps (Tiled JSON)
     // ========================================================================
     tilemaps: [
-        { key: 'TestMap', path: require('./assets/maps/TestMap.json') },
+        { key: 'Arena', path: require('./assets/maps/TestMap.json') },
         { key: 'Willowvale', path: require('./assets/maps/Willowvale.json') },
         { key: 'WillowvaleCaverns', path: require('./assets/maps/WillowvaleCaverns.json') },
         { key: 'Tutors Island', path: require('./assets/maps/TutorsIsland.json') },

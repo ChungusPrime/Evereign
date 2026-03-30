@@ -180,6 +180,13 @@ interface Race {
     }};
 }
 
+interface BloodlinePerk {
+    name: string;
+    description: string;
+    effect: string;
+    soulgemCost?: number;
+}
+
 interface LoreEntry {
     ID: string;
     Title: string;

@@ -4,8 +4,6 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
 
     // All buildings
     public scene: Game;
-    public StaticData: StaticBuildingData | null = null;
-    public VariableData: any | null = null;
     public ID: string | null = null;
     public Level: number = 1;
     public Area: string = "";
@@ -56,6 +54,8 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
             this.IsPlayerOwned = true;
         }
         
+        console.log(this.ID, this.IsPlayerOwned);
+
         this.setOrigin(0, 1).setInteractive().setImmovable().setPipeline("Light2D");
 
         this.scene.Buildings.add(this);

@@ -24,9 +24,9 @@ import Dwelling from "./../game_objects/buildings/Dwelling";
 import Inn from "../game_objects/buildings/Inn";
 import TownCentre from "../game_objects/buildings/TownCentre";
 import Warehouse from "../game_objects/buildings/Warehouse";
-
 import GoblinSlinger from "../game_objects/characters/GoblinSlinger";
 import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
+import Port from "./../game_objects/buildings/Port";
 
 const GameObjectsMap: { [key: string]: any } = {
 
@@ -57,6 +57,7 @@ const GameObjectsMap: { [key: string]: any } = {
     "Field": Field,
     "Mine": Mine,
     "Farm": Farm,
+    "Port": Port,
 
     // Zones
     "Trigger": TriggerZone,
@@ -74,5 +75,7 @@ const GameObjectsMap: { [key: string]: any } = {
 
     //"Obstacle": Obstacle,
 };
+
+console.log(GameObjectsMap);
 
 export default GameObjectsMap;

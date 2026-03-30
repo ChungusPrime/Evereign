@@ -35,13 +35,13 @@ export default class DataManager {
 
     constructor ( scene: Game ) {
         this.scene = scene;
-        let SavedData = JSON.parse(localStorage.getItem("EvereignData"));
-        this.CharacterData = SavedData.Characters[this.scene.CharacterName];
-        this.MapData = CampaignData.find( (campaign) => campaign.ID == this.CharacterData.Campaign ).WorldData;
-        console.log(this.CalculateTimeSinceLastSave());
     }
 
     public SaveGame () {
+
+        if ( this.scene.GameMode == "Tutorial" || this.scene.GameMode == "Arena" ) 
+            return this.scene.UI.EventLog.NewEvent(`Cannot save game in ${this.scene.GameMode} mode!`);
+
         GD.X = this.scene.PlayerCharacter.x;
         GD.Y = this.scene.PlayerCharacter.y;
         GD.DaytimeDelta = this.scene.DaytimeCycleManager.DaytimeDelta;

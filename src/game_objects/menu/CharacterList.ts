@@ -52,7 +52,7 @@ class CharacterList extends Phaser.GameObjects.Group {
             }
 
             let CharacterButton = new TextButton(scene, scene.scale.width * 0.32, CharacterListY, `${Character.Name}\nLevel ${Character.Level} ${Character.Class}\n${Character.CurrentMap}`, () => {
-                scene.StartGame(Character.Name);
+                scene.StartGame(Character.Name, "Adventure");
             }, 32).setVisible(false);
 
             this.addMultiple([

@@ -59,12 +59,12 @@ export default class OrcTower extends Building {
             
 
             // Process any relevant triggers when this building is destroyed
-            this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
+            /*this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
                 this.scene.Obstacles.getChildren().forEach( (object: Obstacle) => {
                     if ( object.ID == objectID )
                         object.Destroy();
                 });
-            });
+            });*/
 
             //GD.WorldData[GD.CurrentMap][this.ID].Destroyed = true;
 

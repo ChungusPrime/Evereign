@@ -1,8 +1,6 @@
 import Game from '../../scenes/Game';
 import Building from '../Building';
-import Obstacle from '../Obstacle';
 import { GD } from "../../scenes/Game";
-import GameObjectsMap from '../../data/GameObjects';
 
 export default class OrcOutpost extends Building {
 
@@ -14,10 +12,12 @@ export default class OrcOutpost extends Building {
     public ProductsPerTick: { ID: number; Amount: number; }[] = [];
 
     // Hostile building settings
-    public AggroZone: boolean = true;
-    public AggroRadius: number = 250;
-    public AggroCollider!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     public OnAlert: boolean = false;
+    public AggroRadius: number = 300;  // Detection radius in pixels
+    public AggroCircle!: Phaser.Geom.Circle;  // Simple geometry circle for detection
+    public AggroTimer: number = 0;
+    public AggroGraphics!: Phaser.GameObjects.Graphics;
+
     public Units!: IUnit[];
     public SpawnInterval: number = 3000;
     public SpawnDelta: number = 3000;
@@ -29,6 +29,10 @@ export default class OrcOutpost extends Building {
         this.IsPlayerOwned = false;
         this.scene = scene;
         this.setOrigin(0, 1);
+        this.AggroCircle = new Phaser.Geom.Circle(this.getCenter().x, this.getCenter().y + 64, this.AggroRadius);
+        this.AggroGraphics = this.scene.add.graphics({ lineStyle: { width: 1, color: 0xff0000, alpha: 0.5 }, fillStyle: { color: 0xff0000, alpha: 0.1 } });
+        this.AggroGraphics.fillCircleShape(this.AggroCircle).strokeCircleShape(this.AggroCircle);
+        this.setDepth(this.AggroGraphics.depth + 1);
     }
 
     private areAllUnitsDead(): boolean {
@@ -47,25 +51,41 @@ export default class OrcOutpost extends Building {
 
     update ( time: number, delta: number ) {
         
-        if ( this.OnAlert == false ) return;
-        if ( this.CurrentSpawnCount == this.MaxSpawnCount ) return;
+        // Check if player is in the aggro area
+        const playerPos = this.scene.PlayerCharacter.getCenter();
+        const playerInArea = this.AggroCircle.contains(playerPos.x, playerPos.y);
+
+        // Log while player is in area
+        if ( playerInArea ) {
+            this.OnAlert = true;
+            this.AggroTimer = 3000;
+            console.log("PLAYER STILL IN AREA");
+        }
+
+        if ( this.OnAlert && !playerInArea) {
+            this.AggroTimer -= delta;
+        }
+
+        if (this.OnAlert && !playerInArea && this.AggroTimer <= 0) {
+            this.OnAlert = false;
+            console.log("BUILDING CALM - Player left aggro zone.");
+        }
+
+        return; // TEMP - Remove this when enabling spawn logic below
+
+        if (!this.OnAlert) return;
+        if (this.CurrentSpawnCount >= this.MaxSpawnCount) return;
 
         this.SpawnDelta += delta;
 
         if (this.areAllUnitsDead()) {
-
-            if ( this.AggroCollider !== undefined ) {
-                this.AggroCollider.body.destroy();
-                this.AggroCollider.setActive(false);
-                this.AggroCollider.setVisible(false);
-            }
             
-            this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
+            /*this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
                 this.scene.Obstacles.getChildren().forEach( (object: Obstacle) => {
                     if ( object.ID == objectID )
                         object.Destroy();
                 });
-            });
+            });*/
 
             GD.WorldData[GD.CurrentMap][this.ID].Destroyed = true;
 
@@ -80,11 +100,13 @@ export default class OrcOutpost extends Building {
         if ( this.SpawnDelta >= this.SpawnInterval ) {
             let RandomUnit = availableUnits[Phaser.Math.Between(0, availableUnits.length - 1)];
             let RandomSpawnPoint = this.getBounds().getRandomPoint();
-            const EnemyClass = GameObjectsMap[RandomUnit.Name];
-            let Instance = new EnemyClass(this.scene, { x: RandomSpawnPoint.x, y: RandomSpawnPoint.y });
-            Instance.SpawnLocation = this;
-            this.scene.Enemies.add(Instance);
-            Instance.Aggro();
+
+            //const EnemyClass = GameObjectsMap[RandomUnit.Name];
+            //let Instance = new EnemyClass(this.scene, { x: RandomSpawnPoint.x, y: RandomSpawnPoint.y });
+            //Instance.SpawnLocation = this;
+            //this.scene.Enemies.add(Instance);
+            //Instance.Aggro();
+
             RandomUnit.Alive++;
             this.CurrentSpawnCount += 1;
             this.SpawnDelta = 0;

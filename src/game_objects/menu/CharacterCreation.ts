@@ -160,7 +160,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
         // Create Character Button
         let CreateNewCharButton = new TextButton(scene, scene.scale.width * 0.32, scene.scale.height * 0.73, "Create", () => {
             this.ErrorText.setVisible(false);
-            if ( this.characterNameInput.CurrentValue == "" || scene.Data.Characters[this.characterNameInput.CurrentValue] )
+            if ( this.characterNameInput.CurrentValue == "" || scene.Data.Characters[this.characterNameInput.CurrentValue] != null )
                 return this.ErrorText.setText("Character name is empty or already exists").setVisible(true);
             let Class = Object.values(Classes).find((c) => c.Name == this.characterClassSelect.CurrentValue);
             let Race = Object.values(Races).find((r) => r.Name == this.characterRaceSelect.CurrentValue);
@@ -229,6 +229,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
             .ignore([scene.Book, scene.Background, this.InfoBackground]);
 
         this.setVisible(false);
+
     }
 
     UpdateCharacterPreview() {
@@ -247,15 +248,15 @@ class CharacterCreation extends Phaser.GameObjects.Group {
         if (this.characterClassSelect.CurrentValue != null) {
             let Class = Object.values(Classes).find((c) => c.Name == this.characterClassSelect.CurrentValue);
             if (Class.Items.Equipment_Head !== null)
-                this.CharacterHeadItem.setTexture("PlayerHead", ItemData[Class.Items.Equipment_Head.ID].Texture).setVisible(true);;
+                this.CharacterHeadItem.setTexture("PlayerHead", ItemData[Class.Items.Equipment_Head.ID].Texture).setVisible(true);
             if (Class.Items.Equipment_Chest !== null)
-                this.CharacterBodyItem.setTexture("PlayerBody", ItemData[Class.Items.Equipment_Chest.ID].Texture).setVisible(true);;
+                this.CharacterBodyItem.setTexture("PlayerBody", ItemData[Class.Items.Equipment_Chest.ID].Texture).setVisible(true);
             if (Class.Items.Equipment_Legs !== null)
-                this.CharacterLegsItem.setTexture("PlayerLegs", ItemData[Class.Items.Equipment_Legs.ID].Texture).setVisible(true);;
+                this.CharacterLegsItem.setTexture("PlayerLegs", ItemData[Class.Items.Equipment_Legs.ID].Texture).setVisible(true);
             if (Class.Items.Equipment_Hands !== null)
-                this.CharacterHandItem.setTexture("PlayerHands", ItemData[Class.Items.Equipment_Hands.ID].Texture).setVisible(true);;
+                this.CharacterHandItem.setTexture("PlayerHands", ItemData[Class.Items.Equipment_Hands.ID].Texture).setVisible(true);
             if (Class.Items.Equipment_Feet !== null)
-                this.CharacterFeetItem.setTexture("PlayerFeet", ItemData[Class.Items.Equipment_Feet.ID].Texture).setVisible(true);;
+                this.CharacterFeetItem.setTexture("PlayerFeet", ItemData[Class.Items.Equipment_Feet.ID].Texture).setVisible(true);
         }
     }
 

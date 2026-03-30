@@ -43,16 +43,16 @@ export default class DayNightCycle {
     public DaytimeMinute: number;
     public DaytimeDelta: number;
 
-    constructor ( scene: Game, UI: UI ) {
+    constructor ( scene: Game, UI: UI, DaytimeHour: number = 12, DaytimeMinute: number = 0, DaytimeDelta: number = 0 ) {
 
         this.scene = scene;
         this.UI = UI;
 
         let Campaign = Campaigns.find(c => c.Name == GD.Campaign);
 
-        this.DaytimeHour = GD.DaytimeHour;
-        this.DaytimeMinute = GD.DaytimeMinute;
-        this.DaytimeDelta = GD.DaytimeDelta;
+        this.DaytimeHour = DaytimeHour;
+        this.DaytimeMinute = DaytimeMinute;
+        this.DaytimeDelta = DaytimeDelta;
 
         if ( this.RainEmitter !== null )
             this.RainEmitter.destroy();
@@ -91,6 +91,11 @@ export default class DayNightCycle {
         scene.physics.add.collider(this.RainEmitter, scene.CollisionLayer);
 
         this.SetPhase();
+
+        if ( this.scene.GameMode == "Arena" ) {
+            this.StopRaining();
+            return;
+        }
 
         if ( Campaign.WorldMapInformation[GD.CurrentMap].Type == "Exterior" ) {
             this.StartRaining();
@@ -154,7 +159,14 @@ export default class DayNightCycle {
 
     SetPhase () {
         let Campaign = Campaigns.find(c => c.Name == GD.Campaign);
+
+        if ( this.scene.GameMode == "Arena" ) {
+            this.scene.lights.setAmbientColor(this.DaytimeCycles[this.DaytimeHour].hex);
+            return;
+        }
+
         let Type = Campaign.WorldMapInformation[GD.CurrentMap].Type;
+
         if ( Type == "Exterior" ) {
             this.scene.lights.setAmbientColor(this.DaytimeCycles[this.DaytimeHour].hex);
         } else if ( Type == "Interior" ) {
