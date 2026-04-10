@@ -1,14 +1,15 @@
 {
     "name": "evereign",
-    "version": "0.0.7.3",
+    "version": "0.7.4",
     "description": "A fantasy MMORPG built with Phaser and Electron.",
     "main": "main.js",
     "scripts": {
         "dev": "webpack --config webpack.config.js --mode=development --watch",
         "prod": "webpack --config webpack.config.js --mode=production",
         "build": "npm run prod && electron-builder",
-        "build-standalone": "electron-builder",
-        "start": "electron ."
+        "build:web": "npm run prod",
+        "start": "electron .",
+        "start:web": "npx serve dist"
     },
     "author": "Nathan Leadbitter <nathanl38@protonmail.com>",
     "license": "ISC",
@@ -36,7 +37,7 @@
     "build": {
         "appId": "com.chungco.evereign",
         "productName": "Evereign",
-        "icon": "D:\\code\\Evereign\\src\\assets\\images\\icon.ico",
+        "icon": "./src/assets/images/icon.ico",
         "directories": {
             "output": "build",
             "buildResources": "dist"

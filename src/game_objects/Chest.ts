@@ -1,17 +1,18 @@
-import Game from "../scenes/Game";
-import { GD } from "../scenes/Game";
+import Game, { CMD } from "../scenes/Game";
 
 export default class Chest extends Phaser.GameObjects.Sprite {
 
     public scene: Game;
     public ID: number;
 
-    constructor ( scene: Game, x: number, y: number, id: number ) {
+    constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject ) {
 
-        super( scene, x, y, 'RA_Interior', 738 );
+        super( scene, object.x, object.y, 'RA_Interior', 738 );
+
+        console.log(object);
 
         this.scene.add.existing(this);
-        this.ID = id;
+        this.ID = object.properties[0].value ?? null;
         this.setOrigin(0, 1);
 
         this.setDepth(99).setInteractive().on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
@@ -24,12 +25,12 @@ export default class Chest extends Phaser.GameObjects.Sprite {
                 return this.scene.UI.EventLog.NewEvent("That is too far away");
             }
 
-            if ( GD.WorldData[GD.CurrentMap][this.ID].Unlocked == true ) {
-                return this.scene.UI.LootWindow.Show(id);
+            if ( CMD[this.ID].Unlocked == true ) {
+                return this.scene.UI.LootWindow.Show(this.ID);
             }
 
             // Check if chest needs a key
-            let StaticData = this.scene.DataManager.MapData[GD.CurrentMap][this.ID];
+            /*let StaticData = this.scene.DataManager.MapData[GD.CurrentMap][this.ID];
             if ( StaticData.RequiresItem !== undefined ) {
                 const item = this.scene.Inventory.Items.find( (item) => item.getData('ItemID') == StaticData.RequiresItem );
                 if ( item == undefined ) {
@@ -39,7 +40,7 @@ export default class Chest extends Phaser.GameObjects.Sprite {
                     let Chest = GD.WorldData[GD.CurrentMap][this.ID];
                     Chest.Unlocked = true;
                 }
-            }
+            }*/
             
         });
 

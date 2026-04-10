@@ -41,8 +41,8 @@ const Ammunition: ItemData[] = [
         Type: "Scattergun",
         Properties: {
             DamageMod: [
-                { Type: "Impact", Value: 2 },
-                { Type: "Bleed", Value: 1 },
+                { Type: "Impact", Min: 3, Max: 5 },
+                { Type: "Bleed", Min: 3, Max: 5 },
             ],
             Pellets: 7,
         },
@@ -74,8 +74,8 @@ const Ammunition: ItemData[] = [
         Type: "Scattergun",
         Properties: {
             DamageMod: [
-                { Type: "Bleed", Value: 2 },
-                { Type: "Slash", Value: 2 },
+                { Type: "Bleed", Min: 3, Max: 5 },
+                { Type: "Slash", Min: 3, Max: 5 },
             ],
             Pellets: 12,
         },

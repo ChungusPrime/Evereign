@@ -305,84 +305,98 @@ class CharacterCreation extends Phaser.GameObjects.Group {
     }
 
     CreateCharacter ( Name: string, Difficulty: string, Campaign: Campaign, Class: Class, Race: Race ) {
-    
-        // Create new character data
-        this.scene.Data.Characters[Name] = DefaultCharacterData;
-        let Character = this.scene.Data.Characters[Name];
 
-        Character.CreatedAtTimestamp = Date.now().toString();
-        Character.LastSaveTimestamp = null;
+        try {
 
-        // Set character properties
-        Character.Name = Name;
-        Character.Class = Class.Name;
-        Character.Race = Race.Name;
-        Character.Campaign = Campaign.Name;
-        Character.Difficulty = Difficulty;
-        Character.Reincarnation = 1;
-        Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
-        Character.Stats.Versatility = Race.Attributes.Versatility + Class.AttributeBonuses.Versatility;
-        Character.Stats.Vigor = Race.Attributes.Vigor + Class.AttributeBonuses.Vigor;
-        Character.Stats.Expertise = Race.Attributes.Expertise + Class.AttributeBonuses.Expertise;
-        Character.Stats.Personality = Race.Attributes.Personality + Class.AttributeBonuses.Personality;
-        Character.Stats.Fortune = Race.Attributes.Fortune + Class.AttributeBonuses.Fortune;
-        Character.Stats.Grit = Race.Attributes.Grit + Class.AttributeBonuses.Grit;
-        Character.Stats.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
-        Character.Stats.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
-        Character.Stats.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
-        Character.Stats.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
-        Character.Stats.MaxHealth = Character.Stats.CurrentHealth;
-        Character.Stats.MaxMana = Character.Stats.CurrentMana;
-        Character.Level = 1;
-        Character.AttributePoints = 0;
-        Character.CurrentMap = Campaign.StartingMap;
-        Character.X = Campaign.StartingX;
-        Character.Y = Campaign.StartingY;
+            // Create new character data
+            this.scene.Data.Characters[Name] = DefaultCharacterData;
+            let Character = this.scene.Data.Characters[Name];
 
-        const CampaignData = Campaigns.find( campaign => campaign.Name == Character.Campaign );
+            console.log (Character);
 
-        // Copy only the dynamic InitialData to character save data
-        // Static data (Type, Name, Level, etc.) stays in Campaign and is looked up at runtime
-        Character.WorldData = {};
-        for (const region of Object.keys(CampaignData.WorldData)) {
-            Character.WorldData[region] = {};
-            for (const objectId of Object.keys(CampaignData.WorldData[region])) {
-                const objectDef = CampaignData.WorldData[region][objectId];
-                Character.WorldData[region][objectId] = objectDef.InitialData ? { ...objectDef.InitialData } : {};
+            Character.CreatedAtTimestamp = Date.now().toString();
+            Character.LastSaveTimestamp = null;
+
+            // Set character properties
+            Character.Name = Name;
+            Character.Class = Class.Name;
+            Character.Race = Race.Name;
+            Character.Campaign = Campaign.Name;
+            Character.Difficulty = Difficulty;
+            Character.Reincarnation = 1;
+            Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
+            Character.Stats.Versatility = Race.Attributes.Versatility + Class.AttributeBonuses.Versatility;
+            Character.Stats.Vigor = Race.Attributes.Vigor + Class.AttributeBonuses.Vigor;
+            Character.Stats.Expertise = Race.Attributes.Expertise + Class.AttributeBonuses.Expertise;
+            Character.Stats.Personality = Race.Attributes.Personality + Class.AttributeBonuses.Personality;
+            Character.Stats.Fortune = Race.Attributes.Fortune + Class.AttributeBonuses.Fortune;
+            Character.Stats.Grit = Race.Attributes.Grit + Class.AttributeBonuses.Grit;
+            Character.Stats.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
+            Character.Stats.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
+            Character.Stats.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
+            Character.Stats.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
+            Character.Stats.MaxHealth = Character.Stats.CurrentHealth;
+            Character.Stats.MaxMana = Character.Stats.CurrentMana;
+            Character.Level = 1;
+            Character.AttributePoints = 0;
+            Character.CurrentMap = Campaign.StartingMap;
+            Character.X = Campaign.StartingX;
+            Character.Y = Campaign.StartingY;
+
+            const CampaignData = Campaigns.find( campaign => campaign.Name == Character.Campaign );
+
+            // Copy only the dynamic InitialData to character save data
+            // Static data (Type, Name, Level, etc.) stays in Campaign and is looked up at runtime
+            Character.WorldData = {};
+
+            for (const region of Object.keys(CampaignData.WorldData)) {
+                Character.WorldData[region] = {};
+                for (const objectId of Object.keys(CampaignData.WorldData[region])) {
+                    const objectDef = CampaignData.WorldData[region][objectId];
+                    if (objectId == "Information") continue;
+                    Character.WorldData[region][objectId] = objectDef.InitialData ? { ...objectDef.InitialData } : {};
+                }
             }
+            
+            // Add starting items from chosen class to character inventory
+            Object.entries(Class.Items).forEach( (item) => {
+                if ( item[1] == null ) return;
+                const [slot, info] = item;
+                const Data = ItemData[info.ID];
+                if ( info.Quantity > 1 )
+                    Data.InitialValue.Quantity = info.Quantity;
+                Character.Inventory[slot] = Data.InitialValue;
+            });
+
+            // Set up default hotbar for the character
+            Object.entries(Class.Hotbar).forEach( (hotbar) => {
+                const [slot, info] = hotbar;
+                Character.Hotbar[slot] = info;
+            });
+
+            Class.Proficiencies.forEach( (proficiency) => Character.Proficiencies[proficiency] = { Level: 1, Experience: 0, NextLevelExperience: 100 } );
+
+            // Add starting abilities from chosen class to character abilities
+            Class.Abilities.forEach( (ability) => Character.Abilities.push({ ID: ability, Tier: 1, Cooldown: 0 }));
+
+            // Add starting traits from chosen class to character traits
+            Class.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
+
+            // Add racial traits to character traits
+            Race.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
+
+            console.log(this.scene.Data);
+
+            this.scene.DataManager.SaveLocalStorageData(this.scene.Data);
+            this.scene.Data = this.scene.DataManager.GetLocalStorageData();
+
+            console.log(this.scene.Data);
+
+        } catch (error) {
+            console.error("Error creating character: ", error);
+            this.ErrorText.setText("An error occurred while creating the character. Please try again.").setVisible(true);
         }
-        
-        // Add starting items from chosen class to character inventory
-        Object.entries(Class.Items).forEach( (item) => {
-            if ( item[1] == null ) return;
-            const [slot, info] = item;
-            const Data = ItemData[info.ID];
-            if ( info.Quantity > 1 )
-                Data.InitialValue.Quantity = info.Quantity;
-            Character.Inventory[slot] = Data.InitialValue;
-        });
 
-        // Set up default hotbar for the character
-        Object.entries(Class.Hotbar).forEach( (hotbar) => {
-            const [slot, info] = hotbar;
-            Character.Hotbar[slot] = info;
-        });
-
-        Class.Proficiencies.forEach( (proficiency) => Character.Proficiencies[proficiency] = { Level: 1, Experience: 0, NextLevelExperience: 100 } );
-
-        // Add starting abilities from chosen class to character abilities
-        Class.Abilities.forEach( (ability) => Character.Abilities.push({ ID: ability, Tier: 1, Cooldown: 0 }));
-
-        // Add starting traits from chosen class to character traits
-        Class.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
-
-        // Add racial traits to character traits
-        Race.Traits.forEach( (trait) => Character.Traits.push({ ID: trait, Tier: 1 }));
-
-        localStorage.setItem("EvereignData", JSON.stringify(this.scene.Data));
-
-        this.scene.Data = JSON.parse(localStorage.getItem("EvereignData"));
-    
     }
 
 }

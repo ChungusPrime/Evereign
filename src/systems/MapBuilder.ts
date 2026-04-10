@@ -141,12 +141,12 @@ export default class MapBuilder {
             });
         });
         
-        if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {
+        /*if ( GD.PlayerTowns[GD.CurrentMap] !== undefined ) {
             console.log("Loading player buildings for " + GD.CurrentMap);
             GD.PlayerTowns[GD.CurrentMap].Buildings.forEach((building: { type: string, x: number, y: number, area: string, level: number }) => {
                 this.scene.BuildingHelper.CreateSavedPlayerBuilding(this.scene, building);
             });
-        }
+        }*/
         
         // Set up collisions
         this.scene.physics.world.setBounds(0, 0, Map.widthInPixels, Map.heightInPixels);

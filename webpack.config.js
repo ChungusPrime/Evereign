@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const webpack = require('webpack');
 const packageJson = require('./package.json');
@@ -29,9 +28,6 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/i,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
-            },
-            { 
-                test: /\\.(png|jp(e*)g|svg|gif)$/, use: ["file-loader"]
             },
         ],
     },

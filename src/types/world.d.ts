@@ -1,3 +1,11 @@
+interface ObjectDefinition {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    flippedHorizontal?: boolean;
+}
+
 interface WorldData {
     [key: string]: any;
     InitialData?: {
@@ -86,4 +94,55 @@ interface WorldData {
     TransitionToMap?: string;
     DestinationX?: number;
     DestinationY?: number;
+}
+
+interface MapData {
+    [key: string]: Region;
+}
+
+interface Region {
+    Buildings: IBuilding[];
+    Objects: IObject[];
+    Enemies: IEnemy[];
+}
+
+interface _Map {
+    MapName: string;
+    Resources: Array<string>,
+    Towns: any,
+    Buildings?: Array<any>,
+    Enemies?: Array<{ ID: number, OnDestroyAddFlag: number }>,
+    Objects?: Array<{ ID: number, Type: string, Loot: { ItemID: number, Amount: number }[], RequiresItem?: number, Locked: Boolean }>,
+    Zones: Array<any>,
+    Type: string
+}
+
+interface IObject {
+    ID: number;
+    Type: string;
+    Loot?: LootItem[];
+    RequiresItem?: number;
+    RequiresActivatedSwitches?: number[];
+    Unlocked?: boolean;
+    Active?: boolean;
+}
+
+interface IEnemy {
+    ID?: number;
+    Alive?: boolean;
+}
+
+interface IBuilding {
+    ID: number;
+    Destroyed: boolean;
+    Units?: IUnit[];
+    Selling?: { ID: string, Price: number, Amount: number }[];
+    Buying?: { ID: string, Price: number, Amount: number }[];
+}
+
+interface IUnit {
+    Name: string;
+    Total: number
+    Alive: number;
+    Dead: number;
 }

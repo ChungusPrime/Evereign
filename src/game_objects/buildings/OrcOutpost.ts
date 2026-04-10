@@ -1,6 +1,6 @@
 import Game from '../../scenes/Game';
 import Building from '../Building';
-import { GD } from "../../scenes/Game";
+import GoblinSlinger from '../characters/GoblinSlinger';
 
 export default class OrcOutpost extends Building {
 
@@ -71,26 +71,17 @@ export default class OrcOutpost extends Building {
             console.log("BUILDING CALM - Player left aggro zone.");
         }
 
-        return; // TEMP - Remove this when enabling spawn logic below
-
         if (!this.OnAlert) return;
+
         if (this.CurrentSpawnCount >= this.MaxSpawnCount) return;
 
         this.SpawnDelta += delta;
 
         if (this.areAllUnitsDead()) {
-            
-            /*this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
-                this.scene.Obstacles.getChildren().forEach( (object: Obstacle) => {
-                    if ( object.ID == objectID )
-                        object.Destroy();
-                });
-            });*/
-
-            GD.WorldData[GD.CurrentMap][this.ID].Destroyed = true;
-
-            this.scene.Buildings.remove(this, true, true);
-            return;
+            console.log("All units are dead, destroying building.");
+            console.log(this.Units);
+            this.AggroGraphics.destroy();
+            return this.Kill();
         }
 
         // Check if we can spawn more units
@@ -101,16 +92,20 @@ export default class OrcOutpost extends Building {
             let RandomUnit = availableUnits[Phaser.Math.Between(0, availableUnits.length - 1)];
             let RandomSpawnPoint = this.getBounds().getRandomPoint();
 
-            //const EnemyClass = GameObjectsMap[RandomUnit.Name];
-            //let Instance = new EnemyClass(this.scene, { x: RandomSpawnPoint.x, y: RandomSpawnPoint.y });
-            //Instance.SpawnLocation = this;
-            //this.scene.Enemies.add(Instance);
-            //Instance.Aggro();
+            const EnemyMapping: { [key: string]: any } = {
+                "Orc Slinger": GoblinSlinger,
+            };
 
+            let EnemyClass = EnemyMapping[RandomUnit.Name];
+            let Instance = new EnemyClass(this.scene, this);
+            Instance.SpawnLocation = this;
+            this.scene.Enemies.add(Instance);
+            Instance.Aggro();
             RandomUnit.Alive++;
             this.CurrentSpawnCount += 1;
             this.SpawnDelta = 0;
         }
+
     }
 
 }

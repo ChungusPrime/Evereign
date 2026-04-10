@@ -13,6 +13,7 @@ import UI from "../../scenes/UI";
 import { GD } from "../../scenes/Game";
 import { TownNames } from "../../data/TownNames";
 import BuildingData from "../../data/BuildingData";
+import GameObjectsMap from "../../data/GameObjects";
 
 export default class BuildingHelper {
 
@@ -93,60 +94,11 @@ export default class BuildingHelper {
         return Building;
     }
 
-    public CreateNewPlayerBuilding ( scene: Game, type: string, x: number, y: number ) {
-
-        let Building = this.CreateBuilding(scene, type, x, y);
-        if ( Building == null ) return;
-
-        Building.IsPlayerOwned = true;
-
-        if ( GD.PlayerTowns[GD.CurrentMap] == undefined ) {
-            GD.PlayerTowns[GD.CurrentMap] = { 
-                Name: TownNames[Math.floor(Math.random() * TownNames.length)],
-                Buildings: [],
-                StorageMax: 0,
-                Storage: []
-            };
-        }
-
-        GD.PlayerTowns[GD.CurrentMap].Buildings.push({
-            id: crypto.randomUUID(),
-            type: type,
-            name: `New ${type}`,
-            x: x,
-            y: y,
-            area: GD.CurrentMap,
-            level: 1
-        });
-
-        if ( Building instanceof TownCentre ) {
-            Building.CreateBuildZone();
-            this.scene.TownCentre = Building;
-        }
-
-        this.scene.Buildings.add(Building);
-
-        return Building;
-    }
-
-    public CreateSavedPlayerBuilding ( scene: Game, building: { type: string, x: number, y: number, area: string, level: number } ) {
-        let Building = this.CreateBuilding(scene, building.type, building.x, building.y);
-        if ( Building == null ) return;
-        Building.IsPlayerOwned = true;
-        if ( Building instanceof TownCentre ) {
-            Building.CreateBuildZone();
-            this.scene.TownCentre = Building;
-        }
-        this.scene.Buildings.add(Building);
-        return Building;
-    }
-
     ActivateBuildingMode ( Building: string ) : void {
 
-        /*if ( !GD.UnlockedBuildings.includes(Building) ) {
-            this.UI.EventLog.NewEvent(`You have not unlocked ${Building} yet`);
-            return;
-        }*/
+        /*if ( !GD.UnlockedBuildings.includes(Building) )
+            return this.UI.EventLog.NewEvent(`You have not unlocked ${Building} yet`);
+        */
 
         console.log(this.scene.TownCentre);
 
@@ -180,6 +132,46 @@ export default class BuildingHelper {
             this.scene.TownCentre.BuildZone.setVisible(false);
             return;
         }
+    }
+
+    CreatePlayerBuilding ( type: string, x: number, y: number ) {
+
+        if ( GD.PlayerTowns[GD.CurrentMap] == undefined ) {
+            GD.PlayerTowns[GD.CurrentMap] = { 
+                Name: TownNames[Math.floor(Math.random() * TownNames.length)],
+                Buildings: [],
+                StorageMax: 0,
+                Storage: []
+            };
+        }
+
+        let PlayerBuldingData = {
+            id: crypto.randomUUID(),
+            type: type,
+            name: `New ${type}`,
+            x: x,
+            y: y,
+            area: GD.CurrentMap,
+            level: 1
+        };
+
+        GD.PlayerTowns[GD.CurrentMap].Buildings.push(PlayerBuldingData);
+
+        console.log(GD.PlayerTowns);
+
+        let buildingInstance = GameObjectsMap[type];
+
+        let newBuilding = new buildingInstance(this.scene, PlayerBuldingData) as Building;
+
+        newBuilding.IsPlayerOwned = true;
+
+        if ( newBuilding instanceof TownCentre ) {
+            newBuilding.CreateBuildZone();
+            this.scene.TownCentre = newBuilding;
+        }
+
+        this.scene.Buildings.add(newBuilding);
+
     }
 
     CheckIfPlacementValid () {
@@ -220,12 +212,23 @@ export default class BuildingHelper {
 
         console.log(`Checking placement for ${this.scene.SelectedBuilding} at (${world.x}, ${world.y})`);
 
+        // Get "Collision" layer tiles in the placeholder area
         const tiles = this.scene.Map.getTilesWithinWorldXY( world.x, world.y, Size.Width, Size.Height, null, this.scene.cameras.main, "Collision" );
         console.log(tiles);
 
         const overlapping = tiles.find( (tile) => tile.index !== -1 );
         console.log(overlapping);
 
+        if ( overlapping == undefined ) {
+            console.log("Valid placement for Town Centre");
+            this.Placeholder.setFillStyle(0x44a617, 0.8);
+            this.ValidPlacement = true;
+        } else {
+            this.Placeholder.setFillStyle(0xdb382c, 0.8);
+            this.ValidPlacement = false;
+        }
+
+        /*
         let OverlapObject = false;
         this.scene.physics.overlap(this.Placeholder, this.scene.Buildings, (overlap) => { OverlapObject = true; }, null, this);
         this.scene.physics.overlap(this.Placeholder, this.scene.Trees, (overlap) => { OverlapObject = true; }, null, this);
@@ -251,6 +254,7 @@ export default class BuildingHelper {
                 this.ValidPlacement = false;
             }
         }
+            */
 
     }
 

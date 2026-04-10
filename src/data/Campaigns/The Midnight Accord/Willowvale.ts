@@ -1,5 +1,16 @@
 export const Willowvale: WorldData = {
 
+    Information: {
+        Name: "Willowvale",
+        Description: "A serene valley filled with lush greenery and hidden secrets.",
+        Image: "willowvale_map.png",
+        Size: { Width: 6400, Height: 6400 },
+        MapName: "Willowvale",
+        Type: "Exterior",
+        Resources: ["Iron Deposit", "Stone Deposit", "Oak Tree", "Marigold", "Humming Bass", "River Tomato"],
+        Music: "theme",
+    },
+
     "Journal_One_Trigger": {
         Type: "Trigger",
         StartDialogue: "Journal Entries",

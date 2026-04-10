@@ -137,3 +137,45 @@ interface Stats {
     Fortune: number;
     Grit: number;
 }
+
+interface Race {
+    Name: string;
+    Skin: number;
+    Description: string;
+    Traits: string[];
+    Skins: string[];
+    Available: boolean;
+    Attributes: {
+        [key: string]: number; 
+    }
+    Items?: {[slot: string]: { 
+        ID: string;
+        Quantity: number
+    }};
+}
+
+interface BloodlinePerk {
+    name: string;
+    description: string;
+    effect: string;
+    soulgemCost?: number;
+}
+
+interface Class {
+    Name: string; 
+    Description: string; 
+    Proficiencies: string[];
+    Abilities: string[];
+    Traits: string[];
+    AttributeBonuses?: { [attribute: string]: number }; 
+    Items: {[slot: string]: { 
+        ID: string;
+        Quantity: number
+    }};
+    Hotbar: {[slot: string]: { 
+        Type: string;
+        ID: string;
+    }};
+    UniqueBuilding: string;
+    Available?: boolean; 
+}

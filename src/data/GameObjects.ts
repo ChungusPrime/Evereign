@@ -29,23 +29,15 @@ import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
 import Port from "./../game_objects/buildings/Port";
 
 const GameObjectsMap: { [key: string]: any } = {
-
-    // Plants & Trees
     "Willow Tree": WillowTree,
     "Marigold": Marigold,
     "Bloomberry": Bloomberry,
     "Munkle's Brightcap": MunklesBrightcap,
-
-    // Deposits
     "Stone Deposit": StoneDeposit,
     "Iron Deposit": IronDeposit,
-
-    // Light Sources
     "Torch": Torch,
     "Goblin Firepit": GoblinFirepit,
     "TorchPole": TorchPole,
-
-    // Buildings
     "Dwelling": Dwelling,
     "Inn": Inn,
     "Ballista Tower": BallistaTower,
@@ -58,24 +50,15 @@ const GameObjectsMap: { [key: string]: any } = {
     "Mine": Mine,
     "Farm": Farm,
     "Port": Port,
-
-    // Zones
     "Trigger": TriggerZone,
     "Fishing Spot": FishingZone,
     "Transition": Transition,
-
-    // Characters
     "Orc Slinger": GoblinSlinger,
     "Warboss Gorgutz": WarbossGorgutz,
-
-    // Interactive Objects
     "Chest": Chest,
     "Graveyard": RespawnZone,
     "Switch": Switch,
-
     //"Obstacle": Obstacle,
 };
-
-console.log(GameObjectsMap);
 
 export default GameObjectsMap;

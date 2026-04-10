@@ -20,19 +20,10 @@ const Currency: ItemData[] = [
     },
 
     {
-        ID: "ghs_scrip",
-        Name: "GHS Scrip",
+        ID: "ohs_scrip",
+        Name: "OHS Scrip",
         Sprite: "gems2-45",
-        Desc: "A token awarded by the GHS as a reward for completing tasks and quests. Can be exchanged for various rewards.",
-        Stackable: true,
-        StackSize: 0
-    },
-
-    {
-        ID: "goblin_ear",
-        Name: "Goblin Ear",
-        Sprite: "gems2-45",
-        Desc: "A trophy from a slain goblin.",
+        Desc: "A token awarded by the OHS as a reward for completing tasks and quests. Can be exchanged for various rewards.",
         Stackable: true,
         StackSize: 0
     },

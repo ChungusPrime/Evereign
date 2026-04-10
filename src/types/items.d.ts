@@ -1,3 +1,12 @@
+interface InventoryItem {
+    ID: string;
+    Quantity: number;
+    CurrentMagazine?: number;
+    Ammo?: string;
+    Mods?: { [key: string]: string | null };
+    Cooldown?: number;
+}
+
 interface ItemData {
 
     ID: string,
@@ -39,4 +48,17 @@ interface ItemData {
     
     Tags?: number[];
 
+}
+
+interface LootItem {
+    ItemID?: string;
+    Amount: number;
+}
+
+interface Tag {
+    [key: number]: string;
+}
+
+interface EquipmentSlot {
+    [key: string]: number | null;
 }

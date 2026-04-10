@@ -14,6 +14,10 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
     public ID: string;
     public OnDestroyAddFlag: number;
 
+    public moving: boolean = false;
+    public targetX: number;
+    public targetY: number;
+
     // These properties are unique per character type
     abstract Temperament: string;
     abstract Health: number;
@@ -55,6 +59,52 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(99);
         this.setOrigin(0.5);
         this.setBodySize(18, 24);
+    }
+
+    Attack () {
+
+        // Find an ability with a cooldown of 0 or less
+        let Ability = null;
+        for ( let key in this.Abilities ) {
+            if ( this.Abilities[key].Cooldown <= 0 ) {
+                this.Abilities[key].Cooldown = this.Abilities[key].CooldownMax;
+                Ability = key;
+                break;
+            }
+        }
+
+        if ( Ability == null ) {
+            this.AttackCooldown = 1000;
+            return console.log("No abilities available to use!");
+        }
+
+        if ( Ability == 'Bow Shot' ) {
+            console.log("Bow Shot fired");
+            this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 150, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
+        }
+
+        if ( Ability == 'Pinning Shot' ) {
+            console.log("Pinning Shot fired");
+            this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 125, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
+        }
+
+        this.InCombatDelta = 5000;
+        this.AttackCooldown = 1000;
+    }
+
+    MoveTo (x: number, y: number) {
+        var x = Phaser.Math.Between( this.SpawnLocation.x - 50, this.SpawnLocation.x + 50 );
+        var y = Phaser.Math.Between( this.SpawnLocation.y - 50, this.SpawnLocation.y + 50 );
+        this.moving = true
+        this.targetX = x;
+        this.targetY = y;
+        this.scene.physics.moveTo(this, x, y, this.MovementSpeed);
+    }
+
+    StopMoving () {
+        this.moving = false;
+        this.targetX = 0;
+        this.targetY = 0;
     }
 
     Aggro () {
@@ -122,10 +172,11 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
 
     die () {
 
-        console.log(this.ID);
+        console.log(this.ID, this.SpawnLocation);
 
         // If the enemy was spawned by a building, update the buildings unit count
         if ( this.SpawnLocation instanceof Building && this.SpawnLocation.CurrentSpawnCount !== undefined ) {
+            console.log("Enemy died, updating spawn location unit count.", this.SpawnLocation.ID, this.SpawnLocation.CurrentSpawnCount);
             this.SpawnLocation.CurrentSpawnCount--;
             if ( this.SpawnLocation.Units !== undefined ) {
                 let Unit = this.SpawnLocation.Units.find( (e) => e.Name == this.Name );

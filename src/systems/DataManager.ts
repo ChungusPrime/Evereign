@@ -17,7 +17,7 @@ class DataManager {
     }
 
     GetLocalStorageData(): GameData {
-        return JSON.parse(localStorage.getItem(this.LocalStorageKey) || '{}');
+        return JSON.parse(localStorage.getItem(this.LocalStorageKey));
     }
 
     SaveLocalStorageData(Data: GameData): void {

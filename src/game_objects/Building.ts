@@ -1,4 +1,5 @@
 import Game from "../scenes/Game";
+import { CMD } from "../scenes/Game";
 
 export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
 
@@ -47,6 +48,7 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
             // If the object is from Tiled, take the ID from the first index of properties
             this.ID = object.properties[0].value ?? null;
             this.IsPlayerOwned = false;
+            this.Units = CMD[this.ID]?.Units;
         }
         else if ( 'id' in object ) {
             // If the object is from PlayerData, take the ID directly from the object
@@ -56,7 +58,13 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         
         console.log(this.ID, this.IsPlayerOwned);
 
-        this.setOrigin(0, 1).setInteractive().setImmovable().setPipeline("Light2D");
+        if ( this.IsPlayerOwned ) {
+            this.setOrigin(0, 0);
+        } else {
+            this.setOrigin(0, 1);
+        }
+        
+        this.setInteractive().setImmovable().setPipeline("Light2D");
 
         this.scene.Buildings.add(this);
 
@@ -70,7 +78,7 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         this.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
 
             if ( pointer.rightButtonDown() ) {
-                console.log(this.ID, this.IsPlayerOwned);
+                console.log(this.ID, this.IsPlayerOwned, this.Units);
             }
 
             if ( this.IsPlayerOwned == true ) {
@@ -94,22 +102,37 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         return this;
     }
 
-    OpenManagementPanel () {
+    public OpenManagementPanel () {
         console.log("Open building management screen");
     }
 
-    CreateBuildZone () {
+    public CreateBuildZone () {
         let BuildZone = this.scene.add.rectangle(this.getCenter().x, this.getCenter().y, 640 + 32 + 1, 640 + 32  + 1, 0xffffff, 0.2).setVisible(false);
         this.scene.physics.world.enable(BuildZone);
         this.BuildZone = BuildZone;
     }
  
-    SetPlayerOwned () {
+    public SetPlayerOwned () {
         this.IsPlayerOwned = true;
     }
 
     public SetTier ( tier: number ) {
         this.setFrame(tier);
+    }
+
+    Kill () {
+        this.DESTROYING = true;
+        this.scene.physics.world.disable(this);
+        this.setVisible(false);
+        CMD[this.ID].Destroyed = true;
+        this.scene.Buildings.remove(this, true, true);
+
+        /*this.StaticData.OnDestroyDisableObstacle.forEach((objectID: number) => {
+            this.scene.Obstacles.getChildren().forEach( (object: Obstacle) => {
+                if ( object.ID == objectID )
+                    object.Destroy();
+            });
+        });*/
     }
 
 }

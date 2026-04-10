@@ -31,14 +31,16 @@ export default class Menu extends Phaser.Scene {
     public BackButton!: TextButton;
 
     public Data: GameData = null;
-    public DataManager: DataManager = new DataManager();
+    public DataManager: DataManager = null;
 
     constructor () {
         super({ key: "Menu" });
     }
 
     preload (): void {
+        this.DataManager = new DataManager();
         this.Data = this.DataManager.GetLocalStorageData();
+        console.log(this.Data);
     }
 
     create (): void {
@@ -60,6 +62,7 @@ export default class Menu extends Phaser.Scene {
         this.BloodlineGroup = new Bloodline(this);
 
         if ( this.Data.Characters['Bithmas'] == undefined ) {
+            console.log("Creating default character Bithmas");
             this.CharacterCreationGroup.CreateCharacter("Bithmas", "Standard", Campaigns[0], Classes.Agent, Races.Human);
         }
 
@@ -145,7 +148,6 @@ export default class Menu extends Phaser.Scene {
     StartGame ( character: string, mode: string ) {
         this.sound.stopByKey('track1');
         this.Data.LastCharacterPlayed = character;
-        this.DataManager.SaveLocalStorageData(this.Data);
         this.scene.start("Game", { character: character, mode: mode });
     }
 

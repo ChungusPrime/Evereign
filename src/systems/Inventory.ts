@@ -295,10 +295,10 @@ export default class Inventory {
 
         const BaseItemData = this.Game.DataManager.ItemData[ID];
 
+        console.log(`Adding Item to Inventory. ID: ${ID}, Quantity: ${quantity}`, BaseItemData);
+
         if ( BaseItemData == undefined )
             return console.log(`Item does not exist! ID: ${ID}`);
-
-        console.log(BaseItemData);
 
         for ( let i = 0; i < quantity; i++ ) {
             if ( BaseItemData.Stackable ) {

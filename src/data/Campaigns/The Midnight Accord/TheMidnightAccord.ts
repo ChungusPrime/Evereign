@@ -23,39 +23,6 @@ const TheMidnightAccord: Campaign = {
     StartingHour: 9,
     StartingMinute: 0,
 
-    WorldMapInformation: {
-        Willowvale: {
-            Name: "Willowvale",
-            Description: "A serene valley filled with lush greenery and hidden secrets.",
-            Image: "willowvale_map.png",
-            Size: { Width: 8000, Height: 6000 },
-            MapName: "Willowvale",
-            Type: "Exterior",
-            Resources: ["Iron Deposit", "Stone Deposit", "Oak Tree", "Marigold", "Humming Bass", "River Tomato"],
-            Music: "theme",
-        },
-        WillowvaleCaverns: {
-            Name: "Willowvale Caverns",
-            Description: "Dark and mysterious caverns beneath Willowvale, home to ancient creatures.",
-            Image: "willowvale_caverns_map.png",
-            Size: { Width: 4000, Height: 3000 },
-            MapName: "Willowvale Caverns",
-            Type: "Interior",
-            Music: "theme",
-            Resources: ["Iron", "Stone", "Oak", "Marigold", "Humming Bass", "River Tomato"],
-        },
-        WillowvaleNorth: {
-            Name: "Willowvale North",
-            Description: "The northern region of Willowvale, known for its rugged terrain and hidden treasures.",
-            Image: "willowvale_north_map.png",
-            Size: { Width: 5000, Height: 4000 },
-            MapName: "Willowvale North",
-            Type: "Exterior",
-            Music: "theme",
-            Resources: ["Iron", "Stone", "Oak", "Marigold", "Humming Bass", "River Tomato"],
-        }
-    },
-
     WorldData: {
         Willowvale: Willowvale,
         WillowvaleCaverns: WillowvaleCaverns,

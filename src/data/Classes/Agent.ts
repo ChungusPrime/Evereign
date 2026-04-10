@@ -14,9 +14,9 @@ const Agent: Class = {
     ],
 
     Abilities: [
-        "incendiary_shot",
-        "shrap_charge",
-        "observer_struct"
+        "voltaic_net",
+        "pyro_blast",
+        "charged_slug"
     ],
 
     Traits: [
@@ -36,9 +36,9 @@ const Agent: Class = {
         Grit: 2,
     },
     Hotbar: {
-        1: { Type: "Ability", ID: "incendiary_shot" },
-        2: { Type: "Ability", ID: "shrap_charge"},
-        3: { Type: "Ability", ID: "observer_struct"},
+        1: { Type: "Ability", ID: "voltaic_net" },
+        2: { Type: "Ability", ID: "pyro_blast"},
+        3: { Type: "Ability", ID: "charged_slug"},
         4: { Type: "Item", ID: "marigold_brew" },
         5: { Type: "Item", ID: "stone_shot" },
         6: { Type: "Item", ID: "grenade_mk1" },

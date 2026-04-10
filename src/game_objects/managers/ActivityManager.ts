@@ -9,7 +9,9 @@ export default class ActivityManager {
 
     public CurrentActivity: Activity = {
         Type: "",
-        Delta: 0
+        Delta: 0,
+        IsAbility: false,
+        AbilityID: null
     }
 
     public ActivityProgressBarBG: Phaser.GameObjects.Rectangle;
@@ -142,7 +144,7 @@ export default class ActivityManager {
 
     CancelActivity () {
         this.scene.UI.EventLog.NewEvent(`You stop ${this.CurrentActivity.Type}`);
-        this.CurrentActivity = { Type: "", Delta: 0 };
+        this.CurrentActivity = { Type: "", Delta: 0, IsAbility: false, AbilityID: null };
         this.scene.sound.stopByKey("woodcutting");
         this.scene.sound.stopByKey("mining");
         this.scene.sound.stopByKey("harvesting");

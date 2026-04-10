@@ -1,5 +1,5 @@
 import UI from "../scenes/UI";
-import { GD, Inv } from "../scenes/Game";
+import { CMD, GD, Inv } from "../scenes/Game";
 import Game from "../scenes/Game";
 
 export default class ItemSlot extends Phaser.GameObjects.NineSlice {
@@ -102,7 +102,16 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
         });
 
         this.Item.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            if (pointer.leftButtonDown() && !Inv.HeldItem) {
+
+            if ( pointer.rightButtonDown() && !Inv.HeldItem ) {
+                if ( this.DataInventorySlot.ID == "town_centre_blueprint" ) {
+                    GD.UnlockedBuildings.push("Town Centre");
+                    Inv.RemoveItem("town_centre_blueprint", 1);
+                    this.scene.EventLog.NewEvent("You have unlocked the ability to build Town Centres!");
+                    return;
+                }
+            }
+            else if (pointer.leftButtonDown() && !Inv.HeldItem) {
                 Inv.HeldItem = this.Item;
                 this.scene.input.topOnly = false;
                 this.scene.sound.play("InventoryPickup");
@@ -120,6 +129,7 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
     }
 
     private updateItemTexture(): void {
+        console.log(this.DataInventorySlot);
         if (this.DataInventorySlot) {
             const baseItemData = this.Game.DataManager.ItemData[this.DataInventorySlot.ID];
             const [atlas, frame] = baseItemData.Sprite.split("-");

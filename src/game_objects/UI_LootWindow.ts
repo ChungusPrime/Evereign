@@ -1,3 +1,4 @@
+import { CMD } from "../scenes/Game";
 import UI from "../scenes/UI";
 
 class LootWindowDisplayObject extends Phaser.GameObjects.Rectangle {
@@ -123,7 +124,13 @@ export default class LootWindow {
         this.LootAllButton.setVisible(true);
         this.LootAllButtonText.setVisible(true);
 
-        this.scene.Game.DataManager.GetChestLoot(id).forEach( ( item: LootItem, index: number ) => {
+        let Loot = CMD[id].Loot;
+        if ( Loot == undefined || Loot.length == 0 ) {
+            this.scene.EventLog.NewEvent("This chest is empty.");
+            return;
+        }
+
+        Loot.forEach( ( item: LootItem, index: number ) => {
             if ( item.Amount == 0 ) return;
             let Object = new LootWindowDisplayObject(this, id, item, index);
             this.ShownItems.add(Object);
@@ -145,18 +152,24 @@ export default class LootWindow {
 
     LootItem ( DisplayObject: LootWindowDisplayObject, ChestID: number, ItemID: string, Amount: number ) {
         console.log(`Looted: ${Amount}x ${ItemID} from Chest: ${ChestID}`);
-        this.scene.Game.DataManager.GetChestLoot(ChestID).forEach( ( item: LootItem, index: number ) => {
-            if ( item.ItemID == ItemID ) {
-                //this.scene.Game.Inventory.AddItem(ItemID, Amount);
-                item.Amount -= Amount;
-                DisplayObject.ItemText.setText(`${item.Amount}x ${DisplayObject.ItemName}`);
-                if ( item.Amount == 0 ) {
-                    DisplayObject.ItemText.destroy();
-                    DisplayObject.ItemSprite.destroy();
-                    DisplayObject.destroy();
-                }
-            }
-        });
+
+        let Item = CMD[ChestID].Loot.find( ( item: LootItem ) => item.ItemID == ItemID );
+
+        if ( Item == undefined ) {
+            console.error("Item not found in chest loot");
+            return;
+        }
+
+        this.scene.Game.Inventory.AddItem(ItemID, Amount);
+
+        Item.Amount -= Amount;
+        DisplayObject.ItemText.setText(`${Item.Amount}x ${DisplayObject.ItemName}`);
+        if ( Item.Amount == 0 ) {
+            DisplayObject.ItemText.destroy();
+            DisplayObject.ItemSprite.destroy();
+            DisplayObject.destroy();
+        }
+
     }
 
 }

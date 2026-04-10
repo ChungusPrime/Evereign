@@ -36,7 +36,9 @@ const Consumables: ItemData[] = [
         Name: "Town Centre Blueprint",
         Sprite: "librarium-45",
         Desc: "Blueprints showing the design of a Town Centre. When used, grants the ability to construct town centres.",
-        Stackable: false
+        Stackable: false,
+        InitialValue: { ID: "town_centre_blueprint", Quantity: 1 },
+        Craftable: false,
     },
 
     {

@@ -10,11 +10,18 @@ import { PlayerRect, EnemyRect } from '../game_objects/QuadTree_Rects';
 import Campaigns from '../data/Campaigns';
 import MapData from '../data/MapData';
 import ItemData from '../data/ItemData';
+import Abilities from '../data/Abilities';
 
-// Global copy of the current character data
+// Global copies of various game data for easy access across the codebase
+
+// Characters Save Data
 export let GD: Character = null;
+export let CMD: WorldData = null;
+
+// Campaign / Map Data
 export let CD: Campaign = null;
 export let MD: WorldData = null;
+
 export let Options: GameData['Options'];
 
 // Export systems for use globally;
@@ -119,17 +126,32 @@ export default class Game extends Phaser.Scene {
         Options = SavedData.Options;
 
         GD = SavedData.Characters[this.CharacterName];
+        CMD = GD.WorldData[GD.CurrentMap] ?? null;
 
         if ( this.GameMode == "Arena" ) {
+
             GD.X = 1600;
             GD.Y = 1600;
             GD.CurrentMap = "Arena";
             GD.DaytimeDelta = 0;
             GD.DaytimeHour = 12;
             GD.DaytimeMinute = 0;
-            CD = MapData["Arena"] ?? null;
+            MD = MapData["Arena"];
+            GD.WorldData = { 'Arena': {} };
+            Object.keys(MD).forEach( (key) => {
+                GD.WorldData["Arena"][key] = MD[key].InitialData;
+            });
+
+            CMD = GD.WorldData["Arena"];
+
         } else if ( this.GameMode == "Adventure" ) {
+
+            // Load campaign data
             CD = Campaigns.find(c => c.Name == GD.Campaign) ?? null;
+
+            // Load map-specific data for the current map within the campaign
+            MD = Campaigns.find(c => c.Name == GD.Campaign)?.WorldData[GD.CurrentMap] ?? null;
+            
             console.log(`Loaded campaign data for ${GD.Campaign}:`, CD);
         }
 
@@ -149,7 +171,7 @@ export default class Game extends Phaser.Scene {
         if ( this.GameMode == "Arena" ) {
             this.sound.play("theme", { loop: true });
         } else {
-            this.sound.play(CD.WorldMapInformation[GD.CurrentMap].Music, { loop: true });
+            this.sound.play(MD.Information.Music, { loop: true });
         }
         
         this.lights.enable();
@@ -221,8 +243,7 @@ export default class Game extends Phaser.Scene {
             if ( pointer.leftButtonDown() && this.BuildingHelper.BuildingPlacementMode && this.BuildingHelper.ValidPlacement ) {
                 const tile = this.Map.worldToTileXY(this.mouseX, this.mouseY);
                 const world = this.Map.tileToWorldXY(tile.x, tile.y);
-                this.BuildingHelper.CreateNewPlayerBuilding(this, this.SelectedBuilding, world.x, world.y);
-                this.BuildingHelper.DeactivateBuildingMode();
+                this.BuildingHelper.CreatePlayerBuilding(this.SelectedBuilding, world.x, world.y);
             }
 
             // Right click to cancel building mode
@@ -655,7 +676,8 @@ export default class Game extends Phaser.Scene {
         if (!Item) 
             return console.log("No item equipped in hotbar slot " + slot);
         if ( Item.Type == "Ability" ) {
-            //this.PlayerCharacter.UseAbility(Item.ID);
+            let Ability = Abilities[Item.ID];
+            this.ActionManager.UseAbility(Ability);
         }
         
         if ( Item.Type == "Item" ) {
