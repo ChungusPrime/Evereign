@@ -3,7 +3,7 @@
 
 import UI from "../scenes/UI";
 import TextButton from "./UI_TextButton";
-import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
+import BBCodeText from 'phaser4-rex-plugins/plugins/bbcodetext.js';
 export default class RestMenu extends Phaser.GameObjects.NineSlice {
 
     public scene: UI;

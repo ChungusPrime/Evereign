@@ -21,7 +21,7 @@ export default class MiningNode extends Phaser.Physics.Arcade.Sprite {
 
         this.setOrigin(0, 1)
         .setDisplaySize(width, height)
-        .setPipeline("Light2D")
+        .setLighting(true)
         .setDepth(100)
         .setInteractive()
         .on('pointerover', () => { 

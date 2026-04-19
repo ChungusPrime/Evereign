@@ -1,5 +1,5 @@
 import UI from "../scenes/UI";
-import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
+import BBCodeText from 'phaser4-rex-plugins/plugins/bbcodetext.js';
 import DamageTypes from "../data/DamageTypes";
 
 export default class EventLog {

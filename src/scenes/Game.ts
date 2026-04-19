@@ -66,20 +66,14 @@ export default class Game extends Phaser.Scene {
     public ActiveTransition: number;
     public PlayerCollisionLayerCollider: Phaser.Physics.Arcade.Collider;
 
-    // Navmesh
-    public NavMesh: any;
-    //public NavMesh: PhaserNavMesh.NavMesh;
-    //public NavMeshDebugGraphics: Phaser.GameObjects.Graphics;
-    public navMeshPlugin: any;
-
     public Map: Phaser.Tilemaps.Tilemap;
     public PlayerCharacter: PlayerCharacter;
     public MapRespawnPoint: Phaser.GameObjects.Rectangle;
-    public CollisionLayer: Phaser.Tilemaps.TilemapLayer;
+    public CollisionLayer: Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.TilemapGPULayer;
     public MapLights: Phaser.GameObjects.Group;
     public SelectedBuilding: string = "";
     public SelectedObject: Phaser.Physics.Arcade.Sprite | Building | null = null;
-    public CameraColourMatrix: Phaser.FX.ColorMatrix = null;
+    public CameraColourMatrix: Phaser.Filters.ColorMatrix = null;
 
     // Systems
     public DaytimeCycleManager!: DayNightCycle;
@@ -106,6 +100,8 @@ export default class Game extends Phaser.Scene {
     public Obstacles: Phaser.GameObjects.Group;
     public Switches: Phaser.GameObjects.Group;
     public Characters: Phaser.GameObjects.Group;
+
+    public LastHarvestedTreeUpdate = 0;
 
     constructor () {
         super({ key: "Game" });
@@ -162,7 +158,7 @@ export default class Game extends Phaser.Scene {
         // Launch the UI
         this.scene.launch("UI", this);
         this.UI = this.scene.get("UI") as UI;
-        this.CameraColourMatrix = this.cameras.main.postFX.addColorMatrix();
+        this.CameraColourMatrix = this.cameras.main.filters.external.addColorMatrix();
 
         // Set cursor image
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
@@ -254,10 +250,6 @@ export default class Game extends Phaser.Scene {
         });
 
         this.LoadMap(GD.CurrentMap);
-
-        //this.MapBuilder.CreateMap(this);
-        //this.CreateNavMesh();
-        //this.GetNavMeshPath(this.PlayerCharacter.x, this.PlayerCharacter.y, GD.X, GD.Y);
     }
 
     update ( time: number, delta: number ): void {
@@ -265,6 +257,23 @@ export default class Game extends Phaser.Scene {
         this.PlayerCharacter.update(delta);
         this.DaytimeCycleManager.update(delta);
         this.ActionManager.update(delta);
+
+        this.LastHarvestedTreeUpdate += delta;
+        if ( this.LastHarvestedTreeUpdate >= 1000 ) {
+            console.log("Updating harvested trees...");
+            let DepletedHarvestables = CMD.DepletedHarvestables ?? [];
+            if ( DepletedHarvestables.length > 0 ) {
+                this.Trees.getChildren().forEach( (tree: Phaser.Physics.Arcade.Sprite) => {
+                    if ( DepletedHarvestables.includes(tree.getData("tiled_id")) ) {
+                        (tree as any).RespawnTime -= 1;
+                        if ( (tree as any).RespawnTime <= 0 ) {
+                            (tree as any).Regenerate();
+                        }
+                    }
+                });
+            }
+            this.LastHarvestedTreeUpdate = 0;
+        }
 
         if ( GD.Inventory.Equipment_MainHand && GD.Inventory.Equipment_MainHand.Cooldown > 0 )
             GD.Inventory.Equipment_MainHand.Cooldown -= delta;
@@ -358,7 +367,7 @@ export default class Game extends Phaser.Scene {
         });
         
         // Load Layers
-        let Layers: Phaser.Tilemaps.TilemapLayer[] = [];
+        let Layers: (Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.TilemapGPULayer)[] = [];
         this.Map.layers.forEach( (layerData: Phaser.Tilemaps.LayerData) => {
             let Layer = this.Map.createLayer(layerData.name, Tilesets, 0, 0);
             if ( Layer === null ) return;
@@ -367,7 +376,7 @@ export default class Game extends Phaser.Scene {
                 this.CollisionLayer.setCollisionByExclusion([-1]);
                 this.CollisionLayer.setVisible(false);
             } else {
-                Layer.setPipeline("Light2D");
+                Layer.setLighting(true);
             }
             Layers.push(Layer);
         });
@@ -381,7 +390,7 @@ export default class Game extends Phaser.Scene {
                         new objectInstance(this, object) as Phaser.GameObjects.GameObject;
                     } 
                     else if ( object.type == "Boat_1") {
-                        let boat = this.add.sprite(object.x, object.y, "boats", 0).setOrigin(0, 1).setPipeline("Light2D");
+                        let boat = this.add.sprite(object.x, object.y, "boats", 0).setOrigin(0, 1).setLighting(true);
                         if ( object.flippedHorizontal ) {
                             boat.setFlipX(true);
                         }
@@ -443,11 +452,13 @@ export default class Game extends Phaser.Scene {
             projectile.delete();
         });
         
+        // Handle enemy projectile collisions with player
         this.physics.add.collider(this.EnemyProjectiles, this.PlayerCharacter, (projectile: Projectile, player: PlayerCharacter) => {
             projectile.destroy();
             player.TakeDamage(projectile.damage);
         });
         
+        // Handle player projectile collisions with enemies
         this.physics.add.collider(this.Projectiles, this.Enemies, (projectile: Projectile, enemy: Enemy) => {
             this.lights.removeLight(projectile.light);
             projectile.destroy();
@@ -475,7 +486,7 @@ export default class Game extends Phaser.Scene {
         } else {
             // Get default campaign data
             const Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
-            let MapType = Campaign.WorldMapInformation[key].Type;
+            let MapType = Campaign.WorldData[GD.CurrentMap].Information.Type;
             if ( MapType == "Exterior" ) {
                 this.DaytimeCycleManager.StartRaining();
             } else {
@@ -647,25 +658,6 @@ export default class Game extends Phaser.Scene {
         console.log(hits.length > 0 ? "Hit enemies:" : "No enemies hit", hits.map(h => h.object));
     }
 
-    CreateNavMesh () {
-        this.NavMesh = this.navMeshPlugin.buildMeshFromTilemap("mesh", this.Map, [ this.CollisionLayer ]);
-        //console.log(this.NavMesh);
-        /*this.NavMesh.enableDebug(); // Creates a Phaser.Graphics overlay on top of the screen
-        this.NavMesh.debugDrawClear(); // Clears the overlay
-        // Visualize the underlying navmesh
-        this.NavMesh.debugDrawMesh({
-            drawCentroid: true,
-            drawBounds: false,
-            drawNeighbors: true,
-            drawPortals: true
-        });*/
-        // Find a path from one point to another
-        //const path = this.NavMesh.findPath({ x: this.PlayerCharacter.x, y: this.PlayerCharacter.y }, { x: 4000, y: 4000 });
-        //console.log(path);
-        // Visualize an individual path
-        //this.NavMesh.debugDrawPath(path, 0xffd900);
-    }
-
     UseHotbarSlot (slot: string) {
         console.log(`Using hotbar slot ${slot}`);
 
@@ -734,19 +726,6 @@ export default class Game extends Phaser.Scene {
             this.PlayerCharacter.Heal(50);
         }
 
-    }
-
-    GetNavMeshPath (x: number, y: number, targetX: number, targetY: number) {
-        const path = this.NavMesh.findPath({ x: x, y: y }, { x: targetX, y: targetY });
-        this.NavMesh.enableDebug();
-        this.NavMesh.debugDrawClear();
-        this.NavMesh.debugDrawMesh({
-            drawCentroid: true,
-            drawBounds: false,
-            drawNeighbors: true,
-            drawPortals: true
-        });
-        this.NavMesh.debugDrawPath(path, 0xffd900);
     }
 
     TransitionToMap () {

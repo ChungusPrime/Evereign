@@ -4,7 +4,7 @@ import ItemSlot from "../game_objects/UI_ItemSlot";
 import { GD } from "../scenes/Game";
 import DamageTypes from "../data/DamageTypes";
 import TextButton from "../game_objects/UI_TextButton";
-import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
+import BBCodeText from 'phaser4-rex-plugins/plugins/bbcodetext.js';
 
 export default class Inventory {
 

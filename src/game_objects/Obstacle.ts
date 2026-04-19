@@ -21,7 +21,7 @@ export default class Obstacle extends Phaser.Physics.Arcade.Sprite {
 
         this.setOrigin(0, 1);
         this.setImmovable(true);
-        this.setPipeline("Light2D");
+        this.setLighting(true);
 
         if ( this.ObjectData.Active == false ) {
             this.setVisible(false);

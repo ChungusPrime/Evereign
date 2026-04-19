@@ -32,16 +32,6 @@ interface Campaign {
     StartingY?: number,
     StartingHour?: number,
     StartingMinute?: number,
-    WorldMapInformation?: {[key: string]: {
-        Name: string;
-        Description: string;
-        Image: string;
-        Size: { Width: number, Height: number };
-        MapName: string;
-        Type: string;
-        Resources?: Array<string>;
-        Music?: string;
-    }};
 }
 
 interface Activity {
@@ -49,6 +39,7 @@ interface Activity {
     Delta: number;
     IsAbility: boolean;
     AbilityID: string | null;
+    TiledID: string | null;
 }
 
 interface GameFlags {

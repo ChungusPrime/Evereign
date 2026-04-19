@@ -5,7 +5,6 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     public light: Phaser.GameObjects.Light | null = null;
     public damage: any;
     public velocity: number;
-    public preFX!: any;
     public scene: Game;
     public Lifetime: number = 5000;
 
@@ -37,7 +36,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
         }
 
         if ( type == "Kinetic Bolt" ) {
-            this.preFX.addGlow(0x34a4eb, 4, 0, false, 0.1, 10);
+            this.filters.internal.addGlow(0x34a4eb, 4, 0);
             this.play("arcane-dart-anim");
             scene.physics.moveTo(this, scene.mouseX, scene.mouseY, this.velocity, 0);
             let radians = Phaser.Math.Angle.Between(this.x, this.y, scene.mouseX, scene.mouseY);
@@ -46,7 +45,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
         }
 
         if ( type == "Dart Volley" ) {
-            this.preFX.addGlow(0x3cc969, 4, 0, false, 0.1, 10);
+            this.filters.internal.addGlow(0x3cc969, 4, 0);
             this.play("dart-volley-anim");
             scene.physics.moveTo(this, scene.mouseX, scene.mouseY, this.velocity, 0);
             let radians = Phaser.Math.Angle.Between(this.x, this.y, scene.mouseX, scene.mouseY);

@@ -28,7 +28,8 @@ export default class ActionManager {
         Type: "",
         Delta: 0,
         IsAbility: false,
-        AbilityID: null
+        AbilityID: null,
+        TiledID: null
     }
 
     public ActivityProgressBarBG: Phaser.GameObjects.Rectangle;
@@ -91,8 +92,6 @@ export default class ActionManager {
 
     StartActivity( object: Phaser.Physics.Arcade.Sprite | Phaser.GameObjects.Rectangle ) {
 
-        console.log(object);
-
         if ( object == null ) return;
         if ( object.getData("type") == null || object.getData("type") == undefined ) return;
 
@@ -107,6 +106,7 @@ export default class ActionManager {
         if ( ObjectType == "Willow Tree" ) {
             this.CurrentActivity.Type = "Cutting Willow Tree";
             this.scene.sound.play("woodcutting", { loop: true });
+            this.CurrentActivity.TiledID = object.getData("tiled_id");
         } else if ( ObjectType == "Marigold" ) {
             this.CurrentActivity.Type = "Harvesting Marigold";
             this.scene.sound.play("harvesting", { loop: true });
@@ -201,6 +201,12 @@ export default class ActionManager {
                 ev.sprite2 = 21;
                 this.scene.Inventory.AddItem("log_willow", 1);
                 GD.Skills['Forestry'].Experience += 5;
+                this.scene.Trees.getChildren().forEach( (tree: Phaser.Physics.Arcade.Sprite) => {
+                    if ( tree.getData("tiled_id") == this.CurrentActivity.TiledID ) {
+                        (tree as any).Deplete();
+                    }
+                });
+                this.CancelActivity();
             } else if ( this.CurrentActivity.Type == "Harvesting Marigold" ) {
                 ev.message = "+1 Marigold";
                 ev.sprite1 = "flowers";
@@ -270,7 +276,7 @@ export default class ActionManager {
         if ( this.CurrentActivity.Type != "Reloading" ) {
             this.scene.UI.EventLog.NewEvent(`You stop ${this.CurrentActivity.Type}`);
         }
-        this.CurrentActivity = { Type: "", Delta: 0, IsAbility: false, AbilityID: null };
+        this.CurrentActivity = { Type: "", Delta: 0, IsAbility: false, AbilityID: null, TiledID: null };
         this.scene.sound.stopByKey("woodcutting");
         this.scene.sound.stopByKey("mining");
         this.scene.sound.stopByKey("harvesting");

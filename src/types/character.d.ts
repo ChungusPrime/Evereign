@@ -1,4 +1,11 @@
-/** This interface represents a single saved player character and all of their associated data. */
+/** Represents a single saved player character and all of their associated data. 
+ * @Name the character's name, chosen at character creation
+ * @Race the character's race, chosen at character creation
+ * @Difficulty the game's difficulty level, chosen at character creation
+ * @Class the character's class, chosen at character creation
+ * @Campaign the campaign the character is participating in
+ */
+
 interface Character {
 
     // Character creation choices    

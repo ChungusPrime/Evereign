@@ -78,7 +78,7 @@ export default class MapBuilder {
         });
         
         // Load Layers
-        let Layers: Phaser.Tilemaps.TilemapLayer[] = [];
+        let Layers: (Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.TilemapGPULayer)[] = [];
         Map.getTileLayerNames().forEach( (name: string) => {
             let Layer = Map.createLayer(name, Tilesets, 0, 0);
             if ( Layer === null ) return;
@@ -87,7 +87,7 @@ export default class MapBuilder {
                 this.scene.CollisionLayer.setCollisionByExclusion([-1]);
                 this.scene.CollisionLayer.setVisible(false);
             }
-            Layer.setPipeline("Light2D");
+            Layer.setLighting(true);
             Layers.push(Layer);
         });
 
@@ -219,7 +219,8 @@ export default class MapBuilder {
         this.scene.Map = Map;
         this.scene.DaytimeCycleManager.SetPhase();
         
-        let MapType = Campaign.WorldMapInformation[GD.CurrentMap].Type;
+        let MapType = Campaign.WorldData[GD.CurrentMap].Information.Type;
+
         if ( MapType == "Exterior" ) {
             this.scene.DaytimeCycleManager.StartRaining();
         } else {

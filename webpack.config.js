@@ -32,9 +32,15 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: [".tsx", ".ts", ".js"]
+        extensions: [".tsx", ".ts", ".js"],
+        alias: {
+            'phaser': path.resolve(__dirname, 'node_modules/phaser/dist/phaser.js')
+        }
     },
     plugins: [
+        new webpack.ProvidePlugin({
+            Phaser: 'phaser'
+        }),
         new webpack.DefinePlugin({
             PACKAGE_VERSION: JSON.stringify(packageJson.version)
         }),

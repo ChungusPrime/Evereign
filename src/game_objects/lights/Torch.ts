@@ -11,7 +11,7 @@ export default class Torch extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.setOrigin(0, 1)
         .setDisplaySize(32, 32)
-        .setPipeline("Light2D")
+        .setLighting(true)
         .play({ key: "torch-anim", repeat: -1 })
         this.light = scene.lights.addLight(object.x + 16, object.y - 16, 256, 0xFE9900, 1);
         scene.MapLights.add(this);

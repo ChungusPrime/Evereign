@@ -18,7 +18,7 @@ export default class Switch extends Phaser.Physics.Arcade.Sprite {
 
         this.setOrigin(0, 1);
         this.setImmovable(true);
-        this.setPipeline("Light2D");
+        this.setLighting(true);
 
         let ObjectData = this.scene.DataManager.GetObjectData(id);
         console.log(ObjectData);

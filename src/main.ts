@@ -1,4 +1,6 @@
 import * as Phaser from "phaser";
+(window as any).Phaser = Phaser;
+
 import './assets/sass/main.scss';
 import { Config } from "./config";
 

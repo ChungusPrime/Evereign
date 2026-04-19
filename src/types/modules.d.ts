@@ -20,4 +20,12 @@ declare module "*.mp3" {
     export default path;
 }
 
-declare module 'phaser-navmesh';
+declare module '*.scss' {
+    const content: { [className: string]: string };
+    export default content;
+}
+
+declare module '*.scss?inline' {
+    const content: string;
+    export default content;
+}

@@ -47,7 +47,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(99);
         this.setOrigin(0.5);
         this.setBodySize(10, 24, true);
-        this.setPipeline("Light2D");
+        this.setLighting(true);
         this.flipX = true;
         this.light = this.scene.lights.addLight(this.x, this.y, 228, 0xe3a456, 1);
         return this;
@@ -233,6 +233,9 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         let total = 0;
         let typesArray: string[] = [];
         const stats = GD.ComputedStats;
+
+        console.log(damage);
+        console.log(stats);
 
         damage.forEach((dmg) => {
             let damageAmount = Phaser.Math.Between(dmg.Min, dmg.Max);

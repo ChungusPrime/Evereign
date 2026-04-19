@@ -99,7 +99,7 @@ export default class WorldMap {
     public Toggle () {
 
         const Campaign = Campaigns.find((c) => c.Name == GD.Campaign);
-        let Type = Campaign.WorldMapInformation[GD.CurrentMap].Type;
+        let Type = Campaign.WorldData[GD.CurrentMap].Information.Type;
 
         if ( Type == "Interior" )
             return this.scene.EventLog.NewEvent("You cannot access the world map from here.");

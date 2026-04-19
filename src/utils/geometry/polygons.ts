@@ -44,13 +44,13 @@ export function createPolygon(
             //   newY = x * sin(angle) + y * cos(angle)
             const cos = Math.cos(rotation);
             const sin = Math.sin(rotation);
-            return new Phaser.Geom.Point(
+            return new Phaser.Math.Vector2(
                 origin.x + (x * cos - y * sin),
                 origin.y + (x * sin + y * cos)
             );
         }
         // No rotation — just shift points to world position
-        return new Phaser.Geom.Point(origin.x + x, origin.y + y);
+        return new Phaser.Math.Vector2(origin.x + x, origin.y + y);
     });
 
     return new Phaser.Geom.Polygon(transformedPoints);

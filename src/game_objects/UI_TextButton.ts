@@ -1,5 +1,5 @@
 import Menu from "../scenes/Menu";
-import BBCodeText from 'phaser3-rex-plugins/plugins/bbcodetext.js';
+import BBCodeText from 'phaser4-rex-plugins/plugins/bbcodetext.js';
 import UI from "../scenes/UI";
 
 export default class TextButton extends BBCodeText {

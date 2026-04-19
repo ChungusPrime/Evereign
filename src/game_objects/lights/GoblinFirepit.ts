@@ -11,7 +11,7 @@ export default class GoblinFirepit extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.setOrigin(0, 1)
         .setDisplaySize(32, 32)
-        .setPipeline("Light2D")
+        .setLighting(true)
         this.light = scene.lights.addLight(this.x + 16, this.y - 16, 256, 0x7DDA58, 1);
         return this;
     }

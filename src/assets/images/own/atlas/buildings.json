@@ -4,8 +4,8 @@
 			"image": "buildings",
 			"format": "RGBA8888",
 			"size": {
-				"w": 1348,
-				"h": 454
+				"w": 533,
+				"h": 1119
 			},
 			"scale": 1,
 			"frames": [
@@ -31,6 +31,27 @@
 					}
 				},
 				{
+					"filename": "wizardtower1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 256
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 2,
+						"w": 92,
+						"h": 254
+					},
+					"frame": {
+						"x": 0,
+						"y": 256,
+						"w": 92,
+						"h": 254
+					}
+				},
+				{
 					"filename": "orc_outpost_1",
 					"rotated": false,
 					"trimmed": true,
@@ -45,52 +66,31 @@
 						"h": 222
 					},
 					"frame": {
-						"x": 256,
-						"y": 0,
+						"x": 0,
+						"y": 510,
 						"w": 224,
 						"h": 222
 					}
 				},
 				{
-					"filename": "warehouse1",
+					"filename": "church1",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 224,
-						"h": 160
+						"w": 192,
+						"h": 224
 					},
 					"spriteSourceSize": {
-						"x": 1,
-						"y": 33,
-						"w": 222,
-						"h": 127
+						"x": 31,
+						"y": 4,
+						"w": 130,
+						"h": 220
 					},
 					"frame": {
-						"x": 480,
-						"y": 0,
-						"w": 222,
-						"h": 127
-					}
-				},
-				{
-					"filename": "field",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 224,
-						"h": 160
-					},
-					"spriteSourceSize": {
-						"x": 14,
-						"y": 14,
-						"w": 196,
-						"h": 132
-					},
-					"frame": {
-						"x": 702,
-						"y": 0,
-						"w": 196,
-						"h": 132
+						"x": 92,
+						"y": 256,
+						"w": 130,
+						"h": 220
 					}
 				},
 				{
@@ -108,10 +108,31 @@
 						"h": 162
 					},
 					"frame": {
-						"x": 480,
-						"y": 127,
+						"x": 222,
+						"y": 256,
 						"w": 192,
 						"h": 162
+					}
+				},
+				{
+					"filename": "dwelling2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 36,
+						"w": 128,
+						"h": 92
+					},
+					"frame": {
+						"x": 222,
+						"y": 418,
+						"w": 128,
+						"h": 92
 					}
 				},
 				{
@@ -130,114 +151,9 @@
 					},
 					"frame": {
 						"x": 256,
-						"y": 222,
+						"y": 0,
 						"w": 192,
 						"h": 148
-					}
-				},
-				{
-					"filename": "mine1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 192,
-						"h": 192
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 82,
-						"w": 192,
-						"h": 110
-					},
-					"frame": {
-						"x": 0,
-						"y": 256,
-						"w": 192,
-						"h": 110
-					}
-				},
-				{
-					"filename": "goblinpit",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 64,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 64,
-						"h": 64
-					},
-					"frame": {
-						"x": 192,
-						"y": 256,
-						"w": 64,
-						"h": 64
-					}
-				},
-				{
-					"filename": "BallistaTower",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 51,
-						"w": 60,
-						"h": 77
-					},
-					"frame": {
-						"x": 192,
-						"y": 320,
-						"w": 60,
-						"h": 77
-					}
-				},
-				{
-					"filename": "farm1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 192,
-						"h": 160
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 72,
-						"w": 183,
-						"h": 88
-					},
-					"frame": {
-						"x": 0,
-						"y": 366,
-						"w": 183,
-						"h": 88
-					}
-				},
-				{
-					"filename": "inn1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 160,
-						"h": 128
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 13,
-						"w": 160,
-						"h": 115
-					},
-					"frame": {
-						"x": 898,
-						"y": 0,
-						"w": 160,
-						"h": 115
 					}
 				},
 				{
@@ -255,31 +171,31 @@
 						"h": 102
 					},
 					"frame": {
-						"x": 1058,
-						"y": 0,
+						"x": 256,
+						"y": 148,
 						"w": 160,
 						"h": 102
 					}
 				},
 				{
-					"filename": "church1",
+					"filename": "field",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 192,
-						"h": 224
+						"w": 224,
+						"h": 160
 					},
 					"spriteSourceSize": {
-						"x": 31,
-						"y": 4,
-						"w": 130,
-						"h": 220
+						"x": 14,
+						"y": 14,
+						"w": 196,
+						"h": 132
 					},
 					"frame": {
-						"x": 1218,
-						"y": 0,
-						"w": 130,
-						"h": 220
+						"x": 0,
+						"y": 732,
+						"w": 196,
+						"h": 132
 					}
 				},
 				{
@@ -297,31 +213,73 @@
 						"h": 128
 					},
 					"frame": {
-						"x": 1058,
-						"y": 102,
+						"x": 0,
+						"y": 864,
 						"w": 128,
 						"h": 128
 					}
 				},
 				{
-					"filename": "dwelling2",
+					"filename": "warehouse1",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 128,
+						"w": 224,
+						"h": 160
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 222,
+						"h": 127
+					},
+					"frame": {
+						"x": 0,
+						"y": 992,
+						"w": 222,
+						"h": 127
+					}
+				},
+				{
+					"filename": "inn1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 160,
 						"h": 128
 					},
 					"spriteSourceSize": {
 						"x": 0,
-						"y": 36,
-						"w": 128,
-						"h": 92
+						"y": 13,
+						"w": 160,
+						"h": 115
 					},
 					"frame": {
-						"x": 898,
-						"y": 115,
-						"w": 128,
-						"h": 92
+						"x": 128,
+						"y": 864,
+						"w": 160,
+						"h": 115
+					}
+				},
+				{
+					"filename": "mine1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 192,
+						"h": 192
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 82,
+						"w": 192,
+						"h": 110
+					},
+					"frame": {
+						"x": 196,
+						"y": 732,
+						"w": 192,
+						"h": 110
 					}
 				},
 				{
@@ -339,10 +297,31 @@
 						"h": 90
 					},
 					"frame": {
-						"x": 672,
-						"y": 132,
+						"x": 224,
+						"y": 510,
 						"w": 128,
 						"h": 90
+					}
+				},
+				{
+					"filename": "farm1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 192,
+						"h": 160
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 72,
+						"w": 183,
+						"h": 88
+					},
+					"frame": {
+						"x": 350,
+						"y": 418,
+						"w": 183,
+						"h": 88
 					}
 				},
 				{
@@ -360,10 +339,52 @@
 						"h": 88
 					},
 					"frame": {
-						"x": 672,
-						"y": 222,
+						"x": 224,
+						"y": 600,
 						"w": 128,
 						"h": 88
+					}
+				},
+				{
+					"filename": "BallistaTower",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 51,
+						"w": 60,
+						"h": 77
+					},
+					"frame": {
+						"x": 414,
+						"y": 250,
+						"w": 60,
+						"h": 77
+					}
+				},
+				{
+					"filename": "orcsiegemachine1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 26,
+						"w": 60,
+						"h": 70
+					},
+					"frame": {
+						"x": 414,
+						"y": 327,
+						"w": 60,
+						"h": 70
 					}
 				}
 			]

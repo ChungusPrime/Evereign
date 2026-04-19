@@ -76,6 +76,7 @@ interface Skill {
 interface CharacterAbilities {
     [key: string]: {
         Cooldown?: number,
+        Velocity?: number,
         Damage?: AbilityDamageArray,
         CooldownMax?: number
     }

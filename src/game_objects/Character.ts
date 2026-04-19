@@ -78,15 +78,9 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
             return console.log("No abilities available to use!");
         }
 
-        if ( Ability == 'Bow Shot' ) {
-            console.log("Bow Shot fired");
-            this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 150, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
-        }
+        console.log("Used ability: ", Ability, " with damage: ", this.Abilities[Ability].Damage[this.Level]);
+        this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, this.Abilities[Ability].Velocity, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
 
-        if ( Ability == 'Pinning Shot' ) {
-            console.log("Pinning Shot fired");
-            this.scene.EnemyProjectiles.add(new Projectile(this.scene, this.x, this.y, 125, this.Abilities[Ability].Damage[this.Level], "Goblin-Arrow"));
-        }
 
         this.InCombatDelta = 5000;
         this.AttackCooldown = 1000;
@@ -179,7 +173,7 @@ export default abstract class Character extends Phaser.Physics.Arcade.Sprite {
             console.log("Enemy died, updating spawn location unit count.", this.SpawnLocation.ID, this.SpawnLocation.CurrentSpawnCount);
             this.SpawnLocation.CurrentSpawnCount--;
             if ( this.SpawnLocation.Units !== undefined ) {
-                let Unit = this.SpawnLocation.Units.find( (e) => e.Name == this.Name );
+                let Unit = this.SpawnLocation.Units.find( (e) => (e.Name == this.Name && e.Level == this.Level) );
                 if ( Unit !== undefined ) {
                     Unit.Alive--;
                     Unit.Dead++;

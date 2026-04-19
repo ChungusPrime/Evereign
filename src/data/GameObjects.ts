@@ -27,8 +27,10 @@ import Warehouse from "../game_objects/buildings/Warehouse";
 import GoblinSlinger from "../game_objects/characters/GoblinSlinger";
 import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
 import Port from "./../game_objects/buildings/Port";
+import DeadWillowTree from "../game_objects/plants/DeadWillowTree";
 
 const GameObjectsMap: { [key: string]: any } = {
+    "Dead Willow Tree": DeadWillowTree,
     "Willow Tree": WillowTree,
     "Marigold": Marigold,
     "Bloomberry": Bloomberry,

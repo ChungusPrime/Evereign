@@ -6,6 +6,7 @@ import Races from "../../data/Races";
 import Classes from "../../data/Classes";
 import Campaigns from "../../data/Campaigns";
 import ItemData from "../../data/ItemData";
+import Help from "../../data/HelpText";
 
 import DefaultCharacterData from '../../data/DefaultCharacter';
 
@@ -261,7 +262,6 @@ class CharacterCreation extends Phaser.GameObjects.Group {
     }
 
     SetHelpText(key: string) {
-        const Help = require("../../data/HelpText").default;
 
         this.InfoText.setText(Help[key] ?? "No help text available for this option.");
 
@@ -350,7 +350,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
             Character.WorldData = {};
 
             for (const region of Object.keys(CampaignData.WorldData)) {
-                Character.WorldData[region] = {};
+                Character.WorldData[region] = { DepletedHarvestables: [] };
                 for (const objectId of Object.keys(CampaignData.WorldData[region])) {
                     const objectDef = CampaignData.WorldData[region][objectId];
                     if (objectId == "Information") continue;

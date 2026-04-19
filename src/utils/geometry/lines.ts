@@ -194,7 +194,7 @@ export function hasLineOfSight(
     fromY: number,
     toX: number,
     toY: number,
-    collisionLayer: Phaser.Tilemaps.TilemapLayer
+    collisionLayer: Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.TilemapGPULayer
 ): boolean {
     const line = new Phaser.Geom.Line(fromX, fromY, toX, toY);
     const tilesAlongLine = collisionLayer.getTilesWithinShape(line);
@@ -223,7 +223,7 @@ export function raycast(
     fromY: number,
     toX: number,
     toY: number,
-    collisionLayer: Phaser.Tilemaps.TilemapLayer
+    collisionLayer: Phaser.Tilemaps.TilemapLayer | Phaser.Tilemaps.TilemapGPULayer
 ): { clear: boolean; hitPoint?: Phaser.Math.Vector2 } {
     const line = new Phaser.Geom.Line(fromX, fromY, toX, toY);
     const tilesAlongLine = collisionLayer.getTilesWithinShape(line);

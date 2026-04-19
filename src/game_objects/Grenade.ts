@@ -8,7 +8,6 @@ export default class Grenade extends Phaser.Physics.Arcade.Sprite {
     public light: Phaser.GameObjects.Light | null = null;
     public damage: any;
     public velocity: number;
-    public preFX!: any;
     public scene: Game;
     public Lifetime: number = 3000;
 

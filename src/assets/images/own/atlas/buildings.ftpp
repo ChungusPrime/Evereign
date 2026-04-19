@@ -45,11 +45,6 @@
       "folder": ""
     },
     {
-      "name": "goblinpit.png",
-      "path": "D:/code/Evereign/src/assets/images/own/buildings/goblinpit.png",
-      "folder": ""
-    },
-    {
       "name": "inn1.png",
       "path": "D:/code/Evereign/src/assets/images/own/buildings/inn1.png",
       "folder": ""
@@ -75,6 +70,11 @@
       "folder": ""
     },
     {
+      "name": "orcsiegemachine1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/orcsiegemachine1.png",
+      "folder": ""
+    },
+    {
       "name": "port.png",
       "path": "D:/code/Evereign/src/assets/images/own/buildings/port.png",
       "folder": ""
@@ -87,6 +87,11 @@
     {
       "name": "warehouse1.png",
       "path": "D:/code/Evereign/src/assets/images/own/buildings/warehouse1.png",
+      "folder": ""
+    },
+    {
+      "name": "wizardtower1.png",
+      "path": "D:/code/Evereign/src/assets/images/own/buildings/wizardtower1.png",
       "folder": ""
     }
   ],

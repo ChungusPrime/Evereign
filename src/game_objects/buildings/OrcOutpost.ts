@@ -33,6 +33,11 @@ export default class OrcOutpost extends Building {
         this.AggroGraphics = this.scene.add.graphics({ lineStyle: { width: 1, color: 0xff0000, alpha: 0.5 }, fillStyle: { color: 0xff0000, alpha: 0.1 } });
         this.AggroGraphics.fillCircleShape(this.AggroCircle).strokeCircleShape(this.AggroCircle);
         this.setDepth(this.AggroGraphics.depth + 1);
+
+        this.setInteractive().on('pointerdown', () => {
+            console.log("Orc Outpost clicked!", this.Units);
+        });
+
     }
 
     private areAllUnitsDead(): boolean {
@@ -99,6 +104,8 @@ export default class OrcOutpost extends Building {
             let EnemyClass = EnemyMapping[RandomUnit.Name];
             let Instance = new EnemyClass(this.scene, this);
             Instance.SpawnLocation = this;
+            Instance.ApplyModifiers(RandomUnit.Modifiers || []);
+            Instance.ApplyLevel(RandomUnit.Level || 1);
             this.scene.Enemies.add(Instance);
             Instance.Aggro();
             RandomUnit.Alive++;

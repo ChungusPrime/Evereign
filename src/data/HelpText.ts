@@ -2,28 +2,18 @@ import Races from "./Races";
 import Classes from "./Classes";
 import Campaigns from "./Campaigns";
 import Proficiencies from "./Proficiencies";
-
-console.log(Proficiencies);
+import Difficulties from "./Difficulties";
 
 const Help: HelpText = {
 
     // Difficulties
-    Story: `The Story difficulty is designed for players who want to experience the game without the challenge of combat.
-    In this mode, enemies will be significantly weaker, and your character will be much more powerful.
-    `,
-
-    Standard: `The Standard difficulty is the default mode for the game, providing a balanced experience for players.
-    In this mode, enemies will be of a similar strength to your character, and you will need to use strategy and skill to defeat them.
-    This mode is the recommended difficulty, especially for your first playthrough.
-    `,
-
-    Ultra: `The ULTRA difficulty is designed for players who want a challenge. You will face hunger and thirst, fatigue, stress and weather conditions that will require you to manage your character's needs 
-    in addition to devastating enemies. In this mode, you will need to use all of your skills and resources just to stay alive. Every step could be your last.
-    `,
+    Story: Difficulties.Story.Description,
+    Standard: Difficulties.Standard.Description,
+    Ultra: Difficulties.ULTRA.Description,
 
     // Campaigns
     "The Midnight Accord": Campaigns[0].Description,
-    "The Defence of Emberfall Island": Campaigns[1].Description,
+    //"The Defence of Emberfall Island": Campaigns[1].Description,
 
     // Classes
     Agent: Classes.Agent.Description,
@@ -71,8 +61,6 @@ const Help: HelpText = {
     - Fortune: Increases the chance of critical hits and reduces the chance of negative effects.
     - Grit: Increases resistance to negative effects and improves the effectiveness of certain abilities.
     `,
-
-
 
     Abilities: `Abilities are special skills that your character can use to perform various actions in the game.\n
     All abilities are Active, meaning they must be used manually by the player.\n

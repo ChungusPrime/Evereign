@@ -6,6 +6,26 @@ interface ObjectDefinition {
     flippedHorizontal?: boolean;
 }
 
+/** Defines a generic object in the world, which can be extended with specific properties for different types of objects (e.g., resources, interactables, obstacles).
+ * @Name the name of the object, used for display and reference
+ * @Description a brief description of the object, shown in tooltips and other UI elements
+ * @Category the category of the object (e.g., "Trees", "Rocks", "Buildings"), used for organization and filtering
+ * @HarvestAmount the amount of resources obtained when harvesting the object
+ * @HarvestItem the specific item obtained from harvesting the object
+ */
+interface ObjectData {
+    Name: string;
+    Description: string;
+    Category: string;
+    BaseHarvestAmount: number;
+    HarvestItem: string;
+    HarvestTime: number;
+    HarvestSound: string;
+    HarvestRequiresToolType: string;
+    HarvestExperienceType: string;
+    HarvestExperienceValue: number;
+}
+
 interface WorldData {
     [key: string]: any;
     InitialData?: {
@@ -47,10 +67,12 @@ interface WorldData {
         Loot?: LootItem[];
         Active?: boolean;
     };
+    DepletedHarvestables?: string[];
     Alive?: boolean;
     Health?: number;
     Active?: boolean;
     Destroyed?: boolean;
+    Modifiers?: string[];
     Name?: string;
     Level?: number;
     Unlocked?: boolean;
@@ -145,4 +167,6 @@ interface IUnit {
     Total: number
     Alive: number;
     Dead: number;
+    Level?: number;
+    Modifiers?: string[];
 }

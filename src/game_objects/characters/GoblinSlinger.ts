@@ -1,4 +1,4 @@
-import Game from "../../scenes/Game";
+import Game, { MD } from "../../scenes/Game";
 import Building from "../Building";
 import Character from "../Character";
 
@@ -21,6 +21,7 @@ export default class GoblinSlinger extends Character {
     public AttackCooldown: number = 1000;
     public Temperament: string = "Hostile";
     public Faction: string = "Klan Gorgutz";
+    public Modifiers: string[] = [];
 
     public Defence_Pierce: number = 0;
     public Defence_Impact: number = 0;
@@ -46,15 +47,16 @@ export default class GoblinSlinger extends Character {
         'Pinning Shot': {
             Cooldown: 5000,
             CooldownMax: 5000,
+            Velocity: 200,
             Damage: {
                 1: [
-                    { Type: "Pierce", Min: 1, Max: 5, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 18, Max: 19, ApplyDebuff: "Slow" }
                 ],
                 2: [
-                    { Type: "Pierce", Min: 3, Max: 7, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 18, Max: 19, ApplyDebuff: "Slow" }
                 ],
                 3: [
-                    { Type: "Pierce", Min: 11, Max: 19, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 18, Max: 19, ApplyDebuff: "Slow" }
                 ],
                 4: [
                     { Type: "Pierce", Min: 27, Max: 45, ApplyDebuff: "Slow" }
@@ -67,12 +69,13 @@ export default class GoblinSlinger extends Character {
         'Bow Shot': {
             Cooldown: 2000,
             CooldownMax: 2000,
+            Velocity: 150,
             Damage: {
                 1: [
-                    { Type: "Pierce", Min: 15, Max: 25 }
+                    { Type: "Pierce", Min: 18, Max: 19 }
                 ],
                 2: [
-                    { Type: "Pierce", Min: 7, Max: 11 }
+                    { Type: "Pierce", Min: 18, Max: 19 }
                 ],
                 3: [
                     { Type: "Pierce", Min: 14, Max: 35 }
@@ -90,16 +93,27 @@ export default class GoblinSlinger extends Character {
     constructor ( scene: Game, object: Phaser.Types.Tilemaps.TiledObject | Building ) {
         super(scene, { x: object.x, y: object.y }, "Orcs", 0);
 
+        // Set properties from Tiled object
         if ( 'properties' in object && object.properties ) {
             this.ID = object.properties[0].value ?? null;
+            this.Level = MD[this.ID]?.Level ?? 1;
+            this.ApplyLevel(this.Level);
+            this.Modifiers = MD[this.ID]?.Modifiers ?? [];
+            this.ApplyModifiers(this.Modifiers);
         }
 
         this.SpawnLocation = object instanceof Building ? object : { x: object.x, y: object.y };
         this.MaxHealth = this.Health;
-        this.setPipeline('Light2D');
+        this.setLighting(true);
         this.scene.Enemies.add(this);
 
+        this.setImmovable(true);
+
         console.log("Created Goblin Slinger at", this.x, this.y, this.SpawnLocation);
+
+        this.setInteractive().on('pointerdown', () => {
+            console.log("Orc Slinger clicked!", this.Modifiers, this.Level);
+        });
     }
 
     update ( time: number, delta: number ) {
@@ -148,6 +162,31 @@ export default class GoblinSlinger extends Character {
                 this.play(this.WalkAnimation);
         }
 
+    }
+
+    ApplyModifiers ( modifiers: string[] ) {
+        this.Modifiers = modifiers;
+        modifiers.forEach(mod => {
+            switch (mod) {
+                case "Fortified":
+                    this.MaxHealth *= 1.5;
+                    this.Health = this.MaxHealth;
+                    break;
+                case "Aggressive":
+                    this.AttackCooldown *= 0.75;
+                    break;
+                case "Infested":
+                    this.MaxHealth *= 0.75;
+                    this.Health = this.MaxHealth;
+                    break;
+            }
+        });
+    }
+
+    ApplyLevel ( level: number ) {
+        this.Level = level;
+        this.MaxHealth *= 1 + (level - 1) * 0.5;
+        this.Health = this.MaxHealth;
     }
 
 }

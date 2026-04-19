@@ -72,7 +72,7 @@ export default class DayNightCycle {
                     particle.y + this.UI.Game.cameras.main.scrollY,
                     'Rain'
                 )
-                .setPipeline("Light2D")
+                .setLighting(true)
                 .setScale(0.5)
                 .setVisible(true)
                 .setBlendMode(Phaser.BlendModes.NORMAL)
@@ -83,7 +83,7 @@ export default class DayNightCycle {
                 });
             }
         })
-        .setPipeline("Light2D")
+        .setLighting(true)
         .setActive(false)
         .setVisible(false)
         .setDepth(0);
@@ -97,7 +97,9 @@ export default class DayNightCycle {
             return;
         }
 
-        if ( Campaign.WorldMapInformation[GD.CurrentMap].Type == "Exterior" ) {
+        let Type = Campaign.WorldData[GD.CurrentMap].Information.Type;
+
+        if ( Type == "Exterior" ) {
             this.StartRaining();
         } else {
             this.StopRaining();
@@ -109,14 +111,14 @@ export default class DayNightCycle {
         this.IsRaining = true;
         this.scene.sound.play('rain', { loop: true, volume: 0.5 });
         this.RainEmitter.setActive(true).setVisible(true);
-        this.scene.CameraColourMatrix.grayscale(0.4);
+        this.scene.CameraColourMatrix.colorMatrix.grayscale(0.4);
     }
 
     StopRaining () {
         this.IsRaining = false;
         this.scene.sound.stopByKey('rain');
         this.RainEmitter.setActive(false).setVisible(false);
-        this.scene.cameras.main.postFX.clear();
+        this.scene.cameras.main.filters.external.clear();
     }
 
     update ( delta: number ) {
@@ -165,7 +167,7 @@ export default class DayNightCycle {
             return;
         }
 
-        let Type = Campaign.WorldMapInformation[GD.CurrentMap].Type;
+        let Type = Campaign.WorldData[GD.CurrentMap].Information.Type;
 
         if ( Type == "Exterior" ) {
             this.scene.lights.setAmbientColor(this.DaytimeCycles[this.DaytimeHour].hex);

@@ -26,7 +26,7 @@ export default class Marigold extends Phaser.Physics.Arcade.Sprite {
         this.setData('type', "Marigold")
         .setDisplaySize(32, 32)
         .setOrigin(0, 1)
-        .setPipeline("Light2D")
+        .setLighting(true)
         .setDepth(100)
         .setInteractive()
         .on('pointerdown', () => {

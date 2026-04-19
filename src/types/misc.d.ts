@@ -60,3 +60,12 @@ interface Achievement {
     Icon: string;
     SoulgemValue: number;
 }
+
+interface Difficulty {
+    ID: string;
+    Name: string;
+    Description: string;
+    EnemyHealthMultiplier: number;
+    EnemyDamageMultiplier: number;
+    EnemyCountMultiplier: number;
+};

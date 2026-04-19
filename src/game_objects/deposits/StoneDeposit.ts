@@ -26,7 +26,7 @@ export default class StoneDeposit extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0, 1)
         .setDisplaySize(32, 32)
         .setData("type", "Stone Deposit")
-        .setPipeline("Light2D")
+        .setLighting(true)
         .setDepth(100)
         .setImmovable(true)
         .setInteractive()

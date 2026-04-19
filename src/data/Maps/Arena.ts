@@ -16,7 +16,9 @@ const ArenaData: WorldData = {
         OnDestroyDisableObstacle: [],
         InitialData: {
             Units: [
-                { Name: "Orc Slinger", Total: 3, Alive: 0, Dead: 0 },
+                { Name: "Orc Slinger", Total: 1, Alive: 0, Dead: 0, Level: 1, Modifiers: ["Fortified"] },
+                { Name: "Orc Slinger", Total: 1, Alive: 0, Dead: 0, Level: 2, Modifiers: ["Aggressive"] },
+                { Name: "Orc Slinger", Total: 1, Alive: 0, Dead: 0, Level: 3, Modifiers: ["Infested"] },
             ]
         }
     },
@@ -32,8 +34,27 @@ const ArenaData: WorldData = {
                 { ItemID: "town_centre_blueprint", Amount: 1 },
             ]
         }
+    },
 
-    }
+    "orcish1": {
+        Type: "Orc Slinger",
+        Level: 1,
+        Modifiers: ["Fortified"],
+        InitialData: {
+            Alive: true,
+            Health: 10
+        }
+    },
+
+    "orcish2": {
+        Type: "Orc Slinger",
+        Level: 2,
+        Modifiers: ["Brutal"],
+        InitialData: {
+            Alive: true,
+            Health: 10
+        }
+    },
 
 }
 

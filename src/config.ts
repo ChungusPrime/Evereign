@@ -5,8 +5,7 @@ import UI from "./scenes/UI";
 import Menu from "./scenes/Menu";
 
 // Plugins
-import PhaserNavMeshPlugin from "phaser-navmesh";
-import BBCodeTextPlugin from 'phaser3-rex-plugins/plugins/bbcodetext-plugin.js';
+import BBCodeTextPlugin from 'phaser4-rex-plugins/plugins/bbcodetext-plugin.js';
 
 export const Config: Phaser.Types.Core.GameConfig = {
 	parent: "game",
@@ -34,14 +33,7 @@ export const Config: Phaser.Types.Core.GameConfig = {
 		touch: false
 	},
 	plugins: {
-		scene: [
-			{
-				key: "PhaserNavMeshPlugin",
-				plugin: PhaserNavMeshPlugin,
-				mapping: "navMeshPlugin",
-				start: true
-			}
-		],
+		scene: [],
 		global: [
 			{
 				key: 'rexBBCodeTextPlugin',

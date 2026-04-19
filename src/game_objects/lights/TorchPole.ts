@@ -11,7 +11,7 @@ export default class TorchPole extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.setOrigin(0, 1)
         .setDisplaySize(object.width, object.height)
-        .setPipeline("Light2D")
+        .setLighting(true)
         .play({ key: "torch-pole-anim", repeat: -1 })
 
         if ( object.flippedHorizontal ) {

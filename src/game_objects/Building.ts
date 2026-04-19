@@ -64,7 +64,7 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
             this.setOrigin(0, 1);
         }
         
-        this.setInteractive().setImmovable().setPipeline("Light2D");
+        this.setInteractive().setImmovable().setLighting(true);
 
         this.scene.Buildings.add(this);
 

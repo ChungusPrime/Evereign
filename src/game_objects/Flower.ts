@@ -25,7 +25,7 @@ export default class Flower extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
 
         this.setOrigin(0, 1)
-        .setPipeline("Light2D")
+        .setLighting(true)
         .setDepth(100)
         .setInteractive()
         .on('pointerover', () => { 
