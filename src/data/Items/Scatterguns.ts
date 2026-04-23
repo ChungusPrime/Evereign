@@ -7,6 +7,7 @@ const Scatterguns: ItemData[] = [
         Desc: "Rusty old Scattergun that has seen better days. Still packs a punch, but needs some love.",
         Stackable: false,
         Craftable: false,
+        Moddable: false,
         Properties: {
             Velocity: 500,
             Lifetime: 3,
@@ -16,7 +17,7 @@ const Scatterguns: ItemData[] = [
             Spread: 20
         },
         Sound: "Scattergun_fire",
-        Moddable: false,
+        Tags: [2, 4, 45],
         InitialValue: { ID: "grandpa_scattergun", Quantity: 1, CurrentMagazine: 2, Ammo: "stone_shot", Cooldown: 0, Mods: {} }
     },
 
@@ -24,14 +25,14 @@ const Scatterguns: ItemData[] = [
         ID: "scattergun_farmhand",
         Name: "Farmhand's Scattergun",
         Sprite: "weapons-2",
-        Desc: "A reliable Scattergun used by farmhands to protect their land from pests and intruders.",
+        Desc: "A reliable Scattergun used by farmhands to protect their land from predators and intruders.",
         Stackable: false,
         Properties: {
             Damage: [
                 { Type: "Piercing", Amount: 3 },
                 { Type: "Force", Amount: 6 }
             ],
-            Velocity: 90,
+            Velocity: 500,
             Lifetime: 4,
             Cooldown: 900,
             ReloadTime: 2.8,
@@ -50,26 +51,27 @@ const Scatterguns: ItemData[] = [
                 { ID: "oak_plank", Amount: 2 }
             ],
         },
-        InitialValue: { ID: "scattergun_farmhand", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null }
+        Tags: [2, 4, 45],
+        InitialValue: { ID: "scattergun_farmhand", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null, Cooldown: 0 }
     },
 
     {
-        ID: "Scattergun_bronze",
-        Name: "Bronze Scattergun",
+        ID: "scatterpistol_bandit",
+        Name: "Bandit's Scatterpistol",
         Sprite: "weapons-2",
-        Desc: "A sturdy Scattergun made of bronze, offering a balance between power and reliability.",
+        Desc: "A scrappy Scatterpistol mainly used by ne'er-do-wells who can't get their hands on anything better.",
         Stackable: false,
         Properties: {
             Damage: [
-                { Type: "Piercing", Amount: 7 },
-                { Type: "Force", Amount: 12 }
+                { Type: "Piercing", Amount: 2 },
+                { Type: "Force", Amount: 3 }
             ],
-            Velocity: 80,
+            Velocity: 400,
             Lifetime: 4,
-            Cooldown: 900,
-            ReloadTime: 2.8,
-            Pellets: 8,
-            MagazineSize: 4,
+            Cooldown: 500,
+            ReloadTime: 2.5,
+            Pellets: 6,
+            MagazineSize: 5,
         },
         Sound: "Scattergun_fire",
         Moddable: true,
@@ -79,81 +81,13 @@ const Scatterguns: ItemData[] = [
             Skill: "Smithing",
             SkillXP: 50,
             Materials: [
-                { ID: "iron_ingot", Amount: 5 },
-                { ID: "oak_plank", Amount: 2 }
+                { ID: "iron_ingot", Amount: 3 },
+                { ID: "oak_plank", Amount: 1 }
             ],
         },
-        InitialValue: { ID: "Scattergun_bronze", Quantity: 1, CurrentMagazine: 6, Mods: { "Barrel": null, "Stock": null }, Ammo: null }
+        Tags: [1, 4],
+        InitialValue: { ID: "scatterpistol_bandit", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null, Cooldown: 0 }
     },
-
-    {
-        ID: "Scattergun_iron",
-        Name: "Iron Scattergun",
-        Sprite: "weapons-2",
-        Desc: "A robust Scattergun forged from iron, providing enhanced durability and firepower.",
-        Stackable: false,
-        Properties: {
-            Damage: [
-                { Type: "Piercing", Amount: 8 },
-                { Type: "Force", Amount: 14 }
-            ],
-            Velocity: 90,
-            Lifetime: 4.5,
-            Cooldown: 850,
-            ReloadTime: 2.5,
-            Pellets: 8,
-            MagazineSize: 5,
-        },
-        Sound: "Scattergun_fire",
-        Moddable: true,
-        Craftable: true,
-        ModdableParts: ["Barrel", "Stock"],
-
-        Crafting: {
-            Skill: "Smithing",
-            SkillXP: 50,
-            Materials: [
-                { ID: "iron_ingot", Amount: 5 },
-                { ID: "oak_plank", Amount: 2 }
-            ],
-        },
-
-        InitialValue: { ID: "Scattergun_iron", Quantity: 1, CurrentMagazine: 6, Mods: { "Barrel": null, "Stock": null }, Ammo: null }
-    },
-
-    {
-        ID: "Scattergun_steel",
-        Name: "Steel Scattergun",
-        Sprite: "weapons-2",
-        Desc: "A powerful Scattergun crafted from steel, designed for those who demand more firepower.",
-        Stackable: false,
-        Properties: {
-            Damage: [
-                { Type: "Pierce", Amount: 4 },
-                { Type: "Impact", Amount: 6 }
-            ],
-            Velocity: 100,
-            Lifetime: 5,
-            Cooldown: 800,
-            ReloadTime: 2.5,
-            Pellets: 8,
-            MagazineSize: 6,
-        },
-        Sound: "Scattergun_fire",
-        Moddable: true,
-        Craftable: true,
-        ModdableParts: ["Barrel", "Stock"],
-        Crafting: {
-            Skill: "Smithing",
-            SkillXP: 50,
-            Materials: [
-                { ID: "iron_ingot", Amount: 5 },
-                { ID: "oak_plank", Amount: 2 }
-            ],
-        },
-        InitialValue: { ID: "Scattergun_steel", Quantity: 1, CurrentMagazine: 8, Mods: { "Barrel": null, "Stock": null, "Muzzle": null }, Ammo: null }
-    },
-
 
 ];
 
