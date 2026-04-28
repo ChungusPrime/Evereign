@@ -3,10 +3,10 @@ const Dwelling: BuildingData = {
     Name: "Dwelling",
     Desc: `The Dwelling provides basic housing for citizens and is essential for the growth of your town.
     It can be upgraded to increase its capacity and provide better living conditions.`,
-    Size: { Width: 224, Height: 180 },
+    Size: { Width: 128, Height: 128 },
     Spritesheet: "Buildings",
-    Sprite: "dwelling-1",
-    PlotSize: { Width: 224, Height: 180 },
+    Sprite: "dwelling1",
+    PlotSize: { Width: 128, Height: 128 },
     BaseHousingSlots: 5,
     BuildingCost: {
         1: [

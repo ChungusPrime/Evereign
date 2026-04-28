@@ -32,6 +32,8 @@ const ArenaData: WorldData = {
                 { ItemID: "gold", Amount: 50 },
                 { ItemID: "shard_valius", Amount: 1 },
                 { ItemID: "town_centre_blueprint", Amount: 1 },
+                { ItemID: "marigold_brew", Amount: 2 },
+                { ItemID: "dwelling_blueprint", Amount: 1 },
             ]
         }
     },

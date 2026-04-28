@@ -110,6 +110,12 @@ export default class ItemSlot extends Phaser.GameObjects.NineSlice {
                     this.scene.EventLog.NewEvent("You have unlocked the ability to build Town Centres!");
                     return;
                 }
+                if ( this.DataInventorySlot.ID == "dwelling_blueprint" ) {
+                    GD.UnlockedBuildings.push("Dwelling");
+                    Inv.RemoveItem("dwelling_blueprint", 1);
+                    this.scene.EventLog.NewEvent("You have unlocked the ability to build Dwellings!");
+                    return;
+                }
             }
             else if (pointer.leftButtonDown() && !Inv.HeldItem) {
                 Inv.HeldItem = this.Item;

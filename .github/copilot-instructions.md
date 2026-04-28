@@ -20,7 +20,6 @@ export let GD: Character;     // Current character data
 export let CD: Campaign;      // Current campaign data  
 export let DM: DataManager;   // Static data lookups
 export let Inv: Inventory;    // Inventory system
-export let EM: EnemyManager;  // Enemy spawning/management
 export let QM: QuestManager;  // Quest tracking
 ```
 
@@ -32,7 +31,6 @@ export let QM: QuestManager;  // Quest tracking
 
 ### Key Directories
 - `src/game_objects/` - Phaser game objects (characters, UI elements, buildings)
-- `src/game_objects/managers/` - System managers (DataManager, EnemyManager, QuestManager)
 - `src/systems/` - Game systems (Inventory, MapBuilder, DayNightCycle)
 - `src/data/` - Static game data definitions
 

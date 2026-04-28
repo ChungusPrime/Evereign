@@ -13,12 +13,11 @@ import ItemData from '../data/ItemData';
 import Abilities from '../data/Abilities';
 
 // Global copies of various game data for easy access across the codebase
-
-// Characters Save Data
+// Dynamic Character/Map Data
 export let GD: Character = null;
 export let CMD: WorldData = null;
 
-// Campaign / Map Data
+// Static Campaign / Map Data
 export let CD: Campaign = null;
 export let MD: WorldData = null;
 
@@ -36,9 +35,6 @@ export let BH: BuildingHelper;
 
 import DayNightCycle from '../systems/DayNightCycle';
 export let DNC: DayNightCycle;
-
-import EnemyManager from '../game_objects/managers/EnemyManager';
-export let EM: EnemyManager;
 
 import QuestManager from '../game_objects/managers/QuestManager';
 export let QM: QuestManager;
@@ -84,7 +80,6 @@ export default class Game extends Phaser.Scene {
     public ActionManager!: ActionManager | null;
     public InputManager!: InputManager;
     public BuildingHelper!: BuildingHelper;
-    public EnemyManager!: EnemyManager;
 
     // Game Object Groups
     public Projectiles: Phaser.GameObjects.Group;
@@ -190,7 +185,6 @@ export default class Game extends Phaser.Scene {
         this.DaytimeCycleManager = new DayNightCycle(this, this.UI, GD.DaytimeHour, GD.DaytimeMinute, GD.DaytimeDelta);
         this.MapBuilder = new MapBuilder(this);
         this.ActionManager = new ActionManager(this, this.UI);
-        this.EnemyManager = new EnemyManager(this);
         this.BuildingHelper = new BuildingHelper(this, this.UI);
         this.PlayerCharacter = new PlayerCharacter(this);
 
@@ -316,7 +310,15 @@ export default class Game extends Phaser.Scene {
 
     }
 
-    UnloadCurrentMap () {
+    LoadMap ( key: string ) {
+        
+        // Pause the scene while we load the new map
+        this.physics.pause();
+        this.physics.disableUpdate();
+        this.scene.pause("Game");
+
+        if ( this.PlayerCollisionLayerCollider !== undefined )
+            this.PlayerCollisionLayerCollider.active = false;
 
         this.Projectiles.getChildren().forEach((proj: Projectile) => proj.delete());
         this.Projectiles.clear(true, true);
@@ -341,20 +343,6 @@ export default class Game extends Phaser.Scene {
         if ( this.Map !== undefined ) {
             this.Map.destroy();
         }
-
-    }
-
-    LoadMap ( key: string ) {
-        
-        // Pause the scene while we load the new map
-        this.physics.pause();
-        this.physics.disableUpdate();
-        this.scene.pause("Game");
-
-        if ( this.PlayerCollisionLayerCollider !== undefined )
-            this.PlayerCollisionLayerCollider.active = false;
-
-        this.UnloadCurrentMap();
         
         // Start building new map
         this.Map = this.make.tilemap({ key: key });
@@ -524,6 +512,7 @@ export default class Game extends Phaser.Scene {
 
         if ( this.PlayerCharacter.PlayerIsDead ) return;
         if ( this.BuildingHelper.BuildingPlacementMode ) return;
+        if ( this.UI.TownManagementPanel.Background.visible ) return;
 
         console.log("Using mainhand item");
 

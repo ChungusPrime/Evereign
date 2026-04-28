@@ -15,7 +15,7 @@ const TownCentreData: BuildingData = {
 
     Spritesheet: "Buildings",
 
-    Sprite: "town-centre-1",
+    Sprite: "towncentre1",
 
     PlotSize: { 
         Width: 224,

@@ -41,39 +41,26 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-
-        console.log(object);
         
+        // If the object is from Tiled, take the ID from the first index of properties
         if ( 'properties' in object && object.properties ) {
-            // If the object is from Tiled, take the ID from the first index of properties
             this.ID = object.properties[0].value ?? null;
             this.IsPlayerOwned = false;
             this.Units = CMD[this.ID]?.Units;
-        }
-        else if ( 'id' in object ) {
-            // If the object is from PlayerData, take the ID directly from the object
-            this.ID = object.id as string ?? null;
-            this.IsPlayerOwned = true;
-        }
-        
-        console.log(this.ID, this.IsPlayerOwned);
-
-        if ( this.IsPlayerOwned ) {
-            this.setOrigin(0, 0);
-        } else {
             this.setOrigin(0, 1);
         }
+        // If the object is from PlayerData, take the ID directly from the object
+        else if ( 'id' in object ) {
+            this.ID = object.id as string ?? null;
+            this.IsPlayerOwned = true;
+            this.setOrigin(0, 0);
+        }
         
-        this.setInteractive().setImmovable().setLighting(true);
+        this.setInteractive()
+        .setImmovable()
+        .setLighting(true);
 
         this.scene.Buildings.add(this);
-
-        /*if ( this.Type == "TownCentre" && this.IsPlayerOwned == true ) {
-            let BuildZone = this.scene.add.rectangle(this.getCenter().x, this.getCenter().y, 672 + 1, 672  + 1, 0xffffff, 0.2).setVisible(false);
-            this.scene.physics.world.enable(BuildZone);
-            this.BuildZone = BuildZone;
-            this.scene.TownCentre = this;
-        }*/
 
         this.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
 
@@ -103,7 +90,7 @@ export default abstract class Building extends Phaser.Physics.Arcade.Sprite {
     }
 
     public OpenManagementPanel () {
-        console.log("Open building management screen");
+        console.log("Open building management screen for building with ID: " + this.ID);
     }
 
     public CreateBuildZone () {

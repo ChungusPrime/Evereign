@@ -330,7 +330,8 @@ export default class UI extends Phaser.Scene {
         // Event Log Camera
         this.EventLog.EventsLogCamera.ignore(SidePanel);
         this.EventLog.EventsLogCamera.ignore(this.TownManagementPanel.BackgroundObjects);
-        this.EventLog.EventsLogCamera.ignore(this.TownManagementPanel.TownListObjects);
+        this.EventLog.EventsLogCamera.ignore(this.TownManagementPanel.TownList);
+        this.EventLog.EventsLogCamera.ignore(this.TownManagementPanel.BuildingList);
         this.EventLog.EventsLogCamera.ignore(this.WorldMap.MapImages);
         this.EventLog.EventsLogCamera.ignore(this.WorldMap.Background);
         this.EventLog.EventsLogCamera.ignore(this.Game.DaytimeCycleManager.RainEmitter);

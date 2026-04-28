@@ -42,6 +42,16 @@ const Consumables: ItemData[] = [
     },
 
     {
+        ID: "dwelling_blueprint",
+        Name: "Dwelling Blueprint",
+        Sprite: "librarium-45",
+        Desc: "Blueprints showing the design of a Dwelling. When used, grants the ability to construct dwellings.",
+        Stackable: false,
+        InitialValue: { ID: "dwelling_blueprint", Quantity: 1 },
+        Craftable: false,
+    },
+
+    {
         ID: "basic_town_kit",
         Name: "Basic Town Kit",
         Sprite: "librarium-45",

@@ -79,8 +79,8 @@ export default class OrcTower extends Building {
         if ( this.SpawnDelta >= this.SpawnInterval ) {
             let RandomUnit = availableUnits[Phaser.Math.Between(0, availableUnits.length - 1)];
             let RandomSpawn = this.getBounds().getRandomPoint();
-            this.scene.EnemyManager.SpawnBuildingEnemy(RandomUnit.Name, RandomSpawn.x, RandomSpawn.y, this).Aggro();
-            RandomUnit.Alive++;
+            //this.scene.EnemyManager.SpawnBuildingEnemy(RandomUnit.Name, RandomSpawn.x, RandomSpawn.y, this).Aggro();
+            //RandomUnit.Alive++;
             this.CurrentSpawnCount += 1;
             this.SpawnDelta = 0;
         }
