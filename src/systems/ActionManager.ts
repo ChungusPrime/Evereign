@@ -145,53 +145,43 @@ export default class ActionManager {
 
         this.CurrentActivity.Delta += delta;
 
-        this.ActivityProgressBar.setDisplaySize( this.CurrentActivity.Delta / 1000 * 200, 20 );
-
         if ( this.CurrentActivity.IsAbility ) {
 
             const Ability = Abilities[this.CurrentActivity.AbilityID];
+            let MaxTime = 0;
 
             // Invoke ability effects when we cross a channel interval threshold
             if ( Ability.hasOwnProperty("ChannelInterval") ) {
-
                 const previousIntervals = Math.floor((this.CurrentActivity.Delta - delta) / Ability.ChannelInterval);
                 const currentIntervals = Math.floor(this.CurrentActivity.Delta / Ability.ChannelInterval);
-
+                MaxTime = Ability.MaxChannelTime || 0;
                 if ( currentIntervals > previousIntervals ) {
                     console.log(`Applying channeled effect of ${Ability.Name}`);
+                    this.scene.UseAbility();
                 }
-
-            }
-
-            if ( Ability.hasOwnProperty("ChannelInterval") && this.CurrentActivity.Delta >= Ability.MaxChannelTime ) {
-                console.log(`Max channel time reached for ${Ability.Name}, ending channel.`);
-                this.CancelActivity();
-                return;
+                if ( MaxTime > 0 && this.CurrentActivity.Delta >= MaxTime ) {
+                    console.log(`Max channel time reached for ${Ability.Name}, ending channel.`);
+                }
             }
 
             if ( Ability.ActiviationType == "Charge" && this.CurrentActivity.Delta >= Ability.ChargeTime ) {
                 console.log(`Max charge time reached for ${Ability.Name}, performing ability with max charge.`);
-                // Perform the ability with max charge here (e.g. apply effects, deal damage, etc.)
-                this.CancelActivity();
-                return;
+                MaxTime = Ability.ChargeTime;
+                this.scene.UseAbility();
             }
 
             if ( Ability.ActiviationType == "Cast" && this.CurrentActivity.Delta >= Ability.CastTime ) {
                 console.log(`Cast time completed for ${Ability.Name}, performing ability.`);
-                // Perform the ability here (e.g. apply effects, deal damage, etc.)
-                this.CancelActivity();
-                return;
+                MaxTime = Ability.CastTime;
+                this.scene.UseAbility();
             }
 
-            // Ability still in progress, wait for completion
-            return;
+            this.ActivityProgressBar.setDisplaySize(Math.min(this.CurrentActivity.Delta / MaxTime, 1) * 200, 20);
+            return this.CancelActivity();
 
         } else {
 
             if ( this.CurrentActivity.Delta < 1000 ) return;
-
-            this.CurrentActivity.Delta = 0;
-            this.ActivityProgressBar.setDisplaySize(0, 20);
 
             let ev = { message: "", sprite1: "", sprite2: 0, x: this.scene.PlayerCharacter.x, y: this.scene.PlayerCharacter.y };
 

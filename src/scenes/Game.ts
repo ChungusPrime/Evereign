@@ -684,22 +684,36 @@ export default class Game extends Phaser.Scene {
 
     ThrowItem (itemId: string) {
         console.log("Throwing item");
-
         console.log(itemId);
-
         let data = ItemData[itemId];
-
         if ( !Inv.HasRequiredQuantity(itemId, 1)  )
             return console.log("You have no more of this item left");
-
-
         Inv.RemoveItem(itemId, 1);
         let Proj = new Grenade(this, this.PlayerCharacter.x, this.PlayerCharacter.y, 180, [], data.Sprite);
-
         // Throw grenade towards mouse cursor
         Proj.rotation = Phaser.Math.Angle.Between( this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY );
         Proj.setVelocity( Math.cos(Proj.rotation) * 160, Math.sin(Proj.rotation) * 360 );
         this.Projectiles.add(Proj);
+    }
+
+    UseItem (itemId: string) {
+        console.log("Using item" + itemId);
+        if ( itemId == "town_centre_blueprint" ) {
+            GD.UnlockedBuildings.push("Town Centre");
+            Inv.RemoveItem("town_centre_blueprint", 1);
+            this.UI.EventLog.NewEvent("You have unlocked the ability to build Town Centres!");
+            return;
+        }
+        if ( itemId == "dwelling_blueprint" ) {
+            GD.UnlockedBuildings.push("Dwelling");
+            Inv.RemoveItem("dwelling_blueprint", 1);
+            this.UI.EventLog.NewEvent("You have unlocked the ability to build Dwellings!");
+            return;
+        }
+    }
+
+    UseAbility () {
+        console.log("Using ability");
     }
 
     UseConsumable (itemId: string) {
