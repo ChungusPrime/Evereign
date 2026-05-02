@@ -39,6 +39,8 @@ export let DNC: DayNightCycle;
 import QuestManager from '../game_objects/managers/QuestManager';
 export let QM: QuestManager;
 
+export let PC: PlayerCharacter;
+
 import ActionManager from '../systems/ActionManager';
 import InputManager from '../systems/InputManager';
 import Projectile from '../game_objects/Projectile';
@@ -187,6 +189,7 @@ export default class Game extends Phaser.Scene {
         this.ActionManager = new ActionManager(this, this.UI);
         this.BuildingHelper = new BuildingHelper(this, this.UI);
         this.PlayerCharacter = new PlayerCharacter(this);
+        PC = this.PlayerCharacter;
 
         this.Inventory = new Inventory(this, this.UI);
         Inv = this.Inventory;

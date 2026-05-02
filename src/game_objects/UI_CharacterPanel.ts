@@ -1,5 +1,5 @@
 import UI from "../scenes/UI";
-import { GD, Inv } from "../scenes/Game";
+import { GD, Inv, PC } from "../scenes/Game";
 import ItemData from "../data/ItemData";
 import Proficiencies from "../data/Proficiencies";
 
@@ -168,9 +168,9 @@ export default class CharacterPanel {
 
 
     UpdateVitalsBars () {
-        let HealthWidth = (GD.Stats.CurrentHealth / GD.ComputedStats.MaxHealth * this.LifeBG.width);
+        let HealthWidth = (PC.CurrentHealth / PC.ComputedStats.MaxHealth * this.LifeBG.width);
         this.LifeBar.setDisplaySize(HealthWidth, 30);
-        let ManaWidth = (GD.Stats.CurrentMana / GD.ComputedStats.MaxMana * this.ManaBG.width);
+        let ManaWidth = (PC.CurrentMana / PC.ComputedStats.MaxMana * this.ManaBG.width);
         this.ManaBar.setDisplaySize(ManaWidth, 30);
     }
 

@@ -333,10 +333,10 @@ class CharacterCreation extends Phaser.GameObjects.Group {
             Character.Stats.Grit = Race.Attributes.Grit + Class.AttributeBonuses.Grit;
             Character.Stats.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
             Character.Stats.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
-            Character.Stats.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
-            Character.Stats.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
-            Character.Stats.MaxHealth = Character.Stats.CurrentHealth;
-            Character.Stats.MaxMana = Character.Stats.CurrentMana;
+            Character.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
+            Character.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
+            Character.Stats.MaxHealth = Character.CurrentHealth;
+            Character.Stats.MaxMana = Character.CurrentMana;
             Character.Level = 1;
             Character.AttributePoints = 0;
             Character.CurrentMap = Campaign.StartingMap;

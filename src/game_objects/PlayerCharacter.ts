@@ -1,8 +1,8 @@
-import Game from '../scenes/Game';
+import Game, { PC } from '../scenes/Game';
 import Building from './Building';
 import Enemy from './Character';
 import { GD } from "../scenes/Game";
-import Proficiencies from '../data/Proficiencies';
+import ItemData from '../data/ItemData';
 
 export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
@@ -33,6 +33,10 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     public BootArmourSprite: Phaser.GameObjects.Sprite
     public HandArmourSprite: Phaser.GameObjects.Sprite;
 
+    public ComputedStats: Stats;
+    public CurrentHealth: number;
+    public CurrentMana: number;
+
     constructor ( scene: Game ) {
         super( scene, GD.X, GD.Y, 'Player', 0 );
         this.scene = scene;
@@ -50,6 +54,9 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         this.setLighting(true);
         this.flipX = true;
         this.light = this.scene.lights.addLight(this.x, this.y, 228, 0xe3a456, 1);
+        this.CurrentHealth = GD.CurrentHealth;
+        this.CurrentMana = GD.CurrentMana;
+        this.UpdateStats();
         return this;
     }
 
@@ -62,43 +69,13 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     }
 
     UpdateStats () {
-        const stats = GD.ComputedStats;
-
-        // Reset to base values from character data
-        stats.MaxHealth = GD.Stats.MaxHealth;
-        stats.MaxMana = GD.Stats.MaxMana;
-        stats.MovementSpeed = GD.Stats.MovementSpeed;
-        stats.HealthRegeneration = GD.Stats.HealthRegeneration;
-        stats.ManaRegeneration = GD.Stats.ManaRegeneration;
-        stats.CriticalStrikeChance = GD.Stats.CriticalStrikeChance;
-        stats.CriticalStrikeDamageModifier = GD.Stats.CriticalStrikeDamageModifier;
-        stats.LifeSteal = GD.Stats.LifeSteal;
-        stats.Defence_Pierce = GD.Stats.Defence_Pierce;
-        stats.Defence_Impact = GD.Stats.Defence_Impact;
-        stats.Defence_Slash = GD.Stats.Defence_Slash;
-        stats.Defence_Fire = GD.Stats.Defence_Fire;
-        stats.Defence_Cold = GD.Stats.Defence_Cold;
-        stats.Defence_Lightning = GD.Stats.Defence_Lightning;
-        stats.Defence_Poison = GD.Stats.Defence_Poison;
-        stats.Defence_Arcane = GD.Stats.Defence_Arcane;
-        stats.Defence_True = GD.Stats.Defence_True;
-        stats.Defence_Bleed = GD.Stats.Defence_Bleed;
-        stats.Defence_Radiant = GD.Stats.Defence_Radiant;
-        stats.Defence_Corruption = GD.Stats.Defence_Corruption;
-        stats.Defence_Sonic = GD.Stats.Defence_Sonic;
-        stats.Fortitude = GD.Stats.Fortitude;
-        stats.Versatility = GD.Stats.Versatility;
-        stats.Vigor = GD.Stats.Vigor;
-        stats.Expertise = GD.Stats.Expertise;
-        stats.Arcana = GD.Stats.Arcana;
-        stats.Personality = GD.Stats.Personality;
-        stats.Fortune = GD.Stats.Fortune;
-        stats.Grit = GD.Stats.Grit;
+        let stats = PC.ComputedStats;
+        stats = Object.assign(stats, GD.Stats);
 
         // Apply stats from equipped items
         Object.entries(GD.Inventory).forEach((item) => {
             if ((item[0].includes("Equipment") || item[0].includes("Component")) && item[1] != null) {
-                const BaseItemData = this.scene.DataManager.ItemData[item[1].ID];
+                const BaseItemData = ItemData[item[1].ID];
                 if (BaseItemData?.Properties) {
                     Object.entries(BaseItemData.Properties).forEach(([statName, value]) => {
                         if (statName in stats) {
@@ -128,7 +105,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         }
 
         if ( this.PlayerHasControl ) {
-            const speed = GD.ComputedStats.MovementSpeed;
+            const speed = PC.ComputedStats.MovementSpeed;
             if ( this.LeftKeyDown ) {
                 this.setVelocityX(-speed);
                 this.flipX = true
@@ -176,47 +153,6 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
     }
 
-    UseItem ( item: string ) {
-
-        if ( item == "apprentice_spellbook" ) {
-            //this.AddXP(50);
-        }
-
-        if ( item == "town_centre_blueprint" ) {
-            GD.UnlockedBuildings.push("Town Centre");
-        }
-
-        //this.scene.Inventory.RemoveItem(item, 1);
-
-    }
-
-    UseAbility ( abilityId: string ) {
-        // TODO: Implement data-driven ability system using AbilityData
-        // Will check ability type and execute based on properties
-        //const ability = AbilityData[abilityId];
-        //if (!ability) return;
-        
-        // Common checks
-        //if (ability.mana_cost > GD.Stats.CurrentMana) 
-            //return this.scene.UI.EventLog.NewEvent("Not enough mana!");
-        
-        // Check cooldown from GD.Abilities
-        // Check required weapon/trait
-        
-        // Execute based on type
-        //switch (ability.type) {
-            //case "Buff": this.applyBuff(ability); break;
-            //case "Projectile": this.fireProjectile(ability); break;
-            //case "MultiAreaOfEffect": this.castAoE(ability); break;
-            //case "Spawn": this.spawnEntity(ability); break;
-        //}
-    }
-
-    // Some abilities require a charge up time, this function is called when the player is ready to use the ability
-    ReadyAbility () {
-
-    }
-
     AddXP ( amount: number ) {
         this.scene.UI.EventLog.NewEvent(`You earned ${amount} exp points`);
         GD.Experience += amount;
@@ -232,11 +168,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     TakeDamage ( damage: { Type: string, Min: number, Max: number, ApplyDebuff?: string }[] ): void {
         let total = 0;
         let typesArray: string[] = [];
-        const stats = GD.ComputedStats;
-
-        console.log(damage);
-        console.log(stats);
-
+        const stats = PC.ComputedStats;
         damage.forEach((dmg) => {
             let damageAmount = Phaser.Math.Between(dmg.Min, dmg.Max);
             const defenceKey = `Defence_${dmg.Type}` as keyof Stats;
@@ -251,17 +183,17 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
         let output = `You took ${typesArray.join(', ')}`;
         this.scene.UI.EventLog.NewEvent(output);
-        GD.Stats.CurrentHealth -= total;
+        this.CurrentHealth -= total;
         this.scene.UI.CharacterPanel.UpdateVitalsBars();
         this.scene.cameras.main.shake(100, 0.01, true);
-        if ( GD.Stats.CurrentHealth <= 0 )
+        if ( this.CurrentHealth <= 0 )
             this.Die();
     }
 
     Heal ( amount: number ): void {
-        GD.Stats.CurrentHealth += amount;
-        if ( GD.Stats.CurrentHealth > GD.ComputedStats.MaxHealth ) 
-            GD.Stats.CurrentHealth = GD.ComputedStats.MaxHealth;
+        this.CurrentHealth += amount;
+        if ( this.CurrentHealth > this.ComputedStats.MaxHealth ) 
+            this.CurrentHealth = this.ComputedStats.MaxHealth;
         this.scene.UI.CharacterPanel.UpdateVitalsBars();
         this.scene.UI.EventLog.NewEvent(`You healed for ${amount}`);
     }
@@ -280,7 +212,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
 
     Respawn () {
         this.PlayerIsDead = false;
-        GD.Stats.CurrentHealth = GD.ComputedStats.MaxHealth;
+        this.CurrentHealth = this.ComputedStats.MaxHealth;
         this.scene.UI.CharacterPanel.UpdateVitalsBars();
         this.scene.UI.DeathScreen.setVisible(false);
         this.scene.UI.EventLog.EventsLogCamera.setVisible(true);
@@ -291,3 +223,114 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     }
 
 }
+
+/*
+if ( UsedAbility.name == "Blazing Barrage" ) {
+
+    if ( this.Ability_3_Cooldown <= 0 ) {
+
+        let bursts = 3;
+        let damage = 5;
+        let radius = 50;
+
+        let burstDelay = 200;
+
+        let MouseX = this.scene.mouseX;
+        let MouseY = this.scene.mouseY;
+
+        for ( let i = 0; i < bursts; i++ ) {
+
+            this.scene.time.delayedCall(i * burstDelay, () => {
+
+                // Calculate the angle between the player and the mouse cursor
+                const baseAngle = Phaser.Math.Angle.Between(this.x, this.y, MouseX, MouseY);
+        
+                // Calculate the position of each circle along the line
+                const distanceBetweenCircles = 75;
+                const initialOffset = 25;
+                const circleX = this.x + Math.cos(baseAngle) * (initialOffset + distanceBetweenCircles * i);
+                const circleY = this.y + Math.sin(baseAngle) * (initialOffset + distanceBetweenCircles * i);
+
+                let light = this.scene.lights.addLight(circleX, circleY, 128, 0xe3a456, 1);
+
+                let sprite = this.scene.add.sprite(circleX, circleY, "Explosion1Sheet", 0)
+                    .setOrigin(0.5, 0.5)
+                    .play("explosion-1")
+                    .setDisplaySize(radius, radius)
+                    .on('animationcomplete', () => {
+                        sprite.destroy();
+                        this.scene.lights.removeLight(light);
+                    });
+        
+                // Create a new physics circle for each "burst"
+                let damageArea = new Phaser.Geom.Circle(circleX, circleY, radius);
+
+                this.scene.sound.play("ExplosionHit");
+
+                // Quadtree enemy hit detection
+                const enemies = this.scene.Quadtree.retrieve(new Circle({x: circleX, y: circleY, r: radius}));
+                enemies.forEach( (element: EnemyRect) => {
+                    if ( Phaser.Geom.Circle.Contains(damageArea, element.enemy.getCenter().x, element.enemy.getCenter().y)) {
+                        element.enemy.TakeDamage(damage);
+                        this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, { message: `-${damage}`, x: element.x, y: element.y }));
+                    }
+                });
+
+            });
+        }
+
+        this.Ability_3_Cooldown = UsedAbility.cooldown;
+        return;
+    }
+
+    this.scene.UI.EventLog.NewEvent(`${UsedAbility.name} on cooldown for ${this.Ability_3_Cooldown.toFixed(2)}`);
+}
+
+if ( UsedAbility.name == "Kinetic Bolt" ) {
+    if ( this.scene.DataManager.GameData.Classes['Evoker'].Ability_1_Unlocked == false ) {
+        this.scene.UI.EventLog.NewEvent("You have not unlocked this ability yet");
+        return;
+    }
+    if ( this.Ability_1_Cooldown <= 0 ) {
+        let cooldown = UsedAbility.parameters.cooldown.upgrades[this.scene.DataManager.GameData.Classes['Evoker'].Ability_1_Param_1_Level].value;
+        let damage = UsedAbility.parameters.damage.upgrades[this.scene.DataManager.GameData.Classes['Evoker'].Ability_1_Param_2_Level].value;
+        let velocity = UsedAbility.parameters.velocity.upgrades[this.scene.DataManager.GameData.Classes['Evoker'].Ability_1_Param_2_Level].value;
+        let Proj = new Projectile(this.scene, this.x, this.y, velocity, damage, "Kinetic Bolt");
+        this.scene.Projectiles.add(Proj);
+        this.scene.sound.play("KineticBoltCast");
+        this.Ability_1_Cooldown = cooldown;
+    } else {
+        this.scene.UI.EventLog.NewEvent(`${UsedAbility.name} on cooldown for ${this.Ability_1_Cooldown.toFixed(2)}`);
+    }
+}
+
+if ( UsedAbility.name == "Dart Volley" ) {
+    if ( this.scene.DataManager.GameData.Classes['Evoker'].Ability_2_Unlocked == false ) {
+        this.scene.UI.EventLog.NewEvent("You have not unlocked this ability yet");
+        return;
+    }
+    if ( this.Ability_2_Cooldown <= 0 ) {
+        let projectiles = UsedAbility.parameters.projectiles.upgrades[this.scene.DataManager.GameData.Classes['Evoker'].Ability_2_Param_1_Level].value;
+        let damage = UsedAbility.parameters.damage.upgrades[this.scene.DataManager.GameData.Classes['Evoker'].Ability_2_Param_2_Level].value;
+        let resource_cost = UsedAbility.parameters.resource_cost.upgrades[this.scene.DataManager.GameData.Classes['Evoker'].Ability_2_Param_3_Level].value;
+        let delayBetweenShots = 100;
+        for ( let i = 0; i < projectiles; i++ ) {
+            this.scene.time.delayedCall(i * delayBetweenShots, () => {
+                let Proj = new Projectile(this.scene, this.x, this.y, 400, damage, "Kinetic Bolt");
+                this.scene.sound.play("DartVolleyCast");
+                const baseAngle = Phaser.Math.Angle.Between( this.x, this.y, this.scene.mouseX, this.scene.mouseY );
+                const halfSpread = 20 / 2;
+                const randomSpread = Phaser.Math.FloatBetween(-halfSpread, halfSpread);
+                const spreadRadians = Phaser.Math.DegToRad(randomSpread);
+                let angle = baseAngle + spreadRadians;
+                Proj.setVelocity( Math.cos(angle) * 200, Math.sin(angle) * 200 );
+                this.scene.Projectiles.add(Proj);
+            });
+        }
+        this.Ability_2_Cooldown = UsedAbility.cooldown;
+    } else {
+        this.scene.UI.EventLog.NewEvent(`${UsedAbility.name} on cooldown for ${this.Ability_2_Cooldown.toFixed(2)}`);
+    }
+}
+*/
+

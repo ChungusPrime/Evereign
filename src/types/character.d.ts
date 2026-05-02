@@ -32,8 +32,9 @@ interface Character {
     MetNPCs: string[];
     UnlockedBuildings: string[];
     ProgressFlags: number[];
-    ComputedStats: Stats;
     Stats: Stats;
+    CurrentHealth: number;
+    CurrentMana: number;
 
     // Timestamps
     CreatedAtTimestamp: string;
@@ -112,8 +113,6 @@ interface Character {
 
 // Stat block for holding base and computed stats
 interface Stats {
-    CurrentHealth: number;
-    CurrentMana: number;
     MaxHealth: number;
     MaxMana: number;
     MovementSpeed: number;
