@@ -16,7 +16,7 @@ interface Character {
     Campaign: string;
 
     // Character progression
-    Reincarnation: number;
+    NewGamePlus: number;
     Level: number;
     Experience: number;
     NextLevelExperience: number;

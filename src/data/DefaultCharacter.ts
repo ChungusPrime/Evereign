@@ -2,7 +2,7 @@ const DefaultCharacter: Character = {
 
     CreatedAtTimestamp: Date.now().toString(),
     LastSaveTimestamp: Date.now().toString(),
-    Reincarnation: 1,
+    NewGamePlus: 0,
     X: 6281,
     Y: 5500,
     CurrentMap: "Tutors Island",

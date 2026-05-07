@@ -141,6 +141,7 @@ export default class InputManager {
         keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on("down", () => console.log("Inventory:", this.scene.Inventory.Items));
         keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N).on("down", () => this.scene.UI.RestMenu.showMenu());
         keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M).on("down", () => console.log("MD: ", MD));
+        keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L).on("down", () => this.scene.UI.EventLog.NewEvent("This is a test event log message!\nIt supports multiple lines and [color=red]BBCode[/color] formatting!"));
     }
 
     /**

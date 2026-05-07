@@ -8,7 +8,6 @@ import Abilities from "../data/Abilities";
 /*
     The ActionManager system is responsible for handling player actions such as mining, woodcutting, harvesting, and other activities that require a progress bar and time to complete. 
     It manages the current activity the player is performing, updates the progress bar, and grants rewards upon completion of the activity.
-
     - Harvesting nodes (Trees, deposits, plants)
     - Reloading weapons
     - Drinking Potions
@@ -148,38 +147,39 @@ export default class ActionManager {
         if ( this.CurrentActivity.IsAbility ) {
 
             const Ability = Abilities[this.CurrentActivity.AbilityID];
-            let MaxTime = 0;
+            let MaxTime = Ability.MaxChannelTime ?? Ability.ChargeTime ?? Ability.CastTime ?? 0;
 
             // Invoke ability effects when we cross a channel interval threshold
             if ( Ability.hasOwnProperty("ChannelInterval") ) {
                 const previousIntervals = Math.floor((this.CurrentActivity.Delta - delta) / Ability.ChannelInterval);
                 const currentIntervals = Math.floor(this.CurrentActivity.Delta / Ability.ChannelInterval);
-                MaxTime = Ability.MaxChannelTime || 0;
                 if ( currentIntervals > previousIntervals ) {
                     console.log(`Applying channeled effect of ${Ability.Name}`);
                     this.scene.UseAbility();
                 }
                 if ( MaxTime > 0 && this.CurrentActivity.Delta >= MaxTime ) {
                     console.log(`Max channel time reached for ${Ability.Name}, ending channel.`);
+                    return this.CancelActivity();
                 }
             }
 
             if ( Ability.ActiviationType == "Charge" && this.CurrentActivity.Delta >= Ability.ChargeTime ) {
                 console.log(`Max charge time reached for ${Ability.Name}, performing ability with max charge.`);
-                MaxTime = Ability.ChargeTime;
                 this.scene.UseAbility();
+                return this.CancelActivity();
             }
 
             if ( Ability.ActiviationType == "Cast" && this.CurrentActivity.Delta >= Ability.CastTime ) {
                 console.log(`Cast time completed for ${Ability.Name}, performing ability.`);
-                MaxTime = Ability.CastTime;
                 this.scene.UseAbility();
+                return this.CancelActivity();
             }
 
             this.ActivityProgressBar.setDisplaySize(Math.min(this.CurrentActivity.Delta / MaxTime, 1) * 200, 20);
-            return this.CancelActivity();
 
         } else {
+
+            this.ActivityProgressBar.setDisplaySize(Math.min(this.CurrentActivity.Delta / 1000, 1) * 200, 20);
 
             if ( this.CurrentActivity.Delta < 1000 ) return;
 
@@ -247,7 +247,7 @@ export default class ActionManager {
                         return true;
                     }
                 });
-                if ( !Match ) console.log("No ammo!");;
+                if ( !Match ) console.log("No ammo!");
                 
             }
 

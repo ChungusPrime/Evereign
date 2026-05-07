@@ -1,4 +1,4 @@
-import Game, { PC } from '../scenes/Game';
+import Game, { Inv } from '../scenes/Game';
 import Building from './Building';
 import Enemy from './Character';
 import { GD } from "../scenes/Game";
@@ -27,11 +27,11 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     public MainHandKeyDown: boolean = false;
 
     // Sprites for equipped items
-    public HelmetArmourSprite: Phaser.GameObjects.Sprite;
-    public ChestArmourSprite: Phaser.GameObjects.Sprite
-    public LegArmourSprite: Phaser.GameObjects.Sprite;
-    public BootArmourSprite: Phaser.GameObjects.Sprite
-    public HandArmourSprite: Phaser.GameObjects.Sprite;
+    public CharacterHeadItem: Phaser.GameObjects.Sprite;
+    public CharacterBodyItem: Phaser.GameObjects.Sprite;
+    public CharacterLegsItem: Phaser.GameObjects.Sprite;
+    public CharacterHandItem: Phaser.GameObjects.Sprite;
+    public CharacterFeetItem: Phaser.GameObjects.Sprite;
 
     public ComputedStats: Stats;
     public CurrentHealth: number;
@@ -56,22 +56,23 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         this.light = this.scene.lights.addLight(this.x, this.y, 228, 0xe3a456, 1);
         this.CurrentHealth = GD.CurrentHealth;
         this.CurrentMana = GD.CurrentMana;
-        this.UpdateStats();
+        this.ComputedStats = { ...GD.Stats };
+        this.CharacterHeadItem = this.scene.add.sprite(this.x, this.y, "PlayerHead", 0).setOrigin(0.5).setVisible(false).setDepth(100);
+        this.CharacterBodyItem = this.scene.add.sprite(this.x, this.y, "PlayerBody", 0).setOrigin(0.5).setVisible(false).setDepth(100);
+        this.CharacterLegsItem = this.scene.add.sprite(this.x, this.y, "PlayerLegs", 0).setOrigin(0.5).setVisible(false).setDepth(100);
+        this.CharacterHandItem = this.scene.add.sprite(this.x, this.y, "PlayerHands", 0).setOrigin(0.5).setVisible(false).setDepth(100);
+        this.CharacterFeetItem = this.scene.add.sprite(this.x, this.y, "PlayerFeet", 0).setOrigin(0.5).setVisible(false).setDepth(100);
         return this;
     }
 
     ToggleLight () {
-        if ( this.light.intensity > 0 ) {
-            this.light.setIntensity(0);
-        } else {
-            this.light.setIntensity(1);
-        }
+        if ( this.light.intensity > 0 )
+            return this.light.setIntensity(0);
+        this.light.setIntensity(1);
     }
 
     UpdateStats () {
-        let stats = PC.ComputedStats;
-        stats = Object.assign(stats, GD.Stats);
-
+        let stats = { ...GD.Stats };
         // Apply stats from equipped items
         Object.entries(GD.Inventory).forEach((item) => {
             if ((item[0].includes("Equipment") || item[0].includes("Component")) && item[1] != null) {
@@ -85,8 +86,55 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
                 }
             }
         });
+        this.ComputedStats = { ...stats };
+        Inv.UpdateStatsTexts();
+        this.UpdateCharacterAppearance();
+    }
 
-        this.scene.Inventory.UpdateStatsTexts();
+    UpdateCharacterAppearance () {
+        console.log("Updating character appearance based on equipped items");
+        // Update character appearance based on equipped items
+        const headItem = GD.Inventory.Equipment_Head ? ItemData[GD.Inventory.Equipment_Head.ID] : null;
+        const bodyItem = GD.Inventory.Equipment_Chest ? ItemData[GD.Inventory.Equipment_Chest.ID] : null;
+        const legsItem = GD.Inventory.Equipment_Legs ? ItemData[GD.Inventory.Equipment_Legs.ID] : null;
+        const handsItem = GD.Inventory.Equipment_Hands ? ItemData[GD.Inventory.Equipment_Hands.ID] : null;
+        const feetItem = GD.Inventory.Equipment_Feet ? ItemData[GD.Inventory.Equipment_Feet.ID] : null;
+
+        if (headItem) {
+            console.log(`Setting head item texture to ${headItem.Texture}`);
+            this.CharacterHeadItem.setFrame(headItem.Texture).setVisible(true);
+        } else {
+            this.CharacterHeadItem.setVisible(false);
+        }
+
+        if (bodyItem) {
+            console.log(`Setting body item texture to ${bodyItem.Texture}`);
+            this.CharacterBodyItem.setFrame(bodyItem.Texture).setVisible(true);
+        } else {
+            this.CharacterBodyItem.setVisible(false);
+        }
+
+        if (legsItem) {
+            console.log(`Setting legs item texture to ${legsItem.Texture}`);
+            this.CharacterLegsItem.setFrame(legsItem.Texture).setVisible(true);
+        } else {
+            this.CharacterLegsItem.setVisible(false);
+        }
+
+        if (handsItem) {
+            console.log(`Setting hands item texture to ${handsItem.Texture}`);
+            this.CharacterHandItem.setFrame(handsItem.Texture).setVisible(true);
+        } else {
+            this.CharacterHandItem.setVisible(false);
+        }
+
+        if (feetItem) {
+            console.log(`Setting feet item texture to ${feetItem.Texture}`);
+            this.CharacterFeetItem.setFrame(feetItem.Texture).setVisible(true);
+        } else {
+            this.CharacterFeetItem.setVisible(false);
+        }
+
     }
 
     update ( delta: number ): void {
@@ -105,17 +153,16 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
         }
 
         if ( this.PlayerHasControl ) {
-            const speed = PC.ComputedStats.MovementSpeed;
+            const speed = this.ComputedStats.MovementSpeed;
             if ( this.LeftKeyDown ) {
                 this.setVelocityX(-speed);
-                this.flipX = true
+                this.flipX = true;
             } else if ( this.RightKeyDown ) {
                 this.setVelocityX(speed);
-                this.flipX = false
+                this.flipX = false;
             } else {
                 this.setVelocityX(0);
             }
-        
             if ( this.UpKeyDown ) {
                 this.setVelocityY(-speed);
             } else if ( this.DownKeyDown ) {
@@ -123,6 +170,22 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
             } else {
                 this.setVelocityY(0);
             }
+        }
+
+        // Sync equipment layer sprites to the player's position and facing direction.
+        // Use body.center instead of this.x/this.y because the physics body is stepped
+        // before scene.update() but the body→sprite sync (postUpdate) runs after,
+        // so this.x/this.y would be one frame behind.
+        const equipmentSprites = [
+            this.CharacterHeadItem,
+            this.CharacterBodyItem,
+            this.CharacterLegsItem,
+            this.CharacterHandItem,
+            this.CharacterFeetItem,
+        ];
+        for ( const sprite of equipmentSprites ) {
+            sprite.setPosition(this.body.center.x, this.body.center.y);
+            sprite.flipX = this.flipX;
         }
 
         if ( this.body.velocity.x == 0 && this.body.velocity.y == 0 ) {
@@ -168,7 +231,7 @@ export default class PlayerCharacter extends Phaser.Physics.Arcade.Sprite {
     TakeDamage ( damage: { Type: string, Min: number, Max: number, ApplyDebuff?: string }[] ): void {
         let total = 0;
         let typesArray: string[] = [];
-        const stats = PC.ComputedStats;
+        const stats = this.ComputedStats;
         damage.forEach((dmg) => {
             let damageAmount = Phaser.Math.Between(dmg.Min, dmg.Max);
             const defenceKey = `Defence_${dmg.Type}` as keyof Stats;

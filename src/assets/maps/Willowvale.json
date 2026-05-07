@@ -2944,7 +2944,7 @@
                  "visible":true,
                  "width":64,
                  "x":2080,
-                 "y":4640
+                 "y":4608
                 }, 
                 {
                  "gid":15943,
@@ -2962,7 +2962,7 @@
                  "visible":true,
                  "width":64,
                  "x":2080,
-                 "y":4768
+                 "y":4800
                 }, 
                 {
                  "gid":15959,
@@ -3067,24 +3067,18 @@
                  "y":512
                 }, 
                 {
-                 "gid":15960,
-                 "height":256,
-                 "id":1179,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":96,
-                 "x":6176,
-                 "y":2208
-                }, 
-                {
                  "gid":15961,
                  "height":96,
                  "id":1180,
-                 "name":"",
+                 "name":"Orc Siege Machine",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"Orc_Siege_3"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"Orc Siege Machine",
                  "visible":true,
                  "width":64,
                  "x":2304,
@@ -3094,9 +3088,15 @@
                  "gid":15961,
                  "height":96,
                  "id":1181,
-                 "name":"",
+                 "name":"Orc Siege Machine",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"Orc_Siege_2"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"Orc Siege Machine",
                  "visible":true,
                  "width":64,
                  "x":2592,
@@ -3106,13 +3106,31 @@
                  "gid":15961,
                  "height":96,
                  "id":1182,
-                 "name":"",
+                 "name":"Orc Siege Machine",
+                 "properties":[
+                        {
+                         "name":"ID",
+                         "type":"string",
+                         "value":"Orc_Siege_1"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"Orc Siege Machine",
                  "visible":true,
                  "width":64,
                  "x":2432,
                  "y":4992
+                }, 
+                {
+                 "gid":15960,
+                 "height":288,
+                 "id":1184,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":128,
+                 "x":6208,
+                 "y":2240
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6645,7 +6663,7 @@
                 }, 
                 {
                  "gid":4361,
-                 "height":64,
+                 "height":96,
                  "id":1138,
                  "name":"Gatehouse Door",
                  "properties":[
@@ -6659,11 +6677,11 @@
                  "visible":true,
                  "width":64,
                  "x":3648,
-                 "y":3392
+                 "y":3424
                 }, 
                 {
                  "gid":4361,
-                 "height":64,
+                 "height":96,
                  "id":1139,
                  "name":"Gatehouse Door",
                  "properties":[
@@ -7256,7 +7274,7 @@
                  "type":"Trigger",
                  "visible":true,
                  "width":128,
-                 "x":2176,
+                 "x":2208,
                  "y":4608
                 }, 
                 {
@@ -7300,7 +7318,7 @@
          "y":0
         }],
  "nextlayerid":34,
- "nextobjectid":1184,
+ "nextobjectid":1185,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -7617,7 +7635,7 @@
          "name":"Buildings",
          "spacing":0,
          "tilecount":18,
-         "tileheight":256,
+         "tileheight":288,
          "tiles":[
                 {
                  "id":0,
@@ -7718,8 +7736,8 @@
                 {
                  "id":17,
                  "image":"..\/images\/own\/buildings\/wizardtower1.png",
-                 "imageheight":256,
-                 "imagewidth":96
+                 "imageheight":288,
+                 "imagewidth":128
                 }, 
                 {
                  "id":18,

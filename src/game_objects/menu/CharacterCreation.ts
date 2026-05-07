@@ -312,8 +312,6 @@ class CharacterCreation extends Phaser.GameObjects.Group {
             this.scene.Data.Characters[Name] = DefaultCharacterData;
             let Character = this.scene.Data.Characters[Name];
 
-            console.log (Character);
-
             Character.CreatedAtTimestamp = Date.now().toString();
             Character.LastSaveTimestamp = null;
 
@@ -323,7 +321,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
             Character.Race = Race.Name;
             Character.Campaign = Campaign.Name;
             Character.Difficulty = Difficulty;
-            Character.Reincarnation = 1;
+            Character.NewGamePlus = 0;
             Character.Stats.Fortitude = Race.Attributes.Fortitude + Class.AttributeBonuses.Fortitude;
             Character.Stats.Versatility = Race.Attributes.Versatility + Class.AttributeBonuses.Versatility;
             Character.Stats.Vigor = Race.Attributes.Vigor + Class.AttributeBonuses.Vigor;
@@ -334,7 +332,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
             Character.Stats.Arcana = Race.Attributes.Arcana + Class.AttributeBonuses.Arcana;
             Character.Stats.MovementSpeed = 80 + (Race.Attributes.Vigor * 5);
             Character.CurrentHealth = 20 + (Race.Attributes.Vigor * 5);
-            Character.CurrentMana = 20 + (Race.Attributes.Expertise * 5);
+            Character.CurrentMana = 20 + (Race.Attributes.Arcana * 5);
             Character.Stats.MaxHealth = Character.CurrentHealth;
             Character.Stats.MaxMana = Character.CurrentMana;
             Character.Level = 1;

@@ -1,8 +1,8 @@
-const Demolitionist: Proficiency = {
+const Explosives: Proficiency = {
 
-    Name: "Demolitionist",
-    Description: "The Demolitionist is a master of explosives, using grenades and other explosive devices to deal damage and control the battlefield. They can specialize in different types of explosives, such as shrapnel or incendiary grenades, to suit their playstyle.",
-    ID: "demolitionist",
+    Name: "Explosives",
+    Description: "The Explosives expert is a master of explosives, using grenades and other explosive devices to deal damage and control the battlefield. They can specialize in different types of explosives, such as shrapnel or incendiary grenades, to suit their playstyle.",
+    ID: "explosives",
 
     Abilities: [
         {
@@ -39,4 +39,4 @@ const Demolitionist: Proficiency = {
 
 };
 
-export default Demolitionist;
+export default Explosives;

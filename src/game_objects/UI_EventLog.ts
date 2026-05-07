@@ -65,7 +65,7 @@ export default class EventLog {
             this.EventLogBackground.getTopLeft().x,
             this.EventLogBackground.getTopLeft().y,
             this.EventLogBackground.width,
-            height
+            height + 10
         );
 
         this.EventsLogCamera.scrollY = height;

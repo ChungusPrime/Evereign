@@ -98,6 +98,12 @@ export default class Game extends Phaser.Scene {
     public Switches: Phaser.GameObjects.Group;
     public Characters: Phaser.GameObjects.Group;
 
+    public HeldObject: any = {
+        Type: "",
+        ID: "",
+        Sprite: null
+    }
+
     public LastHarvestedTreeUpdate = 0;
 
     constructor () {
@@ -122,7 +128,6 @@ export default class Game extends Phaser.Scene {
         CMD = GD.WorldData[GD.CurrentMap] ?? null;
 
         if ( this.GameMode == "Arena" ) {
-
             GD.X = 1600;
             GD.Y = 1600;
             GD.CurrentMap = "Arena";
@@ -134,23 +139,14 @@ export default class Game extends Phaser.Scene {
             Object.keys(MD).forEach( (key) => {
                 GD.WorldData["Arena"][key] = MD[key].InitialData;
             });
-
             CMD = GD.WorldData["Arena"];
-
         } else if ( this.GameMode == "Adventure" ) {
-
             // Load campaign data
             CD = Campaigns.find(c => c.Name == GD.Campaign) ?? null;
-
             // Load map-specific data for the current map within the campaign
             MD = Campaigns.find(c => c.Name == GD.Campaign)?.WorldData[GD.CurrentMap] ?? null;
-            
             console.log(`Loaded campaign data for ${GD.Campaign}:`, CD);
         }
-
-        console.log(CD);
-
-        console.log(`Loaded character data for ${this.CharacterName}:`, GD);
 
         // Launch the UI
         this.scene.launch("UI", this);
@@ -188,13 +184,13 @@ export default class Game extends Phaser.Scene {
         this.MapBuilder = new MapBuilder(this);
         this.ActionManager = new ActionManager(this, this.UI);
         this.BuildingHelper = new BuildingHelper(this, this.UI);
-        this.PlayerCharacter = new PlayerCharacter(this);
-        PC = this.PlayerCharacter;
 
         this.Inventory = new Inventory(this, this.UI);
         Inv = this.Inventory;
 
-        this.PlayerCharacter.UpdateStats();
+        this.PlayerCharacter = new PlayerCharacter(this);
+        PC = this.PlayerCharacter;
+        PC.UpdateStats();
 
         this.graphics = this.add.graphics();
         this.graphics.setScrollFactor(1);
@@ -257,7 +253,6 @@ export default class Game extends Phaser.Scene {
 
         this.LastHarvestedTreeUpdate += delta;
         if ( this.LastHarvestedTreeUpdate >= 1000 ) {
-            console.log("Updating harvested trees...");
             let DepletedHarvestables = CMD.DepletedHarvestables ?? [];
             if ( DepletedHarvestables.length > 0 ) {
                 this.Trees.getChildren().forEach( (tree: Phaser.Physics.Arcade.Sprite) => {

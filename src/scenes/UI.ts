@@ -12,6 +12,7 @@ import JournalButton from "../game_objects/JournalButton";
 import { GD } from "./Game";
 import TradeWindow from "../game_objects/UI_TradeWindow";
 import RestMenu from "../game_objects/UI_RestMenu";
+import Proficiencies from "../data/Proficiencies";
 
 export default class UI extends Phaser.Scene {
 
@@ -91,6 +92,9 @@ export default class UI extends Phaser.Scene {
     ActiveQuestsHeader: Phaser.GameObjects.Text;
     RestMenu: RestMenu;
     Traits: JournalButton;
+    Proficiencies: JournalButton;
+    ProficiencyGroups: { [key: string]: Phaser.GameObjects.Group } = {};
+    ProficiencySubmenu: Phaser.GameObjects.Group;
 
     constructor () {
         super("UI");
@@ -173,6 +177,10 @@ export default class UI extends Phaser.Scene {
                 this.ActiveQuestsHeader.setVisible(false);
                 this.QuestObjectivesHeader.setVisible(false);
                 this.QuestInformationHeader.setVisible(false);
+                Object.keys(this.ProficiencyGroups).forEach(key => {
+                    this.ProficiencyGroups[key].setVisible(false);
+                });
+                this.ProficiencySubmenu.setVisible(false);
                 return;
             }
             this.Book.setVisible(true);
@@ -244,12 +252,10 @@ export default class UI extends Phaser.Scene {
         .setVisible(false);
 
         // Journal page buttons
-        this.Character = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 50, "Character");
         this.QuestButton = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 100, "Quests");
         this.Bestiary = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 150, "Bestiary");
-        this.Traits = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 150, "Traits");
-        this.Skills = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 150, "Skills");
-
+        this.Skills = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 200, "Skills");
+        this.Proficiencies = new JournalButton( this, this.LeftBackground.getTopCenter().x, this.LeftBackground.getTopCenter().y + 250, "Proficiencies");
         //this.Skills = new JournalButton( this, this.Character.getBottomCenter().x, this.Character.getBottomCenter().y + 50, "Skills");
         //this.Classes = new JournalButton( this, this.Skills.getBottomCenter().x, this.Skills.getBottomCenter().y + 50, "Classes & Skills");
         //this.Equipment = new JournalButton( this, this.Classes.getBottomCenter().x, this.Classes.getBottomCenter().y + 50, "Equipment");
@@ -258,9 +264,47 @@ export default class UI extends Phaser.Scene {
         //this.Lore = new JournalButton( this, this.Reputation.getBottomCenter().x, this.Reputation.getBottomCenter().y + 50, "Lore");
         //this.Research = new JournalButton( this, this.Bestiary.getBottomCenter().x, this.Bestiary.getBottomCenter().y + 50, "Research");
 
-        this.JournalNavButtons.push(this.Character, this.QuestButton, this.Bestiary);
+        // For each character proficiency, create a group of sprites to represent the proficiency level and experience, and add them to the journal button
+        this.ProficiencyGroups = {};
+        this.ProficiencySubmenu = this.add.group();
+        let StartingY = this.LeftBackground.getTopCenter().y + 100;
+        Object.keys(GD.Proficiencies).forEach((proficiency) => {
+            let text = this.add.text(this.LeftBackground.getTopCenter().x, StartingY, proficiency, { fontSize: 32, fontFamily: "Augusta" }).setOrigin(0, 0.5).setVisible(false);
+            text.setInteractive();
+            text.on("pointerdown", () => {
+                this.ProficiencySubmenu.setVisible(false);
+                this.ProficiencyGroups[proficiency].setVisible(true);
+            });
+            this.ProficiencySubmenu.add(text);
+            this.ProficiencyGroups[proficiency] = this.add.group();
+            let ProficiencyData = Proficiencies[proficiency];
+
+            let IconY = this.LeftBackground.getTopCenter().y + 100;
+
+            ProficiencyData.Abilities.forEach((ability) => {
+                //let icon = this.add.sprite(text.getRightCenter().x + 20, text.getRightCenter().y, "general", 0).setOrigin(0.5).setDisplaySize(32, 32).setVisible(false);
+                let text = this.add.text(this.LeftBackground.getTopCenter().x, IconY, ability.Name, { fontSize: 32, fontFamily: "Augusta" }).setOrigin(0, 0.5).setVisible(false);
+                this.ProficiencyGroups[proficiency].add(text);
+                IconY += 40;
+                text.setInteractive();
+            });
+            
+            ProficiencyData.Traits.forEach((trait) => {
+                //let icon = this.add.sprite(text.getRightCenter().x + 20, text.getRightCenter().y, "general", 0).setOrigin(0.5).setDisplaySize(32, 32).setVisible(false);
+                let text = this.add.text(this.LeftBackground.getTopCenter().x, IconY, trait.Name, { fontSize: 32, fontFamily: "Augusta" }).setOrigin(0, 0.5).setVisible(false);
+                this.ProficiencyGroups[proficiency].add(text);
+                IconY += 40;
+                text.setInteractive();
+            });
+
+
+            console.log(ProficiencyData);
+            StartingY += 40;
+        });
+
+        this.JournalNavButtons.push(this.QuestButton, this.Bestiary, this.Skills, this.Proficiencies);
         this.TownManagementPanel = new TownManagement(this);
-        this.BuidlingPlacementModeHelpText = this.add.text(this.scale.displaySize.width * 0.5, this.scale.displaySize.height * 0.9, "Left Click to Place Building\nRight Click to Cancel", { align: "center" }).setOrigin(0.5).setVisible(false);
+        this.BuidlingPlacementModeHelpText = this.add.text(this.scale.displaySize.width * 0.5, this.scale.displaySize.height * 0.8, "Left Click to Place - Right Click to Cancel", { align: "center" }).setOrigin(0.5).setVisible(false);
         this.DialogueWindow = new DialogueWindow(this);
         this.LootWindow = new LootWindow(this);
         this.TradeWindow = new TradeWindow(this);
@@ -374,6 +418,10 @@ export default class UI extends Phaser.Scene {
 
         if ( this.CurrentJournalPage == "Quests" ) {
             this.Game.QuestManager.ShowQuestLog();
+        }
+
+        if ( this.CurrentJournalPage == "Proficiencies" ) {
+            this.ProficiencySubmenu.setVisible(true);
         }
 
     }

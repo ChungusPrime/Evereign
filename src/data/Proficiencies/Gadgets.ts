@@ -1,7 +1,7 @@
-const Gadgeteer: Proficiency = {
+const Gadgets: Proficiency = {
 
-    ID: "gadgeteer",
-    Name: "Gadgeteer",
+    ID: "gadgets",
+    Name: "Gadgets",
     Description: "The Gadgeteer is a master of technology, using their abilities to deploy turrets and constructs to control the battlefield. They can specialize in different types of gadgets, such as offensive turrets or defensive constructs, to suit their playstyle.",
 
     Abilities: [
@@ -50,4 +50,4 @@ const Gadgeteer: Proficiency = {
 
 }
 
-export default Gadgeteer;
+export default Gadgets;

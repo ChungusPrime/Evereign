@@ -1,7 +1,7 @@
 import UI from "../scenes/UI";
 import { GD, Inv, PC } from "../scenes/Game";
 import ItemData from "../data/ItemData";
-import Proficiencies from "../data/Proficiencies";
+import AbilityData from "../data/Abilities";
 
 class HotbarSlot extends Phaser.GameObjects.NineSlice {
 
@@ -77,8 +77,8 @@ export default class CharacterPanel {
         }
 
         this.MainhandItemSlot = this.scene.add.nineslice(this.LifeBG.getTopRight().x + 4, this.LifeBG.getTopRight().y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 0);
-        this.MainhandItemInput = this.scene.add.image(this.MainhandItemSlot.getTopRight().x, this.MainhandItemSlot.getTopRight().y, "inputs", controls['Weapon_Attack']).setOrigin(1, 0).setDisplaySize(24, 24);
         this.MainhandItemSprite = this.scene.add.sprite(this.MainhandItemSlot.getCenter().x, this.MainhandItemSlot.getCenter().y, MainhandSprite[0], MainhandSprite[1]).setDisplaySize(64, 64).setOrigin(0.5, 0.5);
+        this.MainhandItemInput = this.scene.add.image(this.MainhandItemSlot.getTopRight().x, this.MainhandItemSlot.getTopRight().y, "inputs", controls['Weapon_Attack']).setOrigin(1, 0).setDisplaySize(24, 24);
 
         let OffhandItemData = ItemData[GD.Inventory.Equipment_OffHand ? GD.Inventory.Equipment_OffHand.ID : null];
         let OffhandSprite = ["general", "0"] as string[];
@@ -88,8 +88,8 @@ export default class CharacterPanel {
         }
 
         this.OffhandItemSlot = this.scene.add.nineslice(this.MainhandItemSlot.getTopRight().x + 10, this.MainhandItemSlot.getTopRight().y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 0);
-        this.OffhandItemInput = this.scene.add.image(this.OffhandItemSlot.getTopRight().x, this.OffhandItemSlot.getTopRight().y, "inputs", controls['Use_Offhand']).setOrigin(1, 0).setDisplaySize(24, 24);
         this.OffhandItemSprite = this.scene.add.sprite(this.OffhandItemSlot.getCenter().x, this.OffhandItemSlot.getCenter().y, OffhandSprite[0], OffhandSprite[1]).setDisplaySize(64, 64).setOrigin(0.5, 0.5);
+        this.OffhandItemInput = this.scene.add.image(this.OffhandItemSlot.getTopRight().x, this.OffhandItemSlot.getTopRight().y, "inputs", controls['Use_Offhand']).setOrigin(1, 0).setDisplaySize(24, 24);
 
         this.UpdateVitalsBars();
 
@@ -109,7 +109,7 @@ export default class CharacterPanel {
             this.OffhandItemSprite
         ]);
 
-        Object.entries(GD.Hotbar).forEach( (slot, index) => {
+        Object.entries(GD.Hotbar).forEach( (slot, index) => { 
 
             let X = this.OffhandItemSlot.getTopRight().x + 10 + (index * 64);
             let Y = this.OffhandItemSlot.getTopRight().y;
@@ -117,8 +117,8 @@ export default class CharacterPanel {
             let Slot = new HotbarSlot(this.scene, X, Y, slot[1], index);
 
             let rect = this.scene.add.nineslice(X, Y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 0);
-            let input = this.scene.add.image(rect.getTopRight().x, rect.getTopRight().y, "inputs", controls['Use_Hotbar_' + (index + 1)]).setOrigin(1, 0).setDisplaySize(24, 24);
             let sprite = this.scene.add.sprite(rect.getCenter().x, rect.getCenter().y, "general", 0).setDisplaySize(64, 64).setOrigin(0.5, 0.5).setVisible(false);
+            let input = this.scene.add.image(rect.getTopRight().x, rect.getTopRight().y, "inputs", controls['Use_Hotbar_' + (index + 1)]).setOrigin(1, 0).setDisplaySize(24, 24);
 
             rect.setInteractive();
             rect.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
@@ -136,8 +136,8 @@ export default class CharacterPanel {
             }
 
             if ( slot[1].Type == "Ability" ) {
-                //const BaseAbilityData = AbilityData[slot[1].ID];
-                //sprite.setTexture(BaseAbilityData.sprite.split("-")[0], BaseAbilityData.sprite.split("-")[1]).setVisible(true);
+                const BaseAbilityData = AbilityData[slot[1].ID];
+                sprite.setTexture(BaseAbilityData.sprite.split("-")[0], BaseAbilityData.sprite.split("-")[1]).setVisible(true);
             }
 
             sprite.setInteractive();
@@ -163,9 +163,6 @@ export default class CharacterPanel {
         let slotIndex = Object.keys(GD.Hotbar).indexOf(slot);
 
     }
-        
-
-
 
     UpdateVitalsBars () {
         let HealthWidth = (PC.CurrentHealth / PC.ComputedStats.MaxHealth * this.LifeBG.width);
