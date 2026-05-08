@@ -184,7 +184,8 @@ export default class UI extends Phaser.Scene {
                 return;
             }
             this.Book.setVisible(true);
-            this.Book.play('Book Open').once('animationcomplete', () => {
+            this.Book.play({ key: 'Book Open', frameRate: 24 })
+            .once('animationcomplete', () => {
                 this.LeftBackground.setVisible(true);
                 this.RightBackground.setVisible(true);
                 this.JournalNavButtons.forEach((button) => {
@@ -219,7 +220,7 @@ export default class UI extends Phaser.Scene {
         this.WorldMap = new WorldMap(this);
 
         // Journal Setup
-        this.Book = this.add.sprite(this.Game.cameras.main.width / 2, this.Game.cameras.main.height * 0.45, 'Journal', '0').setDisplaySize(this.scale.width, this.scale.height * 1.5).setOrigin(0.5).setVisible(false);
+        this.Book = this.add.sprite(this.Game.cameras.main.width / 2, this.Game.cameras.main.height * 0.4, 'Journal', '0').setDisplaySize(this.scale.width, this.scale.height * 1.5).setOrigin(0.5).setVisible(false);
 
         // Background sections
         this.LeftBackground = this.add.rectangle(102, 102, 359, 500, 0x000000, 0.05).setOrigin(0, 0).setVisible(false);
@@ -282,19 +283,29 @@ export default class UI extends Phaser.Scene {
             let IconY = this.LeftBackground.getTopCenter().y + 100;
 
             ProficiencyData.Abilities.forEach((ability) => {
-                //let icon = this.add.sprite(text.getRightCenter().x + 20, text.getRightCenter().y, "general", 0).setOrigin(0.5).setDisplaySize(32, 32).setVisible(false);
                 let text = this.add.text(this.LeftBackground.getTopCenter().x, IconY, ability.Name, { fontSize: 32, fontFamily: "Augusta" }).setOrigin(0, 0.5).setVisible(false);
+                let sprite = ability.sprite.split("-")[0];
+                let frame = ability.sprite.split("-")[1];
+                let icon = this.add.sprite(text.getLeftCenter().x - 32, text.getLeftCenter().y, sprite, frame).setOrigin(0.5).setDisplaySize(32, 32).setVisible(false);
                 this.ProficiencyGroups[proficiency].add(text);
+                this.ProficiencyGroups[proficiency].add(icon);
                 IconY += 40;
-                text.setInteractive();
+                icon.setInteractive().on("pointerdown", () => {
+                    this.Game.HeldObject.Type = "Ability";
+                    this.Game.HeldObject.ID = ability.ID;
+                    this.Game.HeldObject.Sprite = this.add.sprite(this.Game.mouseX, this.Game.mouseY, sprite, frame).setOrigin(0.5).setDisplaySize(32, 32).setDepth(1000);
+                    this.sound.play("InventoryPickup");
+                });
             });
             
             ProficiencyData.Traits.forEach((trait) => {
-                //let icon = this.add.sprite(text.getRightCenter().x + 20, text.getRightCenter().y, "general", 0).setOrigin(0.5).setDisplaySize(32, 32).setVisible(false);
                 let text = this.add.text(this.LeftBackground.getTopCenter().x, IconY, trait.Name, { fontSize: 32, fontFamily: "Augusta" }).setOrigin(0, 0.5).setVisible(false);
+                let sprite = trait.sprite.split("-")[0];
+                let frame = trait.sprite.split("-")[1];
+                let icon = this.add.sprite(text.getLeftCenter().x - 32, text.getLeftCenter().y, sprite, frame).setOrigin(0.5).setDisplaySize(32, 32).setVisible(false);
                 this.ProficiencyGroups[proficiency].add(text);
+                this.ProficiencyGroups[proficiency].add(icon);
                 IconY += 40;
-                text.setInteractive();
             });
 
 
@@ -397,8 +408,8 @@ export default class UI extends Phaser.Scene {
     }
 
     update(time: number, delta: number): void {
-        if ( this.Game.Inventory.HeldItem ) {
-            this.Game.Inventory.HeldItem.setPosition(this.input.x, this.input.y);
+        if ( this.Game.HeldObject.Sprite ) {
+            this.Game.HeldObject.Sprite.setPosition(this.input.x, this.input.y);
         }
     }
 

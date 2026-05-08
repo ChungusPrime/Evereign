@@ -10,17 +10,51 @@ class HotbarSlot extends Phaser.GameObjects.NineSlice {
     public Index: number;
     public Sprite: Phaser.GameObjects.Sprite;
     public InputIcon: Phaser.GameObjects.Image;
+    public scene: UI;
 
-    constructor ( scene: UI, x: number, y: number, slot: { Type: string, ID: string }, index: number ) {
-        super(scene, 0, 0, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6);
+    constructor ( scene: UI, x: number, y: number, Type: string, ID: string, Input: string | number, SlotNumber: string ) {
+        super(scene, x, y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 4, 4, 4, 4);
         this.scene = scene;
         this.setOrigin(0, 0);
-        this.Index = index;
-        if ( slot ) {
-            this.Type = slot.Type;
-            this.ID = slot.ID;
+        this.Type = Type;
+        this.ID = ID;
+        console.log(`Creating hotbar slot with Type: ${Type}, ID: ${ID}, Input: ${Input}`);
+        this.setInteractive()
+        .on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
+            if ( pointer.leftButtonDown() && this.scene.Game.HeldObject.Sprite != null ) {
+                if ( this.scene.Game.HeldObject.Type == "Ability" ) {
+                    this.Type = this.scene.Game.HeldObject.Type;
+                    this.ID = this.scene.Game.HeldObject.ID;
+                } else if ( this.scene.Game.HeldObject.Type == "Item" ) {
+                    this.Type = this.scene.Game.HeldObject.Type;
+                    this.ID = this.scene.Game.HeldObject.ID;
+                }
+                this.scene.sound.play("InventoryPutdown");
+                GD.Hotbar[SlotNumber] = { Type: this.Type, ID: this.ID };
+                this.scene.Game.HeldObject.Sprite.destroy();
+                this.scene.Game.HeldObject = { Type: null, ID: null, Sprite: null };
+                this.scene.input.topOnly = true;
+                Inv.Items.forEach(item => item.Refresh());
+                this.Update();
+            }
+        });
+        this.scene.add.existing(this);
+        this.Sprite = this.scene.add.sprite(this.getCenter().x, this.getCenter().y, "general", 0).setDisplaySize(64, 64).setOrigin(0.5, 0.5).setVisible(false);
+        this.InputIcon = this.scene.add.image(this.getTopRight().x, this.getTopRight().y, "inputs", Input).setOrigin(1, 0).setDisplaySize(24, 24);
+        this.Update();
+    }
+
+    Update () {
+        if ( this.Type == "Item" ) {
+            const BaseItemData = ItemData[this.ID];
+            this.Sprite.setTexture(BaseItemData.Sprite.split("-")[0], BaseItemData.Sprite.split("-")[1]).setVisible(true);
+        }
+        else if ( this.Type == "Ability" ) {
+            const BaseAbilityData = AbilityData[this.ID];
+            this.Sprite.setTexture(BaseAbilityData.sprite.split("-")[0], BaseAbilityData.sprite.split("-")[1]).setVisible(true);
         }
     }
+
 }
 
 export default class CharacterPanel {
@@ -49,7 +83,7 @@ export default class CharacterPanel {
     public OffhandItemInput: any;
     public OffhandItemSprite: any;
 
-    public HotbarSlots: any[] = [];
+    public HotbarSlots: HotbarSlot[] = [];
 
     constructor ( scene: UI ) {
 
@@ -109,12 +143,28 @@ export default class CharacterPanel {
             this.OffhandItemSprite
         ]);
 
-        Object.entries(GD.Hotbar).forEach( (slot, index) => { 
+        let X = this.OffhandItemSlot.getTopRight().x + 1;
+        let Y = this.OffhandItemSlot.getTopRight().y;
+
+        Object.keys(GD.Hotbar).forEach( (slot, index) => { 
+
+            console.log(slot);
+
+            let slotData = GD.Hotbar[slot];
+
+            let Type = slotData ? slotData.Type : null;
+            let ID = slotData ? slotData.ID : null;
+
+            new HotbarSlot(this.scene, X, Y, Type, ID, controls['Use_Hotbar_' + (index + 1)], slot);
+
+            X += 64;
+
+            /*
 
             let X = this.OffhandItemSlot.getTopRight().x + 10 + (index * 64);
             let Y = this.OffhandItemSlot.getTopRight().y;
 
-            let Slot = new HotbarSlot(this.scene, X, Y, slot[1], index);
+            let Slot = new HotbarSlot(this.scene, X, Y, slot[1]?.Type, slot[1]?.ID, index);
 
             let rect = this.scene.add.nineslice(X, Y, "Kenney-UI", "buttonSquare_blue_pressed", 64, 64, 6, 6, 6, 6).setOrigin(0, 0);
             let sprite = this.scene.add.sprite(rect.getCenter().x, rect.getCenter().y, "general", 0).setDisplaySize(64, 64).setOrigin(0.5, 0.5).setVisible(false);
@@ -122,9 +172,20 @@ export default class CharacterPanel {
 
             rect.setInteractive();
             rect.on('pointerdown', ( pointer: Phaser.Input.Pointer ) => {
-                if ( pointer.leftButtonDown() && Inv.HeldItem != null ) {
-                    let FromSlot = Inv.HeldItem.getData('slot');
-                    // Update hotbar slot with the held item or ability
+                if ( pointer.leftButtonDown() && this.scene.Game.HeldObject.Sprite != null ) {
+
+                    // Assign the hotbar slot to the held object or ability
+                    if ( this.scene.Game.HeldObject.Type == "Ability" ) {
+                        GD.Hotbar[slot[0]] = { Type: this.scene.Game.HeldObject.Type, ID: this.scene.Game.HeldObject.ID };
+                    }
+
+                    if ( this.scene.Game.HeldObject.Type == "Ability" ) {
+
+                    }
+
+                    this.scene.Game.HeldObject.Sprite.destroy();
+                    this.scene.Game.HeldObject = { Type: null, ID: null, Sprite: null };
+                    this.UpdateHotbarSlot(index);
                 }
             });
 
@@ -152,16 +213,38 @@ export default class CharacterPanel {
 
             sprite.on('pointermove', ( pointer: Phaser.Input.Pointer ) => {
                 this.scene.Tooltip.Move(pointer.x + 40, pointer.y - 300);
-            });
+            });*/
 
         });
 
     }
 
-    UpdateHotbarSlot ( slot: string ) {
-        // Find the slot index
-        let slotIndex = Object.keys(GD.Hotbar).indexOf(slot);
-
+    UpdateHotbarSlot (index: number) {
+        let slot = GD.Hotbar["Slot" + (index + 1)];
+        let sprite = this.scene.children.getByName("HotbarSlotSprite" + index) as Phaser.GameObjects.Sprite;
+        if ( slot == null ) {
+            sprite.setVisible(false);
+            return;
+        }
+        if ( slot.Type == "Item" ) {
+            const BaseItemData = this.scene.Game.DataManager.ItemData[slot.ID];
+            sprite.setTexture(BaseItemData.Sprite.split("-")[0], BaseItemData.Sprite.split("-")[1]).setVisible(true);
+        }
+        if ( slot.Type == "Ability" ) {
+            const BaseAbilityData = AbilityData[slot.ID];
+            sprite.setTexture(BaseAbilityData.sprite.split("-")[0], BaseAbilityData.sprite.split("-")[1]).setVisible(true);
+        }
+        sprite.setInteractive();
+        sprite.on('pointerover', () => {
+            this.scene.Tooltip.Show(slot.Type, slot.ID);
+        });
+        sprite.on('pointerout', () => {
+            this.scene.Tooltip.Hide();
+        }
+        );
+        sprite.on('pointermove', ( pointer: Phaser.Input.Pointer ) => {
+            this.scene.Tooltip.Move(pointer.x + 40, pointer.y - 300);
+        });
     }
 
     UpdateVitalsBars () {

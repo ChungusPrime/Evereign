@@ -34,6 +34,7 @@ interface Trait {
     ID: string;
     Name: string;
     Description: string;
+    sprite?: string;
     RequiredTraits?: string[];
     RequiredAttributes?: {
         Fortitude?: number;

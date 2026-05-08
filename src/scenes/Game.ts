@@ -98,9 +98,9 @@ export default class Game extends Phaser.Scene {
     public Switches: Phaser.GameObjects.Group;
     public Characters: Phaser.GameObjects.Group;
 
-    public HeldObject: any = {
-        Type: "",
-        ID: "",
+    public HeldObject: { Type: string | null, ID: string | null, Sprite: Phaser.GameObjects.Sprite | null } = {
+        Type: null,
+        ID: null,
         Sprite: null
     }
 
@@ -238,6 +238,12 @@ export default class Game extends Phaser.Scene {
             // Right click to cancel building mode
             if ( pointer.rightButtonDown() && this.BuildingHelper.BuildingPlacementMode ) {
                 this.BuildingHelper.DeactivateBuildingMode();
+            }
+
+            if ( pointer.rightButtonDown() && this.HeldObject.Sprite !== null ) {
+                this.HeldObject.Sprite.destroy();
+                this.HeldObject = { Type: null, ID: null, Sprite: null };
+                Inv?.Items.forEach(item => item.Refresh());
             }
 
         });
@@ -666,7 +672,8 @@ export default class Game extends Phaser.Scene {
 
             // if its ammo, try to reload weapon
             if ( BaseItemData.Category == "Ammunition" ) {
-                this.ActionManager.ReloadMainhandWeapon();
+                if ( GD.Inventory.Equipment_MainHand )
+                    this.ActionManager.ReloadMainhandWeapon();
             }
 
             if ( BaseItemData.Category == "Throwable" ) {

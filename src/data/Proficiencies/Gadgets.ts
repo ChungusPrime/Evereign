@@ -35,16 +35,19 @@ const Gadgets: Proficiency = {
             ID: "gadgeteer_novice",
             Name: "Gadgeteer Novice",
             Description: "Your gadgets have a chance to not consume mana.",
+            sprite: "SkillsB-43",
         },
         {
             ID: "gadgeteer_expert",
             Name: "Gadgeteer Expert",
             Description: "Your gadgets have a higher chance to not consume mana.",
+            sprite: "SkillsB-44",
         },
         {
             ID: "gadgeteer_master",
             Name: "Gadgeteer Master",
             Description: "Your gadgets have a very high chance to not consume mana.",
+            sprite: "SkillsB-45",
         },
     ]
 

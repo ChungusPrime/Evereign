@@ -13,6 +13,7 @@ const Leather: Proficiency = {
             ID: "leather_novice",
             Name: "Leather Novice",
             Description: "You can wear basic leather armor.",
+            sprite: "SkillsB-42",
         },
     ]
 

@@ -23,16 +23,19 @@ const Explosives: Proficiency = {
             ID: "explosives_novice",
             Name: "Explosives Novice",
             Description: "Your grenades have a chance to not consume mana.",
+            sprite: "SkillsB-46",
         },
         {
             ID: "explosives_expert",
             Name: "Explosives Expert",
             Description: "Your grenades have a higher chance to not consume mana.",
+            sprite: "SkillsB-47",
         },
         {
             ID: "explosives_master",
             Name: "Explosives Master",
             Description: "Your grenades have a very high chance to not consume mana.",
+            sprite: "SkillsB-48",
         },
     ],
     
