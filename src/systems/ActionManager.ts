@@ -1,9 +1,11 @@
 import Game from "../scenes/Game";
 import UI from "../scenes/UI";
-import FloatingText from "../game_objects/FloatingText";
-import { GD } from "../scenes/Game";
+import FloatingText from "../objects/game/FloatingText";
+import { GD, Inv } from "../scenes/Game";
 import ItemData from "../data/ItemData";
 import Abilities from "../data/Abilities";
+import { ApplyOnUseEffects } from "./OnUseProcessor";
+import Objects from "../data/Objects";
 
 /*
     The ActionManager system is responsible for handling player actions such as mining, woodcutting, harvesting, and other activities that require a progress bar and time to complete. 
@@ -28,13 +30,25 @@ export default class ActionManager {
         Delta: 0,
         IsAbility: false,
         AbilityID: null,
-        TiledID: null
+        IsItem: false,
+        ItemID: null,
+        TiledID: null,
+        WorldObjectType: null,
+        IsReloading: false,
+        IsHarvesting: false,
+        TargetX: null,
+        TargetY: null,
     }
 
     public ActivityProgressBarBG: Phaser.GameObjects.Rectangle;
     public ActivityProgressBar: Phaser.GameObjects.Sprite;
     public ActivityProgressText: Phaser.GameObjects.Text;
-    
+
+    // Targeting mode state (for manual-target abilities)
+    public TargetingIndicator!: Phaser.GameObjects.Arc;
+    public TargetingAbility: Ability | null = null;
+    get IsTargeting(): boolean { return this.TargetingAbility !== null; }
+
     constructor ( scene: Game, UI: UI ) {
         this.scene = scene;
         this.UI = UI;
@@ -43,7 +57,10 @@ export default class ActionManager {
         this.ActivityProgressText = this.UI.add.text(this.ActivityProgressBar.getTopCenter().x, this.ActivityProgressBar.getTopCenter().y - this.ActivityProgressBar.height, "Current Activity", { 
             fontFamily: "Augusta",
             fontSize: 24 
-        }).setOrigin(0.5).setVisible(false);
+        })
+        .setOrigin(0.5)
+        .setVisible(false);
+        this.TargetingIndicator = scene.add.circle(0, 0, 16, 0xffff00, 0.5).setDepth(10000).setVisible(false);
     }
 
     ReloadMainhandWeapon () {
@@ -53,97 +70,165 @@ export default class ActionManager {
         this.CurrentActivity.Type = "Reloading"
         this.ActivityProgressText.setText("Reloading...").setVisible(true);
         this.ActivityProgressBarBG.setVisible(true);
+        this.CurrentActivity.IsReloading = true;
     }
 
-    UseAbility (ability: Ability) {
+    private BeginItemActivity (data: ItemData) {
+        this.CurrentActivity.IsItem = true;
+        this.CurrentActivity.ItemID = data.ID;
+        this.CurrentActivity.Delta = 0;
+        this.CurrentActivity.Type = `Using ${data.Name}`;
+        this.ActivityProgressBar.setDisplaySize(0, 20);
+        this.ActivityProgressBar.setVisible(true);
+        this.ActivityProgressText.setText(`Using ${data.Name}`).setVisible(true);
+        this.ActivityProgressBarBG.setVisible(true);
+    }
 
+    private BeginAbilityActivity (ability: Ability) {
         this.CurrentActivity.IsAbility = true;
         this.CurrentActivity.AbilityID = ability.ID;
-
-        if ( ability.ActiviationType == "Channeled" ) {
-            this.CurrentActivity.Delta = 0;
-            this.ActivityProgressBar.setDisplaySize(0, 20);
-            this.ActivityProgressBar.setVisible(true);
-            this.CurrentActivity.Type = `Channeling ${ability.Name}`;
-            this.ActivityProgressText.setText(`Channeling ${ability.Name}`).setVisible(true);
-            this.ActivityProgressBarBG.setVisible(true);
-        } else if ( ability.ActiviationType == "Charge" ) {
-            this.CurrentActivity.Delta = 0;
-            this.ActivityProgressBar.setDisplaySize(0, 20);
-            this.ActivityProgressBar.setVisible(true);
-            this.CurrentActivity.Type = `Charging ${ability.Name}`;
-            this.ActivityProgressText.setText(`Charging ${ability.Name}`).setVisible(true);
-            this.ActivityProgressBarBG.setVisible(true);
-        } else if ( ability.ActiviationType == "Cast" ) {
-            this.CurrentActivity.Delta = 0;
-            this.ActivityProgressBar.setDisplaySize(0, 20);
-            this.ActivityProgressBar.setVisible(true);
-            this.CurrentActivity.Type = `Casting ${ability.Name}`;
-            this.ActivityProgressText.setText(`Casting ${ability.Name}`).setVisible(true);
-            this.ActivityProgressBarBG.setVisible(true);
-        } else if ( ability.ActiviationType == "Instant" ) {
-            // No progress bar, just perform the ability immediately
-        } else {
-            console.warn(`Unknown ability activation type: ${ability.ActiviationType}`);
+        this.CurrentActivity.Delta = 0;
+        this.ActivityProgressBar.setDisplaySize(0, 20);
+        this.ActivityProgressBar.setVisible(true);
+        this.ActivityProgressBarBG.setVisible(true);
+        let Text = ability.Name;
+        switch (ability.ActiviationType) {
+            case "Channeled": Text = `Channeling ${ability.Name}`; break;
+            case "Charge": Text = `Charging ${ability.Name}`; break;
+            case "Cast": Text = `Casting ${ability.Name}`; break;
         }
-
+        this.CurrentActivity.Type = Text;
+        this.ActivityProgressText.setText(Text).setVisible(true);
     }
 
-    StartActivity( object: Phaser.Physics.Arcade.Sprite | Phaser.GameObjects.Rectangle ) {
+    // ── Targeting mode ──────────────────────────────────────────────────────────
+    ActivateTargeting (ability: Ability): void {
+        this.TargetingAbility = ability;
+        this.TargetingIndicator.setRadius(ability.targeting_radius);
+        this.TargetingIndicator.setVisible(true);
+        this.UI.TargetingModeHelpText.setVisible(true);
+    }
+
+    SelectTarget (x: number, y: number): void {
+        if (!this.TargetingAbility) return;
+        const ability = this.TargetingAbility;
+        this.CancelTargeting();
+
+        if (ability.ActiviationType === "Instant" || !ability.CastTime) {
+            if (ability.OnUse) ApplyOnUseEffects(this.scene, ability.OnUse, undefined, x, y);
+        } else {
+            this.CurrentActivity.TargetX = x;
+            this.CurrentActivity.TargetY = y;
+            this.BeginAbilityActivity(ability);
+        }
+    }
+
+    CancelTargeting (): void {
+        this.TargetingAbility = null;
+        this.TargetingIndicator.setVisible(false);
+        this.UI.TargetingModeHelpText.setVisible(false);
+    }
+
+    // ── Public action entry points ───────────────────────────────────────────────
+    UseHotbarSlot (slot: string) {
+        const hotbarItem = GD.Hotbar[slot];
+        if (!hotbarItem) return;
+
+        if (hotbarItem.Type === "Ability") {
+            const ability = Abilities[hotbarItem.ID];
+
+            if (ability.requires_weapon_equipped && !GD.Inventory.Equipment_MainHand)
+                return this.scene.UI.EventLog.NewEvent("You need a weapon equipped to use this ability");
+
+            // If this charge ability is already being charged, release it immediately
+            if (ability.ActiviationType === "Charge" && this.CurrentActivity.IsAbility && this.CurrentActivity.AbilityID === ability.ID) {
+                const chargeRatio = Math.min(this.CurrentActivity.Delta / ability.ChargeTime, 1);
+                console.log(`${ability.Name} released at ${(chargeRatio * 100).toFixed(1)}% charge (${this.CurrentActivity.Delta.toFixed(0)}ms / ${ability.ChargeTime}ms).`);
+                if (ability.OnUse) ApplyOnUseEffects(this.scene, ability.OnUse);
+                return this.CancelActivity();
+            }
+
+            if (ability.targeting === "manual")
+                return this.ActivateTargeting(ability);
+
+            if (ability.ActiviationType === "Instant") {
+                if (ability.OnUse) ApplyOnUseEffects(this.scene, ability.OnUse);
+            } else {
+                this.BeginAbilityActivity(ability);
+            }
+            return;
+        }
+
+        if (hotbarItem.Type === "Item") {
+            const data = ItemData[hotbarItem.ID];
+
+            if (data.Category === "Ammunition") {
+                if (GD.Inventory.Equipment_MainHand) this.ReloadMainhandWeapon();
+                return;
+            }
+
+            if (data.UseTime) {
+                if (!Inv.HasRequiredQuantity(hotbarItem.ID, 1))
+                    return this.scene.UI.EventLog.NewEvent(`You have no ${data.Name} left`);
+                this.BeginItemActivity(data);
+            } else {
+                if (!Inv.HasRequiredQuantity(hotbarItem.ID, 1))
+                    return this.scene.UI.EventLog.NewEvent(`You have no ${data.Name} left`);
+                Inv.RemoveItem(hotbarItem.ID, 1);
+                if (data.OnUse) ApplyOnUseEffects(this.scene, data.OnUse, data.ID);
+            }
+        }
+    }
+
+    UseItem (itemId: string) {
+        const data = ItemData[itemId];
+        if (!Inv.HasRequiredQuantity(itemId, 1))
+            return this.scene.UI.EventLog.NewEvent(`You have no ${data.Name} left`);
+        if (data.UseTime) {
+            this.BeginItemActivity(data);
+        } else {
+            Inv.RemoveItem(itemId, 1);
+            if (data.OnUse) ApplyOnUseEffects(this.scene, data.OnUse, itemId);
+        }
+    }
+
+    StartHarvesting( object: Phaser.Physics.Arcade.Sprite | Phaser.GameObjects.Rectangle ) {
 
         if ( object == null ) return;
         if ( object.getData("type") == null || object.getData("type") == undefined ) return;
 
         const ObjectType = object.getData("type");
-        console.log(ObjectType);
-    
+
         if ( Phaser.Math.Distance.BetweenPoints(this.scene.PlayerCharacter, { x: object.getCenter().x, y: object.getCenter().y }) > 75 )
             return this.scene.UI.EventLog.NewEvent("That is too far away");
-            
-        this.CurrentActivity.Delta = 0;
 
-        if ( ObjectType == "Willow Tree" ) {
-            this.CurrentActivity.Type = "Cutting Willow Tree";
-            this.scene.sound.play("woodcutting", { loop: true });
-            this.CurrentActivity.TiledID = object.getData("tiled_id");
-        } else if ( ObjectType == "Marigold" ) {
-            this.CurrentActivity.Type = "Harvesting Marigold";
-            this.scene.sound.play("harvesting", { loop: true });
-        } else if ( ObjectType == "Munkle's Brightcap" ) {
-            this.CurrentActivity.Type = "Harvesting Munkle's Brightcap";
-            this.scene.sound.play("harvesting", { loop: true });
-        } else if ( ObjectType == "Bloomberry" ) {
-            this.CurrentActivity.Type = "Harvesting Bloomberry";
-            this.scene.sound.play("harvesting", { loop: true });
-        } else if ( ObjectType == "Stone Node" ) {
-            this.CurrentActivity.Type = "Mining Stone";
-            this.scene.sound.play("mining", { loop: true });
-        } else if ( ObjectType == "Iron Node" ) {
-            this.CurrentActivity.Type = "Mining Iron";
-            this.scene.sound.play("mining", { loop: true });
-        } else if ( ObjectType == "Fishing" ) {
-            this.CurrentActivity.Type = "Fishing";
-            this.scene.sound.play("fishing", { loop: true });
-        } else {
-            console.log("Activity not found");
-        }
-        
-        this.scene.UI.EventLog.NewEvent(`You start ${this.CurrentActivity.Type}`);
+        const data = Objects[ObjectType];
+        if ( !data ) return console.log(`No activity data found for object type: ${ObjectType}`);
+
+        this.CurrentActivity.Delta = 0;
+        this.CurrentActivity.Type = data.ActivityLabel;
+        this.CurrentActivity.WorldObjectType = ObjectType;
+        this.CurrentActivity.TiledID = object.getData("tiled_id");
+        this.CurrentActivity.IsHarvesting = true;
+
+        this.scene.sound.play(data.HarvestSound, { loop: true });
+        this.scene.UI.EventLog.NewEvent(`You start ${data.ActivityLabel}`);
 
         this.ActivityProgressBar.setDisplaySize(0, 20);
         this.ActivityProgressBar.setVisible(true);
-        this.ActivityProgressText.setText(this.CurrentActivity.Type).setVisible(true);
+        this.ActivityProgressText.setText(data.ActivityLabel).setVisible(true);
         this.ActivityProgressBarBG.setVisible(true);
 
     }
 
     update ( delta: number ) {
 
-        if ( this.CurrentActivity.Type == "" )
-            return;
+        if (this.IsTargeting) this.TargetingIndicator.setPosition(this.scene.mouseX, this.scene.mouseY);
 
+        if ( this.CurrentActivity.Type == "" ) return;
         this.CurrentActivity.Delta += delta;
 
+        // Handle ability activities
         if ( this.CurrentActivity.IsAbility ) {
 
             const Ability = Abilities[this.CurrentActivity.AbilityID];
@@ -155,7 +240,7 @@ export default class ActionManager {
                 const currentIntervals = Math.floor(this.CurrentActivity.Delta / Ability.ChannelInterval);
                 if ( currentIntervals > previousIntervals ) {
                     console.log(`Applying channeled effect of ${Ability.Name}`);
-                    this.scene.UseAbility();
+                    if (Ability?.OnUse) ApplyOnUseEffects(this.scene, Ability.OnUse);
                 }
                 if ( MaxTime > 0 && this.CurrentActivity.Delta >= MaxTime ) {
                     console.log(`Max channel time reached for ${Ability.Name}, ending channel.`);
@@ -164,99 +249,94 @@ export default class ActionManager {
             }
 
             if ( Ability.ActiviationType == "Charge" && this.CurrentActivity.Delta >= Ability.ChargeTime ) {
-                console.log(`Max charge time reached for ${Ability.Name}, performing ability with max charge.`);
-                this.scene.UseAbility();
+                console.log(`${Ability.Name} fully charged (${Ability.ChargeTime}ms), performing ability.`);
+                if (Ability?.OnUse) ApplyOnUseEffects(this.scene, Ability.OnUse);
                 return this.CancelActivity();
             }
 
             if ( Ability.ActiviationType == "Cast" && this.CurrentActivity.Delta >= Ability.CastTime ) {
                 console.log(`Cast time completed for ${Ability.Name}, performing ability.`);
-                this.scene.UseAbility();
+                if (Ability?.OnUse) ApplyOnUseEffects(this.scene, Ability.OnUse, undefined, this.CurrentActivity.TargetX, this.CurrentActivity.TargetY);
                 return this.CancelActivity();
             }
 
             this.ActivityProgressBar.setDisplaySize(Math.min(this.CurrentActivity.Delta / MaxTime, 1) * 200, 20);
-
-        } else {
+        }
+        
+        // Handle item usage activities
+        if ( this.CurrentActivity.IsItem ) {
+            const data = ItemData[this.CurrentActivity.ItemID];
+            const useTime = data.UseTime;
+            this.ActivityProgressBar.setDisplaySize(Math.min(this.CurrentActivity.Delta / useTime, 1) * 200, 20);
+            if ( this.CurrentActivity.Delta >= useTime ) {
+                if ( !Inv.HasRequiredQuantity(data.ID, 1) ) {
+                    this.scene.UI.EventLog.NewEvent("You have no more of this item left");
+                    return this.CancelActivity();
+                }
+                Inv.RemoveItem(data.ID, 1);
+                if ( data.OnUse ) ApplyOnUseEffects(this.scene, data.OnUse, data.ID);
+                return this.CancelActivity();
+            }
+        } 
+        
+        // Handle reloading activity
+        if ( this.CurrentActivity.IsReloading ) {
 
             this.ActivityProgressBar.setDisplaySize(Math.min(this.CurrentActivity.Delta / 1000, 1) * 200, 20);
-
             if ( this.CurrentActivity.Delta < 1000 ) return;
 
-            let ev = { message: "", sprite1: "", sprite2: 0, x: this.scene.PlayerCharacter.x, y: this.scene.PlayerCharacter.y };
+            let MainhandItem = ItemData[GD.Inventory.Equipment_MainHand.ID];
+            let CurrentLoadedAmmo = GD.Inventory.Equipment_MainHand.Ammo;
+            let MaxMagazine = MainhandItem.Properties.MagazineSize;
+            let Match = Object.entries(GD.Inventory).find( ([key, invItem]) => {
+                if ( invItem && invItem.ID == CurrentLoadedAmmo ) {
+                    GD.Inventory.Equipment_MainHand.CurrentMagazine = MaxMagazine;
+                    this.scene.Inventory.RemoveItem(CurrentLoadedAmmo, MaxMagazine);
+                    console.log("Reloaded!");
+                    this.scene.sound.play("ShotgunReload");
+                    return true;
+                }
+            });
 
-            if ( this.CurrentActivity.Type == "Cutting Willow Tree" ) {
-                ev.message = "+1 Willow Log";
-                ev.sprite1 = "general";
-                ev.sprite2 = 21;
-                this.scene.Inventory.AddItem("log_willow", 1);
-                GD.Skills['Forestry'].Experience += 5;
+            if ( !Match ) console.log("No ammo!");
+
+            this.CancelActivity();
+            return;
+
+        // Handle harvesting activity
+        }
+        
+        if ( this.CurrentActivity.IsHarvesting ) {
+
+            // World object harvesting — driven by ObjectData
+            const objectData = Objects[this.CurrentActivity.WorldObjectType];
+            if ( !objectData ) return this.CancelActivity();
+
+            this.ActivityProgressBar.setDisplaySize(Math.min(this.CurrentActivity.Delta / objectData.HarvestTime, 1) * 200, 20);
+            if ( this.CurrentActivity.Delta < objectData.HarvestTime ) return;
+
+            const ev = {
+                message: objectData.FloatMessage,
+                sprite1: objectData.FloatSprite,
+                sprite2: objectData.FloatFrame,
+                x: this.scene.PlayerCharacter.x,
+                y: this.scene.PlayerCharacter.y
+            };
+
+            this.scene.Inventory.AddItem(objectData.HarvestItem, objectData.BaseHarvestAmount);
+            GD.Skills[objectData.HarvestExperienceType].Experience += objectData.HarvestExperienceValue;
+
+            if ( objectData.DepletesOnHarvest ) {
                 this.scene.Trees.getChildren().forEach( (tree: Phaser.Physics.Arcade.Sprite) => {
                     if ( tree.getData("tiled_id") == this.CurrentActivity.TiledID ) {
                         (tree as any).Deplete();
                     }
                 });
-                this.CancelActivity();
-            } else if ( this.CurrentActivity.Type == "Harvesting Marigold" ) {
-                ev.message = "+1 Marigold";
-                ev.sprite1 = "flowers";
-                ev.sprite2 = 32;
-                this.scene.Inventory.AddItem("marigold", 1);
-                GD.Skills['Botany'].Experience += 5;
-            } else if ( this.CurrentActivity.Type == "Harvesting Munkle's Brightcap" ) {
-                ev.message = "+1 Munkle's Brightcap";
-                ev.sprite1 = "RA_Cavern_Full";
-                ev.sprite2 = 902;
-                //this.scene.Inventory.AddItem("munkles_brightcap", 1);
-                GD.Skills['Botany'].Experience += 5;
-            } else if ( this.CurrentActivity.Type == "Harvesting Bloomberry" ) {
-                ev.message = "+1 Bloomberry";
-                ev.sprite1 = "RA_Jungle";
-                ev.sprite2 = 1179;
-                //this.scene.Inventory.AddItem("bloomberry", 1);
-                GD.Skills['Botany'].Experience += 5;
-            } else if ( this.CurrentActivity.Type == "Mining Stone" ) {
-                ev.message = "+1 Stone";
-                ev.sprite1 = "general";
-                ev.sprite2 = 60;
-                //this.scene.Inventory.AddItem("stone_rough", 1);
-                GD.Skills['Mining'].Experience += 5;
-            } else if ( this.CurrentActivity.Type == "Mining Iron" ) {
-                ev.message = "+1 Iron Ore";
-                ev.sprite1 = "general";
-                ev.sprite2 = 62;
-                //this.scene.Inventory.AddItem("ore_iron", 1);
-                GD.Skills['Mining'].Experience += 5;
-            } else if ( this.CurrentActivity.Type == "Fishing" ) {
-                ev.message = "+1 Humming Bass";
-                ev.sprite1 = "fishing";
-                ev.sprite2 = 333;
-                //this.scene.Inventory.AddItem("humming_bass", 1);
-                GD.Skills['Fishing'].Experience += 5;
-
-            } else if ( this.CurrentActivity.Type == "Reloading" ) {
-                let MainhandItem = ItemData[GD.Inventory.Equipment_MainHand.ID];
-                let CurrentLoadedAmmo = GD.Inventory.Equipment_MainHand.Ammo;
-                let MaxMagazine = MainhandItem.Properties.MagazineSize;
-                let Match = Object.entries(GD.Inventory).find( ([key, invItem]) => {
-                    if ( invItem && invItem.ID == CurrentLoadedAmmo ) {
-                        GD.Inventory.Equipment_MainHand.CurrentMagazine = MaxMagazine;
-                        this.scene.Inventory.RemoveItem(CurrentLoadedAmmo, MaxMagazine);
-                        console.log("Reloaded!");
-                        this.scene.sound.play("ShotgunReload");
-                        return true;
-                    }
-                });
-                if ( !Match ) console.log("No ammo!");
-                
-            }
-
-            if ( this.CurrentActivity.Type != "Reloading" ) {
                 this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, ev));
-                return;
+                return this.CancelActivity();
             }
 
-            this.CancelActivity();
+            this.scene.UI.FloatingTexts.push(new FloatingText(this.scene, ev));
 
         }
 
@@ -266,7 +346,7 @@ export default class ActionManager {
         if ( this.CurrentActivity.Type != "Reloading" ) {
             this.scene.UI.EventLog.NewEvent(`You stop ${this.CurrentActivity.Type}`);
         }
-        this.CurrentActivity = { Type: "", Delta: 0, IsAbility: false, AbilityID: null, TiledID: null };
+        this.CurrentActivity = { Type: "", Delta: 0, IsAbility: false, AbilityID: null, IsItem: false, ItemID: null, TiledID: null, WorldObjectType: null, IsReloading: false, IsHarvesting: false, TargetX: null, TargetY: null };
         this.scene.sound.stopByKey("woodcutting");
         this.scene.sound.stopByKey("mining");
         this.scene.sound.stopByKey("harvesting");

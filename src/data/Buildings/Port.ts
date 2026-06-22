@@ -2,12 +2,11 @@ const PortData: BuildingData = {
     ID: "port",
     Name: "Port",
     Spritesheet: "Buildings",
-    Sprite: "port-1",
-    Size: {
-        Width: 0,
-        Height: 0
-    },
-    Desc: "",
+    Sprite: "port",
+    Size: { Width: 192, Height: 192 },
+    PlotSize: { Width: 96, Height: 128 },
+    Desc: `The port provides docking space for ships and facilitates trade`,
+    ResourceStorageIncrease: 1000,
     Tiers: {},
     BuildingCost: {
         1: [

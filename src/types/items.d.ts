@@ -45,7 +45,12 @@ interface ItemData {
     DamageModifier?: number;
 
     InitialValue?: any;
-    
+
+    /** Time in ms to use this item (shows a progress bar). If absent, use is instant. */
+    UseTime?: number;
+    /** Effects applied when this item is used from the hotbar or inventory */
+    OnUse?: OnUseEffect | OnUseEffect[];
+
     Tags?: number[];
 
 }

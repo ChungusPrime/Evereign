@@ -1,9 +1,9 @@
 import Game, { PC } from "../scenes/Game";
 import UI from "../scenes/UI";
-import ItemSlot from "../game_objects/UI_ItemSlot";
+import ItemSlot from "../objects/ui/UI_ItemSlot";
 import { GD } from "../scenes/Game";
 import DamageTypes from "../data/DamageTypes";
-import TextButton from "../game_objects/UI_TextButton";
+import TextButton from "../objects/ui/UI_TextButton";
 
 export default class Inventory {
 
@@ -293,8 +293,8 @@ export default class Inventory {
 
         for ( let i = 0; i < quantity; i++ ) {
             if ( BaseItemData.Stackable ) {
-                // If the item is stackable, try to find an existing stack
-                let Slot = this.Items.find((slot) => slot.DataInventorySlot !== null && slot.DataInventorySlot.ID === ID && slot.DataInventorySlot.Quantity < BaseItemData.StackSize);
+                // If the item is stackable, try to find an existing stack, (a stack size value of 0 indicates infinite stack size)
+                let Slot = this.Items.find((slot) => slot.DataInventorySlot !== null && slot.DataInventorySlot.ID === ID && (BaseItemData.StackSize === 0 || slot.DataInventorySlot.Quantity < BaseItemData.StackSize));
                 if ( Slot !== undefined ) {
                     Slot.DataInventorySlot.Quantity++;
                     Slot.Refresh();

@@ -9,7 +9,8 @@ const Agent: Class = {
     Proficiencies: [
         "Leather",
         "Scatterguns",
-        "Explosives",
+        "Bombs",
+        "Mechanostructs",
         "Gadgets"
     ],
 
@@ -36,12 +37,11 @@ const Agent: Class = {
         Grit: 2,
     },
     Hotbar: {
-        1: { Type: "Ability", ID: "voltaic_net" },
-        2: { Type: "Ability", ID: "pyro_blast"},
-        3: { Type: "Ability", ID: "charged_slug"},
-        4: { Type: "Item", ID: "marigold_brew" },
-        5: { Type: "Item", ID: "stone_shot" },
-        6: { Type: "Item", ID: "grenade_mk1" },
+        1: { Type: "Ability", ID: "pyro_blast"},
+        2: { Type: "Ability", ID: "charged_slug"},
+        3: { Type: "Item", ID: "marigold_brew" },
+        4: { Type: "Item", ID: "stone_shot" },
+        5: { Type: "Item", ID: "grenade_mk1" },
     },
     Items: {
         Equipment_MainHand: { ID: "grandpa_scattergun", Quantity: 1 },

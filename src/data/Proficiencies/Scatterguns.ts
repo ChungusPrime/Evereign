@@ -15,18 +15,6 @@ const Scatterguns: Proficiency = {
     Abilities: [
 
         {
-            ID: "voltaic_net",
-            Name: "Voltaic Net",
-            mana_cost: 5,
-            sprite: "SkillsB-13",
-            type: "Buff",
-            cooldown: 8000,
-            ActiviationType: "Cast",
-            CastTime: 1000,
-            Description: "Load your Scattergun with a canister containing an electrically charged net. If it hits an enemy, that enemy is pinned and will periodically release a burst of electricity that damages nearby enemies.",
-        },
-
-        {
             ID: "pyro_blast",
             Name: "Pyro Blast",
             mana_cost: 15,
@@ -36,19 +24,26 @@ const Scatterguns: Proficiency = {
             ActiviationType: "Channeled",
             ChannelInterval: 500,
             MaxChannelTime: 2000,
-            Description: "Rapidly fire shells filled with volatile incendiary material.",
+            Description: "Rapidly fire shells filled with volatile incendiary material, dealing fire damage and applying a burning effect to enemies hit.",
+            OnUse: {
+                SpawnProjectile: { Type: "PyroPellet", Quantity: 6, Velocity: 100, Damage: [{ Type: "Fire", Amount: 10 }] }
+            },
         },
 
         {
             ID: "charged_slug",
-            Name: "Charged Slug",
+            Name: "Voltaic Slug",
             mana_cost: 10,
             sprite: "SkillsB-14",
             type: "Buff",
             cooldown: 10000,
             ActiviationType: "Charge",
             ChargeTime: 2000,
-            Description: "Fire a slug that has been charged with arcane energy. The longer the slug is charged, the more damage it will deal.",
+            Description: "Fire a electrically charged slug round. If it hits an enemy, that enemy is pinned and will periodically release a burst of electricity that damages nearby enemies.",
+            OnUse: {
+                SpawnProjectile: { Type: "ChargedSlug", Quantity: 1, Velocity: 300, Damage: [{ Type: "Electric", Amount: 15 }] }
+            },
+
         },
 
         {
@@ -58,48 +53,44 @@ const Scatterguns: Proficiency = {
             sprite: "SkillsB-50",
             type: "Buff",
             cooldown: 70000,
+            targeting: "Self",
             ActiviationType: "Instant",
             Description: "Rapidly fire a blast of pellets in all directions, dealing damage to nearby enemies and knocking them back, while also granting you a temporary shield that absorbs damage.",
             requires_weapon_equipped: true,
             weapon_type: "Scattergun",
-            apply_effect: "defensive_blast",
-            apply_effect_duration: 5000,
             requires_trait: "scattergun_novice",
+            OnUse: [
+                { KnockBack: { Radius: 200, Force: 400 } },
+                { ApplyEffect: { ID: "defensive_blast_shield", Duration: 5000 } }
+            ],
         },
 
     ],
 
     Traits: [
-        {
-            ID: "scattergun_novice",
-            Name: "Scattergun Novice",
-            sprite: "SkillsB-21",
-            Description: "Your Scattergun abilities have a chance to not consume mana.",
-        },
-
-        {
-            ID: "scattergun_expert",
-            Name: "Scattergun Expert",
-            Description: "Your Scattergun abilities have a higher chance to not consume mana.",
-            sprite: "SkillsB-22",
-        },
-
-        {
-            ID: "scattergun_master",
-            Name: "Scattergun Master",
-            Description: "Your Scattergun abilities have a very high chance to not consume mana.",
-            sprite: "SkillsB-23",
-        },
 
         {
             ID: "scattergun_apprentice",
             Name: "Scattergun Apprentice",
-            Description: `Intermediate training on how to use Scatterguns.
-            - The number of pellets fired per shot is increased by 2.
-            - Each base damage type of Scatterguns is increased by 2.`,
+            Description: `Allows you to equip and use Scatterguns.`,
             sprite: "SkillsB-24",
             RequiredTraits: [
                 "scattergun_novice",
+            ],
+            RequiredAttributes: {
+                Versatility: 10,
+            }
+        },
+
+        {
+            ID: "scattergun_novice",
+            Name: "Scattergun Novice",
+            sprite: "SkillsB-21",
+            Description: `Basic training on how to use Scatterguns.
+            - The number of pellets fired per shot is increased by 1.
+            - Scattergun pellets deal an additional 4 Impact damage.`,
+            RequiredTraits: [
+                "scattergun_apprentice",
             ],
             RequiredAttributes: {
                 Versatility: 10,
@@ -111,134 +102,48 @@ const Scatterguns: Proficiency = {
             Name: "Scattergun Journeyman",
             Description: `Advanced training on how to use Scatterguns.
             - The number of pellets fired per shot is increased by 2.
-            - Each base damage type of Scatterguns is increased by 2.`,
-            RequiredTraits: [
-                "scattergun_apprentice",
-            ],
+            - Scattergun pellets deal an additional 8 Impact damage.`,
             sprite: "SkillsB-25",
+            RequiredTraits: [
+                "scattergun_novice",
+            ],
+            RequiredAttributes: {
+                Versatility: 15,
+            }
         },
 
         {
-            ID: "scattergun_adept",
-            Name: "Scattergun Adept",
+            ID: "scattergun_expert",
+            Name: "Scattergun Expert",
             Description: `Expert training on how to use Scatterguns.
-            - The number of pellets fired per shot is increased by 2.
-            - Each base damage type of Scatterguns is increased by 2.`,
+            - The number of pellets fired per shot is increased by 3.
+            - Reload speed is reduced by 200ms.
+            - Scattergun pellets deal an additional 12 Impact damage.`,
+            sprite: "SkillsB-22",
             RequiredTraits: [
                 "scattergun_journeyman",
             ],
-            sprite: "SkillsB-26",
+            RequiredAttributes: {
+                Versatility: 20,
+            }
         },
 
         {
-            ID: "scattergun_guru",
-            Name: "Scattergun Guru",
+            ID: "scattergun_master",
+            Name: "Scattergun Master",
             Description: `Master training on how to use Scatterguns.
-            - The number of pellets fired per shot is increased by 2.
-            - Each base damage type of Scatterguns is increased by 2.`,
+            - The number of pellets fired per shot is increased by 4.
+            - Reload speed is reduced by 400ms.
+            - Scattergun pellets deal an additional 16 Impact damage.
+            - Scattergun Abilities have a small chance to not consume mana when used.`,
+            sprite: "SkillsB-23",
             RequiredTraits: [
-                "scattergun_adept",
+                "scattergun_expert",
             ],
-            sprite: "SkillsB-27",
+            RequiredAttributes: {
+                Versatility: 25,
+            }
         },
-
-        {
-            ID: "shoot-n-scoot",
-            Name: "Shoot-n-Scoot",
-            Description: `After emptying your Scattergun, gain a 20% movement speed boost for 3 seconds.`,
-            sprite: "SkillsB-28",
-        },
-
-        {
-            ID: "double_tap",
-            Name: "Double Tap",
-            Description: `Fire an additional shot immediately after firing a Scattergun. This effect has a cooldown of 10 seconds.`,
-            sprite: "SkillsB-29",
-        },
-
-        {
-            ID: "scattershot",
-            Name: "Scattershot",
-            Description: `Scattergun shots have a 20% chance to fire an additional pellet in a random direction.`,
-            sprite: "SkillsB-30",
-        },
-
-        {
-            ID: "buckshot",
-            Name: "Buckshot",
-            Description: `Scattergun shots have a 20% chance to fire an additional pellet directly forward.`,
-            sprite: "SkillsB-31",
-        },
-
-        {
-            ID: "ricochet",
-            Name: "Ricochet",
-            Description: `Scattergun pellets have a 20% chance to ricochet off surfaces, hitting additional targets.`,
-            sprite: "SkillsB-32",
-        },
-
-        {
-            ID: "close_quarters_expert",
-            Name: "Close Quarters Expert",
-            Description: `Scattergun shots have a 20% chance to deal increased damage based on how close the target is.`,
-            sprite: "SkillsB-33",
-        },
-
-        {
-            ID: "scatter_and_pray",
-            Name: "Scatter and Pray",
-            Description: `Scattergun shots have a 20% chance to ignore a portion of the target's armor.`,
-            sprite: "SkillsB-34",
-        },
-
-        {
-            ID: "overpenetration",
-            Name: "Overpenetration",
-            Description: `Scattergun pellets have a 20% chance to pass through targets, hitting additional enemies in a line.`,
-            sprite: "SkillsB-35",
-        },
-
-        {
-            ID: "shotgun_rain",
-            Name: "Shotgun Rain",
-            Description: `After firing a Scattergun, there is a 20% chance to create a small area of effect at the target location that deals damage over time for 5 seconds.`,
-            sprite: "SkillsB-36",
-        },
-
-        {
-            ID: "scattergun_slinger",
-            Name: "Scattergun Slinger",
-            Description: `Gain a 20% chance to fire an additional Scattergun shot that targets a random nearby enemy.`,
-            sprite: "SkillsB-37",
-        },
-
-        {
-            ID: "shotgunner's_luck",
-            Name: "Shotgunner's Luck",
-            Description: `Scattergun shots have a 20% chance to critically strike, dealing increased damage.`,
-            sprite: "SkillsB-38",
-        },
-
-        {
-            ID: "scattergunner's_doom",
-            Name: "Scattergunner's Doom",
-            Description: `Scattergun shots have a 20% chance to apply a debuff to the target that increases the damage they take from all sources for 5 seconds.`,
-            sprite: "SkillsB-39",
-        },
-
-        {
-            ID: "scattergunner's_fortune",
-            Name: "Scattergunner's Fortune",
-            Description: `Scattergun shots have a 20% chance to apply a buff to you that increases the damage you deal with Scatterguns for 5 seconds.`,
-            sprite: "SkillsB-40",
-        },
-
-        {
-            ID: "close_range_expert",
-            Name: "Close Range Expert",
-            Description: `Scattergun shots have a 20% chance to deal increased damage based on how close the target is.`,
-            sprite: "SkillsB-41",
-        }
 
     ],
 

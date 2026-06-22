@@ -8,7 +8,12 @@ const WillowTree: ObjectData = {
     HarvestSound: "woodcutting",
     HarvestRequiresToolType: "Felling Axe",
     HarvestExperienceType: "Forestry",
-    HarvestExperienceValue: 5
+    HarvestExperienceValue: 5,
+    ActivityLabel: "Cutting Willow Tree",
+    FloatMessage: "+1 Willow Log",
+    FloatSprite: "general",
+    FloatFrame: 21,
+    DepletesOnHarvest: true,
 }
 
 export default WillowTree;

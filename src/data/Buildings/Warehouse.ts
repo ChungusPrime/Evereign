@@ -2,12 +2,11 @@ const WarehouseData: BuildingData = {
     ID: "warehouse",
     Name: "Warehouse",
     Spritesheet: "Buildings",
-    Sprite: "warehouse-1",
-    Size: {
-        Width: 0,
-        Height: 0
-    },
-    Desc: "",
+    Sprite: "warehouse1",
+    Size: { Width: 128, Height: 128 },
+    PlotSize: { Width: 128, Height: 128 },
+    Desc: `The warehouse provides storage space for all kinds of resources`,
+    ResourceStorageIncrease: 1000,
     Tiers: {},
     BuildingCost: {
         1: [

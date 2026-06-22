@@ -31,7 +31,8 @@ const DefaultGameData: GameData = {
     SoulGems: 0,
     CompletedCampaigns: [],
     ReincarnationTraits: [],
-    Characters: {}
+    Characters: {},
+    Scenarios: {}
 };
 
 export default DefaultGameData;

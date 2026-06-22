@@ -24,6 +24,30 @@ interface ObjectData {
     HarvestRequiresToolType: string;
     HarvestExperienceType: string;
     HarvestExperienceValue: number;
+    /** Full label used as the activity type string, e.g. "Cutting Willow Tree" */
+    ActivityLabel: string;
+    /** Floating text message shown on each successful harvest */
+    FloatMessage: string;
+    /** Texture key for the floating text icon */
+    FloatSprite: string;
+    /** Frame number for the floating text icon */
+    FloatFrame: number;
+    /** Whether the object should be depleted after a single harvest */
+    DepletesOnHarvest: boolean;
+}
+
+interface Scenario {
+    Name: string;
+    Description: string;
+    StartingPosition: { X: number, Y: number };
+    MapKey: string;
+    DaytimeDelta: number;
+    DaytimeHour: number;
+    DaytimeMinute: number;
+    WorldData: WorldData;
+    CharacterName?: string;
+    CharacterRace?: Races;
+    CharacterClass?: Classes;
 }
 
 interface WorldData {

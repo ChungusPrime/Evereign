@@ -1,16 +1,14 @@
 import Cursor from '../assets/images/click_cursor.png';
-import TextButton from '../game_objects/UI_TextButton';
-import Title from '../game_objects/menu/Title';
-import MainMenu from '../game_objects/menu/MainMenu';
-import Controls from '../game_objects/menu/Controls';
-import Options from '../game_objects/menu/Options';
-import CharacterCreation from '../game_objects/menu/CharacterCreation';
-import CharacterList from '../game_objects/menu/CharacterList';
-import Bloodline from '../game_objects/menu/Bloodline';
+import TextButton from '../objects/ui/UI_TextButton';
+import Title from '../objects/menu/Title';
+import MainMenu from '../objects/menu/MainMenu';
+import Controls from '../objects/menu/Controls';
+import Options from '../objects/menu/Options';
+import CharacterCreation from '../objects/menu/CharacterCreation';
+import CharacterList from '../objects/menu/CharacterList';
+import Bloodline from '../objects/menu/Bloodline';
 import DataManager from '../systems/DataManager';
-import Campaigns from '../data/Campaigns';
-import Races from '../data/Races';
-import Classes from '../data/Classes';
+import ScenarioMenu from '../objects/menu/Scenario';
 
 export default class Menu extends Phaser.Scene {
 
@@ -26,6 +24,7 @@ export default class Menu extends Phaser.Scene {
     public CharacterCreationGroup!: CharacterCreation;
     public CharacterListGroup!: CharacterList;
     public BloodlineGroup!: Bloodline;
+    public ScenariosGroup!: ScenarioMenu;
 
     public CurrentMenu: string = "";
     public BackButton!: TextButton;
@@ -60,11 +59,12 @@ export default class Menu extends Phaser.Scene {
         this.CharacterCreationGroup = new CharacterCreation(this);
         this.CharacterListGroup = new CharacterList(this);
         this.BloodlineGroup = new Bloodline(this);
+        this.ScenariosGroup = new ScenarioMenu(this);
 
-        if ( this.Data.Characters['Bithmas'] == undefined ) {
+        /*if ( this.Data.Characters['Bithmas'] == undefined ) {
             console.log("Creating default character Bithmas");
             this.CharacterCreationGroup.CreateCharacter("Bithmas", "Standard", Campaigns[0], Classes.Agent, Races.Human);
-        }
+        }*/
 
         this.BackButton = new TextButton(this, this.scale.width * 0.06, this.scale.height * 0.5, "Back", () => {
             this.ChangeMenu("main");
@@ -89,6 +89,7 @@ export default class Menu extends Phaser.Scene {
         this.CharacterListGroup.setVisible(false);
         this.BloodlineGroup.setVisible(false);
         this.BackButton.setVisible(false);
+        this.ScenariosGroup.setVisible(false);
 
         // Show relevant group based on string
         let menuToGroupMap: { [key: string]: Phaser.GameObjects.Group } = {
@@ -97,7 +98,7 @@ export default class Menu extends Phaser.Scene {
             "options": this.OptionsGroup,
             "create": this.CharacterCreationGroup,
             "load": this.CharacterListGroup,
-            "cloud": this.MainMenuGroup,
+            "scenarios": this.ScenariosGroup,
             "bloodline": this.BloodlineGroup
         };
 

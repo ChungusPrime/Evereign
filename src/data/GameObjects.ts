@@ -1,33 +1,22 @@
-import BallistaTower from "../game_objects/buildings/BallistaTower";
-import Chapel from "../game_objects/buildings/Chapel";
-import Farm from "../game_objects/buildings/Farm";
-import Field from "../game_objects/buildings/Field";
-import OrcOutpost from "../game_objects/buildings/OrcOutpost";
-import Market from "../game_objects/buildings/Market";
-import Mine from "../game_objects/buildings/Mine";
-import Chest from "../game_objects/Chest";
-import IronDeposit from "../game_objects/deposits/IronDeposit";
-import StoneDeposit from "../game_objects/deposits/StoneDeposit";
-import GoblinFirepit from "../game_objects/lights/GoblinFirepit";
-import Torch from "../game_objects/lights/Torch";
-import TorchPole from "../game_objects/lights/TorchPole";
-import Bloomberry from "../game_objects/plants/Bloomberry";
-import Marigold from "../game_objects/plants/Marigold";
-import MunklesBrightcap from "../game_objects/plants/MunklesBrightcap";
-import WillowTree from "../game_objects/plants/WillowTree";
-import Switch from "../game_objects/Switch";
-import FishingZone from "../game_objects/Zones/FishingZone";
-import RespawnZone from "../game_objects/Zones/Respawn";
-import Transition from "../game_objects/Zones/Transition";
-import TriggerZone from "../game_objects/Zones/TriggerZone";
-import Dwelling from "./../game_objects/buildings/Dwelling";
-import Inn from "../game_objects/buildings/Inn";
-import TownCentre from "../game_objects/buildings/TownCentre";
-import Warehouse from "../game_objects/buildings/Warehouse";
-import GoblinSlinger from "../game_objects/characters/GoblinSlinger";
-import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
-import Port from "./../game_objects/buildings/Port";
-import DeadWillowTree from "../game_objects/plants/DeadWillowTree";
+import Building from "../objects/game/Building";
+import Chest from "../objects/game/Chest";
+import IronDeposit from "../objects/game/IronDeposit";
+import StoneDeposit from "../objects/game/StoneDeposit";
+import GoblinFirepit from "../objects/game/GoblinFirepit";
+import Torch from "../objects/game/Torch";
+import TorchPole from "../objects/game/TorchPole";
+import Bloomberry from "../objects/game/Bloomberry";
+import Marigold from "../objects/game/Marigold";
+import MunklesBrightcap from "../objects/game/MunklesBrightcap";
+import WillowTree from "../objects/game/WillowTree";
+import Switch from "../objects/game/Switch";
+import FishingZone from "../objects/game/FishingZone";
+import RespawnZone from "../objects/game/Respawn";
+import Transition from "../objects/game/Transition";
+import TriggerZone from "../objects/game/TriggerZone";
+import DeadWillowTree from "../objects/game/DeadWillowTree";
+import Boat from "../objects/game/Boat";
+import NPC from "../objects/game/NPC";
 
 const GameObjectsMap: { [key: string]: any } = {
     "Dead Willow Tree": DeadWillowTree,
@@ -40,26 +29,29 @@ const GameObjectsMap: { [key: string]: any } = {
     "Torch": Torch,
     "Goblin Firepit": GoblinFirepit,
     "TorchPole": TorchPole,
-    "Dwelling": Dwelling,
-    "Inn": Inn,
-    "Ballista Tower": BallistaTower,
-    "Chapel": Chapel,
-    "Town Centre": TownCentre,
-    "Orc Outpost": OrcOutpost,
-    "Market": Market,
-    "Warehouse": Warehouse,
-    "Field": Field,
-    "Mine": Mine,
-    "Farm": Farm,
-    "Port": Port,
+    "Dwelling": Building,
+    "Inn": Building,
+    "Ballista Tower": Building,
+    "Chapel": Building,
+    "Town Centre": Building,
+    "Orc Outpost": Building,
+    "Orc Tower": Building,
+    "Market": Building,
+    "Warehouse": Building,
+    "Field": Building,
+    "Mine": Building,
+    "Farm": Building,
+    "Port": Building,
+    "Logging Camp": Building,
     "Trigger": TriggerZone,
     "Fishing Spot": FishingZone,
     "Transition": Transition,
-    "Orc Slinger": GoblinSlinger,
-    "Warboss Gorgutz": WarbossGorgutz,
+    "Orc Slinger": NPC,
+    //"Warboss Gorgutz": NPC,
     "Chest": Chest,
     "Graveyard": RespawnZone,
     "Switch": Switch,
+    "Boat_1": Boat,
     //"Obstacle": Obstacle,
 };
 

@@ -48,4 +48,14 @@ interface BuildingData {
     };
     RequiresMilestone: number | boolean;
     AggroZone: boolean;
+    Type?: string;
+    WorkerSlots?: number;
+    WorkerType?: string;
+    Skill?: string;
+    Jobs?: { Name: string; LevelRequirement: number }[];
+    ResourceStorageIncrease?: number;
+    IsHostile?: boolean;
+    AggroRadius?: number;
+    SpawnInterval?: number;
+    MaxSpawnCount?: number;
 }

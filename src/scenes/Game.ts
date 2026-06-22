@@ -1,57 +1,52 @@
 import UI from './UI';
-import Building from '../game_objects/Building';
-import Enemy from '../game_objects/Character';
+import Building from '../objects/game/Building';
+import Enemy from '../objects/game/Character';
 import Cursor from '../assets/images/click_cursor.png';
 import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
-import { getObjectsInArc, getObjectsInCircle, createHammerSlam, ArcWidths } from '../utils/geometry';
-import PlayerCharacter from '../game_objects/PlayerCharacter';
+import { UseSword,   RenderAttackArea as SwordArea   } from '../systems/weapons/Sword';
+import { UseAxe,     RenderAttackArea as AxeArea     } from '../systems/weapons/Axe';
+import { UseHammer,  RenderAttackArea as HammerArea  } from '../systems/weapons/Hammer';
+import { UseSpear,   RenderAttackArea as SpearArea   } from '../systems/weapons/Spear';
+import { UseCrossbow }   from '../systems/weapons/Crossbow';
+import { UseScattergun } from '../systems/weapons/Scattergun';
+import { UsePistol }     from '../systems/weapons/Pistol';
+import { UseBow }        from '../systems/weapons/Bow';
+import PlayerCharacter from '../objects/game/PlayerCharacter';
 import MapBuilder from '../systems/MapBuilder';
-import { PlayerRect, EnemyRect } from '../game_objects/QuadTree_Rects';
+import { PlayerRect, EnemyRect } from '../objects/game/QuadTree_Rects';
 import Campaigns from '../data/Campaigns';
-import MapData from '../data/MapData';
 import ItemData from '../data/ItemData';
-import Abilities from '../data/Abilities';
+import ActionManager from '../systems/ActionManager';
+import InputManager from '../systems/InputManager';
+import Projectile from '../objects/game/Projectile';
+import Grenade from '../objects/game/Grenade';
+import GameObjectsMap from '../data/GameObjects';
+import ScenarioData from '../data/ScenarioData';
+import Inventory from '../systems/Inventory';
+import DayNightCycle from '../systems/DayNightCycle';
+import NPC from '../objects/game/NPC';
+import DataManager from '../systems/DataManager';
+import BuildingHelper from '../systems/BuildingHelper';
+import QuestManager from '../systems/QuestManager';
 
 // Global copies of various game data for easy access across the codebase
 // Dynamic Character/Map Data
 export let GD: Character = null;
 export let CMD: WorldData = null;
-
 // Static Campaign / Map Data
 export let CD: Campaign = null;
 export let MD: WorldData = null;
-
 export let Options: GameData['Options'];
-
 // Export systems for use globally;
-import DataManager from '../game_objects/managers/DataManager';
-export let DM: DataManager;
-
-import Inventory from '../systems/Inventory';
 export let Inv: Inventory;
-
-import BuildingHelper from '../game_objects/managers/BuildingHelper';
-export let BH: BuildingHelper;
-
-import DayNightCycle from '../systems/DayNightCycle';
 export let DNC: DayNightCycle;
-
-import QuestManager from '../game_objects/managers/QuestManager';
-export let QM: QuestManager;
-
 export let PC: PlayerCharacter;
-
-import ActionManager from '../systems/ActionManager';
-import InputManager from '../systems/InputManager';
-import Projectile from '../game_objects/Projectile';
-import Grenade from '../game_objects/Grenade';
-import GameObjectsMap from '../data/GameObjects';
 
 export default class Game extends Phaser.Scene {
 
     public CharacterName: string;
     public GameMode: string;
-
+    
     public UI: UI;
     public CurrentSaveSlot!: string;
     public mouseX!: number;
@@ -76,12 +71,9 @@ export default class Game extends Phaser.Scene {
     // Systems
     public DaytimeCycleManager!: DayNightCycle;
     public MapBuilder: MapBuilder;
-    public QuestManager: QuestManager;
-    public DataManager!: DataManager;
     public Inventory!: Inventory | null;
     public ActionManager!: ActionManager | null;
     public InputManager!: InputManager;
-    public BuildingHelper!: BuildingHelper;
 
     // Game Object Groups
     public Projectiles: Phaser.GameObjects.Group;
@@ -97,14 +89,16 @@ export default class Game extends Phaser.Scene {
     public Obstacles: Phaser.GameObjects.Group;
     public Switches: Phaser.GameObjects.Group;
     public Characters: Phaser.GameObjects.Group;
+    public LastHarvestedTreeUpdate = 0;
+    public BuildingHelper: BuildingHelper;
+    public QuestManager: QuestManager;
 
     public HeldObject: { Type: string | null, ID: string | null, Sprite: Phaser.GameObjects.Sprite | null } = {
         Type: null,
         ID: null,
         Sprite: null
     }
-
-    public LastHarvestedTreeUpdate = 0;
+    DataManager: DataManager;
 
     constructor () {
         super({ key: "Game" });
@@ -115,32 +109,30 @@ export default class Game extends Phaser.Scene {
         this.GameMode = data.mode;
     }
 
-    async create () {
+    create () {
 
         console.log(`Starting game with character: ${this.CharacterName} in mode: ${this.GameMode}`);
 
-        this.DataManager = new DataManager(this);
+        this.DataManager = new DataManager();
         const SavedData = JSON.parse(localStorage.getItem("EvereignData"));
 
         Options = SavedData.Options;
 
-        GD = SavedData.Characters[this.CharacterName];
-        CMD = GD.WorldData[GD.CurrentMap] ?? null;
-
-        if ( this.GameMode == "Arena" ) {
-            GD.X = 1600;
-            GD.Y = 1600;
-            GD.CurrentMap = "Arena";
-            GD.DaytimeDelta = 0;
-            GD.DaytimeHour = 12;
-            GD.DaytimeMinute = 0;
-            MD = MapData["Arena"];
-            GD.WorldData = { 'Arena': {} };
+        if ( this.GameMode == "Scenario" ) {
+            let Scenario = ScenarioData[this.CharacterName];
+            GD = SavedData.Characters[Scenario.CharacterName];
+            MD = Scenario.WorldData;
+            GD.WorldData[Scenario.Name] = {};
             Object.keys(MD).forEach( (key) => {
-                GD.WorldData["Arena"][key] = MD[key].InitialData;
+                GD.WorldData[Scenario.Name][key] = MD[key].InitialData;
             });
-            CMD = GD.WorldData["Arena"];
+            CMD = GD.WorldData[Scenario.Name];
+            GD.CurrentMap = Scenario.Name;
+            GD.X = Scenario.StartingPosition.X;
+            GD.Y = Scenario.StartingPosition.Y;
         } else if ( this.GameMode == "Adventure" ) {
+            GD = SavedData.Characters[this.CharacterName];
+            CMD = GD.WorldData[GD.CurrentMap] ?? null;
             // Load campaign data
             CD = Campaigns.find(c => c.Name == GD.Campaign) ?? null;
             // Load map-specific data for the current map within the campaign
@@ -157,7 +149,7 @@ export default class Game extends Phaser.Scene {
         this.input.setDefaultCursor(`url(${Cursor}), pointer`);
 
         // Play the specified music for this map
-        if ( this.GameMode == "Arena" ) {
+        if ( this.GameMode == "Scenario" ) {
             this.sound.play("theme", { loop: true });
         } else {
             this.sound.play(MD.Information.Music, { loop: true });
@@ -183,7 +175,6 @@ export default class Game extends Phaser.Scene {
         this.DaytimeCycleManager = new DayNightCycle(this, this.UI, GD.DaytimeHour, GD.DaytimeMinute, GD.DaytimeDelta);
         this.MapBuilder = new MapBuilder(this);
         this.ActionManager = new ActionManager(this, this.UI);
-        this.BuildingHelper = new BuildingHelper(this, this.UI);
 
         this.Inventory = new Inventory(this, this.UI);
         Inv = this.Inventory;
@@ -196,34 +187,20 @@ export default class Game extends Phaser.Scene {
         this.graphics.setScrollFactor(1);
         this.graphics.setDepth(10000);
 
-        this.QuestManager = new QuestManager(this);
-
-        //this.AimIndicator = this.add.rope( this.PlayerCharacter.getCenter().x, this.PlayerCharacter.getCenter().y, "Rain", 2 ).setDepth(10000000);
-        //this.AimIndicator.setPosition(0, 0);
-        //this.AimIndicator.setVisible(Options.Show_Aim_Indicator);
-
         this.cameras.main.startFollow(this.PlayerCharacter, true);
 
         // Initialize input handling
         this.InputManager = new InputManager(this);
 
+        this.BuildingHelper = new BuildingHelper(this, this.UI);
+        this.QuestManager = new QuestManager(this);
+
         this.input.on( "pointermove", ( pointer: Phaser.Input.Pointer ) => {
             this.mouseX = pointer.worldX;
             this.mouseY = pointer.worldY;
-
-            if ( Options.Show_Aim_Indicator ) {
-                this.graphics.clear();
-                this.graphics.lineStyle(6, 0xff0000, 1);
-                this.graphics.beginPath();
-                this.graphics.moveTo(this.PlayerCharacter.getCenter().x, this.PlayerCharacter.getCenter().y);
-                this.graphics.lineTo(pointer.worldX, pointer.worldY);
-                this.graphics.strokePath();
-            }
-
             if ( this.BuildingHelper.BuildingPlacementMode ) {
                 this.BuildingHelper.CheckIfPlacementValid();
             }
-                
         });
 
         this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
@@ -233,6 +210,13 @@ export default class Game extends Phaser.Scene {
                 const tile = this.Map.worldToTileXY(this.mouseX, this.mouseY);
                 const world = this.Map.tileToWorldXY(tile.x, tile.y);
                 this.BuildingHelper.CreatePlayerBuilding(this.SelectedBuilding, world.x, world.y);
+            }
+
+            if ( pointer.leftButtonDown() && this.ActionManager.IsTargeting ) {
+                this.ActionManager.SelectTarget(pointer.worldX, pointer.worldY);
+            }
+            else if ( pointer.rightButtonDown() && this.ActionManager.IsTargeting ) {
+                this.ActionManager.CancelTargeting();
             }
 
             // Right click to cancel building mode
@@ -279,11 +263,9 @@ export default class Game extends Phaser.Scene {
         if ( GD.Inventory.Equipment_MainHand && GD.Inventory.Equipment_MainHand.Cooldown < 0 ) 
             GD.Inventory.Equipment_MainHand.Cooldown = 0;
 
-        /*let PC = this.PlayerCharacter.getCenter();
-        this.AimIndicator.setPoints([
-            { x: PC.x, y: PC.y },
-            { x: this.mouseX, y: this.mouseY }
-        ]).setDirty();*/
+        if ( Options["Aim Indicator"] ) {
+            this.UpdateAimIndicator();
+        }
 
         // Update quadtree
         this.Quadtree.clear();
@@ -374,36 +356,34 @@ export default class Game extends Phaser.Scene {
         });
 
         // Spawn World Objects
-        try {
-            this.Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
-                layer.objects.forEach( (object: Phaser.Types.Tilemaps.TiledObject) => {
+        this.Map.objects.forEach( (layer: Phaser.Tilemaps.ObjectLayer) => {
+            layer.objects.forEach( (object: Phaser.Types.Tilemaps.TiledObject) => {
+                try {
+                    console.log(object.id, object.name, object.type);
                     let objectInstance = GameObjectsMap[object.type];
                     if (objectInstance) {
-                        new objectInstance(this, object) as Phaser.GameObjects.GameObject;
-                    } 
-                    else if ( object.type == "Boat_1") {
-                        let boat = this.add.sprite(object.x, object.y, "boats", 0).setOrigin(0, 1).setLighting(true);
-                        if ( object.flippedHorizontal ) {
-                            boat.setFlipX(true);
+                        const instance = new objectInstance(this, object) as Phaser.GameObjects.GameObject;
+                        if ( instance instanceof NPC ) {
+                            instance.SetCharacterType(object.type);
                         }
                     }
-                    else {
+                    else 
                         console.warn(`No class found for object type: ${object.type}`);
-                    }
-                });
+                } catch (error) {
+                    console.log(error);
+                }
             });
-        } catch (error) {
-            console.log(error);
-        }
-
+        });
+        
         // Spawn Player Buildings
         if ( GD.PlayerTowns[key] !== undefined ) {
             GD.PlayerTowns[key].Buildings.forEach((building) => {
-                let objectInstance = GameObjectsMap[building.type];
-                if (objectInstance) {
-                    new objectInstance(this, building) as Phaser.GameObjects.GameObject;
-                } else {
-                    console.warn(`No class found for object type: ${building.type}`);
+                try {
+                    let objectInstance = GameObjectsMap[building.type];
+                    if (objectInstance) new objectInstance(this, building) as Phaser.GameObjects.GameObject;
+                    else console.warn(`No class found for object type: ${building.type}`);
+                } catch (error) {
+                    console.log(error);
                 }
             });
         }
@@ -467,17 +447,17 @@ export default class Game extends Phaser.Scene {
             height: this.Map.heightInPixels,
             x: 0,
             y: 0,
-            maxObjects: 100,
+            maxObjects: 50,
             maxLevels: 4
         });
         
         this.DaytimeCycleManager.SetPhase();
 
-        if ( this.GameMode == "Arena" ) {
+        if ( this.GameMode == "Scenario" ) {
             this.DaytimeCycleManager.StopRaining();
         } else {
             // Get default campaign data
-            const Campaign = this.DataManager.CampaignData.find( (campaign) => campaign.ID == GD.Campaign );
+            const Campaign = Campaigns.find(c => c.Name == GD.Campaign);
             let MapType = Campaign.WorldData[GD.CurrentMap].Information.Type;
             if ( MapType == "Exterior" ) {
                 this.DaytimeCycleManager.StartRaining();
@@ -506,31 +486,40 @@ export default class Game extends Phaser.Scene {
 
     // Weapon type handlers - maps weapon types to their use methods
     private WeaponHandlers: Record<string, (data: any) => void> = {
-        "Scattergun": (data) => this.UseScattergun(data),
-        "Sword": (data) => this.UseSword(data),
-        "Hammer": (data) => this.UseHammer(data),
-        "Crossbow": (data) => this.UseCrossbow(data)
+        "Scattergun": (data) => UseScattergun(this, data),
+        "Sword": (data) => UseSword(this, data),
+        "Hammer": (data) => UseHammer(this, data),
+        "Crossbow": (data) => UseCrossbow(this, data),
+        "Pistol": (data) => UsePistol(this, data),
+        "Bow": (data) => UseBow(this, data),
+        "Spear": (data) => UseSpear(this, data),
+        "Axe": (data) => UseAxe(this, data),
     };
 
-    UseMainhandItem () {
+    UpdateAimIndicator () {
+        if ( this.PlayerCharacter.PlayerIsDead ) return;
+        if ( !GD.Inventory.Equipment_MainHand ) return;
+        if ( this.BuildingHelper.BuildingPlacementMode ) return;
+        if ( !Options["Aim Indicator"] ) return;
+        this.graphics.clear();
+        const Data = ItemData[GD.Inventory.Equipment_MainHand.ID];
+        if ( Data.Type === "Sword" ) SwordArea(this, Data, this.graphics);
+        if ( Data.Type === "Hammer" ) HammerArea(this, Data, this.graphics);
+        if ( Data.Type === "Axe" ) AxeArea(this, Data, this.graphics);
+        if ( Data.Type === "Spear" ) SpearArea(this, Data, this.graphics);
+    }
 
+    UseMainhandItem () {
         if ( this.PlayerCharacter.PlayerIsDead ) return;
         if ( this.BuildingHelper.BuildingPlacementMode ) return;
         if ( this.UI.TownManagementPanel.Background.visible ) return;
+        if ( this.ActionManager.IsTargeting ) return;
 
-        console.log("Using mainhand item");
+        let Weapon = GD.Inventory.Equipment_MainHand;
+        if (!Weapon) return this.UI.EventLog.NewEvent("No mainhand item equipped!");
+        if ( Weapon.Cooldown && Weapon.Cooldown > 0 ) return;
 
-        let Item = GD.Inventory.Equipment_MainHand;
-
-        if (!Item)
-            return this.UI.EventLog.NewEvent("No mainhand item equipped!");
-
-        if ( Item.Cooldown && Item.Cooldown > 0 ) {
-            //return this.UI.EventLog.NewEvent("Item is on cooldown!");
-            return;
-        }
-
-        let Data = ItemData[GD.Inventory.Equipment_MainHand.ID];
+        let Data = ItemData[Weapon.ID];
 
         // Dispatch to the appropriate weapon handler
         const handler = this.WeaponHandlers[Data.Type];
@@ -541,206 +530,13 @@ export default class Game extends Phaser.Scene {
         }
 
         GD.Inventory.Equipment_MainHand.Cooldown = Data.Properties.Cooldown;
-
-    }
-
-    UseCrossbow (Data: any) {
-        if (GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0) return;
-        const ammoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
-        const baseAngle = Phaser.Math.Angle.Between(this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY);
-        const spreadDegrees = 3;  // Small spread for slight inaccuracy
-        const spreadAngle = Phaser.Math.DegToRad(Phaser.Math.FloatBetween(-spreadDegrees / 2, spreadDegrees / 2));
-        const angle = baseAngle + spreadAngle;
-        const velocity = Data.Properties.Velocity;
-        this.sound.play("ShotgunFire");
-        const proj = new Projectile(this, this.PlayerCharacter.x, this.PlayerCharacter.y, velocity, ammoData.Properties.DamageMod, "CrossbowBolt");
-        proj.setVelocity(Math.cos(angle) * velocity, Math.sin(angle) * velocity);
-        this.Projectiles.add(proj);
-        GD.Inventory.Equipment_MainHand.CurrentMagazine -= 1;
-    }
-
-    UseScattergun (Data: any) {
-        if ( GD.Inventory.Equipment_MainHand.CurrentMagazine <= 0 ) return;
-        const ammoData = ItemData[GD.Inventory.Equipment_MainHand.Ammo];
-        const baseAngle = Phaser.Math.Angle.Between(this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY);
-        const spreadDegrees = 15;
-        const velocity = Data.Properties.Velocity;
-        this.sound.play("ShotgunFire");
-        for (let i = 0; i < ammoData.Properties.Pellets; i++) {
-            const spreadAngle = Phaser.Math.DegToRad(Phaser.Math.FloatBetween(-spreadDegrees / 2, spreadDegrees / 2));
-            const angle = baseAngle + spreadAngle;
-            const proj = new Projectile(this, this.PlayerCharacter.x, this.PlayerCharacter.y, velocity, ammoData.Properties.DamageMod, "ScattergunPellet");
-            proj.setVelocity(Math.cos(angle) * velocity, Math.sin(angle) * velocity);
-            this.Projectiles.add(proj);
-        }
-        GD.Inventory.Equipment_MainHand.CurrentMagazine -= 1;
-    }
-
-    UseSword (Data: any) {
-        console.log("Using sword");
-
-        const pc = this.PlayerCharacter.getCenter();
-        const direction = Phaser.Math.Angle.Between(pc.x, pc.y, this.mouseX, this.mouseY);
-        const reach = 48;
-
-        // Get enemies in a 90° arc (wide cone attack)
-        const hits = getObjectsInArc<Enemy>(
-            new Phaser.Math.Vector2(pc.x, pc.y),
-            direction,
-            ArcWidths.WIDE,  // 90° cone
-            reach,
-            this.Enemies,
-            true  // sort by distance
-        );
-
-        // Visual feedback - draw arc
-        this.graphics.clear();
-        this.graphics.lineStyle(2, 0x00ff00, 0.5);
-        this.graphics.beginPath();
-        this.graphics.arc(pc.x, pc.y, reach, direction - ArcWidths.WIDE / 2, direction + ArcWidths.WIDE / 2);
-        this.graphics.strokePath();
-
-        // Draw arc edges
-        this.graphics.lineBetween(
-            pc.x, pc.y,
-            pc.x + Math.cos(direction - ArcWidths.WIDE / 2) * reach,
-            pc.y + Math.sin(direction - ArcWidths.WIDE / 2) * reach
-        );
-
-        this.graphics.lineBetween(
-            pc.x, pc.y,
-            pc.x + Math.cos(direction + ArcWidths.WIDE / 2) * reach,
-            pc.y + Math.sin(direction + ArcWidths.WIDE / 2) * reach
-        );
-
-        // Apply damage to hit enemies
-        hits.forEach(hit => {
-            hit.object.TakeDamage(Data.Properties.Damage || 10);
-        });
-
-        console.log(hits.length > 0 ? "Hit enemies:" : "No enemies hit", hits.map(h => h.object));
-    }
-
-    UseHammer (Data: any) {
-        const pc = this.PlayerCharacter.getCenter();
-        const direction = Phaser.Math.Angle.Between(pc.x, pc.y, this.mouseX, this.mouseY);
-
-        // Create hammer slam at impact point
-        const slam = createHammerSlam(
-            { origin: new Phaser.Math.Vector2(pc.x, pc.y), direction, reach: 32 },
-            24  // radius
-        );
-
-        // Visual feedback - draw circle
-        this.graphics.clear();
-        this.graphics.fillStyle(0x0000ff, 0.5);
-        this.graphics.fillCircle(slam.center.x, slam.center.y, slam.radius);
-
-        // Get enemies in the impact area
-        const hits = getObjectsInCircle<Enemy>(
-            slam.center.x, slam.center.y,
-            slam.radius,
-            this.Enemies
-        );
-
-        // Apply damage to hit enemies
-        hits.forEach(hit => {
-            hit.object.TakeDamage(Data.Properties.Damage || 15);
-        });
-
-        console.log(hits.length > 0 ? "Hit enemies:" : "No enemies hit", hits.map(h => h.object));
-    }
-
-    UseHotbarSlot (slot: string) {
-        console.log(`Using hotbar slot ${slot}`);
-
-        let Item = GD.Hotbar[slot];
-
-        console.log(Item);
-
-        if (!Item) 
-            return console.log("No item equipped in hotbar slot " + slot);
-        if ( Item.Type == "Ability" ) {
-            let Ability = Abilities[Item.ID];
-            this.ActionManager.UseAbility(Ability);
-        }
-        
-        if ( Item.Type == "Item" ) {
-
-            let BaseItemData = ItemData[Item.ID];
-            console.log(BaseItemData);
-
-            // if its ammo, try to reload weapon
-            if ( BaseItemData.Category == "Ammunition" ) {
-                if ( GD.Inventory.Equipment_MainHand )
-                    this.ActionManager.ReloadMainhandWeapon();
-            }
-
-            if ( BaseItemData.Category == "Throwable" ) {
-                this.ThrowItem(BaseItemData.ID);
-            }
-
-            if ( BaseItemData.Category == "Consumable" ) {
-                this.UseConsumable(BaseItemData.ID);
-            }
-
-        }
-    }
-
-    ThrowItem (itemId: string) {
-        console.log("Throwing item");
-        console.log(itemId);
-        let data = ItemData[itemId];
-        if ( !Inv.HasRequiredQuantity(itemId, 1)  )
-            return console.log("You have no more of this item left");
-        Inv.RemoveItem(itemId, 1);
-        let Proj = new Grenade(this, this.PlayerCharacter.x, this.PlayerCharacter.y, 180, [], data.Sprite);
-        // Throw grenade towards mouse cursor
-        Proj.rotation = Phaser.Math.Angle.Between( this.PlayerCharacter.x, this.PlayerCharacter.y, this.mouseX, this.mouseY );
-        Proj.setVelocity( Math.cos(Proj.rotation) * 160, Math.sin(Proj.rotation) * 360 );
-        this.Projectiles.add(Proj);
-    }
-
-    UseItem (itemId: string) {
-        console.log("Using item" + itemId);
-        if ( itemId == "town_centre_blueprint" ) {
-            GD.UnlockedBuildings.push("Town Centre");
-            Inv.RemoveItem("town_centre_blueprint", 1);
-            this.UI.EventLog.NewEvent("You have unlocked the ability to build Town Centres!");
-            return;
-        }
-        if ( itemId == "dwelling_blueprint" ) {
-            GD.UnlockedBuildings.push("Dwelling");
-            Inv.RemoveItem("dwelling_blueprint", 1);
-            this.UI.EventLog.NewEvent("You have unlocked the ability to build Dwellings!");
-            return;
-        }
-    }
-
-    UseAbility () {
-        console.log("Using ability");
-    }
-
-    UseConsumable (itemId: string) {
-        console.log("Using consumable");
-        console.log(itemId);
-
-        let data = ItemData[itemId];
-        if ( !Inv.HasRequiredQuantity(itemId, 1)  )
-            return console.log("You have no more of this item left");
-        Inv.RemoveItem(itemId, 1);
-
-        if ( itemId == "health_potion" ) {
-            this.PlayerCharacter.Heal(50);
-        }
-
     }
 
     TransitionToMap () {
         this.PlayerCharacter.PlayerHasControl = false;
         this.UI.HideTransitionScreen();
         this.cameras.main.fadeOut(2000, 0, 0, 0).on('camerafadeoutcomplete', () => {
-            const transition = this.DataManager.MapData[GD.CurrentMap][this.ActiveTransition];
+            const transition = MD[this.ActiveTransition];
             if ( !transition ) return;
             GD.CurrentMap = transition.TransitionToMap;
             GD.X = transition.DestinationX;

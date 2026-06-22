@@ -1,17 +1,17 @@
 import Game from "./Game";
-import FloatingText from "../game_objects/FloatingText";
-import Tooltip from "../game_objects/Tooltip";
-import Button from "../game_objects/button";
-import TownManagement from "../game_objects/UI_TownManagement";
-import EventLog from "../game_objects/UI_EventLog";
-import DialogueWindow from "../game_objects/UI_DialogueWindow";
-import LootWindow from "../game_objects/UI_LootWindow";
-import CharacterPanel from "../game_objects/UI_CharacterPanel";
-import WorldMap from "../game_objects/UI_WorldMap";
-import JournalButton from "../game_objects/JournalButton";
+import FloatingText from "../objects/game/FloatingText";
+import Tooltip from "../objects/game/Tooltip";
+import Button from "../objects/game/button";
+import TownManagement from "../objects/ui/UI_TownManagement";
+import EventLog from "../objects/ui/UI_EventLog";
+import DialogueWindow from "../objects/ui/UI_DialogueWindow";
+import LootWindow from "../objects/ui/UI_LootWindow";
+import CharacterPanel from "../objects/ui/UI_CharacterPanel";
+import WorldMap from "../objects/ui/UI_WorldMap";
+import JournalButton from "../objects/game/JournalButton";
 import { GD } from "./Game";
-import TradeWindow from "../game_objects/UI_TradeWindow";
-import RestMenu from "../game_objects/UI_RestMenu";
+import TradeWindow from "../objects/ui/UI_TradeWindow";
+import RestMenu from "../objects/ui/UI_RestMenu";
 import Proficiencies from "../data/Proficiencies";
 
 export default class UI extends Phaser.Scene {
@@ -95,6 +95,7 @@ export default class UI extends Phaser.Scene {
     Proficiencies: JournalButton;
     ProficiencyGroups: { [key: string]: Phaser.GameObjects.Group } = {};
     ProficiencySubmenu: Phaser.GameObjects.Group;
+    TargetingModeHelpText: Phaser.GameObjects.Text;
 
     constructor () {
         super("UI");
@@ -279,6 +280,7 @@ export default class UI extends Phaser.Scene {
             this.ProficiencySubmenu.add(text);
             this.ProficiencyGroups[proficiency] = this.add.group();
             let ProficiencyData = Proficiencies[proficiency];
+            if ( !ProficiencyData ) return;
 
             let IconY = this.LeftBackground.getTopCenter().y + 100;
 
@@ -315,7 +317,8 @@ export default class UI extends Phaser.Scene {
 
         this.JournalNavButtons.push(this.QuestButton, this.Bestiary, this.Skills, this.Proficiencies);
         this.TownManagementPanel = new TownManagement(this);
-        this.BuidlingPlacementModeHelpText = this.add.text(this.scale.displaySize.width * 0.5, this.scale.displaySize.height * 0.8, "Left Click to Place - Right Click to Cancel", { align: "center" }).setOrigin(0.5).setVisible(false);
+        this.BuidlingPlacementModeHelpText = this.add.text(this.scale.displaySize.width * 0.5, this.scale.displaySize.height * 0.75, "Left Click to Place - Right Click to Cancel", { align: "center" }).setOrigin(0.5).setVisible(false);
+        this.TargetingModeHelpText = this.add.text(this.scale.displaySize.width * 0.5, this.scale.displaySize.height * 0.75, "Left Click to Use Ability - Right Click to Cancel", { align: "center" }).setOrigin(0.5).setVisible(false);
         this.DialogueWindow = new DialogueWindow(this);
         this.LootWindow = new LootWindow(this);
         this.TradeWindow = new TradeWindow(this);

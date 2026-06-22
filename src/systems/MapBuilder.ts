@@ -2,51 +2,51 @@ import Game from "../scenes/Game";
 import { GD } from "../scenes/Game";
 import { Quadtree, Rectangle, Circle, Line } from '@timohausmann/quadtree-ts';
 
-import FloatingText from "../game_objects/FloatingText";
-import Projectile from "../game_objects/Projectile";
-import Building from "../game_objects/Building";
-import PlayerCharacter from "../game_objects/PlayerCharacter";
-import Enemy from "../game_objects/Character";
-import Chest from "../game_objects/Chest";
-import MiningNode from "../game_objects/MiningNode";
-import Obstacle from "../game_objects/Obstacle";
-import Switch from "../game_objects/Switch";
+import FloatingText from "../objects/game/FloatingText";
+import Projectile from "../objects/game/Projectile";
+import Building from "../objects/game/Building";
+import PlayerCharacter from "../objects/game/PlayerCharacter";
+import Enemy from "../objects/game/Character";
+import Chest from "../objects/game/Chest";
+import MiningNode from "../objects/menu/MiningNode";
+import Obstacle from "../objects/game/Obstacle";
+import Switch from "../objects/game/Switch";
 
 // Plants
-import Bloomberry from "../game_objects/plants/Bloomberry";
-import Marigold from "../game_objects/plants/Marigold";
-import MunklesBrightcap from "../game_objects/plants/MunklesBrightcap";
+import Bloomberry from "../objects/game/Bloomberry";
+import Marigold from "../objects/game/Marigold";
+import MunklesBrightcap from "../objects/game/MunklesBrightcap";
 
 // Trees
-import OakTree from "../game_objects/plants/WillowTree";
+import OakTree from "../objects/game/WillowTree";
 
 // Zones
-import FishingZone from "../game_objects/Zones/FishingZone";
-import RespawnZone from "../game_objects/Zones/Respawn";
-import Transition from "../game_objects/Zones/Transition";
-import TriggerZone from "../game_objects/Zones/TriggerZone";
+import FishingZone from "../objects/game/FishingZone";
+import RespawnZone from "../objects/game/Respawn";
+import Transition from "../objects/game/Transition";
+import TriggerZone from "../objects/game/TriggerZone";
 
 // Buildings
-import Market from "../game_objects/buildings/Market";
-import Warehouse from "../game_objects/buildings/Warehouse";
-import Inn from "../game_objects/buildings/Inn";
-import Field from "../game_objects/buildings/Field";
-import GoblinOutpost from "../game_objects/buildings/OrcOutpost";
-import Mine from "../game_objects/buildings/Mine";
-import Dwelling from "../game_objects/buildings/Dwelling";
-import TownCentre from "../game_objects/buildings/TownCentre";
-import Farm from "../game_objects/buildings/Farm";
-import Chapel from "../game_objects/buildings/Chapel";
+//import Market from "../objects/game/Market";
+//import Warehouse from "../objects/game/Warehouse";
+//import Inn from "../objects/game/Inn";
+//import Field from "../objects/game/Field";
+//import GoblinOutpost from "../objects/game/OrcOutpost";
+//import Mine from "../objects/game/Mine";
+//import Dwelling from "../objects/game/Dwelling";
+//import TownCentre from "../objects/game/TownCentre";
+//import Farm from "../objects/game/Farm";
+//import Chapel from "../objects/game/Chapel";
 
 // NPCs
-import WarbossGorgutz from "../game_objects/characters/WarbossGorgutz";
-import GoblinSlinger from "../game_objects/characters/GoblinSlinger";
-import StoneDeposit from "../game_objects/deposits/StoneDeposit";
-import IronDeposit from "../game_objects/deposits/IronDeposit";
-import GoblinFirepit from "../game_objects/lights/GoblinFirepit";
-import Torch from "../game_objects/lights/Torch";
-import BallistaTower from "../game_objects/buildings/BallistaTower";
-import TorchPole from "../game_objects/lights/TorchPole";
+//import WarbossGorgutz from "../objects/characters/WarbossGorgutz";
+//import GoblinSlinger from "../objects/characters/GoblinSlinger";
+import StoneDeposit from "../objects/game/StoneDeposit";
+import IronDeposit from "../objects/game/IronDeposit";
+import GoblinFirepit from "../objects/game/GoblinFirepit";
+import Torch from "../objects/game/Torch";
+//import BallistaTower from "../objects/game/BallistaTower";
+import TorchPole from "../objects/game/TorchPole";
 
 export default class MapBuilder {
 
@@ -103,15 +103,15 @@ export default class MapBuilder {
             "Munkle's Brightcap": MunklesBrightcap,
             "Torch": Torch,
             "Goblin Firepit": GoblinFirepit,
-            "Dwelling": Dwelling,
+            "Dwelling": Building,
             "Trigger": TriggerZone,
-            "Goblin Slinger": GoblinSlinger,
-            "Inn": Inn,
-            "Ballista Tower": BallistaTower,
+            //"Goblin Slinger": GoblinSlinger,
+            "Inn": Building,
+            "Ballista Tower": Building,
             "TorchPole": TorchPole
             /*"Town Centre": TownCentre,
             "Goblin Outpost": GoblinOutpost,
-            "Dwelling": Dwelling,
+            "Dwelling": Building,
             "Market": Market,
             "Warehouse": Warehouse,
             "Field": Field,

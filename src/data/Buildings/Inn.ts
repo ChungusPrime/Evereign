@@ -3,7 +3,7 @@ const InnData: BuildingData = {
     Name: "Inn",
     Desc: `The Inn provides a place for travelers to rest and recover. It can also serve as a gathering place for locals.`,
     Spritesheet: "Buildings",
-    Sprite: "inn-1",
+    Sprite: "inn1",
     Size: { Width: 224, Height: 224 },
     BaseHousingSlots: 10,
     BuildingCost: {

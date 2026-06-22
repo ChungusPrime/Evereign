@@ -32,6 +32,10 @@ import Scatterguns from "./Items/Scatterguns";
 import ProtoStructComponents from "./Items/ProtoStructComponents";
 import Throwables from "./Items/Throwables";
 import ScattergunMods from "./Items/Scattergun_Mods";
+import Swords from "./Items/Swords";
+import Hammers from "./Items/Hammers";
+import Potions from "./Items/Potions";
+import Blueprints from "./Items/Blueprints";
 
 // Helper function to add items from an array to ItemData
 function addItems(items: ItemData[]) {
@@ -73,5 +77,9 @@ addItems(Resources);
 addItems(Tools);
 addItems(ProtoStructComponents);
 addItems(Throwables);
+addItems(Swords);
+addItems(Hammers);
+addItems(Potions);
+addItems(Blueprints);
 
 export default ItemData;

@@ -56,19 +56,19 @@ export default class InputManager {
             Move_Down:  { onDown: () => player.DownKeyDown = true,  onUp: () => player.DownKeyDown = false },
             Move_Left:  { onDown: () => player.LeftKeyDown = true,  onUp: () => player.LeftKeyDown = false },
             Move_Right: { onDown: () => player.RightKeyDown = true, onUp: () => player.RightKeyDown = false },
-            Interact:      { onDown: () => this.scene.ActionManager.StartActivity(this.scene.SelectedObject) },
+            Interact:      { onDown: () => this.scene.ActionManager.StartHarvesting(this.scene.SelectedObject) },
             Toggle_Light:  { onDown: () => player.ToggleLight() },
             Weapon_Attack: { onDown: () => player.MainHandKeyDown = true, onUp: () => player.MainHandKeyDown = false },
-            Use_Hotbar_1:  { onDown: () => this.scene.UseHotbarSlot("1") },
-            Use_Hotbar_2:  { onDown: () => this.scene.UseHotbarSlot("2") },
-            Use_Hotbar_3:  { onDown: () => this.scene.UseHotbarSlot("3") },
-            Use_Hotbar_4:  { onDown: () => this.scene.UseHotbarSlot("4") },
-            Use_Hotbar_5:  { onDown: () => this.scene.UseHotbarSlot("5") },
-            Use_Hotbar_6:  { onDown: () => this.scene.UseHotbarSlot("6") },
-            Use_Hotbar_7:  { onDown: () => this.scene.UseHotbarSlot("7") },
-            Use_Hotbar_8:  { onDown: () => this.scene.UseHotbarSlot("8") },
-            Use_Hotbar_9:  { onDown: () => this.scene.UseHotbarSlot("9") },
-            Use_Hotbar_10: { onDown: () => this.scene.UseHotbarSlot("10") },
+            Use_Hotbar_1:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("1") },
+            Use_Hotbar_2:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("2") },
+            Use_Hotbar_3:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("3") },
+            Use_Hotbar_4:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("4") },
+            Use_Hotbar_5:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("5") },
+            Use_Hotbar_6:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("6") },
+            Use_Hotbar_7:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("7") },
+            Use_Hotbar_8:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("8") },
+            Use_Hotbar_9:  { onDown: () => this.scene.ActionManager.UseHotbarSlot("9") },
+            Use_Hotbar_10: { onDown: () => this.scene.ActionManager.UseHotbarSlot("10") },
         };
     }
 
@@ -101,6 +101,7 @@ export default class InputManager {
         if (action.onDown) {
             this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
                 if (pointer.button === buttonIndex) {
+                    if (this.scene.ActionManager.IsTargeting) return;
                     action.onDown!();
                 }
             });
@@ -109,6 +110,7 @@ export default class InputManager {
         if (action.onUp) {
             this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
                 if (pointer.button === buttonIndex) {
+                    if (this.scene.ActionManager.IsTargeting) return;
                     action.onUp!();
                 }
             });

@@ -1,5 +1,6 @@
 /// <reference path="modules.d.ts" />
 /// <reference path="character.d.ts" />
+/// <reference path="effects.d.ts" />
 /// <reference path="abilities.d.ts" />
 /// <reference path="items.d.ts" />
 /// <reference path="world.d.ts" />

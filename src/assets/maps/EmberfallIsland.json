@@ -1667,7 +1667,7 @@
  "nextobjectid":32,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.2",
+ "tiledversion":"1.11.2",
  "tileheight":32,
  "tilesets":[
         {
@@ -1700,81 +1700,55 @@
          "tiles":[
                 {
                  "id":0,
-                 "image":"..\/images\/own\/dwelling3.png",
-                 "imageheight":128,
-                 "imagewidth":128
+                 "image":"..\/images\/own\/dwelling3.png"
                 }, 
                 {
                  "id":1,
-                 "image":"..\/images\/own\/dwelling4.png",
-                 "imageheight":128,
-                 "imagewidth":128
+                 "image":"..\/images\/own\/dwelling4.png"
                 }, 
                 {
                  "id":2,
-                 "image":"..\/images\/own\/farm1.png",
-                 "imageheight":160,
-                 "imagewidth":192
+                 "image":"..\/images\/own\/farm1.png"
                 }, 
                 {
                  "id":3,
-                 "image":"..\/images\/own\/goblinoutpost1.png",
-                 "imageheight":224,
-                 "imagewidth":224
+                 "image":"..\/images\/own\/goblinoutpost1.png"
                 }, 
                 {
                  "id":4,
-                 "image":"..\/images\/own\/inn1.png",
-                 "imageheight":128,
-                 "imagewidth":160
+                 "image":"..\/images\/own\/inn1.png"
                 }, 
                 {
                  "id":5,
-                 "image":"..\/images\/own\/market1.png",
-                 "imageheight":128,
-                 "imagewidth":160
+                 "image":"..\/images\/own\/market1.png"
                 }, 
                 {
                  "id":6,
-                 "image":"..\/images\/own\/mine1.png",
-                 "imageheight":192,
-                 "imagewidth":192
+                 "image":"..\/images\/own\/mine1.png"
                 }, 
                 {
                  "id":7,
-                 "image":"..\/images\/own\/towncentre1.png",
-                 "imageheight":256,
-                 "imagewidth":256
+                 "image":"..\/images\/own\/towncentre1.png"
                 }, 
                 {
                  "id":8,
-                 "image":"..\/images\/own\/warehouse1.png",
-                 "imageheight":160,
-                 "imagewidth":224
+                 "image":"..\/images\/own\/warehouse1.png"
                 }, 
                 {
                  "id":9,
-                 "image":"..\/images\/own\/church1.png",
-                 "imageheight":224,
-                 "imagewidth":192
+                 "image":"..\/images\/own\/church1.png"
                 }, 
                 {
                  "id":10,
-                 "image":"..\/images\/own\/dwelling1.png",
-                 "imageheight":128,
-                 "imagewidth":128
+                 "image":"..\/images\/own\/dwelling1.png"
                 }, 
                 {
                  "id":11,
-                 "image":"..\/images\/own\/dwelling2.png",
-                 "imageheight":128,
-                 "imagewidth":128
+                 "image":"..\/images\/own\/dwelling2.png"
                 }, 
                 {
                  "id":12,
-                 "image":"..\/images\/own\/loggingcamp.png",
-                 "imageheight":192,
-                 "imagewidth":192
+                 "image":"..\/images\/own\/loggingcamp.png"
                 }],
          "tilewidth":256
         }, 

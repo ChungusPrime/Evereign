@@ -7,7 +7,8 @@ const Currency: ItemData[] = [
         Desc: "A small coin made of gold, stamped with the image of a crown on one side and a sword on the other. Used as common currency through the kingdom.",
         Stackable: true,
         StackSize: 0,
-        Sound: "Money"
+        Sound: "Money",
+        InitialValue: { ID: "gold", Quantity: 1 }
     },
     
     {
@@ -16,7 +17,8 @@ const Currency: ItemData[] = [
         Sprite: "gems2-45",
         Desc: "A small fragment of Valius, a creation of the gods. It is said that Valius was shattered into a countless pieces, and that each piece contains a fraction of his power. Primarily used to upgrade traits and abilities.",
         Stackable: true,
-        StackSize: 0
+        StackSize: 0,
+        InitialValue: { ID: "shard_valius", Quantity: 1 }
     },
 
     {
@@ -25,7 +27,8 @@ const Currency: ItemData[] = [
         Sprite: "gems2-45",
         Desc: "A token awarded by the OHS as a reward for completing tasks and quests. Can be exchanged for various rewards.",
         Stackable: true,
-        StackSize: 0
+        StackSize: 0,
+        InitialValue: { ID: "ohs_scrip", Quantity: 1 }
     },
 
 ];

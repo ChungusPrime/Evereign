@@ -92,7 +92,7 @@ export default class DayNightCycle {
 
         this.SetPhase();
 
-        if ( this.scene.GameMode == "Arena" ) {
+        if ( this.scene.GameMode == "Scenario" ) {
             this.StopRaining();
             return;
         }
@@ -162,7 +162,7 @@ export default class DayNightCycle {
     SetPhase () {
         let Campaign = Campaigns.find(c => c.Name == GD.Campaign);
 
-        if ( this.scene.GameMode == "Arena" ) {
+        if ( this.scene.GameMode == "Scenario" ) {
             this.scene.lights.setAmbientColor(this.DaytimeCycles[this.DaytimeHour].hex);
             return;
         }
