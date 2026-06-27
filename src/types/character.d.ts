@@ -4,6 +4,10 @@
  * @Difficulty the game's difficulty level, chosen at character creation
  * @Class the character's class, chosen at character creation
  * @Campaign the campaign the character is participating in
+ * @Level the character's current level
+ * @Experience the character's current experience points
+ * @NextLevelExperience the experience points required to reach the next level
+ * @AttributePoints the number of unspent attribute points the character has
  */
 
 interface Character {
@@ -14,6 +18,7 @@ interface Character {
     Difficulty: string;
     Class: string;
     Campaign: string;
+    CharacterType: "Campaign" | "Scenario";
 
     // Character progression
     NewGamePlus: number;
@@ -23,6 +28,7 @@ interface Character {
     AttributePoints: number;
     CurrentMap: string;
     BackpackTier: number;
+    CampaignCompleted: boolean;
 
     Abilities: { ID: string; Tier: number, Cooldown: number }[];
     Traits: { ID: string; Tier: number }[];

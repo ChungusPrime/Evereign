@@ -43,16 +43,16 @@ export default class DayNightCycle {
     public DaytimeMinute: number;
     public DaytimeDelta: number;
 
-    constructor ( scene: Game, UI: UI, DaytimeHour: number = 12, DaytimeMinute: number = 0, DaytimeDelta: number = 0 ) {
+    constructor ( scene: Game, UI: UI ) {
 
         this.scene = scene;
         this.UI = UI;
 
         let Campaign = Campaigns.find(c => c.Name == GD.Campaign);
 
-        this.DaytimeHour = DaytimeHour;
-        this.DaytimeMinute = DaytimeMinute;
-        this.DaytimeDelta = DaytimeDelta;
+        this.DaytimeHour = GD.DaytimeHour;
+        this.DaytimeMinute = GD.DaytimeMinute;
+        this.DaytimeDelta = GD.DaytimeDelta;
 
         if ( this.RainEmitter !== null )
             this.RainEmitter.destroy();
@@ -130,6 +130,8 @@ export default class DayNightCycle {
             this.DaytimeDelta = 0;
             this.DaytimeMinute++;
 
+            GD.DaytimeMinute = this.DaytimeMinute;
+
             let CurrentPhase = this.DaytimeCycles[this.DaytimeHour];
             let NextPhase = this.DaytimeCycles[this.DaytimeHour + 1];
 
@@ -149,6 +151,9 @@ export default class DayNightCycle {
             this.DaytimeHour++;
             if ( this.DaytimeHour == 23 ) {
                 this.DaytimeHour = 0;
+                this.DaytimeMinute = 0;
+                GD.DaytimeHour = this.DaytimeHour;
+                GD.DaytimeMinute = this.DaytimeMinute;
             }
             this.scene.UI.DayTimeText.setText(this.FormatTime());
         }

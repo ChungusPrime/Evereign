@@ -9,7 +9,6 @@ const Arena: Scenario = {
     DaytimeDelta: 0,
     DaytimeHour: 12,
     DaytimeMinute: 0,
-
     CharacterName: "Bithmas",
     CharacterRace: Races.Human,
     CharacterClass: Classes.Agent,
@@ -26,6 +25,7 @@ const Arena: Scenario = {
         "Test_Orc_Outpost_1": {
             Type: "Orc Outpost",
             Name: "Orc Outpost",
+            Modifiers: ["Rapid Reinforcements"],
             Level: 1,
             OnDestroyDisableObstacle: [],
             InitialData: {

@@ -56,10 +56,10 @@ const Scatterguns: ItemData[] = [
     },
 
     {
-        ID: "scatterpistol_bandit",
-        Name: "Bandit's Scatterpistol",
+        ID: "scattergun_bandit",
+        Name: "Bandit's Scattergun",
         Sprite: "weapons-2",
-        Desc: "A scrappy Scatterpistol mainly used by ne'er-do-wells who can't get their hands on anything better.",
+        Desc: "A scrappy Scattergun mainly used by ne'er-do-wells who can't get their hands on anything better.",
         Stackable: false,
         Properties: {
             Damage: [
@@ -86,8 +86,76 @@ const Scatterguns: ItemData[] = [
             ],
         },
         Tags: [1, 4],
-        InitialValue: { ID: "scatterpistol_bandit", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null, Cooldown: 0 }
+        InitialValue: { ID: "scattergun_bandit", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null, Cooldown: 0 }
     },
+
+    {
+        ID: "scattergun_farrox_pattern",
+        Name: "Farrox-Pattern Scattergun",
+        Sprite: "weapons-2",
+        Desc: "A Scattergun designed by the Cardor Farrox, a renowned gunsmith known for his innovative designs and craftsmanship, this model is standard among standing armies.",
+        Stackable: false,
+        Properties: {
+            Damage: [
+                { Type: "Piercing", Amount: 2 },
+                { Type: "Force", Amount: 3 }
+            ],
+            Velocity: 400,
+            Lifetime: 4,
+            Cooldown: 500,
+            ReloadTime: 2.5,
+            Pellets: 6,
+            MagazineSize: 5,
+        },
+        Sound: "Scattergun_fire",
+        Moddable: true,
+        Craftable: true,
+        ModdableParts: ["Barrel"],
+        Crafting: {
+            Skill: "Smithing",
+            SkillXP: 50,
+            Materials: [
+                { ID: "iron_ingot", Amount: 3 },
+                { ID: "oak_plank", Amount: 1 }
+            ],
+        },
+        Tags: [1, 4],
+        InitialValue: { ID: "scattergun_farrox_pattern", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null, Cooldown: 0 }
+    },
+
+    {
+        ID: "scattergun_redeemer",
+        Name: "Redeemer Scattergun",
+        Sprite: "weapons-2",
+        Desc: "A heavy Scattergun designed for maximum damage output, favored by those who seek to make a statement on the battlefield.",
+        Stackable: false,
+        Properties: {
+            Damage: [
+                { Type: "Piercing", Amount: 2 },
+                { Type: "Force", Amount: 3 }
+            ],
+            Velocity: 400,
+            Lifetime: 4,
+            Cooldown: 500,
+            ReloadTime: 2.5,
+            Pellets: 6,
+            MagazineSize: 5,
+        },
+        Sound: "Scattergun_fire",
+        Moddable: true,
+        Craftable: true,
+        ModdableParts: ["Barrel"],
+        Crafting: {
+            Skill: "Smithing",
+            SkillXP: 50,
+            Materials: [
+                { ID: "iron_ingot", Amount: 3 },
+                { ID: "oak_plank", Amount: 1 }
+            ],
+        },
+        Tags: [1, 4],
+        InitialValue: { ID: "scattergun_redeemer", Quantity: 1, CurrentMagazine: 0, Mods: { "Barrel": null }, Ammo: null, Cooldown: 0 }
+    }
 
 ];
 

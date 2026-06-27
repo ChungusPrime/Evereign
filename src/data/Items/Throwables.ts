@@ -14,11 +14,12 @@ const Throwables: ItemData[] = [
                 { Type: "Force", Amount: 3 }
             ],
             Pellets: 8,
+            Cooldown: 900,
         },
         OnUse: {
             SpawnProjectile: {
                 Type: "Grenade",
-                Velocity: 160,
+                Velocity: 320,
                 Damage: [
                     { Type: "Piercing", Amount: 2 },
                     { Type: "Force", Amount: 3 }
@@ -26,9 +27,9 @@ const Throwables: ItemData[] = [
                 Lifetime: 3000,
             }
         },
-        InitialValue: { ID: "grenade_mk1", Quantity: 1 },
+        InitialValue: { ID: "grenade_mk1", Quantity: 1, Cooldown: 0 },
         Craftable: true,
-        Moddable: false
+        Moddable: false,
     },
 
 ];

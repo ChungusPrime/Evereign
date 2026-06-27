@@ -28,6 +28,7 @@ import NPC from '../objects/game/NPC';
 import DataManager from '../systems/DataManager';
 import BuildingHelper from '../systems/BuildingHelper';
 import QuestManager from '../systems/QuestManager';
+import { ApplyOnUseEffects } from '../systems/OnUseProcessor';
 
 // Global copies of various game data for easy access across the codebase
 // Dynamic Character/Map Data
@@ -84,6 +85,7 @@ export default class Game extends Phaser.Scene {
     public Chests: Phaser.GameObjects.Group;
     public Plants: Phaser.GameObjects.Group;
     public Pickups: Phaser.GameObjects.Group;
+    public Grenades: Phaser.GameObjects.Group;
     public Enemies: Phaser.GameObjects.Group;
     public Buildings: Phaser.GameObjects.Group;
     public Obstacles: Phaser.GameObjects.Group;
@@ -92,13 +94,15 @@ export default class Game extends Phaser.Scene {
     public LastHarvestedTreeUpdate = 0;
     public BuildingHelper: BuildingHelper;
     public QuestManager: QuestManager;
+    public DataManager: DataManager;
 
     public HeldObject: { Type: string | null, ID: string | null, Sprite: Phaser.GameObjects.Sprite | null } = {
         Type: null,
         ID: null,
         Sprite: null
     }
-    DataManager: DataManager;
+
+    
 
     constructor () {
         super({ key: "Game" });
@@ -130,13 +134,16 @@ export default class Game extends Phaser.Scene {
             GD.CurrentMap = Scenario.Name;
             GD.X = Scenario.StartingPosition.X;
             GD.Y = Scenario.StartingPosition.Y;
+            GD.DaytimeHour = Scenario.DaytimeHour;
+            GD.DaytimeMinute = Scenario.DaytimeMinute;
+            GD.DaytimeDelta = Scenario.DaytimeDelta;
+            GD.CharacterType = "Scenario";
         } else if ( this.GameMode == "Adventure" ) {
             GD = SavedData.Characters[this.CharacterName];
             CMD = GD.WorldData[GD.CurrentMap] ?? null;
-            // Load campaign data
             CD = Campaigns.find(c => c.Name == GD.Campaign) ?? null;
-            // Load map-specific data for the current map within the campaign
-            MD = Campaigns.find(c => c.Name == GD.Campaign)?.WorldData[GD.CurrentMap] ?? null;
+            MD = CD.WorldData[GD.CurrentMap] ?? null;
+            GD.CharacterType = "Campaign";
             console.log(`Loaded campaign data for ${GD.Campaign}:`, CD);
         }
 
@@ -157,6 +164,7 @@ export default class Game extends Phaser.Scene {
         
         this.lights.enable();
         this.Buildings = this.add.group([], { runChildUpdate: true });
+        this.Grenades = this.add.group([], { runChildUpdate: true });
         this.Projectiles = this.add.group([], { runChildUpdate: true });
         this.EnemyProjectiles = this.add.group([], { runChildUpdate: true });
         this.Pickups = this.add.group([], { runChildUpdate: true });
@@ -172,7 +180,7 @@ export default class Game extends Phaser.Scene {
         this.Switches = this.add.group([]);
 
         // Systems
-        this.DaytimeCycleManager = new DayNightCycle(this, this.UI, GD.DaytimeHour, GD.DaytimeMinute, GD.DaytimeDelta);
+        this.DaytimeCycleManager = new DayNightCycle(this, this.UI);
         this.MapBuilder = new MapBuilder(this);
         this.ActionManager = new ActionManager(this, this.UI);
 
@@ -308,7 +316,12 @@ export default class Game extends Phaser.Scene {
 
         this.Projectiles.getChildren().forEach((proj: Projectile) => proj.delete());
         this.Projectiles.clear(true, true);
+
+        this.Grenades.clear(true, true);
+
+        this.EnemyProjectiles.getChildren().forEach((proj: Projectile) => proj.delete());
         this.EnemyProjectiles.clear(true, true);
+
         this.Trees.clear(true, true);
         this.Nodes.clear(true, true);
         this.Chests.clear(true, true);
@@ -484,18 +497,6 @@ export default class Game extends Phaser.Scene {
         this.scene.resume("Game");
     }
 
-    // Weapon type handlers - maps weapon types to their use methods
-    private WeaponHandlers: Record<string, (data: any) => void> = {
-        "Scattergun": (data) => UseScattergun(this, data),
-        "Sword": (data) => UseSword(this, data),
-        "Hammer": (data) => UseHammer(this, data),
-        "Crossbow": (data) => UseCrossbow(this, data),
-        "Pistol": (data) => UsePistol(this, data),
-        "Bow": (data) => UseBow(this, data),
-        "Spear": (data) => UseSpear(this, data),
-        "Axe": (data) => UseAxe(this, data),
-    };
-
     UpdateAimIndicator () {
         if ( this.PlayerCharacter.PlayerIsDead ) return;
         if ( !GD.Inventory.Equipment_MainHand ) return;
@@ -509,17 +510,51 @@ export default class Game extends Phaser.Scene {
         if ( Data.Type === "Spear" ) SpearArea(this, Data, this.graphics);
     }
 
+    UseItem ( itemId: string ) {
+        if ( this.PlayerCharacter.PlayerIsDead ) return;
+        if ( this.BuildingHelper.BuildingPlacementMode ) return;
+        if ( this.UI.TownManagementPanel.Background.visible ) return;
+        if ( this.ActionManager.IsTargeting ) return;
+        const data = ItemData[itemId];
+        if (!Inv.HasRequiredQuantity(itemId, 1))
+            return this.UI.EventLog.NewEvent(`You have no ${data.Name} left`);
+        Inv.RemoveItem(itemId, 1);
+        if (data.OnUse)
+            ApplyOnUseEffects(this, data.OnUse, data.ID);
+    }
+
+    // Weapon type handlers - maps weapon types to their use methods
+    private WeaponHandlers: Record<string, (data: any) => void> = {
+        "Scattergun": (data) => UseScattergun(this, data),
+        "Sword": (data) => UseSword(this, data),
+        "Hammer": (data) => UseHammer(this, data),
+        "Crossbow": (data) => UseCrossbow(this, data),
+        "Pistol": (data) => UsePistol(this, data),
+        "Bow": (data) => UseBow(this, data),
+        "Spear": (data) => UseSpear(this, data),
+        "Axe": (data) => UseAxe(this, data),
+        "Grenade": (data) => this.UseItem(data.ID),
+    };
+
     UseMainhandItem () {
         if ( this.PlayerCharacter.PlayerIsDead ) return;
         if ( this.BuildingHelper.BuildingPlacementMode ) return;
         if ( this.UI.TownManagementPanel.Background.visible ) return;
         if ( this.ActionManager.IsTargeting ) return;
-
         let Weapon = GD.Inventory.Equipment_MainHand;
-        if (!Weapon) return this.UI.EventLog.NewEvent("No mainhand item equipped!");
-        if ( Weapon.Cooldown && Weapon.Cooldown > 0 ) return;
 
-        let Data = ItemData[Weapon.ID];
+        if ( !Weapon ) return;
+        if ( Weapon.Cooldown && Weapon.Cooldown > 0 ) return;
+        
+        let Data = ItemData[Weapon.ID] ?? null;
+
+        if ( !Data ) {
+            console.warn(`No item data found for mainhand item: ${Weapon.ID}`);
+            return;
+        }
+
+        let Cooldown = Data.Properties?.Cooldown ?? 0;
+        console.log(Cooldown);
 
         // Dispatch to the appropriate weapon handler
         const handler = this.WeaponHandlers[Data.Type];
@@ -529,7 +564,9 @@ export default class Game extends Phaser.Scene {
             console.warn(`No handler for weapon type: ${Data.Type}`);
         }
 
-        GD.Inventory.Equipment_MainHand.Cooldown = Data.Properties.Cooldown;
+        if ( GD.Inventory.Equipment_MainHand )
+            GD.Inventory.Equipment_MainHand.Cooldown = Cooldown;
+
     }
 
     TransitionToMap () {

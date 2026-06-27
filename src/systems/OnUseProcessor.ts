@@ -62,7 +62,7 @@ export function ApplyOnUseEffects(scene: Game, effects: OnUseEffect | OnUseEffec
             if (cfg.Lifetime !== undefined) proj.Lifetime = cfg.Lifetime;
             proj.rotation = angle;
             proj.setVelocity(Math.cos(angle) * cfg.Velocity, Math.sin(angle) * cfg.Velocity);
-            scene.Projectiles.add(proj);
+            scene.Grenades.add(proj);
         }
 
         if (cfg.Type === "PyroPellet") {

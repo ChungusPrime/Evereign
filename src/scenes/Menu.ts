@@ -39,6 +39,13 @@ export default class Menu extends Phaser.Scene {
     preload (): void {
         this.DataManager = new DataManager();
         this.Data = this.DataManager.GetLocalStorageData();
+        Object.values(this.Data.Characters).forEach(character => {
+            if (character.CharacterType == "Scenario") {
+                console.log(`Deleting scenario character ${character.Name} from localStorage`);
+                delete this.Data.Characters[character.Name];
+            }
+        });
+        this.DataManager.SaveLocalStorageData(this.Data);
         console.log(this.Data);
     }
 
@@ -60,11 +67,6 @@ export default class Menu extends Phaser.Scene {
         this.CharacterListGroup = new CharacterList(this);
         this.BloodlineGroup = new Bloodline(this);
         this.ScenariosGroup = new ScenarioMenu(this);
-
-        /*if ( this.Data.Characters['Bithmas'] == undefined ) {
-            console.log("Creating default character Bithmas");
-            this.CharacterCreationGroup.CreateCharacter("Bithmas", "Standard", Campaigns[0], Classes.Agent, Races.Human);
-        }*/
 
         this.BackButton = new TextButton(this, this.scale.width * 0.06, this.scale.height * 0.5, "Back", () => {
             this.ChangeMenu("main");

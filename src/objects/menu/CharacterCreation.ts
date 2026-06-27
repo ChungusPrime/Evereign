@@ -166,7 +166,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
             let Class = Object.values(Classes).find((c) => c.Name == this.characterClassSelect.CurrentValue);
             let Race = Object.values(Races).find((r) => r.Name == this.characterRaceSelect.CurrentValue);
             let Campaign = Campaigns.find((c) => c.ID == this.campaignSelect.CurrentValue);
-            this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, Campaign, Class, Race);
+            this.CreateCharacter(this.characterNameInput.CurrentValue, this.difficultySelect.CurrentValue, Campaign, Class, Race, "Campaign");
             scene.RefreshCharacterList();
         }).setVisible(false);
 
@@ -304,7 +304,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
         this.InfoBackgroundScrollbarThumb.setY(this.InfoBackgroundScrollbarTrack.y + scrollPercent * (this.InfoBackgroundScrollbarTrack.height - this.InfoBackgroundScrollbarThumb.displayHeight));
     }
 
-    CreateCharacter ( Name: string, Difficulty: string, Campaign: Campaign |null, Class: Class, Race: Race ) {
+    CreateCharacter ( Name: string, Difficulty: string, Campaign: Campaign |null, Class: Class, Race: Race, Type: "Campaign" | "Scenario" ) {
 
         try {
 
@@ -314,6 +314,7 @@ class CharacterCreation extends Phaser.GameObjects.Group {
 
             Character.CreatedAtTimestamp = Date.now().toString();
             Character.LastSaveTimestamp = null;
+            Character.CharacterType = Type;
 
             // Set character properties
             Character.Name = Name;

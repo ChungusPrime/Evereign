@@ -1,6 +1,5 @@
 import DefaultGameData from "../data/DefaultGameData";
 import AllItemData from "../data/ItemData";
-import AllObjectData from "../data/ObjectData";
 import AllCampaigns from "../data/Campaigns";
 import { GD, CMD } from "../scenes/Game";
 

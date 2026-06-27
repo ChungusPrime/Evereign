@@ -69,8 +69,9 @@ export default class Grenade extends Phaser.Physics.Arcade.Sprite {
             }
         });*/
 
-        let damageArea = new Phaser.Geom.Circle(this.x, this.y, 128);
+        let damageArea = new Phaser.Geom.Circle(this.x, this.y, 256);
         const enemies = this.scene.Quadtree.retrieve(new Circle({x: damageArea.x, y: damageArea.y, r: damageArea.radius}));
+        
         enemies.forEach( (element: EnemyRect) => {
             if ( Phaser.Geom.Circle.Contains(damageArea, element.enemy.getCenter().x, element.enemy.getCenter().y)) {
                 console.log(element.enemy);

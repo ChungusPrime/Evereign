@@ -5,6 +5,7 @@ const DefaultCharacter: Character = {
     NewGamePlus: 0,
     X: 6281,
     Y: 5500,
+    CharacterType: "Campaign",
     CurrentMap: "Tutors Island",
     Campaign: "Tutorial",
     WorldData: {},
@@ -18,6 +19,7 @@ const DefaultCharacter: Character = {
     Experience: 0,
     NextLevelExperience: 1000,
     AttributePoints: 0,
+    CampaignCompleted: false,
 
     // Portrait customisation
     Head: 1,
@@ -48,7 +50,6 @@ const DefaultCharacter: Character = {
 
     Traits: [],
     Abilities: [],
-    
     BackpackTier: 1,
     Inventory: {
         "1": null,
