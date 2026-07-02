@@ -1,15 +1,13 @@
 {
     "name": "evereign",
-    "version": "0.7.11",
+    "version": "0.7.14",
     "description": "A fantasy MMORPG built with Phaser and Electron.",
     "main": "main.js",
     "scripts": {
         "dev": "webpack --config webpack.config.js --mode=development --watch",
         "prod": "webpack --config webpack.config.js --mode=production",
-        "build": "npm run prod && electron-builder",
-        "build:web": "npm run prod",
-        "start": "electron .",
-        "start:web": "npx serve dist"
+        "build": "npm run prod",
+        "build:web": "npm run prod"
     },
     "author": "Nathan Leadbitter <nathanl38@protonmail.com>",
     "license": "ISC",

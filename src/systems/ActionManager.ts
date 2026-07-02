@@ -129,7 +129,7 @@ export default class ActionManager {
         this.UI.TargetingModeHelpText.setVisible(false);
     }
 
-    // ── Public action entry points ───────────────────────────────────────────────
+    // Public action entry points
     UseHotbarSlot (slot: string) {
         const hotbarItem = GD.Hotbar[slot];
         if (!hotbarItem) return;
@@ -223,9 +223,12 @@ export default class ActionManager {
 
     update ( delta: number ) {
 
-        if (this.IsTargeting) this.TargetingIndicator.setPosition(this.scene.mouseX, this.scene.mouseY);
+        if (this.IsTargeting) 
+            this.TargetingIndicator.setPosition(this.scene.mouseX, this.scene.mouseY);
 
-        if ( this.CurrentActivity.Type == "" ) return;
+        if ( this.CurrentActivity.Type == "" ) 
+            return;
+        
         this.CurrentActivity.Delta += delta;
 
         // Handle ability activities
@@ -302,10 +305,9 @@ export default class ActionManager {
 
             this.CancelActivity();
             return;
-
-        // Handle harvesting activity
         }
         
+        // Handle harvesting activity
         if ( this.CurrentActivity.IsHarvesting ) {
 
             // World object harvesting — driven by ObjectData
@@ -327,7 +329,7 @@ export default class ActionManager {
             GD.Skills[objectData.HarvestExperienceType].Experience += objectData.HarvestExperienceValue;
 
             if ( objectData.DepletesOnHarvest ) {
-                this.scene.Trees.getChildren().forEach( (tree: Phaser.Physics.Arcade.Sprite) => {
+                this.scene.Objects.getChildren().forEach( (tree: Phaser.Physics.Arcade.Sprite) => {
                     if ( tree.getData("tiled_id") == this.CurrentActivity.TiledID ) {
                         (tree as any).Deplete();
                     }

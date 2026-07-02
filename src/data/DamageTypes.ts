@@ -4,6 +4,7 @@ const DamageTypes: { [key: string]: string } = {
     "Slash": "red",
     "Fire": "orange",
     "Cold": "lightblue",
+    "Acid": "lime",
     "Lightning": "yellow",
     "Poison": "green",
     "Arcane": "purple",

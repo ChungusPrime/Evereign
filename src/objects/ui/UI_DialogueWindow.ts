@@ -141,14 +141,14 @@ export default class DialogueWindow {
                     this.ShowSubject(this.CurrentDialogueKey, response.GoToSubject);
                 }
 
-                if ( response.DestroyObstacles ) {
+                /*if ( response.DestroyObstacles ) {
                     response.DestroyObstacles.forEach((obstacleID: number) => {
                         let Obstacle = this.scene.Game.Obstacles.getChildren().find((obstacle: Obstacle) => obstacle.ID == obstacleID) as Obstacle;
                         if ( Obstacle != undefined ) {
                             Obstacle.Destroy();
                         }
                     });
-                }
+                }*/
 
             });
 

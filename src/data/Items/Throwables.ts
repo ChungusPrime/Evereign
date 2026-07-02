@@ -4,27 +4,26 @@ const Throwables: ItemData[] = [
         ID: "grenade_mk1",
         Name: "Grenade Mk1",
         Sprite: "ownmisc-0",
-        Desc: "A basic high explosive grenade.",
+        Desc: "A basic grenade that explodes after a short delay, dealing damage to enemies in a small radius.",
         Stackable: true,
-        StackSize: 200,
-        Type: "Grenade",
-        Properties: {
-            DamageMod: [                
-                { Type: "Piercing", Amount: 2 },
-                { Type: "Force", Amount: 3 }
-            ],
-            Pellets: 8,
-            Cooldown: 900,
-        },
+        StackSize: 20,
         OnUse: {
-            SpawnProjectile: {
+            SpawnThrowable: {
                 Type: "Grenade",
+                Direction: "Mouse",
                 Velocity: 320,
-                Damage: [
-                    { Type: "Piercing", Amount: 2 },
-                    { Type: "Force", Amount: 3 }
-                ],
-                Lifetime: 3000,
+                Quantity: 1,
+                Explosion: {
+                    Quantity: 1,
+                    ExplosionDelay: 0,
+                    Fuse: true,
+                    FuseTime: 2000,
+                    Radius: 128,
+                    Damage: [
+                        { Type: "Impact", Amount: 10 },
+                        { Type: "Fire", Amount: 10 }
+                    ]
+                }
             }
         },
         InitialValue: { ID: "grenade_mk1", Quantity: 1, Cooldown: 0 },

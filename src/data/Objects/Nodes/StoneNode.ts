@@ -11,8 +11,8 @@ const StoneNode: ObjectData = {
     HarvestExperienceValue: 5,
     ActivityLabel: "Mining Stone",
     FloatMessage: "+1 Stone",
-    FloatSprite: "general",
-    FloatFrame: 60,
+    FloatSprite: "mining-nodes",
+    FloatFrame: 0,
     DepletesOnHarvest: false,
 };
 

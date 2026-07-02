@@ -4,6 +4,7 @@ interface Proficiency {
     Name: string;
     Description: string;
     ID: string;
+    PrimaryAttribute?: string;
 }
 
 interface Ability {
@@ -23,16 +24,12 @@ interface Ability {
     targeting?: string;
     targeting_shape?: string;
     targeting_radius?: number;
-
-    // Usage
     ActiviationType?: string; // "Instant", "Channeled", "Cast", "Charge"
     ChannelInterval?: number; // Time in ms between each application of the ability's effects while channeling
     MaxChannelTime?: number; // Maximum time in ms that the ability can be channeled for
     CastTime?: number; // Time in ms before the ability is performed after activation
     ChargeTime?: number; // Time in ms required to fully charge the ability
     ChargePowerMultiplier?: number; // Multiplier for the ability's effects based on how long it was charged
-
-    /** Effects applied when this ability fires */
     OnUse?: OnUseEffect | OnUseEffect[];
 }
 

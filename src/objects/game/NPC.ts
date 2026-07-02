@@ -8,6 +8,9 @@ import EnemyData from "../../data/EnemyData";
 
 export default class NPC extends Phaser.Physics.Arcade.Sprite {
 
+    public SpeechBubbleText: Phaser.GameObjects.Text;
+    public SpeechBubbleBackground: Phaser.GameObjects.Rectangle;
+    public Light: Phaser.GameObjects.Light;
     public scene: Game;
     public InCombat: boolean = false;
     public InCombatDelta: number = 0;
@@ -57,6 +60,8 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(99);
         this.setOrigin(0.5);
         this.setBodySize(18, 24);
+        this.SpeechBubbleBackground = this.scene.add.rectangle(this.x, this.y - 40, 100, 30, 0x000000, 0.5).setOrigin(0.5).setDepth(100).setVisible(false);
+        this.SpeechBubbleText = this.scene.add.text(this.x, this.y - 40, "", { fontFamily: "Arial", fontSize: "14px", color: "#ffffff", align: "center" }).setOrigin(0.5).setDepth(101).setVisible(false);
         // Read ID/Level/Modifiers from Tiled properties so SetCharacterType can scale them
         if ( 'properties' in object && object.properties ) {
             this.ID = object.properties[0].value ?? null;
@@ -67,6 +72,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         this.scene.Enemies.add(this);
         this.setImmovable(true);
         this.setLighting(true);
+        this.Light = this.scene.lights.addLight(this.x, this.y, 100).setColor(0xffffff).setIntensity(1.5).setVisible(false);
         this.setInteractive().on('pointerdown', () => {
             console.log(this);
         });
@@ -300,6 +306,12 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
+        this.SpeechBubbleBackground.destroy();
+        this.SpeechBubbleBackground = null;
+        this.SpeechBubbleText.destroy();
+        this.SpeechBubbleText = null;
+        this.scene.lights.removeLight(this.Light);
+
         this.scene.PlayerCharacter.AddXP(this.ExpValue);
         const GoldPickup = new Pickup(this.scene, this.x, this.y, "bonus1", 8, "gold", this.GoldValue, true);
         this.scene.Pickups.add(GoldPickup);
@@ -309,6 +321,21 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             GD.WorldData[GD.CurrentMap][this.ID].Alive = false;
         }
 
+        this.destroy();
+
+    }
+
+    SayRandomLine () {
+        const lines = EnemyData[this.ID as keyof typeof EnemyData].Lines;
+        let line = lines[Phaser.Math.Between(0, lines.length - 1)];
+        this.SpeechBubbleText.setText(line);
+        this.SpeechBubbleBackground.setVisible(true);
+        this.SpeechBubbleText.setVisible(true);
+
+        this.scene.time.delayedCall(3000, () => {
+            this.SpeechBubbleBackground.setVisible(false);
+            this.SpeechBubbleText.setVisible(false);
+        });
     }
 
 }

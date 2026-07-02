@@ -79,6 +79,13 @@ export function ApplyOnUseEffects(scene: Game, effects: OnUseEffect | OnUseEffec
 
     }
 
+    if ( effects.SpawnThrowable !== undefined) {
+        const cfg = effects.SpawnThrowable;
+        const pc = scene.PlayerCharacter;
+        const angle = Phaser.Math.Angle.Between(pc.x, pc.y, scene.mouseX, scene.mouseY);
+        console.log(cfg);
+    }
+
     if (effects.Charge !== undefined) {
         const cfg = effects.Charge;
         const pc = scene.PlayerCharacter;

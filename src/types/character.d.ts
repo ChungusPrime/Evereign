@@ -123,6 +123,8 @@ interface Stats {
     MaxMana: number;
     MovementSpeed: number;
     HealthRegeneration: number;
+    BlockRating: number;
+    EvadeRating: number;
     ManaRegeneration: number;
     CriticalStrikeChance: number;
     CriticalStrikeDamageModifier: number;
@@ -132,6 +134,7 @@ interface Stats {
     Defence_Slash: number;
     Defence_Fire: number;
     Defence_Cold: number;
+    Defence_Acid: number;
     Defence_Lightning: number;
     Defence_Poison: number;
     Defence_Arcane: number;

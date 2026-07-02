@@ -1,10 +1,10 @@
-import WillowTree from './WillowTree';
-import Marigold from './Marigold';
-import MunklesBrightcap from './MunklesBrightcap';
-import Bloomberry from './Bloomberry';
-import StoneNode from './StoneNode';
-import IronNode from './IronNode';
-import FishingSpot from './FishingSpot';
+import WillowTree from './Trees/WillowTree';
+import Marigold from './Plants/Marigold';
+import MunklesBrightcap from './Plants/MunklesBrightcap';
+import Bloomberry from './Plants/Bloomberry';
+import StoneNode from './Nodes/StoneNode';
+import IronNode from './Nodes/IronNode';
+import FishingSpot from './Zones/FishingZone';
 
 /**
  * Maps Tiled object type strings to their ObjectData definitions.

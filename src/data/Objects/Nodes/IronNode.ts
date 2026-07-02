@@ -11,8 +11,8 @@ const IronNode: ObjectData = {
     HarvestExperienceValue: 5,
     ActivityLabel: "Mining Iron",
     FloatMessage: "+1 Iron Ore",
-    FloatSprite: "general",
-    FloatFrame: 62,
+    FloatSprite: "mining-nodes",
+    FloatFrame: 1,
     DepletesOnHarvest: false,
 };
 

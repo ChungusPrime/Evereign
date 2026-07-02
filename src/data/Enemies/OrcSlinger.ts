@@ -3,6 +3,8 @@ const OrcSlingerData = {
     WalkAnimation: "GoblinSlingerWalk",
     Spritesheet: "Orcs",
     SpritesheetFrame: 0,
+    IdleFrames: [0, 1, 2, 3],
+    MoveFrames: [4, 5, 6, 7],
     AttackRange: 200,
     Type: "Ranged",
     GoldValue: 3,
@@ -32,29 +34,33 @@ const OrcSlingerData = {
     },
     Abilities: {
         'Pinning Shot': {
+            Projectile: { Type: "Orcish Arrow", ApplyEffect: { ID: "pinning_shot_debuff", Duration: 2000 } },
             Cooldown: 5000,
+            Direction: "Player",
             CooldownMax: 5000,
             Velocity: 200,
             Damage: {
                 1: [
-                    { Type: "Pierce", Min: 18, Max: 19, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 12, Max: 18 }
                 ],
                 2: [
-                    { Type: "Pierce", Min: 18, Max: 19, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 18, Max: 19 }
                 ],
                 3: [
-                    { Type: "Pierce", Min: 18, Max: 19, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 18, Max: 19 }
                 ],
                 4: [
-                    { Type: "Pierce", Min: 27, Max: 45, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 27, Max: 45}
                 ],
                 5: [
-                    { Type: "Pierce", Min: 84, Max: 125, ApplyDebuff: "Slow" }
+                    { Type: "Pierce", Min: 84, Max: 125 }
                 ],
             }
         },
         'Bow Shot': {
+            Projectile: { Type: "Orcish Arrow" },
             Cooldown: 2000,
+            Direction: "Player",
             CooldownMax: 2000,
             Velocity: 150,
             Damage: {
@@ -75,7 +81,15 @@ const OrcSlingerData = {
                 ],
             }
         },
-    }
+    },
+    Lines: [
+        "You will not pass!",
+        "I will crush you!",
+        "You are no match for me!",
+        "Prepare to meet your doom!",
+        "I will make you regret crossing me!",
+        "Oi, Man flesh!",
+    ]
 };
 
 export default OrcSlingerData;

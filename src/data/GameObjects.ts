@@ -1,34 +1,14 @@
 import Building from "../objects/game/Building";
-import Chest from "../objects/game/Chest";
-import IronDeposit from "../objects/game/IronDeposit";
-import StoneDeposit from "../objects/game/StoneDeposit";
-import GoblinFirepit from "../objects/game/GoblinFirepit";
-import Torch from "../objects/game/Torch";
-import TorchPole from "../objects/game/TorchPole";
-import Bloomberry from "../objects/game/Bloomberry";
-import Marigold from "../objects/game/Marigold";
-import MunklesBrightcap from "../objects/game/MunklesBrightcap";
-import WillowTree from "../objects/game/WillowTree";
-import Switch from "../objects/game/Switch";
 import FishingZone from "../objects/game/FishingZone";
 import RespawnZone from "../objects/game/Respawn";
 import Transition from "../objects/game/Transition";
 import TriggerZone from "../objects/game/TriggerZone";
-import DeadWillowTree from "../objects/game/DeadWillowTree";
-import Boat from "../objects/game/Boat";
 import NPC from "../objects/game/NPC";
+import GenericObject from "../objects/game/GenericObject";
 
 const GameObjectsMap: { [key: string]: any } = {
-    "Dead Willow Tree": DeadWillowTree,
-    "Willow Tree": WillowTree,
-    "Marigold": Marigold,
-    "Bloomberry": Bloomberry,
-    "Munkle's Brightcap": MunklesBrightcap,
-    "Stone Deposit": StoneDeposit,
-    "Iron Deposit": IronDeposit,
-    "Torch": Torch,
-    "Goblin Firepit": GoblinFirepit,
-    "TorchPole": TorchPole,
+
+    // Buildings
     "Dwelling": Building,
     "Inn": Building,
     "Ballista Tower": Building,
@@ -43,16 +23,40 @@ const GameObjectsMap: { [key: string]: any } = {
     "Farm": Building,
     "Port": Building,
     "Logging Camp": Building,
+
+    // Lights
+    "Torch": GenericObject,
+    "Goblin Firepit": GenericObject,
+    "TorchPole": GenericObject,
+
+    // Trees
+    "Dead Willow Tree": GenericObject,
+    "Willow Tree": GenericObject,
+
+    // Plants
+    "Marigold": GenericObject,
+    "Bloomberry": GenericObject,
+    "Munkle's Brightcap": GenericObject,
+
+    // Deposits
+    "Stone Deposit": GenericObject,
+    "Iron Deposit": GenericObject,
+
+    // Zones
     "Trigger": TriggerZone,
     "Fishing Spot": FishingZone,
     "Transition": Transition,
+    "Graveyard": RespawnZone,
+
+    // Objects
+    "Switch": GenericObject,
+    "Boat_1": GenericObject,
+    //"Obstacle": GenericObject,
+    "Chest": GenericObject,
+
+    // NPCs
     "Orc Slinger": NPC,
     //"Warboss Gorgutz": NPC,
-    "Chest": Chest,
-    "Graveyard": RespawnZone,
-    "Switch": Switch,
-    "Boat_1": Boat,
-    //"Obstacle": Obstacle,
 };
 
 export default GameObjectsMap;

@@ -12,7 +12,6 @@ import { UseScattergun } from '../systems/weapons/Scattergun';
 import { UsePistol }     from '../systems/weapons/Pistol';
 import { UseBow }        from '../systems/weapons/Bow';
 import PlayerCharacter from '../objects/game/PlayerCharacter';
-import MapBuilder from '../systems/MapBuilder';
 import { PlayerRect, EnemyRect } from '../objects/game/QuadTree_Rects';
 import Campaigns from '../data/Campaigns';
 import ItemData from '../data/ItemData';
@@ -71,7 +70,6 @@ export default class Game extends Phaser.Scene {
 
     // Systems
     public DaytimeCycleManager!: DayNightCycle;
-    public MapBuilder: MapBuilder;
     public Inventory!: Inventory | null;
     public ActionManager!: ActionManager | null;
     public InputManager!: InputManager;
@@ -80,16 +78,11 @@ export default class Game extends Phaser.Scene {
     public Projectiles: Phaser.GameObjects.Group;
     public EnemyProjectiles: Phaser.GameObjects.Group;
     public Zones: Phaser.GameObjects.Group;
-    public Trees: Phaser.GameObjects.Group;
-    public Nodes: Phaser.GameObjects.Group;
-    public Chests: Phaser.GameObjects.Group;
-    public Plants: Phaser.GameObjects.Group;
+    public Objects: Phaser.GameObjects.Group;
     public Pickups: Phaser.GameObjects.Group;
     public Grenades: Phaser.GameObjects.Group;
     public Enemies: Phaser.GameObjects.Group;
     public Buildings: Phaser.GameObjects.Group;
-    public Obstacles: Phaser.GameObjects.Group;
-    public Switches: Phaser.GameObjects.Group;
     public Characters: Phaser.GameObjects.Group;
     public LastHarvestedTreeUpdate = 0;
     public BuildingHelper: BuildingHelper;
@@ -170,18 +163,13 @@ export default class Game extends Phaser.Scene {
         this.Pickups = this.add.group([], { runChildUpdate: true });
         this.Enemies = this.add.group([], { runChildUpdate: true });
         this.Characters = this.add.group([], { runChildUpdate: true });
-        this.Trees = this.add.group([]);
+        this.Objects = this.add.group([]);
         this.MapLights = this.add.group([], { runChildUpdate: true });
-        this.Nodes = this.add.group([]);
-        this.Chests = this.add.group([]);
-        this.Plants = this.add.group([]);
         this.Zones = this.add.group([]);
-        this.Obstacles = this.add.group([]);
-        this.Switches = this.add.group([]);
+        this.Objects = this.add.group([]);
 
         // Systems
         this.DaytimeCycleManager = new DayNightCycle(this, this.UI);
-        this.MapBuilder = new MapBuilder(this);
         this.ActionManager = new ActionManager(this, this.UI);
 
         this.Inventory = new Inventory(this, this.UI);
@@ -253,11 +241,11 @@ export default class Game extends Phaser.Scene {
         if ( this.LastHarvestedTreeUpdate >= 1000 ) {
             let DepletedHarvestables = CMD.DepletedHarvestables ?? [];
             if ( DepletedHarvestables.length > 0 ) {
-                this.Trees.getChildren().forEach( (tree: Phaser.Physics.Arcade.Sprite) => {
-                    if ( DepletedHarvestables.includes(tree.getData("tiled_id")) ) {
-                        (tree as any).RespawnTime -= 1;
-                        if ( (tree as any).RespawnTime <= 0 ) {
-                            (tree as any).Regenerate();
+                this.Objects.getChildren().forEach( (object: Phaser.Physics.Arcade.Sprite) => {
+                    if ( DepletedHarvestables.includes(object.getData("tiled_id")) ) {
+                        (object as any).RespawnTime -= 1;
+                        if ( (object as any).RespawnTime <= 0 ) {
+                            (object as any).Regenerate();
                         }
                     }
                 });
@@ -318,20 +306,12 @@ export default class Game extends Phaser.Scene {
         this.Projectiles.clear(true, true);
 
         this.Grenades.clear(true, true);
-
         this.EnemyProjectiles.getChildren().forEach((proj: Projectile) => proj.delete());
         this.EnemyProjectiles.clear(true, true);
-
-        this.Trees.clear(true, true);
-        this.Nodes.clear(true, true);
-        this.Chests.clear(true, true);
-        this.Plants.clear(true, true);
-        this.Zones.clear(true, true);
+        this.Objects.clear(true, true);
         this.Enemies.clear(true, true);
         this.Pickups.clear(true, true);
-        this.Switches.clear(true, true);
-        this.Obstacles.clear(true, true);
-        
+
         this.Buildings.getChildren().forEach((building: Building) => {
             if ( building.AggroCollider !== undefined )
                 building.AggroCollider.destroy();
@@ -407,19 +387,16 @@ export default class Game extends Phaser.Scene {
         // Player
         this.PlayerCollisionLayerCollider = this.physics.add.collider(this.PlayerCharacter, this.CollisionLayer);
         this.physics.add.collider(this.PlayerCharacter, this.Buildings);
-        this.physics.add.collider(this.PlayerCharacter, this.Obstacles);
-        this.physics.add.collider(this.PlayerCharacter, this.Trees);
-        this.physics.add.collider(this.PlayerCharacter, this.Nodes);
+        this.physics.add.collider(this.PlayerCharacter, this.Objects);
         
         // Enable collision between pickups and collision layer so they dont go out of bounds
         this.physics.add.collider(this.Pickups, this.CollisionLayer);
         
         // Placeholder collisions
-        this.physics.add.collider(this.BuildingHelper.Placeholder, this.Trees);
+        this.physics.add.collider(this.BuildingHelper.Placeholder, this.Objects);
         this.physics.add.collider(this.BuildingHelper.Placeholder, this.Buildings);
         
-        this.physics.add.collider(this.Projectiles, this.Trees, (projectile: Projectile, tree: any) => {
-
+        this.physics.add.collider(this.Projectiles, this.Objects, (projectile: Projectile, object: any) => {
             if (projectile instanceof Grenade) {
 
             } else {
@@ -430,11 +407,6 @@ export default class Game extends Phaser.Scene {
                     hitSprite.destroy();
                 });
             }
-
-        });
-        
-        this.physics.add.collider(this.Projectiles, this.Nodes, (projectile: Projectile, node) => {
-            projectile.delete();
         });
         
         // Handle enemy projectile collisions with player
@@ -579,7 +551,6 @@ export default class Game extends Phaser.Scene {
             GD.X = transition.DestinationX;
             GD.Y = transition.DestinationY;
             this.PlayerCharacter.setPosition(transition.DestinationX, transition.DestinationY);
-            this.MapBuilder.CreateMap(this);
         });
     }
 

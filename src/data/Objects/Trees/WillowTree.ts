@@ -14,6 +14,8 @@ const WillowTree: ObjectData = {
     FloatSprite: "general",
     FloatFrame: 21,
     DepletesOnHarvest: true,
+    BodySize: { width: 30, height: 60 },
+    BodyOffset: { x: 80, y: 120 },
 }
 
 export default WillowTree;

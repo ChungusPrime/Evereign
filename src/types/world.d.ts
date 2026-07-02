@@ -14,26 +14,34 @@ interface ObjectDefinition {
  * @HarvestItem the specific item obtained from harvesting the object
  */
 interface ObjectData {
-    Name: string;
-    Description: string;
-    Category: string;
-    BaseHarvestAmount: number;
-    HarvestItem: string;
-    HarvestTime: number;
-    HarvestSound: string;
-    HarvestRequiresToolType: string;
-    HarvestExperienceType: string;
-    HarvestExperienceValue: number;
+    Name?: string;
+    Description?: string;
+    Category?: string;
+    BaseHarvestAmount?: number;
+    HarvestItem?: string;
+    HarvestTime?: number;
+    HarvestSound?: string;
+    HarvestRequiresToolType?: string;
+    HarvestExperienceType?: string;
+    HarvestExperienceValue?: number;
+    IsLightSource?: boolean;
+    LightColor?: number;
+    LightRadius?: number;
+    LightIntensity?: number;
     /** Full label used as the activity type string, e.g. "Cutting Willow Tree" */
-    ActivityLabel: string;
+    ActivityLabel?: string;
     /** Floating text message shown on each successful harvest */
-    FloatMessage: string;
+    FloatMessage?: string;
     /** Texture key for the floating text icon */
-    FloatSprite: string;
+    FloatSprite?: string;
     /** Frame number for the floating text icon */
-    FloatFrame: number;
+    FloatFrame?: number;
     /** Whether the object should be depleted after a single harvest */
-    DepletesOnHarvest: boolean;
+    DepletesOnHarvest?: boolean;
+    /** Size of the object's physics body */
+    BodySize?: { width: number, height: number };
+    /** Offset of the object's physics body */
+    BodyOffset?: { x: number, y: number };
 }
 
 interface Scenario {

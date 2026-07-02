@@ -41,12 +41,20 @@ const Scatterguns: Proficiency = {
             ChargeTime: 2000,
             Description: "Fire a electrically charged slug round. If it hits an enemy, that enemy is pinned and will periodically release a burst of electricity that damages nearby enemies.",
             OnUse: {
-                SpawnProjectile: { Type: "ChargedSlug", Quantity: 1, Velocity: 300, Damage: [{ Type: "Electric", Amount: 15 }] }
+                SpawnProjectile: { 
+                    Type: "ChargedSlug",
+                    Quantity: 1,
+                    Velocity: 300,
+                    Damage: [
+                        { Type: "Electric", Amount: 15 }
+                    ]
+                }
             },
 
         },
 
         {
+
             ID: "defensive_blast",
             Name: "Defensive Blast",
             mana_cost: 70,
@@ -60,7 +68,7 @@ const Scatterguns: Proficiency = {
             weapon_type: "Scattergun",
             requires_trait: "scattergun_novice",
             OnUse: [
-                { KnockBack: { Radius: 200, Force: 400 } },
+                { KnockBack: { Radius: 128, Force: 100 } },
                 { ApplyEffect: { ID: "defensive_blast_shield", Duration: 5000 } }
             ],
         },
