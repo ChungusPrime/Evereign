@@ -1,6 +1,6 @@
 {
     "name": "evereign",
-    "version": "0.7.14",
+    "version": "0.7.15",
     "description": "A fantasy MMORPG built with Phaser and Electron.",
     "main": "main.js",
     "scripts": {
@@ -21,7 +21,7 @@
         "html-webpack-plugin": "^5.5.3",
         "js-base64": "^3.7.7",
         "mini-css-extract-plugin": "^2.7.6",
-        "phaser": "^4.0.0",
+        "phaser": "4.2.0",
         "phaser4-rex-plugins": "^4.0.5",
         "sass": "^1.77.8",
         "sass-loader": "^16.0.1",
